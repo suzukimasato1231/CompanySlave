@@ -36,7 +36,7 @@ private:
 	Vec3 oldPosition{};
 	Vec3 speed{ 2.0f,2.0f,2.0f };//プレイヤースピード
 
-	Vec3 scale{ 5.0f,5.0f,5.0f };//大きさ
+	Vec3 scale{ 1.0f,1.0f,1.0f };//大きさ
 	Vec3 angle{ 0.0f,0.0f,0.0f };//角度
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };//色
 

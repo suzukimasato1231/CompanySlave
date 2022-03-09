@@ -13,7 +13,7 @@ Player::~Player()
 void Player::Init()
 {
 
-	playerObject = Object::Instance()->CreateOBJ("sphere");
+	playerObject = Object::Instance()->CreateOBJ("player");
 
 	pBox.minPosition = XMVectorSet(0, 2, 0, 1);
 	pBox.maxPosition = XMVectorSet(0, 2, 0, 1);

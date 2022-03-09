@@ -218,10 +218,10 @@ void Object::MatWord(ObjectData polygon, Vec3 position, Vec3 scale, Vec3 rotatio
 	//定数バッファへデータ転送
 	ConstBufferDataB1 *constMap1 = nullptr;
 	result = Object::OBJdata[OBJNum]->constBuffB1->Map(0, nullptr, (void **)&constMap1);
-	constMap1->ambient = material.ambient;
-	constMap1->diffuse = material.diffuse;
-	constMap1->specular = material.specular;
-	constMap1->alpha = material.alpha;
+	constMap1->ambient = polygon.material.ambient;
+	constMap1->diffuse = polygon.material.diffuse;
+	constMap1->specular = polygon.material.specular;
+	constMap1->alpha = polygon.material.alpha;
 	Object::OBJdata[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
@@ -301,7 +301,7 @@ void Object::Draw(ObjectData polygon, Vec3 position, Vec3 scale, Vec3 rotation, 
 }
 
 
-int Object::LoadMaterial(const std::string &directoryPath, const std::string &filename)
+int Object::LoadMaterial(const std::string &directoryPath, const std::string &filename, ObjectData &polygon)
 {
 	int texNumber = 0;
 	//ファイルストリーム
@@ -331,41 +331,41 @@ int Object::LoadMaterial(const std::string &directoryPath, const std::string &fi
 		if (key == "newmtl")
 		{
 			//マテリアル名読み込み
-			line_stream >> material.name;
+			line_stream >> polygon.material.name;
 		}
 		//先頭文字列がKaならアンビエント色
 		if (key == "Ka")
 		{
-			line_stream >> material.ambient.x;
-			line_stream >> material.ambient.y;
-			line_stream >> material.ambient.z;
+			line_stream >> polygon.material.ambient.x;
+			line_stream >> polygon.material.ambient.y;
+			line_stream >> polygon.material.ambient.z;
 		}
 		//先頭文字列がKdならディフューズ色
 		if (key == "Kd")
 		{
-			line_stream >> material.diffuse.x;
-			line_stream >> material.diffuse.y;
-			line_stream >> material.diffuse.z;
+			line_stream >> polygon.material.diffuse.x;
+			line_stream >> polygon.material.diffuse.y;
+			line_stream >> polygon.material.diffuse.z;
 		}
 		//先頭文字列がKsならスペキュラー色
 		if (key == "Ks")
 		{
-			line_stream >> material.specular.x;
-			line_stream >> material.specular.y;
-			line_stream >> material.specular.z;
+			line_stream >> polygon.material.specular.x;
+			line_stream >> polygon.material.specular.y;
+			line_stream >> polygon.material.specular.z;
 		}
 		//先頭文字列がmap_Kdならテクスチャ名
 		if (key == "map_Kd")
 		{
 			//テクスチャのファイル名読み込み
-			line_stream >> material.textureFilename;
+			line_stream >> polygon.material.textureFilename;
 			//テクスチャ読み込み
-			texNumber = OBJLoadTexture(directoryPath, material.textureFilename);
+			polygon.OBJTexture= OBJLoadTexture(directoryPath, polygon.material.textureFilename);
 		}
 	}
 	//ファイルを閉じる
 	file.close();
-	return  texNumber;
+	return  0;
 }
 
 void Object::OBJCreateModel(ObjectData &polygon)
@@ -557,7 +557,8 @@ Object::ObjectData Object::CreateOBJ(const std::string filename, bool smoothing)
 			string filename;
 			line_stream >> filename;
 			//マテリアル読み込み
-			polygon.OBJTexture = LoadMaterial(directoryPath, filename);
+			//polygon.OBJTexture = LoadMaterial(directoryPath, filename);
+			LoadMaterial(directoryPath, filename, polygon);
 		}
 
 		//先頭文字がvなら頂点座標

@@ -38,7 +38,7 @@ void MapStage::Draw()
 			case NONE:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color2, blockGraph);
+					scale, Vec3{}, color, blockGraph);
 				break;
 			case BLOCK:
 				Object::Instance()->Draw(block,

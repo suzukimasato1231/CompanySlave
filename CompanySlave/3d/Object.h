@@ -27,6 +27,26 @@ public://構造体
 		Vec3 normal;//法線ベクトル
 		Vec2 uv;//uv座標
 	};
+
+	//マテリアル
+	struct Material
+	{
+		std::string name;			//マテリアル名
+		Vec3 ambient;			//アンビエント影響度
+		Vec3 diffuse;			//ディフューズ影響度
+		Vec3 specular;			//スペキュラー影響度
+		float alpha;				//アルファ
+		std::string textureFilename;//テクスチャファイル名
+		//コンストラクタ
+		Material()
+		{
+			ambient = { 1.0f,1.0f,1.0f };
+			diffuse = { 0.0f,0.0f,0.0f };
+			specular = { 0.0f,0.0f,0.0f };
+			alpha = 1.0f;
+		}
+	};
+
 	//オブジェクトデータ構造体
 	struct ObjectData
 	{
@@ -50,6 +70,8 @@ public://構造体
 		XMMATRIX matWorld;
 		//親クラス
 		ObjectData *parent = nullptr;
+		//マテリアル
+		Material material;
 	};
 
 	struct ConstBuffer
@@ -75,24 +97,7 @@ public://構造体
 		Vec3 specular;	//スペキュラー係数
 		float alpha;		//アルファ
 	};
-	//マテリアル
-	struct Material
-	{
-		std::string name;			//マテリアル名
-		Vec3 ambient;			//アンビエント影響度
-		Vec3 diffuse;			//ディフューズ影響度
-		Vec3 specular;			//スペキュラー影響度
-		float alpha;				//アルファ
-		std::string textureFilename;//テクスチャファイル名
-		//コンストラクタ
-		Material()
-		{
-			ambient = { 0.3f,0.3f,0.3f };
-			diffuse = { 0.0f,0.0f,0.0f };
-			specular = { 0.0f,0.0f,0.0f };
-			alpha = 1.0f;
-		}
-	};
+
 	//OBJ定数バッファ
 	struct OBJData
 	{
@@ -117,8 +122,8 @@ public://変数
 	ComPtr<ID3D12DescriptorHeap >descHeap = { nullptr };
 	//オブジェクトのコンストバッファ
 	std::vector <ConstBuffer *>objectBuffer;
-	//マテリアル
-	Material material;
+	////マテリアル
+	//Material material;
 public:
 	Object() {};
 	~Object();
@@ -150,7 +155,7 @@ public://オブジェクト関連
 public://OBJ関連
 	int OBJLoadTexture(const std::string &directoryPath, const std::string &filename);
 	//マテリアル読み込み
-	int LoadMaterial(const std::string &directoryPath, const std::string &filename);
+	int LoadMaterial(const std::string &directoryPath, const std::string &filename, ObjectData &polygon);
 	/// <summary>
 	/// エッジ平滑化データの追加
 	/// </summary>
