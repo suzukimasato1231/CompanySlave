@@ -12,6 +12,7 @@
 #include"MapStage.h"
 #include"Player.h"
 #include"PushCollision.h"
+#include"Enemy.h"
 extern const int window_width;
 extern const int window_height;
 class GameSceneManager:public Singleton<GameSceneManager>
@@ -73,6 +74,9 @@ private://定義
 
 	//プレイヤー
 	Player *player = nullptr;
+
+	//エネミー
+	Enemy *enemy = nullptr;
 
 	//FBX
 	Model *model1 = nullptr;

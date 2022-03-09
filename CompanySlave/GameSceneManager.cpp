@@ -14,6 +14,7 @@ GameSceneManager::~GameSceneManager()
 	safe_delete(model1);
 	safe_delete(mapStage);
 	safe_delete(player);
+	safe_delete(enemy);
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
@@ -106,6 +107,9 @@ void GameSceneManager::Init()
 	//プレイヤーの初期化
 	player = new Player;
 	player->Init();
+	//敵
+	enemy = new Enemy;
+	enemy->Init();
 }
 
 void GameSceneManager::Update()
@@ -128,6 +132,8 @@ void GameSceneManager::Update()
 	}
 	//プレイヤーの更新
 	player->Update();
+
+	enemy->Update(player->GetPosition());
 
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, mapStage);
@@ -160,7 +166,7 @@ void GameSceneManager::Draw()
 	//プレイヤーの描画
 	player->Draw();
 
-
+	enemy->Draw();
 	//マップチップの描画
 	mapStage->Draw();
 
@@ -174,7 +180,7 @@ void GameSceneManager::Draw()
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));
 
 	//デバックテキスト%dと%f対応
-	debugText.Print(1, 120, 2, "%d", 1891);
+	debugText.Print(1, 120, 2, "E:button");
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

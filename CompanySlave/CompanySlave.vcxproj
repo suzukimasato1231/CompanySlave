@@ -244,6 +244,7 @@
     <ClInclude Include="base\_Window.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionPrimitive.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameSceneManager.h" />
     <ClInclude Include="Helper\Easing.h" />
     <ClInclude Include="Helper\LoadCSV.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="base\_DirectX.cpp" />
     <ClCompile Include="base\_Window.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameSceneManager.cpp" />
     <ClCompile Include="Helper\Easing.cpp" />
     <ClCompile Include="Helper\LoadCSV.cpp" />
