@@ -46,6 +46,15 @@ public://構造体
 			alpha = 1.0f;
 		}
 	};
+	/// <summary>
+	/// 位置、大きさ、色情報
+	/// </summary>
+	struct PSC
+	{
+		Vec3 position = {};
+		Vec3 scale = {};
+		Vec4 color = {};
+	};
 
 	//オブジェクトデータ構造体
 	struct ObjectData
@@ -72,6 +81,8 @@ public://構造体
 		ObjectData *parent = nullptr;
 		//マテリアル
 		Material material;
+		//位置、大きさ、色情報
+		PSC psc;
 	};
 
 	struct ConstBuffer
@@ -183,7 +194,7 @@ public://OBJ関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	void MatWord(ObjectData polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color);
+	void MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color);
 	/// <summary>
 	/// OBJ描画
 	/// </summary>
@@ -192,7 +203,7 @@ public://OBJ関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	void Draw(ObjectData polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0);
+	void Draw(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0);
 public:
 	size_t OBJNum = 0;//OBJ読み込みの数
 	size_t objNum = 0;//オブジェクトの数

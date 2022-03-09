@@ -174,27 +174,33 @@ int  Object::LoadTexture(const wchar_t *filename)
 	return (int)texNum - 1;
 }
 
-void Object::MatWord(ObjectData polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color)
+void Object::MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color)
 {
 	HRESULT result;
-	//ワールド変換：//スケーリング
-	XMMATRIX matScale;//スケーリング行列
-	//ワールド変換：//回転
-	XMMATRIX matRot;//回転行列
-	//ワールド変換：//平行移動
-	XMMATRIX matTrains;//平行移動行列
-	//ワールド変換
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);//大きさ
-	matTrains = XMMatrixTranslation(position.x, position.y, position.z);//平行移動行列を再計算
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));//Z軸まわりに４５度回転
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));//X軸まわりに４５度回転
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));//Y軸まわりに４５度回転
+	if (polygon.psc.position.x != position.x || polygon.psc.position.y != position.y || polygon.psc.position.z != position.z
+		|| polygon.psc.scale.x != scale.x || polygon.psc.scale.y != scale.y || polygon.psc.scale.z != scale.z
+		|| polygon.psc.color.x != color.x || polygon.psc.color.y != color.y || polygon.psc.color.z != color.z || polygon.psc.color.w != color.w)
+	{
+		//ワールド変換：//スケーリング//回転行列XMMATRIX//平行移動行列
+		XMMATRIX matScale, matRot, matTrains;
+		//ワールド変換
+		matScale = XMMatrixScaling(scale.x, scale.y, scale.z);//大きさ
+		matTrains = XMMatrixTranslation(position.x, position.y, position.z);//平行移動行列を再計算
+		matRot = XMMatrixIdentity();
+		matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));//Z軸まわりに４５度回転
+		matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));//X軸まわりに４５度回転
+		matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));//Y軸まわりに４５度回転
 
-	polygon.matWorld = XMMatrixIdentity();//ワールド行列は毎フレームリセット
-	polygon.matWorld *= matScale;//ワールド行列にスケーリングを反映
-	polygon.matWorld *= matRot;//ワールド行列に回転を反映
-	polygon.matWorld *= matTrains;//ワールド行列に変更移動を反映
+		polygon.matWorld = XMMatrixIdentity();//ワールド行列は毎フレームリセット
+		polygon.matWorld *= matScale;//ワールド行列にスケーリングを反映
+		polygon.matWorld *= matRot;//ワールド行列に回転を反映
+		polygon.matWorld *= matTrains;//ワールド行列に変更移動を反映
+
+		polygon.psc.position = position;
+		polygon.psc.scale = scale;
+		polygon.psc.color = color;
+	}
+
 
 	const XMMATRIX &matViewProjection = camera->GetMatView() * camera->GetProjection();
 	const Vec3 &cameraPos = camera->GetEye();
@@ -255,7 +261,7 @@ void Object::OBJConstantBuffer()
 }
 
 
-void Object::Draw(ObjectData polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph)
+void Object::Draw(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph)
 {
 	//プリミティブ形状の設定コマンド（三角形リスト）
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -360,7 +366,7 @@ int Object::LoadMaterial(const std::string &directoryPath, const std::string &fi
 			//テクスチャのファイル名読み込み
 			line_stream >> polygon.material.textureFilename;
 			//テクスチャ読み込み
-			polygon.OBJTexture= OBJLoadTexture(directoryPath, polygon.material.textureFilename);
+			polygon.OBJTexture = OBJLoadTexture(directoryPath, polygon.material.textureFilename);
 		}
 	}
 	//ファイルを閉じる
