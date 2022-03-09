@@ -12,6 +12,8 @@ GameSceneManager::~GameSceneManager()
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
+	safe_delete(mapStage);
+	safe_delete(player);
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
@@ -63,12 +65,16 @@ void GameSceneManager::Init()
 	// 3Dオブエクトにライトをセット
 	//Object3d::SetLightGroup(lightGroup);
 	lightGroup->SetDirLightActive(0, true);
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
+	lightGroup->SetDirLightActive(1, true);
+	lightGroup->SetDirLightDir(1, XMVECTOR{ 0,-1,0,0 });
+
 	lightGroup->SetPointLightActive(0, false);
 	lightGroup->SetSpotLightActive(0, false);
 	lightGroup->SetCircleShadowActive(0, false);
 
 	//カメラ位置をセット
-	camera->SetCamera(Vec3{ 0,20,-50 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
+	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()-> SpriteCreate(L"Resources/text2.jpg");
@@ -94,6 +100,12 @@ void GameSceneManager::Init()
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(model1);
 	
+	//マップチップの初期化
+	mapStage = new MapStage;
+	mapStage->Init();
+	//プレイヤーの初期化
+	player = new Player;
+	player->Init();
 }
 
 void GameSceneManager::Update()
@@ -103,7 +115,7 @@ void GameSceneManager::Update()
 	//インスタンス化してるのでInput/Input.h"を持ってくればどのクラスでも使えるよ
 	if (Input::Instance()->KeybordPush(DIK_UP))
 	{		
-		fbxObject1->PlayAnimation();
+	//	fbxObject1->PlayAnimation();
 	}
 	if (Input::Instance()->KeybordPush(DIK_DOWN))
 	{
@@ -114,10 +126,18 @@ void GameSceneManager::Update()
 	if (Input::Instance()->KeybordPush(DIK_RIGHT))
 	{
 	}
+	//プレイヤーの更新
+	player->Update();
+
+	//マップチップとプレイヤーの押し戻し処理
+	PushCollision::Player2Mapchip(player, mapStage);
+
 	fbxObject1->Update();
+	//
+	camera->FollowCamera(player->GetPosition(), Vec3{ 0,100,-10 });
 
 	//パーティクル追加
-	particleMan->ParticleAdd(pPos1);
+	//particleMan->ParticleAdd(pPos1);
 	//パーティクル更新
 	particleMan->Update();
 	//ライト更新
@@ -136,9 +156,15 @@ void GameSceneManager::Draw()
 
 	//オブジェクト
 	//Object::Instance()->Draw(BossPolygon, pPos1, Vec3{ 1.0f,1.0f,1.0f }, angle, Vec4{ 1.0f,1.0f,1.0f ,1.0f });
+	
+	//プレイヤーの描画
+	player->Draw();
 
 
-	fbxObject1->Draw();
+	//マップチップの描画
+	mapStage->Draw();
+
+	//fbxObject1->Draw();
 
 
 	//パーティクル描画

@@ -265,6 +265,21 @@ bool Collision::CheckSphere2Sphere(const Sphere &sphere1, const Sphere &sphere2)
 	return  sqLength < r *r;
 }
 
+bool Collision::CheckBox2Box(const Box &box1, const Box &box2)
+{
+	//xŽ²‚Ì”»’è
+	if (box2.minPosition.m128_f32[0] <= box1.maxPosition.m128_f32[0] && box1.minPosition.m128_f32[0] <= box2.maxPosition.m128_f32[0])
+	{
+		//zŽ²‚Ì”»’è
+		if (box2.minPosition.m128_f32[2] <= box1.maxPosition.m128_f32[2] && box1.minPosition.m128_f32[2] <= box2.maxPosition.m128_f32[2])
+		{
+
+			return 1;
+		}
+	}
+	return 0;
+}
+
 
 //‹…‚Æ’¼•û‘ÌiAABBj‚ÌÕ“Ë”»’è
 bool Collision::CheckSphere2Box(const Sphere &sphere, const Box &box)

@@ -246,12 +246,16 @@
     <ClInclude Include="collision\CollisionPrimitive.h" />
     <ClInclude Include="GameSceneManager.h" />
     <ClInclude Include="Helper\Easing.h" />
+    <ClInclude Include="Helper\LoadCSV.h" />
     <ClInclude Include="Helper\Vec.h" />
     <ClInclude Include="Input\Controller.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Input\Keybord.h" />
     <ClInclude Include="Input\Mouse.h" />
+    <ClInclude Include="MapStage.h" />
     <ClInclude Include="Pipeline\Pipeline.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PushCollision.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2d\DebugText.cpp" />
@@ -270,13 +274,17 @@
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="GameSceneManager.cpp" />
     <ClCompile Include="Helper\Easing.cpp" />
+    <ClCompile Include="Helper\LoadCSV.cpp" />
     <ClCompile Include="Helper\Vec.cpp" />
     <ClCompile Include="Input\Controller.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Input\Keybord.cpp" />
     <ClCompile Include="Input\Mouse.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapStage.cpp" />
     <ClCompile Include="Pipeline\Pipeline.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PushCollision.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

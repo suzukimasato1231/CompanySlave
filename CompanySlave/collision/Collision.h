@@ -81,6 +81,14 @@ public:
 	static bool CheckSphere2Sphere(const Sphere &sphere1, const Sphere &sphere2);
 
 	/// <summary>
+	/// 直方体と直方体
+	/// </summary>
+	/// <param name="box1"></param>
+	/// <param name="box"></param>
+	/// <returns></returns>
+	static bool CheckBox2Box(const Box &box1, const Box &box);
+
+	/// <summary>
 	/// 球と直方体(AABB制限付き)
 	/// </summary>
 	/// <param name="sphere"></param>
@@ -103,6 +111,8 @@ public:
 	/// <param name="capsule2">カプセル</param>
 	/// <returns></returns>
 	static bool CheckCapsule2Capsule(const Capsule capsule1, const Capsule &capsule2);
+
+
 
 	//線分と線分の距離の２乗を求める
 	static float sqDistanceSegmentSegment(const DirectX::XMVECTOR &p1, const DirectX::XMVECTOR &q1, const DirectX::XMVECTOR &p2, const DirectX::XMVECTOR &q2);

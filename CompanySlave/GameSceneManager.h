@@ -9,6 +9,9 @@
 #include"Singleton.h"
 #include"Sprite.h"
 #include "Object.h"
+#include"MapStage.h"
+#include"Player.h"
+#include"PushCollision.h"
 extern const int window_width;
 extern const int window_height;
 class GameSceneManager:public Singleton<GameSceneManager>
@@ -29,7 +32,6 @@ public:
 	void Draw();
 
 private:
-	//Object *object = nullptr;
 	ParticleManager *particleMan = nullptr;
 	Camera *camera = nullptr;
 	LightGroup *lightGroup = nullptr;
@@ -65,6 +67,12 @@ private://定義
 	Vec3 angle2 = { 0.0f,0.0f,0.0f };
 	
 	Vec2 pos = { 0.0f,0.0f };
+
+	//マップチップ
+	MapStage *mapStage = nullptr;
+
+	//プレイヤー
+	Player *player = nullptr;
 
 	//FBX
 	Model *model1 = nullptr;
