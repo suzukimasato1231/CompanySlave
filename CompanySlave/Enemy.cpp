@@ -155,3 +155,8 @@ Box Enemy::GetBox(int i)
 {
 	return enemyData[i]->eBox;
 }
+
+int Enemy::GetEnemySize()
+{
+	return enemyData.size();
+}

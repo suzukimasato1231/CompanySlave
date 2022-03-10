@@ -28,6 +28,8 @@ public:
 	Vec3 GetPosition(int i);//À•Wæ“¾
 
 	Box GetBox(int i);
+
+	int GetEnemySize();
 private:
 	struct EnemyData
 	{

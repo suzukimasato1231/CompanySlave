@@ -4,6 +4,7 @@
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
+
 GameSceneManager::GameSceneManager()
 {}
 GameSceneManager::~GameSceneManager()
@@ -131,12 +132,13 @@ void GameSceneManager::Update()
 	{
 	}
 	//プレイヤーの更新
-	player->Update();
+	player->Update(enemy);
 
 	enemy->Update(player->GetPosition());
 
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, mapStage);
+	
 
 	fbxObject1->Update();
 	//

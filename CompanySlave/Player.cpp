@@ -3,12 +3,10 @@
 #include"Input.h"
 #include "MapStage.h"
 Player::Player()
-{
-}
+{}
 
 Player::~Player()
-{
-}
+{}
 
 void Player::Init()
 {
@@ -21,7 +19,26 @@ void Player::Init()
 	oldPosition = position;
 }
 
-void Player::Update()
+void Player::Update(Enemy *enemy)
+{
+	if (enemy == nullptr)
+	{
+		return;
+	}
+	//移動
+	Move();
+
+	//斬りに行く敵の座標を探す
+	PlayerAttack(enemy);
+}
+
+void Player::Draw()
+{
+	Object::Instance()->Draw(playerObject, position, scale, angle, color);
+}
+
+//移動
+void Player::Move()
 {
 	oldPosition = position;
 	//移動
@@ -41,110 +58,52 @@ void Player::Update()
 	{
 		position.z -= speed.z;
 	}
-
-	groundFlag = false;
 	//座標を合わせる
 	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 }
 
-void Player::Draw()
+//プレイヤーとエネミーとの最小距離の敵を見つける
+void Player::PlayerAttack(Enemy *enemy)
 {
-	Object::Instance()->Draw(playerObject, position, scale, angle, color);
-}
-
-void Player::PushBlock(Vec3 BPos, float blockSize, const int up, const int down)
-{
-	//プレイヤー座標
-	float PRight = position.x + r, PLeft = position.x - r;
-	float PUp = position.z + r, PDown = position.z - r;
-	//プレイヤーの前の座標
-	float oldRight = oldPosition.x + r, oldLeft = oldPosition.x - r;
-	float oldUp = oldPosition.z + r, oldDown = oldPosition.z - r;
-	//ブロック座標
-	float BRight = BPos.x + blockSize, BLeft = BPos.x - blockSize;
-	float BUp = BPos.z + blockSize, BDown = BPos.z - blockSize;
-
-
-	//左上
-	if (oldLeft >= BRight && oldUp <= BDown)
+	if (enemy == nullptr) { return; }
+	//敵倒す
+	if (Input::Instance()->KeybordTrigger(DIK_SPACE) && nowComboTime == comboTime)
 	{
-		if (up == BLOCK)
+		comboTime = comboMaxTime;
+		startPos = position;
+		nowComboTime = 0;
+		//プレイヤーに一番近い敵を探す
+		float minPosition = 999.9f;//プレイヤーと敵の差の最小値
+		int enemyNum = 0;//敵の配列の位置
+		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 		{
+			//プレイヤーとエネミーの位置の差
+			Vec3 memoryPosition = position - enemy->GetPosition(i);
+			//長さを求める
+			float length = memoryPosition.length();
+			//距離の最小値を求める
+			if (length < minPosition)
+			{
+				minPosition = length;
+				enemyNum = i;
+			}
 		}
-		//上にブロックがなかったら上優先
-		else if (oldUp <= BDown)
-		{
-			position.z = BDown - r;
-		}
-	}
-	//左下
-	else if (oldLeft >= BRight && oldDown >= BUp)
+		//プレイヤーと敵の座標の差が小さい敵の座標を入れる
+		enemyPos = enemy->GetPosition(enemyNum);
+	}	
+	
+	//敵に向かっていく処理
+	if (nowComboTime != comboTime)
 	{
-		if (down == BLOCK)
-		{
-		}
-		//下にブロックがなかったら下優先
-		else if (oldDown >= BUp)
-		{
-			position.z = BUp + r;
-		}
-	}
-	//右上
-	else if (oldRight <= BLeft && oldUp <= BDown)
-	{
-		if (up == BLOCK)
-		{
-		}
-		//上にブロックがなかったら上優先
-		else if (oldUp <= BDown)
-		{
-			position.z = BDown - r;
-		}
-	}
-	//右下
-	else if (oldRight <= BLeft && oldDown >= BUp)
-	{
-		if (down == BLOCK)
-		{
-		}
-		//下にブロックがなかったら下優先
-		else if (oldDown >= BUp)
-		{
-			position.z = BUp + r;
-		}
-	}
-	else
-	{
-		//右
-		if (oldRight <= BLeft)
-		{
-			position.x = BLeft - r;
-		}
-		//左
-		if (oldLeft >= BRight)
-		{
-			position.x = BRight + r;
-		}
-		//上
-		if (oldUp <= BDown)
-		{
-			position.z = BDown - r;
-		}
-		//下
-		if (oldDown >= BUp)
-		{
-			position.z = BUp + r;
-		}
+		nowComboTime++;
+		float timeRoate = min(nowComboTime / comboTime, 1.0f);
+		position = Easing::easeIn(startPos, enemyPos, timeRoate);
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	}
 }
 
-Vec3 Player::GetPosition()
-{
-	return position;
-}
 
-Box Player::GetBox()
-{
-	return pBox;
-}
+

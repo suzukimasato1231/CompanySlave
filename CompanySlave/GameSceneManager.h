@@ -13,6 +13,7 @@
 #include"Player.h"
 #include"PushCollision.h"
 #include"Enemy.h"
+
 extern const int window_width;
 extern const int window_height;
 class GameSceneManager:public Singleton<GameSceneManager>
