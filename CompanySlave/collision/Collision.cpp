@@ -438,3 +438,12 @@ float Collision::sqDistanceSegmentSegment(const XMVECTOR &p1, const XMVECTOR &q1
 	//2“_ŠÔ(c1‚Æc2)‚Ì‹——£‚Ì‚Qæ‚ğ‹‚ß‚ÄAŒ‹‰Ê‚ğ•Ô‚·
 	return (c1 - c2).dot(c1 - c2);
 }
+
+bool Collision::CircleCollision(Vec2 circle1, Vec2 circle2, float radius1, float radius2)
+{
+	double disX = circle1.x - circle2.x;
+	double disY = circle1.y - circle2.y;
+	double d = disX * disX + disY * disY;
+	double r = (radius1 + radius2) * (radius1 + radius2);
+	return d < r;
+}

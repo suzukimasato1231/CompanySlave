@@ -134,7 +134,7 @@ void GameSceneManager::Update()
 	//プレイヤーの更新
 	player->Update(enemy);
 
-	enemy->Update(player->GetPosition());
+	enemy->Update(player);
 
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, mapStage);

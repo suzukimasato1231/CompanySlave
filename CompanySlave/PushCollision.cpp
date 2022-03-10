@@ -10,8 +10,8 @@ void PushCollision::Player2Mapchip(Player *player, MapStage *mapStage)
 		{
 			if (mapStage->GetMap(i, j) == BLOCK)
 			{
+				//ƒvƒŒƒCƒ„[
 				bool HitFlag = Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j));
-
 				if (HitFlag)
 				{
 					player->SetPosition(PushBack(player->GetPosition(),player->GetOldPosition(),player->GetPSize(),

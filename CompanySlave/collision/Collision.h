@@ -1,6 +1,6 @@
 #pragma once
 #include"CollisionPrimitive.h"
-
+#include"Vec.h"
 ///<summary>
 ///“–‚½‚è”»’èƒwƒ‹ƒp[ƒNƒ‰ƒX
 ///</summary>
@@ -124,4 +124,17 @@ public:
 		x = (x > high) ? high : x;
 		return x;
 	}
+
+	//2D“–‚½‚è”»’è
+
+	/// <summary>
+	/// ‰~‚Æ‰~‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="circle1">‚P‚Â–Ú‚Ì‰~‚Ì’†SˆÊ’u</param>
+	/// <param name="circle2">‚Q‚Â–Ú‚Ì‰~‚Ì’†SˆÊ’u</param>
+	/// <param name="radius1">‚P‚Â–Ú‚Ì‰~‚Ì‘å‚«‚³</param>
+	/// <param name="radius2">‚Q‚Â–Ú‚Ì‰~‚Ì‘å‚«‚³</param>
+	/// <returns></returns>
+	static bool CircleCollision(Vec2 circle1, Vec2 circle2, float radius1, float radius2);
+	
 };
