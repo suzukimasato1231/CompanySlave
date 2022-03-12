@@ -11,7 +11,8 @@ public:
 	/// </summary>
 	/// <param name="player">プレイヤークラス</param>
 	/// <param name="mapStage">マップチップクラス</param>
-	static void Player2Mapchip(Player *player, MapStage *mapStage);
+	static void Player2Mapchip(class Player *player, class MapStage *mapStage);
+
 
 	/// <summary>
 	/// 押し戻し処理

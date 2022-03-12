@@ -18,6 +18,7 @@ void PushCollision::Player2Mapchip(Player *player, MapStage *mapStage)
 						mapStage->GetPosition(i, j), mapStage->GetSize() / 2,
 						mapStage->GetMap(i, (j + 1) % MAP_HEIGHT), mapStage->GetMap(i, (j - 1) % MAP_HEIGHT)));
 				}
+				//“G
 			}
 		}
 	}

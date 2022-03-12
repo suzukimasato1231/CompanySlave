@@ -98,6 +98,7 @@ public://構造体
 		XMMATRIX viewproj;//ビュープロジェクション行列
 		XMMATRIX world;//ワールド座標
 		Vec3 cameraPos;//カメラ座標(ワールド座標)
+		Vec4 color;
 	};
 	struct ConstBufferDataB1
 	{
@@ -133,8 +134,6 @@ public://変数
 	ComPtr<ID3D12DescriptorHeap >descHeap = { nullptr };
 	//オブジェクトのコンストバッファ
 	std::vector <ConstBuffer *>objectBuffer;
-	////マテリアル
-	//Material material;
 public:
 	Object() {};
 	~Object();

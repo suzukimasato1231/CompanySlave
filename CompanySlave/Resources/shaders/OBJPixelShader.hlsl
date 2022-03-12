@@ -7,7 +7,7 @@ float4 main(VSOutput input) : SV_TARGET
 {
 	// テクスチャマッピング
 	float4 texcolor = tex.Sample(smp, input.uv);
-		
+
 	// 光沢度
 	const float shininess = 4.0f;
 	// 頂点から視点への方向ベクトル
@@ -45,7 +45,7 @@ float4 main(VSOutput input) : SV_TARGET
 			lightv = normalize(lightv);
 
 			// 距離減衰係数
-			float atten = 1.0f / (pointLights[i].lightatten.x + pointLights[i].lightatten.y * d + pointLights[i].lightatten.z *d*d);
+			float atten = 1.0f / (pointLights[i].lightatten.x + pointLights[i].lightatten.y * d + pointLights[i].lightatten.z * d * d);
 
 			// ライトに向かうベクトルと法線の内積
 			float3 dotlightnormal = dot(lightv, input.normal);
@@ -70,7 +70,7 @@ float4 main(VSOutput input) : SV_TARGET
 			lightv = normalize(lightv);
 
 			// 距離減衰係数
-			float atten = saturate(1.0f / (spotLights[i].lightatten.x + spotLights[i].lightatten.y * d + spotLights[i].lightatten.z *d*d));
+			float atten = saturate(1.0f / (spotLights[i].lightatten.x + spotLights[i].lightatten.y * d + spotLights[i].lightatten.z * d * d));
 
 			// 角度減衰
 			float cos = dot(lightv, spotLights[i].lightv);
@@ -103,7 +103,7 @@ float4 main(VSOutput input) : SV_TARGET
 			float d = dot(casterv, circleShadows[i].dir);
 
 			// 距離減衰係数
-			float atten = saturate(1.0f / (circleShadows[i].atten.x + circleShadows[i].atten.y * d + circleShadows[i].atten.z *d*d));
+			float atten = saturate(1.0f / (circleShadows[i].atten.x + circleShadows[i].atten.y * d + circleShadows[i].atten.z * d * d));
 			// 距離がマイナスなら0にする
 			atten *= step(0, d);
 

@@ -218,6 +218,7 @@ void Object::MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotati
 		constMap->world = polygon.matWorld * polygon.parent->matWorld;
 	}
 	constMap->cameraPos = cameraPos;
+	constMap->color = color;
 	Object::OBJdata[OBJNum]->constBuffB0->Unmap(0, nullptr);
 
 

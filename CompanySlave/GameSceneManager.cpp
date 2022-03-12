@@ -165,12 +165,13 @@ void GameSceneManager::Draw()
 	//オブジェクト
 	//Object::Instance()->Draw(BossPolygon, pPos1, Vec3{ 1.0f,1.0f,1.0f }, angle, Vec4{ 1.0f,1.0f,1.0f ,1.0f });
 	
+	//マップチップの描画
+	mapStage->Draw();
 	//プレイヤーの描画
 	player->Draw();
 
 	enemy->Draw();
-	//マップチップの描画
-	mapStage->Draw();
+
 
 	//fbxObject1->Draw();
 
@@ -182,7 +183,10 @@ void GameSceneManager::Draw()
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));
 
 	//デバックテキスト%dと%f対応
-	debugText.Print(1, 120, 2, "E:button");
+	debugText.Print(1, 100, 2, "E:button");
+
+	debugText.Print(1, 140, 2, "WASD:Attack");
+
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

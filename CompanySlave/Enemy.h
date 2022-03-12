@@ -16,9 +16,10 @@ private://構造体
 		Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
 		Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 		Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
-		Vec4 color{ 1.0f,1.0f,1.0f,1.0f };//色
+		Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
+		int HP = 10;						//HP
 		float r = 5;						//大きさ
-		bool wasAttackFlag = false;				//攻撃されたかどうか
+		bool wasAttackFlag = false;			//攻撃されたかどうか
 	};
 private:
 	//敵配列
@@ -36,7 +37,15 @@ public:
 
 	//TRUEにする
 	void WasAttack(int i);
-
+private:
+	//移動
+	void Move(int i);
+	//ダメージ処理
+	void Damege(int i, class Player *player);
+	//生成
+	void Generation(class Player *player);
+	//削除
+	void Delete();
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }

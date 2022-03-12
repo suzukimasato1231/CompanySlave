@@ -15,6 +15,14 @@ void Player::Init()
 	pBox.minPosition = XMVectorSet(0, 2, 0, 1);
 	pBox.maxPosition = XMVectorSet(0, 2, 0, 1);
 	oldPosition = position;
+
+#if _DEBUG
+	circleM = Shape::CreateCircle(circleMain, 30);
+
+	circleS = Shape::CreateCircle(ciecleSub, 30);
+
+	white = Object::Instance()->LoadTexture(L"Resources/color/white.png");
+#endif
 }
 
 void Player::Update(Enemy *enemy)
@@ -33,6 +41,21 @@ void Player::Update(Enemy *enemy)
 void Player::Draw()
 {
 	Object::Instance()->Draw(playerObject, position, scale, angle, color);
+
+#if _DEBUG
+	Vec3 angle{ 90.0f,00.0f,0.0f };
+	Object::Instance()->Draw(circleM, position, scale, angle, color, white);
+
+	//上
+	Object::Instance()->Draw(circleS, Vec3(position.x, position.y + 0.4f, position.z + circleMain), scale, angle, color, white);
+	//下
+	Object::Instance()->Draw(circleS, Vec3(position.x, position.y + 0.3f, position.z - circleMain), scale, angle, color, white);
+	//右
+	Object::Instance()->Draw(circleS, Vec3(position.x + circleMain, position.y + 0.1f, position.z), scale, angle, color, white);
+	//左
+	Object::Instance()->Draw(circleS, Vec3(position.x - circleMain, position.y + 0.2f, position.z), scale, angle, color, white);
+#endif
+
 }
 
 //移動
@@ -65,28 +88,50 @@ void Player::Move()
 void Player::PlayerAttack(Enemy *enemy)
 {
 	if (enemy == nullptr) { return; }
-	//敵倒す
-	if (Input::Instance()->KeybordTrigger(DIK_SPACE))
+	//攻撃開始
+	if ((Input::Instance()->KeybordTrigger(DIK_A) || Input::Instance()->KeybordTrigger(DIK_W) ||
+		Input::Instance()->KeybordTrigger(DIK_S) || Input::Instance()->KeybordTrigger(DIK_D)) && attackFlag == false)
 	{
+		if (Input::Instance()->KeybordTrigger(DIK_A))
+		{//左
+			attackDirection = AttackLeft;
+		}
+		if (Input::Instance()->KeybordTrigger(DIK_W))
+		{//上
+			attackDirection = AttackUp;
+		}
+		if (Input::Instance()->KeybordTrigger(DIK_S))
+		{//下
+			attackDirection = AttackDown;
+		}
+		if (Input::Instance()->KeybordTrigger(DIK_D))
+		{//右
+			attackDirection = AttackRight;
+		}
 		attackFlag = true;
-
+		attackPos = Vec2(position.x, position.z);
+	}
+	//コンボが途切れる
+	if (attackFlag == false)
+	{
+		comboNum = 0;
 	}
 
 	if (attackFlag == true && nowComboTime == comboTime)
 	{
-		bool isHit = true;
+		bool isHit = false;
 		bool discoverFlag = false;
 		//当たり判定一定の範囲内にいる敵かどうか
 		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 		{
-			//当たり判定
-			isHit = Collision::CircleCollision(Vec2(position.x, position.z),
-				Vec2(enemy->GetPosition(i).x, enemy->GetPosition(i).z),
-				100.0f, 5.0f);
+
+			isHit = AttackDirection(enemy, i);
+
 			//範囲内にいて且つ敵がコンボ攻撃を受けていない
 			if (isHit == true && enemy->GetWasAttackFlag(i) == false)
 			{
 				discoverFlag = true;
+				comboNum++;
 				break;
 			}
 			if (enemy->GetEnemySize())
@@ -115,15 +160,20 @@ void Player::PlayerAttack(Enemy *enemy)
 		{
 			if (enemy->GetWasAttackFlag(i) == false)
 			{
-				//プレイヤーとエネミーの位置の差
-				Vec3 memoryPosition = position - enemy->GetPosition(i);
-				//長さを求める
-				float length = memoryPosition.length();
-				//距離の最小値を求める
-				if (length < minPosition)
+				bool isHit = AttackDirection(enemy, i);
+
+				if (isHit == true)
 				{
-					minPosition = length;
-					enemyNum = i;
+					//プレイヤーとエネミーの位置の差
+					Vec3 memoryPosition = position - enemy->GetPosition(i);
+					//長さを求める
+					float length = memoryPosition.length();
+					//距離の最小値を求める
+					if (length < minPosition)
+					{
+						minPosition = length;
+						enemyNum = i;
+					}
 				}
 			}
 		}
@@ -145,6 +195,66 @@ void Player::PlayerAttack(Enemy *enemy)
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	}
+}
+
+void Player::Damege()
+{
+
+
+}
+
+bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
+{
+
+	switch (attackDirection)
+	{
+	case AttackLeft:
+		if (Collision::CircleCollision
+		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5)
+			&& Collision::CircleCollision
+			(Vec2(position.x - circleMain, position.z), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			enemy->GetWasAttackFlag(enemyNumber) == false)
+		{
+			return  true;
+		}
+		break;
+	case AttackRight:
+		if (Collision::CircleCollision
+		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5)
+			&& Collision::CircleCollision
+			(Vec2(position.x + circleMain, position.z), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			enemy->GetWasAttackFlag(enemyNumber) == false)
+		{
+			return  true;
+		}
+		break;
+	case AttackUp:
+		if (Collision::CircleCollision
+		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			Collision::CircleCollision
+			(Vec2(position.x, position.z + circleMain), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			enemy->GetWasAttackFlag(enemyNumber) == false)
+		{
+			return  true;
+		}
+		break;
+	case AttackDown:
+		if (Collision::CircleCollision
+		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			Collision::CircleCollision
+			(Vec2(position.x, position.z - circleMain), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			enemy->GetWasAttackFlag(enemyNumber) == false)
+		{
+			return  true;
+		}
+		break;
+	default:
+		return false;
+		break;
+	}
+
+	return false;
+
 }
 
 
