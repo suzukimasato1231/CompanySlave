@@ -3,6 +3,9 @@
 #include"CollisionPrimitive.h"
 #include"Easing.h"
 #include"Enemy.h"
+/// <summary>
+/// 攻撃する向き
+/// </summary>
 enum AttackDirection
 {
 	AttackUp,
@@ -10,6 +13,9 @@ enum AttackDirection
 	AttackLeft,
 	AttackRight,
 };
+/// <summary>
+/// プレイヤークラス
+/// </summary>
 class Player
 {
 public:
@@ -47,6 +53,11 @@ private:
 	/// <param name="enemyNumber">どの敵</param>
 	/// <returns></returns>
 	bool AttackDirection(class Enemy *enemy, int enemyNumber);
+
+	/// <summary>
+	/// 攻撃を止める
+	/// </summary>
+	void StopAttack();
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -82,7 +93,10 @@ private:
 	float comboTime = 0;			//コンボ時間
 	float nowComboTime = 0;			//現在のコンボ時間
 
-	int attackDirection = 0;//斬りに行く方向
+	const float AttackSpeed = 10;
+
+
+	int attackDirection = 0;		//斬りに行く方向
 	Vec3 startPos = {};				//斬りに行く前のプレイヤーの座標
 	Vec3 enemyPos = {};				//斬りに行く敵の座標
 	int enemyNum = 0;				//どの敵かの情報

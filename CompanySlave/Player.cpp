@@ -36,6 +36,9 @@ void Player::Update(Enemy *enemy)
 
 	//斬りに行く敵の座標を探す
 	PlayerAttack(enemy);
+
+	//攻撃を止める
+	StopAttack();
 }
 
 void Player::Draw()
@@ -156,6 +159,8 @@ void Player::PlayerAttack(Enemy *enemy)
 	{
 		float minPosition = 999.9f;//プレイヤーと敵の差の最小値
 		int enemyNum = 0;//敵の配列の位置
+
+		Vec3 direction = {};//プレイヤーから見た敵の向き
 		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 		{
 			if (enemy->GetWasAttackFlag(i) == false)
@@ -173,6 +178,7 @@ void Player::PlayerAttack(Enemy *enemy)
 					{
 						minPosition = length;
 						enemyNum = i;
+						direction = memoryPosition.normalize();
 					}
 				}
 			}
@@ -180,7 +186,7 @@ void Player::PlayerAttack(Enemy *enemy)
 		//プレイヤーと敵の座標の差が小さい敵の座標を入れる
 		if (enemy->GetEnemySize() != 0)
 		{
-			enemyPos = enemy->GetPosition(enemyNum);
+			enemyPos = enemy->GetPosition(enemyNum) - direction * 10;
 			enemy->WasAttack(enemyNum);
 		}
 	}
@@ -255,6 +261,15 @@ bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
 
 	return false;
 
+}
+
+void Player::StopAttack()
+{
+
+	if (Input::Instance()->KeybordTrigger(DIK_SPACE))
+	{
+		attackFlag = false;
+	}
 }
 
 

@@ -57,10 +57,10 @@ void GameSceneManager::Init()
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/i.wav");
 	//sound2 = Audio::SoundLoadWave("Resources/BGM.wav");
-	
+
 	//読み込んだ音データを1回だけ流す
 	//sound->SoundSEPlayWave(sound1);
-	
+
 	//読み込んだ音データをループで流す
 	//sound->SoundBGMPlayLoopWave(sound2, sound->BGM);
 
@@ -79,14 +79,14 @@ void GameSceneManager::Init()
 	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 
 	//スプライト画像読み込み
-	spriteGraph = Sprite::Instance()-> SpriteCreate(L"Resources/text2.jpg");
+	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/backgroundA.png");
 	Parent = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
 
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
-	
+
 	//3Dobjファイル読み込み。
 	//Polygon = Object::Instance()->CreateOBJ("Boss");
 	BossPolygon = Object::Instance()->CreateOBJ("sphere", true);
@@ -101,7 +101,7 @@ void GameSceneManager::Init()
 	fbxObject1 = new FBXObject3d;
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(model1);
-	
+
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -119,8 +119,8 @@ void GameSceneManager::Update()
 	//Inputクラスにマウスとコントローラもあるよ
 	//インスタンス化してるのでInput/Input.h"を持ってくればどのクラスでも使えるよ
 	if (Input::Instance()->KeybordPush(DIK_UP))
-	{		
-	//	fbxObject1->PlayAnimation();
+	{
+		//	fbxObject1->PlayAnimation();
 	}
 	if (Input::Instance()->KeybordPush(DIK_DOWN))
 	{
@@ -138,7 +138,7 @@ void GameSceneManager::Update()
 
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, mapStage);
-	
+
 
 	fbxObject1->Update();
 	//
@@ -160,11 +160,11 @@ void GameSceneManager::Draw()
 
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
-	Sprite::Instance()->Draw(BGGraph,pos, window_width, window_height);
+	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
 
 	//オブジェクト
 	//Object::Instance()->Draw(BossPolygon, pPos1, Vec3{ 1.0f,1.0f,1.0f }, angle, Vec4{ 1.0f,1.0f,1.0f ,1.0f });
-	
+
 	//マップチップの描画
 	mapStage->Draw();
 	//プレイヤーの描画
@@ -183,10 +183,11 @@ void GameSceneManager::Draw()
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));
 
 	//デバックテキスト%dと%f対応
-	debugText.Print(1, 100, 2, "E:button");
+	debugText.Print(10, 40, 2, "E:button");
 
-	debugText.Print(1, 140, 2, "WASD:Attack");
+	debugText.Print(10, 80, 2, "WASD:Attack");
 
+	debugText.Print(10, 120, 2, "comboNum:%d", player->GetComboNum());
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
