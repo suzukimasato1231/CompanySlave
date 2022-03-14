@@ -18,12 +18,8 @@ Pipeline::PipelineSet ParticleManager::PartclePipelineSet;
 ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap;
 ComPtr<ID3D12Resource> ParticleManager::vertBuff;
 ComPtr<ID3D12Resource>  ParticleManager::constBuff; // 定数バッファ
-ComPtr<ID3D12Resource> ParticleManager::texbuff;
-CD3DX12_CPU_DESCRIPTOR_HANDLE ParticleManager::cpuDescHandleSRV;
-CD3DX12_GPU_DESCRIPTOR_HANDLE ParticleManager::gpuDescHandleSRV;
 D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
 ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
-
 XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
 XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
 
@@ -46,12 +42,9 @@ bool ParticleManager::StaticInitialize(ID3D12Device *device, ID3D12GraphicsComma
 	//InitializeGraphicsPipeline();
 	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device);
 
-	// テクスチャ読み込み
-	LoadTexture();
-
 	// モデル生成
 	CreateModel();
-	
+
 	return true;
 }
 
@@ -71,11 +64,17 @@ void ParticleManager::PostDraw()
 	ParticleManager::cmdList = nullptr;
 }
 
-ParticleManager *ParticleManager::Create()
+ParticleManager *ParticleManager::Create(const wchar_t *filename, int textureNum)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	ParticleManager *particle = new ParticleManager();
 	if (particle == nullptr) {
+		return nullptr;
+	}
+
+	if (!particle->LoadTexture(filename, textureNum))
+	{
+		assert(0);
 		return nullptr;
 	}
 
@@ -144,7 +143,7 @@ bool ParticleManager::InitializeDescriptorHeap()
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
-	descHeapDesc.NumDescriptors = 1; // シェーダーリソースビュー1つ
+	descHeapDesc.NumDescriptors = 10; // シェーダーリソースビュー1つ
 	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
 	if (FAILED(result)) {
 		assert(0);
@@ -158,16 +157,16 @@ bool ParticleManager::InitializeDescriptorHeap()
 }
 
 
-bool ParticleManager::LoadTexture()
+bool ParticleManager::LoadTexture(const wchar_t *filename, int textureNum)
 {
 	HRESULT result = S_FALSE;
-
+	this->textureNum = textureNum;
 	// WICテクスチャのロード
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
 	result = LoadFromWICFile(
-		L"Resources/particle.jpg", WIC_FLAGS_NONE,
+		filename, WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 	if (FAILED(result)) {
 		return result;
@@ -208,9 +207,23 @@ bool ParticleManager::LoadTexture()
 		return result;
 	}
 
-	// シェーダリソースビュー作成
-	cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
-	gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
+	//// シェーダリソースビュー作成
+	//cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
+	//gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
+
+
+
+	//デスクリプタヒープの先頭ハンドルを取得
+	cpuDescHandleSRV = descHeap->GetCPUDescriptorHandleForHeapStart();
+	//ハンドルのアドレスを進める
+	cpuDescHandleSRV.ptr += textureNum * device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleStart = descHeap->GetGPUDescriptorHandleForHeapStart();
+	UINT descHandleIncrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//1番SRV
+	gpuDescHandleSRV = gpuDescHandleStart;
+	gpuDescHandleSRV.ptr += descHandleIncrementSize * textureNum;
+
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
 	D3D12_RESOURCE_DESC resDesc = texbuff->GetDesc();

@@ -1,6 +1,6 @@
 #include"PushCollision.h"
 
-void PushCollision::Player2Mapchip(Player *player, MapStage *mapStage)
+void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage)
 {
 	if (player == nullptr || mapStage == nullptr) { return; }
 
@@ -14,15 +14,26 @@ void PushCollision::Player2Mapchip(Player *player, MapStage *mapStage)
 				bool HitFlag = Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j));
 				if (HitFlag)
 				{
-					player->SetPosition(PushBack(player->GetPosition(),player->GetOldPosition(),player->GetPSize(),
+					player->SetPosition(PushBack(player->GetPosition(), player->GetOldPosition(), player->GetPSize(),
 						mapStage->GetPosition(i, j), mapStage->GetSize() / 2,
 						mapStage->GetMap(i, (j + 1) % MAP_HEIGHT), mapStage->GetMap(i, (j - 1) % MAP_HEIGHT)));
 				}
 				//“G
+				for (int n = 0; n < enemy->GetEnemySize(); n++)
+				{
+					bool HitFlag = Collision::CheckBox2Box(enemy->GetBox(n), mapStage->GetPositionBlock(i, j));
+					if (HitFlag)
+					{
+						enemy->SetPosition(n, PushBack(enemy->GetPosition(n), enemy->GetOldPosition(n), enemy->GetEnemyR(n),
+							mapStage->GetPosition(i, j), mapStage->GetSize() / 2,
+							mapStage->GetMap(i, (j + 1) % MAP_HEIGHT), mapStage->GetMap(i, (j - 1) % MAP_HEIGHT)));
+					}
+				}
 			}
 		}
 	}
 }
+
 
 Vec3 PushCollision::PushBack(Vec3 pos, Vec3 oldPos, float size, Vec3 BPos, float blockSize, const int up, const int down)
 {

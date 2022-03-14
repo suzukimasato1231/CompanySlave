@@ -13,7 +13,7 @@ private://構造体
 		Box eBox;							//敵ボックス
 		Vec3 position{ 50.0f,0.0f,0.0f };	//座標
 		Vec3 oldPosition{};					//1個前の座標
-		Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
+		float speed = 0.5f;					//敵スピード
 		Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 		Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
 		Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
@@ -22,6 +22,8 @@ private://構造体
 		bool wasAttackFlag = false;			//攻撃されたかどうか
 	};
 private:
+	//敵最大数
+	static const int eNumMax = 20;
 	//敵配列
 	std::vector<EnemyData *>eData;
 public:
@@ -37,9 +39,11 @@ public:
 
 	//TRUEにする
 	void WasAttack(int i);
+
+	void SetPosition(int i,Vec3 position);
 private:
 	//移動
-	void Move(int i);
+	void Move(int i, Player *player);
 	//ダメージ処理
 	void Damege(int i, class Player *player);
 	//生成
@@ -49,6 +53,8 @@ private:
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }
+
+	Vec3 GetOldPosition(int i) { return eData[i]->oldPosition; }
 
 	Box GetBox(int i) { return eData[i]->eBox; }
 	//エネミー数取得

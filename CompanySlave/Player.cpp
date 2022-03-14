@@ -243,14 +243,13 @@ void Player::Damege()
 
 bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
 {
-
 	switch (attackDirection)
 	{
 	case AttackLeft:
 		if (Collision::CircleCollision
 		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5)
 			&& Collision::CircleCollision
-			(Vec2(position.x - circleMain, position.z), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			(Vec2(attackPos.x - circleMain, attackPos.y), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
 			enemy->GetWasAttackFlag(enemyNumber) == false)
 		{
 			return  true;
@@ -260,7 +259,7 @@ bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
 		if (Collision::CircleCollision
 		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5)
 			&& Collision::CircleCollision
-			(Vec2(position.x + circleMain, position.z), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			(Vec2(attackPos.x + circleMain, attackPos.y), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
 			enemy->GetWasAttackFlag(enemyNumber) == false)
 		{
 			return  true;
@@ -270,7 +269,7 @@ bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
 		if (Collision::CircleCollision
 		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
 			Collision::CircleCollision
-			(Vec2(position.x, position.z + circleMain), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			(Vec2(attackPos.x, attackPos.y + circleMain), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
 			enemy->GetWasAttackFlag(enemyNumber) == false)
 		{
 			return  true;
@@ -280,7 +279,7 @@ bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
 		if (Collision::CircleCollision
 		(attackPos, Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
 			Collision::CircleCollision
-			(Vec2(position.x, position.z - circleMain), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
+			(Vec2(attackPos.x, attackPos.y - circleMain), Vec2(enemy->GetPosition(enemyNumber).x, enemy->GetPosition(enemyNumber).z), circleMain, 5) &&
 			enemy->GetWasAttackFlag(enemyNumber) == false)
 		{
 			return  true;

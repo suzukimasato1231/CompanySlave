@@ -18,7 +18,6 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
-
 }
 
 void Enemy::Update(Player *player)
@@ -26,20 +25,16 @@ void Enemy::Update(Player *player)
 	//敵生成
 	Generation(player);
 
-
 	for (size_t i = 0; i < eData.size(); i++)
 	{
 		//移動
-		Move(i);
+		Move(i, player);
 		//ダメージ
 		Damege(i, player);
 	}
 
-
-		//削除
-		Delete();
-	
-
+	//削除
+	Delete();
 }
 
 void Enemy::Draw()
@@ -56,9 +51,26 @@ void Enemy::WasAttack(int i)
 	eData[i]->wasAttackFlag = true;
 }
 
-void Enemy::Move(int i)
+void Enemy::SetPosition(int i, Vec3 position)
+{
+	eData[i]->position = position;
+}
+
+void Enemy::Move(int i, Player *player)
 {
 	eData[i]->oldPosition = eData[i]->position;
+
+	//プレイヤーに向かって動いていく
+	if (player->GetAttackFlag() == false)
+	{
+		//プレイヤーとエネミーの位置の差
+		Vec3 memoryPosition = player->GetPosition() - eData[i]->position;
+		//長さを求める
+		float length = memoryPosition.length();
+		//プレイヤーの向き
+		Vec3 direction = memoryPosition.normalize();
+		eData[i]->position += direction * eData[i]->speed;
+	}
 
 	//座標を合わせる
 	eData[i]->eBox.minPosition = XMVectorSet(

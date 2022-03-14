@@ -32,7 +32,6 @@ public: // サブクラス
 
 	struct Particle
 	{
-
 		//座標
 		Vec3 position = {};
 		//速度
@@ -88,7 +87,7 @@ public: // 静的メンバ関数
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	static ParticleManager *Create();
+	static ParticleManager *Create(const wchar_t *filename, int textureNum);
 
 
 	/// <summary>
@@ -119,12 +118,7 @@ private: // 静的メンバ変数
 	static ComPtr<ID3D12Resource> vertBuff;
 
 	static ComPtr<ID3D12Resource> constBuff; // 定数バッファ
-	// テクスチャバッファ
-	static ComPtr<ID3D12Resource> texbuff;
-	// シェーダリソースビューのハンドル(CPU)
-	static CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
-	// シェーダリソースビューのハンドル(CPU)
-	static CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+
 	// 頂点バッファビュー
 	static D3D12_VERTEX_BUFFER_VIEW vbView;
 
@@ -137,6 +131,7 @@ private: // 静的メンバ変数
 	static XMMATRIX matBillboardY;
 	//パイプライン設定
 	static Pipeline::PipelineSet PartclePipelineSet;
+
 private:// 静的メンバ関数
 	/// <summary>
 	/// デスクリプタヒープの初期化
@@ -149,12 +144,6 @@ private:// 静的メンバ関数
 	/// </summary>
 	/// <returns>成否</returns>
 	//static bool InitializeGraphicsPipeline();
-
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	/// <returns>成否</returns>
-	static bool LoadTexture();
 
 	/// <summary>
 	/// モデル作成
@@ -178,6 +167,11 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// テクスチャ読み込み
+	/// </summary>
+	/// <returns>成否</returns>
+	bool LoadTexture(const wchar_t *filename, int textureNum);
 
 private: // メンバ変数
 
@@ -185,5 +179,14 @@ private: // メンバ変数
 	Vec3 scale = { 1,1,1 };
 	//ローカルカラー
 	Vec4 color = { 1,1,1,1 };
+
+	// テクスチャバッファ
+	ComPtr<ID3D12Resource> texbuff;
+	// シェーダリソースビューのハンドル(CPU)
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
+	// シェーダリソースビューのハンドル(CPU)
+	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+
+	int textureNum = 0;
 };
 

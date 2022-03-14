@@ -10,6 +10,7 @@ GameSceneManager::GameSceneManager()
 GameSceneManager::~GameSceneManager()
 {
 	safe_delete(particleMan);
+	safe_delete(particleMan2);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
@@ -42,8 +43,6 @@ void GameSceneManager::Initialize(_DirectX *directX)
 	Shape::Init(directX->GetDevice());
 	//パーティクル初期化
 	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), this->camera, window_width, window_height);
-	//パーティクルクラス作成
-	particleMan = ParticleManager::Create();
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 	//デバックテキスト初期化
@@ -102,6 +101,11 @@ void GameSceneManager::Init()
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(model1);
 
+	//パーティクルクラス作成
+	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
+
+	particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
+
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -137,7 +141,7 @@ void GameSceneManager::Update()
 	enemy->Update(player);
 
 	//マップチップとプレイヤーの押し戻し処理
-	PushCollision::Player2Mapchip(player, mapStage);
+	PushCollision::Player2Mapchip(player, enemy, mapStage);
 
 
 	fbxObject1->Update();
@@ -160,6 +164,8 @@ void GameSceneManager::Update()
 	}
 	//パーティクル更新
 	particleMan->Update();
+
+	particleMan2->Update();
 	//ライト更新
 	lightGroup->Update();
 }
@@ -190,6 +196,8 @@ void GameSceneManager::Draw()
 
 	//パーティクル描画
 	particleMan->Draw();
+
+	particleMan2->Draw();
 
 	//前景描画
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));

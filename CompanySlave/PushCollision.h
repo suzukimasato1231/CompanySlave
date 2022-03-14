@@ -11,8 +11,7 @@ public:
 	/// </summary>
 	/// <param name="player">プレイヤークラス</param>
 	/// <param name="mapStage">マップチップクラス</param>
-	static void Player2Mapchip(class Player *player, class MapStage *mapStage);
-
+	static void Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage);
 
 	/// <summary>
 	/// 押し戻し処理
@@ -24,5 +23,5 @@ public:
 	/// <param name="blockSize">ブロックの大きさ</param>
 	/// <param name="up">上のブロック</param>
 	/// <param name="down">下のブロック</param>
-	static Vec3 PushBack(Vec3 pos,Vec3 oldPos,float size,Vec3 BPos, float blockSize, const int up, const int down);
+	static Vec3 PushBack(Vec3 pos, Vec3 oldPos, float size, Vec3 BPos, float blockSize, const int up, const int down);
 };
