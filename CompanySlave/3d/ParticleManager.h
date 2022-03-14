@@ -160,6 +160,10 @@ private:// 静的メンバ関数
 	/// モデル作成
 	/// </summary>
 	static void CreateModel();
+	/// <summary>
+	/// ビルボート行列の更新
+	/// </summary>
+	void MatBillboardUpdate();
 
 public: // メンバ関数
 	bool Initialize();

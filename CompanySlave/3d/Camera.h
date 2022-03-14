@@ -14,7 +14,7 @@ private:
 	//ŽË‰e•ÏŠ·
 	XMMATRIX matProjection;
 
-	Vec3 eye = {}, target = {}, up = {};
+	Vec3 eye = {0.0f,0.0f,10.0f}, target = {}, up = {};
 public:
 	Camera();
 
@@ -47,4 +47,8 @@ public:
 	XMMATRIX GetProjection();
 
 	Vec3 GetEye();
+
+	Vec3 GetTarget();
+
+	Vec3 GetUp();
 };

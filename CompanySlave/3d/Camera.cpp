@@ -86,3 +86,13 @@ Vec3 Camera::GetEye()
 {
 	return eye;
 }
+
+Vec3 Camera::GetTarget()
+{
+	return target;
+}
+
+Vec3 Camera::GetUp()
+{
+	return up;
+}
