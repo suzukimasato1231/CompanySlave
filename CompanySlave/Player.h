@@ -69,6 +69,7 @@ public://æ“¾Œn
 	Box GetBox() { return pBox; }
 
 	bool GetAttackFlag() { return attackFlag; }
+	bool GetMoveFlag() { return moveFlag; }
 
 	int GetComboNum() { return comboNum; }
 private:
@@ -101,6 +102,9 @@ private:
 	Vec3 direction = {};			//a‚è‚És‚­“G‚Ì•ûŒü
 	int enemyNum = 0;				//‚Ç‚Ì“G‚©‚Ìî•ñ
 	Box eBox;
+
+	//“®‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	bool moveFlag = false;
 
 	//˜A‘±Ø‚è‚ÌÅ’†‚©‚Ç‚¤‚©
 	bool attackFlag = false;

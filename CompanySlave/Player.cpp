@@ -65,6 +65,17 @@ void Player::Draw()
 void Player::Move()
 {
 	oldPosition = position;
+
+	//ˆÚ“®
+	if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->KeybordPush(DIK_LEFT)
+		|| Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->KeybordPush(DIK_DOWN))
+	{
+		moveFlag = true;
+	}
+	else {
+		moveFlag = false;
+	}
+
 	if (attackFlag == false)
 	{
 		//ˆÚ“®

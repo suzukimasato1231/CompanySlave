@@ -107,7 +107,7 @@ void ParticleManager::Add(int life, Vec3 position, Vec3 velocity, Vec3 accel, fl
 	p.e_color = end_color;
 }
 
-void ParticleManager::ParticleAdd(Vec3 Pos)
+void ParticleManager::ParticleAdd(Vec3 Pos, Vec4 start_color, Vec4 end_color)
 {
 	for (int i = 0; i < 1; i++)
 	{
@@ -128,12 +128,13 @@ void ParticleManager::ParticleAdd(Vec3 Pos)
 		const float md_acc = 0.001f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 
-		Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
-		Vec4 end_color = { 0.0f,0.0f,0.5f,1.0f };
-		//追加
-		Add(60, pos, vel, acc, 1.0f, 1.0f, start_color, end_color);
+		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
+		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
+			//追加
+		Add(60, pos, vel, acc, 2.0f, 2.0f, start_color, end_color);
 	}
 }
+
 
 bool ParticleManager::InitializeDescriptorHeap()
 {
