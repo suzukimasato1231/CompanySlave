@@ -55,4 +55,6 @@ public://Žæ“¾Œn
 	int GetEnemySize() { return eData.size(); }
 	//UŒ‚‚³‚ê‚½‚©‚ðŽæ“¾
 	bool GetWasAttackFlag(int i) { return eData[i]->wasAttackFlag; }
+
+	float GetEnemyR(int i) { return eData[i]->r; }
 };

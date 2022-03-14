@@ -49,14 +49,14 @@ void Player::Draw()
 	Vec3 angle{ 90.0f,00.0f,0.0f };
 	Object::Instance()->Draw(circleM, position, scale, angle, color, white);
 
-	//上
-	Object::Instance()->Draw(circleS, Vec3(position.x, position.y + 0.4f, position.z + circleMain), scale, angle, color, white);
-	//下
-	Object::Instance()->Draw(circleS, Vec3(position.x, position.y + 0.3f, position.z - circleMain), scale, angle, color, white);
-	//右
-	Object::Instance()->Draw(circleS, Vec3(position.x + circleMain, position.y + 0.1f, position.z), scale, angle, color, white);
-	//左
-	Object::Instance()->Draw(circleS, Vec3(position.x - circleMain, position.y + 0.2f, position.z), scale, angle, color, white);
+	////上
+	//Object::Instance()->Draw(circleS, Vec3(position.x, position.y + 0.4f, position.z + circleMain), scale, angle, color, white);
+	////下
+	//Object::Instance()->Draw(circleS, Vec3(position.x, position.y + 0.3f, position.z - circleMain), scale, angle, color, white);
+	////右
+	//Object::Instance()->Draw(circleS, Vec3(position.x + circleMain, position.y + 0.1f, position.z), scale, angle, color, white);
+	////左
+	//Object::Instance()->Draw(circleS, Vec3(position.x - circleMain, position.y + 0.2f, position.z), scale, angle, color, white);
 #endif
 
 }
@@ -65,26 +65,29 @@ void Player::Draw()
 void Player::Move()
 {
 	oldPosition = position;
-	//移動
-	if (Input::Instance()->KeybordPush(DIK_RIGHT))
+	if (attackFlag == false)
 	{
-		position.x += speed.x;
+		//移動
+		if (Input::Instance()->KeybordPush(DIK_RIGHT))
+		{
+			position.x += speed.x;
+		}
+		if (Input::Instance()->KeybordPush(DIK_LEFT))
+		{
+			position.x -= speed.x;
+		}
+		if (Input::Instance()->KeybordPush(DIK_UP))
+		{
+			position.z += speed.z;
+		}
+		if (Input::Instance()->KeybordPush(DIK_DOWN))
+		{
+			position.z -= speed.z;
+		}
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	}
-	if (Input::Instance()->KeybordPush(DIK_LEFT))
-	{
-		position.x -= speed.x;
-	}
-	if (Input::Instance()->KeybordPush(DIK_UP))
-	{
-		position.z += speed.z;
-	}
-	if (Input::Instance()->KeybordPush(DIK_DOWN))
-	{
-		position.z -= speed.z;
-	}
-	//座標を合わせる
-	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 }
 
 //プレイヤーとエネミーとの最小距離の敵を見つける
@@ -120,16 +123,14 @@ void Player::PlayerAttack(Enemy *enemy)
 		comboNum = 0;
 	}
 
-	if (attackFlag == true && nowComboTime == comboTime)
+	if (attackFlag == true && selectEnemyFlag == false)
 	{
 		bool isHit = false;
 		bool discoverFlag = false;
 		//当たり判定一定の範囲内にいる敵かどうか
 		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 		{
-
 			isHit = AttackDirection(enemy, i);
-
 			//範囲内にいて且つ敵がコンボ攻撃を受けていない
 			if (isHit == true && enemy->GetWasAttackFlag(i) == false)
 			{
@@ -137,30 +138,26 @@ void Player::PlayerAttack(Enemy *enemy)
 				comboNum++;
 				break;
 			}
-			if (enemy->GetEnemySize())
-			{
-
-			}
 		}
 		if (discoverFlag == true)
 		{
 			comboTime = comboMaxTime;
-			startPos = position;
 			nowComboTime = 0;
+			selectEnemyFlag = true;
 		}
 		else
 		{
 			attackFlag = false;
+			selectEnemyFlag = false;
 		}
 	}
 
 	//プレイヤーに一番近い敵を探す
-	if (comboTime == comboMaxTime && nowComboTime == 0 && attackFlag == true)
+	if (nowComboTime == 0 && selectEnemyFlag == true && attackFlag == true)
 	{
 		float minPosition = 999.9f;//プレイヤーと敵の差の最小値
-		int enemyNum = 0;//敵の配列の位置
 
-		Vec3 direction = {};//プレイヤーから見た敵の向き
+		//direction = {};//プレイヤーから見た敵の向き
 		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 		{
 			if (enemy->GetWasAttackFlag(i) == false)
@@ -186,17 +183,41 @@ void Player::PlayerAttack(Enemy *enemy)
 		//プレイヤーと敵の座標の差が小さい敵の座標を入れる
 		if (enemy->GetEnemySize() != 0)
 		{
-			enemyPos = enemy->GetPosition(enemyNum) - direction * 10;
+			enemyPos = enemy->GetPosition(enemyNum);
 			enemy->WasAttack(enemyNum);
+			eBox.minPosition = XMVectorSet(
+				enemy->GetPosition(enemyNum).x - enemy->GetEnemyR(enemyNum) - direction.x * 15,
+				enemy->GetPosition(enemyNum).y - enemy->GetEnemyR(enemyNum) - direction.y * 15,
+				enemy->GetPosition(enemyNum).z - enemy->GetEnemyR(enemyNum) - direction.z * 15,
+				1);
+			eBox.maxPosition = XMVectorSet(
+				enemy->GetPosition(enemyNum).x + enemy->GetEnemyR(enemyNum) - direction.x * 15,
+				enemy->GetPosition(enemyNum).y + enemy->GetEnemyR(enemyNum) - direction.y * 15,
+				enemy->GetPosition(enemyNum).z + enemy->GetEnemyR(enemyNum) - direction.z * 15,
+				1);
 		}
 	}
 
 	//敵に向かっていく処理
-	if (nowComboTime != comboTime)
+	if (attackFlag == true && selectEnemyFlag == true)
 	{
+		//敵とプレイヤーが当たったら
+		if (Collision::CheckBox2Box(pBox, eBox))
+		{
+			enemy->WasAttack(enemyNum);
+			selectEnemyFlag = false;
+		}
+		//敵の方向に向かっていく
+		position -= direction * AttackSpeed;
+
+		//コンボタイム＋
 		nowComboTime++;
-		float timeRoate = min(nowComboTime / comboTime, 1.0f);
-		position = Easing::easeIn(startPos, enemyPos, timeRoate);
+		//コンボタイム終わったらattackFlagをfalseコンボダメージミスフラグをtrueにする
+		if (nowComboTime >= comboTime)
+		{
+			attackFlag = false;
+			selectEnemyFlag = false;
+		}
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
@@ -258,14 +279,10 @@ bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
 		return false;
 		break;
 	}
-
-	return false;
-
 }
 
 void Player::StopAttack()
 {
-
 	if (Input::Instance()->KeybordTrigger(DIK_SPACE))
 	{
 		attackFlag = false;

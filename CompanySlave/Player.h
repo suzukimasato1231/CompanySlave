@@ -83,23 +83,24 @@ private:
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 	Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
-	float r = 5;
+	float r = 3;
 
 	//プレイヤーHP
 	int HP = 10;
 
 	//敵を倒すためのパラメータ
-	const float comboMaxTime = 10;	//コンボ時間最初
-	float comboTime = 0;			//コンボ時間
+	const float comboMaxTime = 30;	//コンボ時間最初
+	float comboTime = 30;			//コンボ時間
 	float nowComboTime = 0;			//現在のコンボ時間
 
-	const float AttackSpeed = 10;
+	const float AttackSpeed = 3;	//攻撃スピード
 
-
+	bool selectEnemyFlag = false;//斬りに行く敵が決まったかどうか
 	int attackDirection = 0;		//斬りに行く方向
-	Vec3 startPos = {};				//斬りに行く前のプレイヤーの座標
 	Vec3 enemyPos = {};				//斬りに行く敵の座標
+	Vec3 direction = {};			//斬りに行く敵の方向
 	int enemyNum = 0;				//どの敵かの情報
+	Box eBox;
 
 	//連続切りの最中かどうか
 	bool attackFlag = false;
@@ -108,8 +109,8 @@ private:
 
 	//攻撃範囲
 	Vec2 attackPos = {};//攻撃開始位置
-	float circleMain = 30.0f;
-	float ciecleSub = 30.0f;
+	float circleMain = 50.0f;
+	float ciecleSub = 50.0f;
 #if _DEBUG
 	Object::ObjectData circleM;
 	Object::ObjectData circleS;
