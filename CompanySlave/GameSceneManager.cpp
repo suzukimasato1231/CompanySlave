@@ -209,6 +209,10 @@ void GameSceneManager::Draw()
 
 	debugText.Print(10, 120, 2, "comboNum:%d", player->GetComboNum());
 
+	debugText.Print(10, 160, 2, "comboNum:%d", player->GetComboTime());
+
+//	debugText.Print(10, 160, 2, "comboTime:%d", player->GetComboTime());
+
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
 }

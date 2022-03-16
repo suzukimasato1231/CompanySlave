@@ -50,6 +50,8 @@ private:
 	void Generation(class Player *player);
 	//削除
 	void Delete();
+	//エネミーとエネミーの押し戻し
+	void Enemy2Enemy();
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }

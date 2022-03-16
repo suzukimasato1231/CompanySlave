@@ -2,6 +2,7 @@
 #include"Shape.h"
 #include"Input.h"
 #include "MapStage.h"
+#include"Collision.h"
 Enemy::Enemy()
 {
 }
@@ -25,6 +26,9 @@ void Enemy::Update(Player *player)
 	//敵生成
 	Generation(player);
 
+	//敵が重ならないようにする
+	Enemy2Enemy();
+
 	for (size_t i = 0; i < eData.size(); i++)
 	{
 		//移動
@@ -32,8 +36,8 @@ void Enemy::Update(Player *player)
 		//ダメージ
 		Damege(i, player);
 	}
-
 	//削除
+
 	Delete();
 }
 
@@ -102,10 +106,17 @@ void Enemy::Generation(Player *player)
 	{
 		eData.push_back(new EnemyData);
 		eData[eData.size() - 1]->enemyObject = Object::Instance()->CreateOBJ("enemy");
-		eData[eData.size() - 1]->eBox.minPosition = XMVectorSet(0, 2, 0, 1);
-		eData[eData.size() - 1]->eBox.maxPosition = XMVectorSet(0, 2, 0, 1);
 		eData[eData.size() - 1]->position = player->GetPosition() + Vec3(+10, 0, 0);
 		eData[eData.size() - 1]->oldPosition = eData[eData.size() - 1]->position;
+		//座標を合わせる
+		eData[eData.size() - 1]->eBox.minPosition = XMVectorSet(
+			eData[eData.size() - 1]->position.x - eData[eData.size() - 1]->r,
+			eData[eData.size() - 1]->position.y - eData[eData.size() - 1]->r,
+			eData[eData.size() - 1]->position.z - eData[eData.size() - 1]->r, 1);
+		eData[eData.size() - 1]->eBox.maxPosition = XMVectorSet(
+			eData[eData.size() - 1]->position.x + eData[eData.size() - 1]->r,
+			eData[eData.size() - 1]->position.y + eData[eData.size() - 1]->r,
+			eData[eData.size() - 1]->position.z + eData[eData.size() - 1]->r, 1);
 	}
 }
 
@@ -120,6 +131,25 @@ void Enemy::Delete()
 			eData.erase(eData.begin() + i);
 		}
 	}
+}
+
+void Enemy::Enemy2Enemy()
+{
+	/*for (size_t i = 1; i < eData.size(); i++)
+	{
+		if (eData.size() <= 1) { break; }
+		for (size_t j = 0; j < eData.size(); j++)
+		{
+			if (i == j)
+			{
+				break;
+			}
+			if (Collision::CheckBox2Box(eData[i]->eBox, eData[j]->eBox))
+			{
+				eData[i]->position = eData[i]->oldPosition;
+			}
+		}
+	}*/
 }
 
 

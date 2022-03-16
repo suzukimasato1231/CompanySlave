@@ -107,7 +107,8 @@ void Player::PlayerAttack(Enemy *enemy)
 	if (enemy == nullptr) { return; }
 	//攻撃開始
 	if ((Input::Instance()->KeybordTrigger(DIK_A) || Input::Instance()->KeybordTrigger(DIK_W) ||
-		Input::Instance()->KeybordTrigger(DIK_S) || Input::Instance()->KeybordTrigger(DIK_D)) && attackFlag == false)
+		Input::Instance()->KeybordTrigger(DIK_S) || Input::Instance()->KeybordTrigger(DIK_D))
+		&& attackFlag == false)
 	{
 		if (Input::Instance()->KeybordTrigger(DIK_A))
 		{//左
@@ -128,16 +129,18 @@ void Player::PlayerAttack(Enemy *enemy)
 		attackFlag = true;
 		attackPos = Vec2(position.x, position.z);
 	}
+	ComboDirection();
 	//コンボが途切れる
 	if (attackFlag == false)
 	{
 		comboNum = 0;
 	}
 
-	if (attackFlag == true && selectEnemyFlag == false)
+	if (attackFlag == true && selectEnemyFlag == false && timeOutFlag == true)
 	{
 		bool isHit = false;
 		bool discoverFlag = false;
+		timeOutFlag = false;
 		//当たり判定一定の範囲内にいる敵かどうか
 		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 		{
@@ -145,30 +148,37 @@ void Player::PlayerAttack(Enemy *enemy)
 			//範囲内にいて且つ敵がコンボ攻撃を受けていない
 			if (isHit == true && enemy->GetWasAttackFlag(i) == false)
 			{
-				discoverFlag = true;
-				comboNum++;
-				break;
+				if (comboNum == 0)
+				{//コンボ最初
+					discoverFlag = true;
+					comboNum++;
+					break;
+				}
+				else if (AttackComboDirection(enemy, i) && comboFlag == true)
+				{//コンボ継続
+					comboNum++;
+					discoverFlag = true;
+					break;
+				}
+				else if (AttackComboDirection(enemy, i) && comboFlag == false)
+				{//コンボ失敗
+					discoverFlag = true;
+					comboNum = 0;
+					break;
+				}
 			}
 		}
 		if (discoverFlag == true)
 		{
-			comboTime = comboMaxTime;
-			nowComboTime = 0;
 			selectEnemyFlag = true;
 		}
-		else
-		{
-			attackFlag = false;
-			selectEnemyFlag = false;
-		}
+
 	}
 
 	//プレイヤーに一番近い敵を探す
-	if (nowComboTime == 0 && selectEnemyFlag == true && attackFlag == true)
+	if (attackSpeedTime == 0 && selectEnemyFlag == true && attackFlag == true)
 	{
 		float minPosition = 999.9f;//プレイヤーと敵の差の最小値
-
-		//direction = {};//プレイヤーから見た敵の向き
 		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 		{
 			if (enemy->GetWasAttackFlag(i) == false)
@@ -194,51 +204,44 @@ void Player::PlayerAttack(Enemy *enemy)
 		//プレイヤーと敵の座標の差が小さい敵の座標を入れる
 		if (enemy->GetEnemySize() != 0)
 		{
-			enemyPos = enemy->GetPosition(enemyNum);
+			startPos = position;
+			enemyPos = enemy->GetPosition(enemyNum) - direction * 6.0f;
 			enemy->WasAttack(enemyNum);
-			eBox.minPosition = XMVectorSet(
-				enemy->GetPosition(enemyNum).x - enemy->GetEnemyR(enemyNum) - direction.x * 15,
-				enemy->GetPosition(enemyNum).y - enemy->GetEnemyR(enemyNum) - direction.y * 15,
-				enemy->GetPosition(enemyNum).z - enemy->GetEnemyR(enemyNum) - direction.z * 15,
-				1);
-			eBox.maxPosition = XMVectorSet(
-				enemy->GetPosition(enemyNum).x + enemy->GetEnemyR(enemyNum) - direction.x * 15,
-				enemy->GetPosition(enemyNum).y + enemy->GetEnemyR(enemyNum) - direction.y * 15,
-				enemy->GetPosition(enemyNum).z + enemy->GetEnemyR(enemyNum) - direction.z * 15,
-				1);
 		}
 	}
 
 	//敵に向かっていく処理
 	if (attackFlag == true && selectEnemyFlag == true)
 	{
-		//敵とプレイヤーが当たったら
-		if (Collision::CheckBox2Box(pBox, eBox))
-		{
-			enemy->WasAttack(enemyNum);
-			selectEnemyFlag = false;
-		}
 		//敵の方向に向かっていく
-		position -= direction * AttackSpeed;
-
-		//コンボタイム＋
-		nowComboTime++;
-		//コンボタイム終わったらattackFlagをfalseコンボダメージミスフラグをtrueにする
-		if (nowComboTime >= comboTime)
-		{
-			attackFlag = false;
+		float timeRote = min(attackSpeedTime / attackSpeedMaxTime, 1.0f);
+		position = Easing::easeIn(startPos, enemyPos, timeRote);
+		attackSpeedTime++;
+		if (timeRote >= 1.0f)
+		{//敵を斬り終わったら
+			enemy->WasAttack(enemyNum);
+			attackSpeedTime = 0;
 			selectEnemyFlag = false;
+			//コンボ猶予時間
+			nowComboTime = comboTime;
+			//comboFlag = true;
 		}
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	}
+
+	//コンボ時間が減っていく
+	if (nowComboTime > 0 && selectEnemyFlag == false && attackFlag == true)
+	{
+		nowComboTime--;
+
+	}
+
 }
 
 void Player::Damege()
 {
-
-
 }
 
 bool Player::AttackDirection(Enemy *enemy, int enemyNumber)
@@ -296,8 +299,82 @@ void Player::StopAttack()
 	if (Input::Instance()->KeybordTrigger(DIK_SPACE))
 	{
 		attackFlag = false;
+		selectEnemyFlag = false;
+	}
+}
+
+void Player::ComboDirection()
+{
+	//攻撃開始
+	if ((Input::Instance()->KeybordTrigger(DIK_A) || Input::Instance()->KeybordTrigger(DIK_W) ||
+		Input::Instance()->KeybordTrigger(DIK_S) || Input::Instance()->KeybordTrigger(DIK_D))
+		&& attackFlag == true)
+	{
+		comboDirection = AttackNULL;
+		if (Input::Instance()->KeybordTrigger(DIK_A))
+		{//左
+			comboDirection = AttackLeft;
+		}
+		if (Input::Instance()->KeybordTrigger(DIK_W))
+		{//上
+			comboDirection = AttackUp;
+		}
+		if (Input::Instance()->KeybordTrigger(DIK_S))
+		{//下
+			comboDirection = AttackDown;
+		}
+		if (Input::Instance()->KeybordTrigger(DIK_D))
+		{//右
+			comboDirection = AttackRight;
+		}
+		if (nowComboTime > 0)
+		{
+			nowComboTime = 0;
+			comboFlag = true;
+		}
+		else
+		{
+			comboFlag = false;
+			nowComboTime = 0;
+		}
+		timeOutFlag = true;
 	}
 }
 
 
 
+bool Player::AttackComboDirection(Enemy *enemy, int enemyNumber)
+{
+	switch (comboDirection)
+	{
+	case AttackLeft:
+		if (enemy->GetPosition(enemyNumber).x < position.x)
+		{
+			return  true;
+		}
+		break;
+	case AttackRight:
+		if (enemy->GetPosition(enemyNumber).x > position.x)
+		{
+			return  true;
+		}
+		break;
+	case AttackUp:
+		if (enemy->GetPosition(enemyNumber).z > position.z)
+		{
+			return  true;
+		}
+		break;
+	case AttackDown:
+		if (enemy->GetPosition(enemyNumber).z < position.z)
+		{
+			return  true;
+		}
+		break;
+	default:
+		return false;
+		break;
+	}
+
+	return false;
+}

@@ -8,6 +8,7 @@
 /// </summary>
 enum AttackDirection
 {
+	AttackNULL,
 	AttackUp,
 	AttackDown,
 	AttackLeft,
@@ -58,6 +59,16 @@ private:
 	/// 攻撃を止める
 	/// </summary>
 	void StopAttack();
+
+	/// <summary>
+	/// コンボ中の指定した方向に敵がいるか
+	/// </summary>
+	/// <param name="enemy"></param>
+	/// <param name="enemyNumber"></param>
+	/// <returns></returns>
+	bool AttackComboDirection(class Enemy *enemy, int enemyNumber);
+
+	void ComboDirection();
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -72,6 +83,8 @@ public://取得系
 	bool GetMoveFlag() { return moveFlag; }
 
 	int GetComboNum() { return comboNum; }
+
+	int GetComboTime() { return nowComboTime; }
 private:
 	Object::ObjectData playerObject;	//プレイヤーオブジェクト
 
@@ -93,9 +106,16 @@ private:
 	const float comboMaxTime = 30;	//コンボ時間最初
 	float comboTime = 30;			//コンボ時間
 	float nowComboTime = 0;			//現在のコンボ時間
+	int comboDirection = 0;
+	bool comboFlag = false;
 
-	const float AttackSpeed = 3;	//攻撃スピード
+	bool timeOutFlag = false;
 
+	//敵を斬りに行くまでのスピード
+	const float attackSpeedMaxTime = 15.0f;
+	float attackSpeedTime = 0;
+
+	Vec3 startPos = {};				//斬りに行く前のプレイヤーの座標
 	bool selectEnemyFlag = false;//斬りに行く敵が決まったかどうか
 	int attackDirection = 0;		//斬りに行く方向
 	Vec3 enemyPos = {};				//斬りに行く敵の座標
