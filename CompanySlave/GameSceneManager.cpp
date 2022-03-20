@@ -201,7 +201,7 @@ void GameSceneManager::Draw()
 
 	//前景描画
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));
-
+#if _DEBUG
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "E:button");
 
@@ -218,4 +218,5 @@ void GameSceneManager::Draw()
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
+#endif
 }

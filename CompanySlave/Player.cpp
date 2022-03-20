@@ -15,6 +15,33 @@ void Player::Init()
 	pBox.minPosition = XMVectorSet(0, 2, 0, 1);
 	pBox.maxPosition = XMVectorSet(0, 2, 0, 1);
 	oldPosition = position;
+
+	//コンボUI
+	comboPolygon = Shape::CreateRect(20.0f, 10.0f);
+	comboGraph = Object::Instance()->LoadTexture(L"Resources/ComboUI/ComboGauge.png");
+
+	black = Shape::CreateRect(16.0f, 2.0f);
+	yellowColor = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
+
+	//コンボ数字
+	comboNumber1 = Shape::CreateRect(5.0f, 7.0f);
+	comboNumber3 = Shape::CreateRect(5.0f, 7.0f);
+	comboNumber2 = Shape::CreateRect(5.0f, 7.0f);
+	comboNumberGraph[0] = Object::Instance()->LoadTexture(L"Resources/ComboUI/0.png");
+	comboNumberGraph[1] = Object::Instance()->LoadTexture(L"Resources/ComboUI/1.png");
+	comboNumberGraph[2] = Object::Instance()->LoadTexture(L"Resources/ComboUI/2.png");
+	comboNumberGraph[3] = Object::Instance()->LoadTexture(L"Resources/ComboUI/3.png");
+	comboNumberGraph[4] = Object::Instance()->LoadTexture(L"Resources/ComboUI/4.png");
+	comboNumberGraph[5] = Object::Instance()->LoadTexture(L"Resources/ComboUI/5.png");
+	comboNumberGraph[6] = Object::Instance()->LoadTexture(L"Resources/ComboUI/6.png");
+	comboNumberGraph[7] = Object::Instance()->LoadTexture(L"Resources/ComboUI/7.png");
+	comboNumberGraph[8] = Object::Instance()->LoadTexture(L"Resources/ComboUI/8.png");
+	comboNumberGraph[9] = Object::Instance()->LoadTexture(L"Resources/ComboUI/9.png");
+
+#if _DEBUG
+	attackField = Shape::CreateRect(10.0f, 20.0f);
+	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
+#endif
 }
 
 void Player::Update(Enemy *enemy)
@@ -35,7 +62,36 @@ void Player::Update(Enemy *enemy)
 
 void Player::Draw()
 {
+#if _DEBUG
+	DebugDraw();
+#endif
+	//プレイヤー
 	Object::Instance()->Draw(playerObject, position, scale, angle, color);
+
+	if (nowComboTime > 0)
+	{
+		//ゲージ
+		float parsent = nowComboTime / comboTime;
+		Vec3 UIPos = { position.x - (1.0f - parsent) * 8,position.y - 1.0f,position.z - 12.0f };
+		Object::Instance()->Draw(black, UIPos, Vec3(parsent, 1.0f, 1.0f), UIAngle, Vec4(0.0f, 0.0f, 0.0f, 0.0f), yellowColor);
+		//数字
+		UIPos = { position.x,position.y - 1.0f,position.z - 7.0f };
+		//1桁目
+		int one = comboNum % 10;
+		Object::Instance()->Draw(comboNumber1, UIPos, scale, UIAngle, color, comboNumberGraph[one]);
+		//２桁目
+		int two = comboNum % 100 / 10;
+		if (comboNum >= 10)
+		{
+			UIPos = { position.x - 5.0f,position.y,position.z - 8.0f };
+			Object::Instance()->Draw(comboNumber1, UIPos, scale, UIAngle, color, comboNumberGraph[two]);
+		}
+		//枠
+		UIPos = { position.x,position.y,position.z - 8.0f };
+		Object::Instance()->Draw(comboPolygon, UIPos, scale, UIAngle, color, comboGraph);
+	}
+
+
 }
 
 //移動
@@ -207,4 +263,58 @@ float  Player::Angle()
 		return rad;
 	}
 	return 0.0f;
+}
+
+void Player::DebugDraw()
+{
+	Vec3 attackPosition{};
+	Vec3 attackAngle{};
+	if (Input::Instance()->KeybordPush(DIK_UP) && Input::Instance()->KeybordPush(DIK_RIGHT))
+	{
+		attackPosition = { position.x + 10.0f,position.y,position.z + 10.0f };
+		attackAngle = { 90.0f,0.0f,135.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+	else if (Input::Instance()->KeybordPush(DIK_DOWN) && Input::Instance()->KeybordPush(DIK_LEFT))
+	{
+		attackPosition = { position.x - 10.0f,position.y,position.z - 10.0f };
+		attackAngle = { 90.0f,0.0f,135.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+	else if (Input::Instance()->KeybordPush(DIK_UP) && Input::Instance()->KeybordPush(DIK_LEFT))
+	{
+		attackPosition = { position.x - 10.0f,position.y,position.z + 10.0f };
+		attackAngle = { 90.0f,0.0f,45.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+	else if (Input::Instance()->KeybordPush(DIK_DOWN) && Input::Instance()->KeybordPush(DIK_RIGHT))
+	{
+		attackPosition = { position.x + 10.0f,position.y,position.z - 10.0f };
+		attackAngle = { 90.0f,0.0f,45.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT))
+	{
+		attackPosition = { position.x + 10.0f,position.y,position.z };
+		attackAngle = { 90.0f,0.0f,90.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+	else if (Input::Instance()->KeybordPush(DIK_LEFT))
+	{
+		attackPosition = { position.x - 10.0f,position.y,position.z };
+		attackAngle = { 90.0f,0.0f,90.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+	else if (Input::Instance()->KeybordPush(DIK_UP))
+	{
+		attackPosition = { position.x,position.y,position.z + 10.0f };
+		attackAngle = { 90.0f,0.0f,0.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+	else if (Input::Instance()->KeybordPush(DIK_DOWN))
+	{
+		attackPosition = { position.x,position.y,position.z - 10.0f };
+		attackAngle = { 90.0f,0.0f,0.0f };
+		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
 }

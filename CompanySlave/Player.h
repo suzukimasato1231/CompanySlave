@@ -3,7 +3,7 @@
 #include"CollisionPrimitive.h"
 #include"Easing.h"
 #include"Enemy.h"
-
+#include"Sprite.h"
 /// <summary>
 /// ƒvƒŒƒCƒ„[ƒNƒ‰ƒX
 /// </summary>
@@ -38,6 +38,8 @@ private:
 	void StopAttack();
 	//UŒ‚Šp“xŒˆ’è
 	float Angle();
+	//ƒfƒoƒbƒN•`‰æ
+	void DebugDraw();
 public://æ“¾Œn
 	//À•W
 	Vec3 GetPosition() { return position; }
@@ -97,4 +99,20 @@ private:
 
 	//UŒ‚Œü‚«
 	float attackAngle = 0.0f;
+
+	//UI
+	Vec3 UIAngle{ 90.0f,0.0f,0.0f };
+	Object::ObjectData comboPolygon;
+	Object::ObjectData  comboNumber1;//‚PŒ…–Ú
+	Object::ObjectData  comboNumber2;//2Œ…–Ú
+	Object::ObjectData  comboNumber3;//‚RŒ…–Ú
+	Object::ObjectData black;
+	int comboGraph;
+	int comboNumberGraph[10];
+	int yellowColor;
+
+#if _DEBUG
+	Object::ObjectData attackField;//UŒ‚”ÍˆÍ‰Â‹‰»
+	int redColor;
+#endif
 };
