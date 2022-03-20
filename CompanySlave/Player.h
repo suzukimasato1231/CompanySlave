@@ -3,17 +3,7 @@
 #include"CollisionPrimitive.h"
 #include"Easing.h"
 #include"Enemy.h"
-/// <summary>
-/// 攻撃する向き
-/// </summary>
-enum AttackDirection
-{
-	AttackNULL,
-	AttackUp,
-	AttackDown,
-	AttackLeft,
-	AttackRight,
-};
+
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -43,32 +33,11 @@ private:
 	void PlayerAttack(class Enemy *enemy);
 
 	/// <summary>
-	/// ダメージ処理
-	/// </summary>
-	void Damege();
-
-	/// <summary>
-	/// 指定した方向に敵がいるかどうか
-	/// </summary>
-	/// <param name="enemy">エネミークラス</param>
-	/// <param name="enemyNumber">どの敵</param>
-	/// <returns></returns>
-	bool AttackDirection(class Enemy *enemy, int enemyNumber);
-
-	/// <summary>
 	/// 攻撃を止める
 	/// </summary>
 	void StopAttack();
-
-	/// <summary>
-	/// コンボ中の指定した方向に敵がいるか
-	/// </summary>
-	/// <param name="enemy"></param>
-	/// <param name="enemyNumber"></param>
-	/// <returns></returns>
-	bool AttackComboDirection(class Enemy *enemy, int enemyNumber);
-
-	void ComboDirection();
+	//攻撃角度決定
+	float Angle();
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -85,6 +54,8 @@ public://取得系
 	int GetComboNum() { return comboNum; }
 
 	int GetComboTime() { return nowComboTime; }
+
+	int GetCoolTime() { return coolTime; }
 private:
 	Object::ObjectData playerObject;	//プレイヤーオブジェクト
 
@@ -106,40 +77,24 @@ private:
 	const float comboMaxTime = 30;	//コンボ時間最初
 	float comboTime = 30;			//コンボ時間
 	float nowComboTime = 0;			//現在のコンボ時間
-	int comboDirection = 0;
 	bool comboFlag = false;
-
-	bool timeOutFlag = false;
+	//コンボ数
+	int comboNum = 0;
 
 	//敵を斬りに行くまでのスピード
-	const float attackSpeedMaxTime = 15.0f;
-	float attackSpeedTime = 0;
-
-	Vec3 startPos = {};				//斬りに行く前のプレイヤーの座標
-	bool selectEnemyFlag = false;//斬りに行く敵が決まったかどうか
-	int attackDirection = 0;		//斬りに行く方向
-	Vec3 enemyPos = {};				//斬りに行く敵の座標
-	Vec3 direction = {};			//斬りに行く敵の方向
-	int enemyNum = 0;				//どの敵かの情報
-	Box eBox;
+	const float attackMaxTime = 10.0f;
+	float attackTime = 0;
+	Vec3 attackSpeed = { 4.0f,4.0f,4.0f };
 
 	//動いているかどうか
 	bool moveFlag = false;
 
 	//連続切りの最中かどうか
 	bool attackFlag = false;
-	//コンボ数
-	int comboNum = 0;
+	//クールタイム
+	const int coolTimeMax = 100;
+	int coolTime = 0;
 
-	//攻撃範囲
-	Vec2 attackPos = {};//攻撃開始位置
-	float circleMain = 50.0f;
-	float ciecleSub = 50.0f;
-#if _DEBUG
-	Object::ObjectData circleM;
-	Object::ObjectData circleS;
-	int white;
-	int blue;
-	int yellow;
-#endif
+	//攻撃向き
+	float attackAngle = 0.0f;
 };

@@ -43,6 +43,9 @@ public://ゲームパッド
 	// @brief ボタンを離した瞬間の判定関数
 	// @param[in] button 判定したいボタンの種類
 	bool ControllerDown(ButtonKind button);
+
+	//左スティック角度取得
+	float GetAngle();
 public://マウス
 	bool MousePushLeft();
 

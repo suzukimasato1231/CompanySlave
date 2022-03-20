@@ -2,6 +2,8 @@
 static LPDIRECTINPUT8 g_InputInterface;							//!< DIRECTINPUT8のポインタ
 static LPDIRECTINPUTDEVICE8 g_GamePadDevice;					//!< DIRECTINPUTDEVICE8のポインタ
 static ButtonState g_ButtonStates[ButtonKind::ButtonKindMax];
+static float angle;
+
 
 // 入力インターフェースの作成
 bool CreateInputInterface();
@@ -142,6 +144,10 @@ BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 	return DIENUM_CONTINUE;
 }
 
+void Controller::SetAngle(DIJOYSTATE pad_data)
+{
+}
+
 bool Controller::InitController()
 {
 	// インターフェース作成
@@ -218,6 +224,11 @@ bool Controller::IsButtonDown(ButtonKind button)
 	}
 
 	return false;
+}
+
+float Controller::GetLightAngle()
+{
+	return angle;
 }
 
 bool CreateInputInterface()
@@ -347,6 +358,47 @@ void UpdateGamePad()
 	{
 		is_push[ButtonKind::RButtonDown] = true;
 	}
+
+	//角度を取得
+	//八方向
+	if (is_push[ButtonKind::LButtonUp] == true && is_push[ButtonKind::LButtonRight] == true)
+	{
+		angle = 45.0f;
+	}
+	else if (is_push[ButtonKind::LButtonDown] == true && is_push[ButtonKind::LButtonRight] == true)
+	{
+		angle = 135.0f;
+	}
+	else if (is_push[ButtonKind::LButtonDown] == true && is_push[ButtonKind::LButtonLeft] == true)
+	{
+		angle = 225.0f;
+	}
+	else if (is_push[ButtonKind::LButtonUp] == true && is_push[ButtonKind::LButtonLeft] == true)
+	{
+		angle = 315.0f;
+	}
+	//四方向
+	else if (is_push[ButtonKind::LButtonUp] == true)
+	{
+		angle = 0.0f;
+	}
+	else if (is_push[ButtonKind::LButtonRight] == true)
+	{
+		angle = 90.0f;
+	}
+	else if (is_push[ButtonKind::LButtonDown] == true)
+	{
+		angle = 180.0f;
+	}
+	else if (is_push[ButtonKind::LButtonLeft] == true)
+	{
+		angle = 270.0f;
+	}
+	else {
+		angle = 0.0f;
+	}
+
+
 
 	// 十字キー判定
 	if (pad_data.rgdwPOV[0] != 0xFFFFFFFF)

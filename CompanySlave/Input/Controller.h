@@ -37,6 +37,8 @@ private:
 	DIJOYSTATE oldpad_data;
 	LPDIRECTINPUTDEVICE8 g_GamePadDevice = nullptr;
 	LPDIRECTINPUT8 g_InputInterface = nullptr;
+private:
+	
 public://ゲームパッド
 	/// <summary>
 	/// デバイス入力の初期化
@@ -74,5 +76,12 @@ public://ゲームパッド
 	/// <param name="button">ボタンの種類</param>
 	/// <returns></returns>
 	bool IsButtonDown(ButtonKind button);
+	/// <summary>
+	/// 右パッド角度取得
+	/// </summary>
+	/// <returns></returns>
+	float GetLightAngle();
 
+	//角度を取得
+	void SetAngle(DIJOYSTATE pad_data);
 };

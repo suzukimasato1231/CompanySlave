@@ -48,6 +48,11 @@ bool Input::ControllerDown(ButtonKind button)
 	return controller.IsButtonDown(button);
 }
 
+float Input::GetAngle()
+{
+	return controller.GetLightAngle();
+}
+
 bool Input::MousePushLeft()
 {
 	return mouse.PushMouseLeft();
