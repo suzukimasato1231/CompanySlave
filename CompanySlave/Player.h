@@ -4,6 +4,18 @@
 #include"Easing.h"
 #include"Enemy.h"
 #include"Sprite.h"
+//プレイヤーの向いている向き
+enum Direction
+{
+	Up,
+	Down,
+	Left,
+	Right,
+	UpLeft,
+	UpRight,
+	DownLeft,
+	DownRight
+};
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -38,6 +50,13 @@ private:
 	void StopAttack();
 	//攻撃角度決定
 	float Angle();
+
+	//プレイヤーの向きを決める
+	void PDirection();
+
+	//回避
+	void Avoidance();
+
 	//デバック描画
 	void DebugDraw();
 public://取得系
@@ -60,9 +79,7 @@ public://取得系
 	int GetCoolTime() { return coolTime; }
 private:
 	Object::ObjectData playerObject;	//プレイヤーオブジェクト
-
 	Box pBox;							//プレイヤーの長方形
-
 	Vec3 position{ 10.0f,0.0f,0.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
@@ -80,8 +97,7 @@ private:
 	float comboTime = 30;			//コンボ時間
 	float nowComboTime = 0;			//現在のコンボ時間
 	bool comboFlag = false;
-	//コンボ数
-	int comboNum = 0;
+	int comboNum = 0;				//コンボ数
 
 	//敵を斬りに行くまでのスピード
 	const float attackMaxTime = 10.0f;
@@ -97,15 +113,26 @@ private:
 	const int coolTimeMax = 100;
 	int coolTime = 0;
 
-	//攻撃向き
-	float attackAngle = 0.0f;
+	int  direction = 0;		 //プレイヤーの向き
+	float attackAngle = 0.0f;//攻撃向き
+
+	//回避
+	bool avoidanceFlag = false;		//回避中か
+	const int avoidanceTimeMax = 10;//回避時間
+	int avoiDirection = 0;			//回避向き
+	int avoidanceTime = 0;			//今回避時間
+	float avoiSpeed = 5.0f;			//回避スピード
+	const int avoiCoolTimeMax = 20;	//回避クールタイム
+	int avoiCoolTime = 0;			//今回避クールタイム
+
+	bool invincibleFlag = false;	//無敵中か
+
+
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };
 	Object::ObjectData comboPolygon;
-	Object::ObjectData  comboNumber1;//１桁目
-	Object::ObjectData  comboNumber2;//2桁目
-	Object::ObjectData  comboNumber3;//３桁目
+	Object::ObjectData  comboNumberObj;//１桁目
 	Object::ObjectData black;
 	int comboGraph;
 	int comboNumberGraph[10];

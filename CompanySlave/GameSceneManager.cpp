@@ -205,15 +205,17 @@ void GameSceneManager::Draw()
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "E:button");
 
-	debugText.Print(10, 80, 2, "WASD+C:Attack");
+	debugText.Print(10, 80, 2, "C:Attack");
 
 	debugText.Print(10, 120, 2, "SPACE:noutou");
 
-	debugText.Print(10, 160, 2, "comboNum:%d", player->GetComboNum());
+	debugText.Print(10, 160, 2, "F:kamikaihi");
 
-	debugText.Print(10, 200, 2, "comboTime:%d", player->GetComboTime());
+	debugText.Print(10, 200, 2, "comboNum:%d", player->GetComboNum());
 
-	debugText.Print(10, 240, 2, "coolTime:%d", player->GetCoolTime());
+	debugText.Print(10, 240, 2, "comboTime:%d", player->GetComboTime());
+
+	debugText.Print(10, 280, 2, "coolTime:%d", player->GetCoolTime());
 
 
 	//デバックテキスト描画ここは変わらない

@@ -24,9 +24,8 @@ void Player::Init()
 	yellowColor = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 
 	//コンボ数字
-	comboNumber1 = Shape::CreateRect(5.0f, 7.0f);
-	comboNumber3 = Shape::CreateRect(5.0f, 7.0f);
-	comboNumber2 = Shape::CreateRect(5.0f, 7.0f);
+	comboNumberObj = Shape::CreateRect(5.0f, 7.0f);
+
 	comboNumberGraph[0] = Object::Instance()->LoadTexture(L"Resources/ComboUI/0.png");
 	comboNumberGraph[1] = Object::Instance()->LoadTexture(L"Resources/ComboUI/1.png");
 	comboNumberGraph[2] = Object::Instance()->LoadTexture(L"Resources/ComboUI/2.png");
@@ -52,12 +51,20 @@ void Player::Update(Enemy *enemy)
 	}
 	//移動
 	Move();
+	//プレイヤーの向きを決める
+	PDirection();
 
 	//斬りに行く敵の座標を探す
 	PlayerAttack(enemy);
 
 	//攻撃を止める
 	StopAttack();
+	//回避
+	Avoidance();
+
+	//座標を合わせる
+	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 }
 
 void Player::Draw()
@@ -78,27 +85,24 @@ void Player::Draw()
 		UIPos = { position.x,position.y - 1.0f,position.z - 7.0f };
 		//1桁目
 		int one = comboNum % 10;
-		Object::Instance()->Draw(comboNumber1, UIPos, scale, UIAngle, color, comboNumberGraph[one]);
+		Object::Instance()->Draw(comboNumberObj, UIPos, scale, UIAngle, color, comboNumberGraph[one]);
 		//２桁目
 		int two = comboNum % 100 / 10;
 		if (comboNum >= 10)
 		{
 			UIPos = { position.x - 5.0f,position.y,position.z - 8.0f };
-			Object::Instance()->Draw(comboNumber1, UIPos, scale, UIAngle, color, comboNumberGraph[two]);
+			Object::Instance()->Draw(comboNumberObj, UIPos, scale, UIAngle, color, comboNumberGraph[two]);
 		}
 		//枠
 		UIPos = { position.x,position.y,position.z - 8.0f };
 		Object::Instance()->Draw(comboPolygon, UIPos, scale, UIAngle, color, comboGraph);
 	}
-
-
 }
 
 //移動
 void Player::Move()
 {
 	oldPosition = position;
-
 	//移動
 	if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->KeybordPush(DIK_LEFT)
 		|| Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->KeybordPush(DIK_DOWN))
@@ -108,8 +112,7 @@ void Player::Move()
 	else {
 		moveFlag = false;
 	}
-
-	if (attackFlag == false && nowComboTime <= 0)
+	if (attackFlag == false && nowComboTime <= 0 && avoidanceTime <= 0)
 	{
 		//移動
 		if (Input::Instance()->KeybordPush(DIK_RIGHT))
@@ -148,8 +151,6 @@ void Player::PlayerAttack(Enemy *enemy)
 		comboFlag = false;
 		attackTime = attackMaxTime;
 	}
-
-
 	//敵に向かっていく処理
 	if (attackFlag == true && attackTime > 0)
 	{
@@ -187,12 +188,7 @@ void Player::PlayerAttack(Enemy *enemy)
 				comboNum = 0;
 			}
 		}
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	}
-
-
 	//コンボタイム減少
 	if (comboFlag == true && attackFlag == false)
 	{
@@ -209,7 +205,6 @@ void Player::PlayerAttack(Enemy *enemy)
 	{
 		coolTime--;
 	}
-
 }
 
 void Player::StopAttack()
@@ -265,6 +260,55 @@ float  Player::Angle()
 	return 0.0f;
 }
 
+
+void Player::Avoidance()
+{
+	//回避開始
+	if (Input::Instance()->KeybordTrigger(DIK_F) && avoidanceFlag == false)
+	{
+		avoidanceFlag = true;
+		avoidanceTime = avoidanceTimeMax;
+		avoiDirection = direction;
+	}
+	//回避中
+	if (avoidanceTime > 0)
+	{
+		avoidanceTime--;
+		if (avoidanceTime <= 0)
+		{
+			avoiCoolTime = avoiCoolTimeMax;
+		}
+		switch (avoiDirection)
+		{
+		case Up:
+			position += Vec3(0.0f, 0.0f, +avoiSpeed); break;
+		case Down:
+			position += Vec3(0.0f, 0.0f, -avoiSpeed); break;
+		case Left:
+			position += Vec3(-avoiSpeed, 0.0f, 0.0f); break;
+		case Right:
+			position += Vec3(avoiSpeed, 0.0f, 0.0f); break;
+		case UpLeft:
+			position += Vec3(-avoiSpeed, 0.0f, avoiSpeed); break;
+		case UpRight:
+			position += Vec3(avoiSpeed, 0.0f, avoiSpeed); break;
+		case DownLeft:
+			position += Vec3(-avoiSpeed, 0.0f, -avoiSpeed); break;
+		case DownRight:
+			position += Vec3(avoiSpeed, 0.0f, -avoiSpeed); break;
+		}
+	}
+	//回避クールタイム減少
+	if (avoiCoolTime > 0)
+	{
+		avoiCoolTime--;
+		if (avoiCoolTime <= 0)
+		{
+			avoidanceFlag = false;
+		}
+	}
+}
+
 void Player::DebugDraw()
 {
 	Vec3 attackPosition{};
@@ -316,5 +360,40 @@ void Player::DebugDraw()
 		attackPosition = { position.x,position.y,position.z - 10.0f };
 		attackAngle = { 90.0f,0.0f,0.0f };
 		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
+	}
+}
+
+
+void Player::PDirection()
+{
+	//右上
+	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
+		|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
+		direction = UpRight;
+
+	}//右下
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
+		|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = DownRight;
+	}//左下
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
+		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = DownLeft;
+	}//左上
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
+		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
+		direction = UpLeft;
+	}//上
+	else if (Input::Instance()->KeybordPush(DIK_UP)) {
+		direction = Up;
+	}//右
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
+		direction = Right;
+	}//下
+	else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
+		direction = Down;
+	}//左
+	else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
+		direction = Left;
 	}
 }
