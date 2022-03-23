@@ -13,20 +13,17 @@
 #include"Player.h"
 #include"PushCollision.h"
 #include"Enemy.h"
-#include"Title.h"
-#include"PlayScene.h"
-#include"SelectScene.h"
 
 extern const int window_width;
 extern const int window_height;
-class GameSceneManager :public Singleton<GameSceneManager>
+class SelectScene :public Singleton<SelectScene>
 {
 private:
-	friend Singleton<GameSceneManager>;
+	friend Singleton<SelectScene>;
 	_DirectX* directX = nullptr;
 public:
-	GameSceneManager();
-	~GameSceneManager();
+	SelectScene();
+	~SelectScene();
 
 	void Initialize(_DirectX* directX);
 
@@ -35,6 +32,11 @@ public:
 	void Update();
 
 	void Draw();
+
+	int GetStage() { return stage; }
+
+	float GetFade() { return fade; };
+	float SetFade(float fade) { return this->fade = fade; }
 
 private:
 	Camera* camera = nullptr;
@@ -50,8 +52,8 @@ private://定義
 	//スプライトデータ
 	Sprite::SpriteData spriteGraph;
 	Sprite::SpriteData BGGraph;
-	Sprite::SpriteData Parent;
-
+	Sprite::SpriteData Bottan;
+	Sprite::SpriteData Number[10];
 	//オブジェクトデータ
 	Object::ObjectData Polygon;
 	Object::ObjectData rayPolygon;
@@ -86,25 +88,13 @@ private://定義
 
 	ParticleManager* particleMan2 = nullptr;
 
-
-
 	//FBX
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
-	
-	enum Scene {
-		titleScene,
-		selectScene,
-		stage1,
-		scoreScene
-	};
-	Scene scene = titleScene;
-	Title* title = nullptr;
-	PlayScene* play = nullptr;
-	SelectScene* select = nullptr;
 
-	bool tFadeFlag = false;
-	bool sFadeFlag = false;
-	float tFade = 1;
-	float sFade = 1;
+	int stage = 1;
+	int nCount = 1;
+	int nCount2 = 0;
+	float fade = 1;
+
 };

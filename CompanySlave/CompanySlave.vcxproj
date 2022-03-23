@@ -256,7 +256,11 @@
     <ClInclude Include="MapStage.h" />
     <ClInclude Include="Pipeline\Pipeline.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayScene.h" />
     <ClInclude Include="PushCollision.h" />
+    <ClInclude Include="Score.h" />
+    <ClInclude Include="SelectScene.h" />
+    <ClInclude Include="Title.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2d\DebugText.cpp" />
@@ -286,7 +290,11 @@
     <ClCompile Include="MapStage.cpp" />
     <ClCompile Include="Pipeline\Pipeline.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="PushCollision.cpp" />
+    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="SelectScene.cpp" />
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

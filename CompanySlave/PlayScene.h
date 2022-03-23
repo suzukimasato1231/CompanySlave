@@ -13,20 +13,17 @@
 #include"Player.h"
 #include"PushCollision.h"
 #include"Enemy.h"
-#include"Title.h"
-#include"PlayScene.h"
-#include"SelectScene.h"
 
 extern const int window_width;
 extern const int window_height;
-class GameSceneManager :public Singleton<GameSceneManager>
+class PlayScene :public Singleton<PlayScene>
 {
 private:
-	friend Singleton<GameSceneManager>;
+	friend Singleton<PlayScene>;
 	_DirectX* directX = nullptr;
 public:
-	GameSceneManager();
-	~GameSceneManager();
+	PlayScene();
+	~PlayScene();
 
 	void Initialize(_DirectX* directX);
 
@@ -86,25 +83,7 @@ private://’è‹`
 
 	ParticleManager* particleMan2 = nullptr;
 
-
-
 	//FBX
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
-	
-	enum Scene {
-		titleScene,
-		selectScene,
-		stage1,
-		scoreScene
-	};
-	Scene scene = titleScene;
-	Title* title = nullptr;
-	PlayScene* play = nullptr;
-	SelectScene* select = nullptr;
-
-	bool tFadeFlag = false;
-	bool sFadeFlag = false;
-	float tFade = 1;
-	float sFade = 1;
 };
