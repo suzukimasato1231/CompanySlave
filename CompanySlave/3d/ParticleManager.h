@@ -70,7 +70,7 @@ public: // 静的メンバ関数
 	/// <param name="window_width">画面幅</param>
 	/// <param name="window_height">画面高さ</param>
 	/// <returns>成否</returns>
-	static bool StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, Camera *camera, int window_width, int window_height);
+	static bool StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height);
 
 	/// <summary>
 	/// 描画前処理
@@ -89,6 +89,8 @@ public: // 静的メンバ関数
 	/// <returns></returns>
 	static ParticleManager *Create(const wchar_t *filename, int textureNum);
 
+	//カメラをセット
+	static void SetCamera(Camera *camera) { ParticleManager::camera = camera; }
 
 	/// <summary>
 	/// パーティクルの追加

@@ -35,15 +35,11 @@ Object::~Object()
 
 }
 
-void  Object::Init(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList, Camera *camera, LightGroup *lightGroup)
+void  Object::Init(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList)
 {
 	Object::dev = dev;
 
 	Object::cmdList = cmdList;
-
-	Object::camera = camera;
-
-	Object::lightGroup = lightGroup;
 
 	//パイプライン生成
 	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev);

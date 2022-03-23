@@ -49,9 +49,7 @@ private://定義
 	Sprite::SpriteData Parent;
 
 	//オブジェクトデータ
-
 	Vec2 pos = { 0.0f,0.0f };
-
 
 	//パーティクル
 	ParticleManager *particleMan = nullptr;

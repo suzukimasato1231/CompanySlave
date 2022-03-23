@@ -15,10 +15,9 @@ SelectScene::~SelectScene()
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
-	
 	safe_delete(audio);
 }
-void SelectScene::Initialize(_DirectX* directX)
+void SelectScene::Initialize(_DirectX *directX)
 {
 	assert(directX);
 	this->directX = directX;
@@ -27,13 +26,14 @@ void SelectScene::Initialize(_DirectX* directX)
 	//カメラクラス作成
 	camera = Camera::Create();
 	//パーティクル初期化
-	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), this->camera, window_width, window_height);
+	ParticleManager::SetCamera(camera);
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 	//デバックテキスト初期化
 	debugText.Initialize();
 	//3Dオブジェクト初期化
-	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList(), camera, lightGroup);
+	Object::Instance()->SetCamera(camera);
+	Object::Instance()->SetLight(lightGroup);
 }
 
 void SelectScene::Init()
@@ -71,9 +71,7 @@ void SelectScene::Init()
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
-
 	//3Dobjファイル読み込み。
-
 	//パーティクルクラス作成
 	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
@@ -87,11 +85,11 @@ void SelectScene::Update()
 	//インスタンス化してるのでInput/Input.h"を持ってくればどのクラスでも使えるよ
 	if (Input::Instance()->KeybordTrigger(DIK_UP))
 	{
-	
+
 	}
 	if (Input::Instance()->KeybordTrigger(DIK_DOWN))
 	{
-		
+
 	}
 	//ステージ選択ボタン
 	if (Input::Instance()->KeybordTrigger(DIK_LEFT))
@@ -104,10 +102,10 @@ void SelectScene::Update()
 					nCount2--;
 				}
 			}
-			if (nCount > 0&&nCount2!=0) {
+			if (nCount > 0 && nCount2 != 0) {
 				nCount--;
 			}
-			if (nCount > 1&&nCount2 == 0) {
+			if (nCount > 1 && nCount2 == 0) {
 				nCount--;
 			}
 		}
@@ -149,17 +147,15 @@ void SelectScene::Draw()
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
 	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
 	Sprite::Instance()->Draw(spriteGraph, Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-	
+
 	Sprite::Instance()->Draw(Bottan, Vec2(580, 280), 200, 200, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-	
+
 	if (stage < 10) {
 		Sprite::Instance()->Draw(Number[nCount], Vec2(630, 320), 100, 100, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 	}
 	if (stage >= 10) {
-
 		Sprite::Instance()->Draw(Number[nCount2], Vec2(590, 320), 100, 100, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 		Sprite::Instance()->Draw(Number[nCount], Vec2(670, 320), 100, 100, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-
 	}
 
 	//デバックテキスト%dと%f対応

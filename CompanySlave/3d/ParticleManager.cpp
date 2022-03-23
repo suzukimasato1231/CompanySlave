@@ -24,14 +24,12 @@ XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
 XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
 
 
-bool ParticleManager::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, Camera *camera, int window_width, int window_height)
+bool ParticleManager::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height)
 {
 	// nullptrチェック
 	assert(device);
 	assert(camera);
 	ParticleManager::device = device;
-
-	ParticleManager::camera = camera;
 
 	ParticleManager::cmdList = cmdList;
 

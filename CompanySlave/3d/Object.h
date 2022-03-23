@@ -138,12 +138,22 @@ public:
 	Object() {};
 	~Object();
 	//初期化
-	void Init(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList, Camera *camera, LightGroup *lightGroup);
+	void Init(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList);
 	/// <summary>
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
 	static Object *Create();
+	/// <summary>
+	/// カメラをセット
+	/// </summary>
+	/// <param name="camera"></param>
+	static void SetCamera(Camera *camera) { Object::camera = camera; }
+	/// <summary>
+	/// ライトをセット
+	/// </summary>
+	/// <param name="lightGroup"></param>
+	static void SetLight(LightGroup *lightGroup) { Object::lightGroup = lightGroup; }
 public:
 	//カメラクラス
 	static Camera *camera;

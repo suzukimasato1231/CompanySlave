@@ -35,13 +35,14 @@ void PlayScene::Initialize(_DirectX* directX)
 	//FBX初期化
 	FBXObject3d::SetCamera(camera);
 	//パーティクル初期化
-	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), this->camera, window_width, window_height);
+	ParticleManager::SetCamera(camera);
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 	//デバックテキスト初期化
 	debugText.Initialize();
 	//3Dオブジェクト初期化
-	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList(), camera, lightGroup);
+	Object::Instance()->SetCamera(camera);
+	Object::Instance()->SetLight(lightGroup);
 }
 
 void PlayScene::Init()
@@ -50,7 +51,6 @@ void PlayScene::Init()
 	sound1 = Audio::SoundLoadWave("Resources/i.wav");
 	
 	// 3Dオブエクトにライトをセット
-	//Object3d::SetLightGroup(lightGroup);
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
 	lightGroup->SetDirLightActive(1, true);

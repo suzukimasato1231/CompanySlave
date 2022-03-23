@@ -24,6 +24,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	select->Initialize(directX);
 	play = new PlayScene();
 	play->Initialize(directX);
+	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(),window_width,window_height);
 	//スプライトクラス作成
 	Sprite::Instance()->Init();
 	//FBX初期化
@@ -32,6 +33,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	FBXObject3d::CreateGraphicsPipeline();
 	//図形モデル初期化
 	Shape::Init(directX->GetDevice());
+	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList());
 }
 
 void GameSceneManager::Init()
