@@ -92,19 +92,23 @@ private://定義
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
 	
+	//シーン列挙型
 	enum Scene {
 		titleScene,
 		selectScene,
 		stage1,
 		scoreScene
 	};
+	//最初のシーン
 	Scene scene = titleScene;
+
 	Title* title = nullptr;
 	PlayScene* play = nullptr;
 	SelectScene* select = nullptr;
-
+	//フェードのフラグ(tがタイトルのやつでsがシーンチェンジのやつ)
 	bool tFadeFlag = false;
 	bool sFadeFlag = false;
+	//フェード(tがタイトルのやつでsがシーンチェンジのやつ)
 	float tFade = 1;
 	float sFade = 1;
 };

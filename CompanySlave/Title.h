@@ -35,6 +35,7 @@
 
 		void Draw();
 
+		//フェードの数値をシーンマネージャーで変更するためのやつ
 		float GetFade() { return fade; };
 		float SetFade(float fade) { return this->fade = fade; }
 	private:
@@ -92,7 +93,8 @@
 		//FBX
 		Model* model1 = nullptr;
 		FBXObject3d* fbxObject1 = nullptr;
-		int scene = 0;
+		
+	//フェード
 		float fade = 1;
 	};
 

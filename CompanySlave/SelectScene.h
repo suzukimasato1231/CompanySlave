@@ -33,8 +33,9 @@ public:
 
 	void Draw();
 
+	//ステージの数をシーンマネージャーで使うためのやつ
 	int GetStage() { return stage; }
-
+	//フェードの数値をシーンマネージャーで変更するためのやつ	
 	float GetFade() { return fade; };
 	float SetFade(float fade) { return this->fade = fade; }
 
@@ -92,9 +93,13 @@ private://定義
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
 
+	//ステージの数
 	int stage = 1;
+	//一の位
 	int nCount = 1;
+	//十の位
 	int nCount2 = 0;
+	//フェード
 	float fade = 1;
 
 };
