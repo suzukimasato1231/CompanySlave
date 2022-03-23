@@ -82,7 +82,7 @@ private:
 	Box pBox;							//プレイヤーの長方形
 	Vec3 position{ 10.0f,0.0f,0.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
-	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
+	Vec3 speed{ 1.5f,1.5f,1.5f };		//プレイヤースピード
 
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 	Vec3 angle{ 0.0f,0.0f,0.0f };		//角度

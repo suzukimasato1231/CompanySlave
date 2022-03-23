@@ -278,6 +278,7 @@ void Player::Avoidance()
 		{
 			avoiCoolTime = avoiCoolTimeMax;
 		}
+		float radDir = 0.0f;
 		switch (avoiDirection)
 		{
 		case Up:
@@ -289,13 +290,29 @@ void Player::Avoidance()
 		case Right:
 			position += Vec3(avoiSpeed, 0.0f, 0.0f); break;
 		case UpLeft:
-			position += Vec3(-avoiSpeed, 0.0f, avoiSpeed); break;
+			 radDir = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
+			//“G‚Ì•ûŒü‚ÉŒü‚©‚Á‚Ä‚¢‚­
+			position.x += attackSpeed.x * cosf(radDir);
+			position.z += attackSpeed.z * sinf(radDir);
+			break;
 		case UpRight:
-			position += Vec3(avoiSpeed, 0.0f, avoiSpeed); break;
+			 radDir = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
+			//“G‚Ì•ûŒü‚ÉŒü‚©‚Á‚Ä‚¢‚­
+			position.x += attackSpeed.x * cosf(radDir);
+			position.z += attackSpeed.z * sinf(radDir);
+			break;
 		case DownLeft:
-			position += Vec3(-avoiSpeed, 0.0f, -avoiSpeed); break;
+			 radDir = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
+			//“G‚Ì•ûŒü‚ÉŒü‚©‚Á‚Ä‚¢‚­
+			position.x += attackSpeed.x * cosf(radDir);
+			position.z += attackSpeed.z * sinf(radDir);
+			break;
 		case DownRight:
-			position += Vec3(avoiSpeed, 0.0f, -avoiSpeed); break;
+			radDir = atan2(position.z - 10.0f - position.z, position.x +10.0f - position.x);
+			//“G‚Ì•ûŒü‚ÉŒü‚©‚Á‚Ä‚¢‚­
+			position.x += attackSpeed.x * cosf(radDir);
+			position.z += attackSpeed.z * sinf(radDir);
+			break;
 		}
 	}
 	//‰ñ”ğƒN[ƒ‹ƒ^ƒCƒ€Œ¸­
