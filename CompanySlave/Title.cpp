@@ -12,16 +12,10 @@ Title::~Title()
 	safe_delete(particleMan);
 	safe_delete(particleMan2);
 	safe_delete(lightGroup);
-	safe_delete(fbxObject1);
-	safe_delete(model1);
-	safe_delete(mapStage);
-	safe_delete(player);
-	safe_delete(enemy);
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
 	Audio::SoundUnload(&sound1);
-	Audio::SoundUnload(&sound2);
 	safe_delete(audio);
 }
 void Title::Initialize(_DirectX* directX)
@@ -32,15 +26,8 @@ void Title::Initialize(_DirectX* directX)
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//スプライトクラス作成
-	Sprite::Instance()->Init();
-	//FBX初期化
-	FBXObject3d::SetDevice(directX->GetDevice());
-	FBXObject3d::SetCmdList(directX->GetCmandList());
+	//FBXカメラ設定
 	FBXObject3d::SetCamera(camera);
-	FBXObject3d::CreateGraphicsPipeline();
-	//図形モデル初期化
-	Shape::Init(directX->GetDevice());
 	//パーティクル初期化
 	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), this->camera, window_width, window_height);
 	//ライトグループクラス作成
@@ -53,18 +40,7 @@ void Title::Initialize(_DirectX* directX)
 
 void Title::Init()
 {
-	//音データ読み込み
-	sound1 = Audio::SoundLoadWave("Resources/i.wav");
-	//sound2 = Audio::SoundLoadWave("Resources/BGM.wav");
-
-	//読み込んだ音データを1回だけ流す
-	//sound->SoundSEPlayWave(sound1);
-
-	//読み込んだ音データをループで流す
-	//sound->SoundBGMPlayLoopWave(sound2, sound->BGM);
-
-	// 3Dオブエクトにライトをセット
-	//Object3d::SetLightGroup(lightGroup);
+	
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
 	lightGroup->SetDirLightActive(1, true);
@@ -80,50 +56,15 @@ void Title::Init()
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
-	Parent = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
-
-	//3Dオブジェクト画像読み込み
-	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
-
-	//3Dobjファイル読み込み。
-	//Polygon = Object::Instance()->CreateOBJ("Boss");
-	BossPolygon = Object::Instance()->CreateOBJ("sphere", true);
-
-	//Shapeクラスに決まった形のオブジェクトを作成	
-	Polygon = Shape::CreateSquare(20.0f, 20.0f, 20.0f);
-
-	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
-
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
 
 	//パーティクルクラス作成
 	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
 	particleMan2 = ParticleManager::Create(L"Resources/particle2.png", 1);
-
-
-
-	//マップチップの初期化
-	mapStage = new MapStage;
-	mapStage->Init();
-	//プレイヤーの初期化
-	player = new Player;
-	player->Init();
-	//敵
-	enemy = new Enemy;
-	enemy->Init();
 }
 
 void Title::Update()
 {
-
-	fbxObject1->Update();
-
 	//パーティクル更新
 	particleMan->Update();
 	particleMan2->Update();
@@ -146,8 +87,6 @@ void Title::Draw()
 	
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "title");
-
-
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

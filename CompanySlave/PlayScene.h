@@ -50,22 +50,11 @@ private://定義
 	Sprite::SpriteData Parent;
 
 	//オブジェクトデータ
-	Object::ObjectData Polygon;
-	Object::ObjectData rayPolygon;
-	Object::ObjectData BossPolygon;
 
 	//オブジェクト画像
 	int graph1;
 	int graph2;
 	int graph3;
-
-	Vec3 pPos1 = { 1.0f,1.0f,0.0f };
-
-	Vec3 pPos2 = { 2.0f,4.0f,5.0f };
-
-	Vec3 angle = { 0.0f,0.0f,0.0f };
-
-	Vec3 angle2 = { 0.0f,0.0f,0.0f };
 
 	Vec2 pos = { 0.0f,0.0f };
 

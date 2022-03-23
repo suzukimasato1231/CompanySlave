@@ -12,16 +12,10 @@ SelectScene::~SelectScene()
 	safe_delete(particleMan);
 	safe_delete(particleMan2);
 	safe_delete(lightGroup);
-	safe_delete(fbxObject1);
-	safe_delete(model1);
-	safe_delete(mapStage);
-	safe_delete(player);
-	safe_delete(enemy);
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
-	Audio::SoundUnload(&sound1);
-	Audio::SoundUnload(&sound2);
+	
 	safe_delete(audio);
 }
 void SelectScene::Initialize(_DirectX* directX)
@@ -32,15 +26,6 @@ void SelectScene::Initialize(_DirectX* directX)
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//スプライトクラス作成
-	Sprite::Instance()->Init();
-	//FBX初期化
-	FBXObject3d::SetDevice(directX->GetDevice());
-	FBXObject3d::SetCmdList(directX->GetCmandList());
-	FBXObject3d::SetCamera(camera);
-	FBXObject3d::CreateGraphicsPipeline();
-	//図形モデル初期化
-	Shape::Init(directX->GetDevice());
 	//パーティクル初期化
 	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), this->camera, window_width, window_height);
 	//ライトグループクラス作成
@@ -53,16 +38,6 @@ void SelectScene::Initialize(_DirectX* directX)
 
 void SelectScene::Init()
 {
-	//音データ読み込み
-	sound1 = Audio::SoundLoadWave("Resources/i.wav");
-	//sound2 = Audio::SoundLoadWave("Resources/BGM.wav");
-
-	//読み込んだ音データを1回だけ流す
-	//sound->SoundSEPlayWave(sound1);
-
-	//読み込んだ音データをループで流す
-	//sound->SoundBGMPlayLoopWave(sound2, sound->BGM);
-
 	// 3Dオブエクトにライトをセット
 	//Object3d::SetLightGroup(lightGroup);
 	lightGroup->SetDirLightActive(0, true);
@@ -98,36 +73,11 @@ void SelectScene::Init()
 	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
 
 	//3Dobjファイル読み込み。
-	//Polygon = Object::Instance()->CreateOBJ("Boss");
-	BossPolygon = Object::Instance()->CreateOBJ("sphere", true);
-
-	//Shapeクラスに決まった形のオブジェクトを作成	
-	Polygon = Shape::CreateSquare(20.0f, 20.0f, 20.0f);
-
-	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
-
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
 
 	//パーティクルクラス作成
 	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
 	particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
-
-
-
-	//マップチップの初期化
-	mapStage = new MapStage;
-	mapStage->Init();
-	//プレイヤーの初期化
-	player = new Player;
-	player->Init();
-	//敵
-	enemy = new Enemy;
-	enemy->Init();
 }
 
 void SelectScene::Update()
@@ -179,9 +129,6 @@ void SelectScene::Update()
 			}
 		}
 	}
-
-
-	fbxObject1->Update();
 
 	//パーティクル更新
 	particleMan->Update();

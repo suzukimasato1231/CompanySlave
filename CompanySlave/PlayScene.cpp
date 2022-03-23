@@ -32,15 +32,8 @@ void PlayScene::Initialize(_DirectX* directX)
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//スプライトクラス作成
-	Sprite::Instance()->Init();
 	//FBX初期化
-	FBXObject3d::SetDevice(directX->GetDevice());
-	FBXObject3d::SetCmdList(directX->GetCmandList());
 	FBXObject3d::SetCamera(camera);
-	FBXObject3d::CreateGraphicsPipeline();
-	//図形モデル初期化
-	Shape::Init(directX->GetDevice());
 	//パーティクル初期化
 	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), this->camera, window_width, window_height);
 	//ライトグループクラス作成
@@ -55,14 +48,7 @@ void PlayScene::Init()
 {
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/i.wav");
-	//sound2 = Audio::SoundLoadWave("Resources/BGM.wav");
-
-	//読み込んだ音データを1回だけ流す
-	//sound->SoundSEPlayWave(sound1);
-
-	//読み込んだ音データをループで流す
-	//sound->SoundBGMPlayLoopWave(sound2, sound->BGM);
-
+	
 	// 3Dオブエクトにライトをセット
 	//Object3d::SetLightGroup(lightGroup);
 	lightGroup->SetDirLightActive(0, true);
@@ -87,11 +73,8 @@ void PlayScene::Init()
 	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
 
 	//3Dobjファイル読み込み。
-	//Polygon = Object::Instance()->CreateOBJ("Boss");
-	BossPolygon = Object::Instance()->CreateOBJ("sphere", true);
 
 	//Shapeクラスに決まった形のオブジェクトを作成	
-	Polygon = Shape::CreateSquare(20.0f, 20.0f, 20.0f);
 
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
@@ -124,7 +107,6 @@ void PlayScene::Update()
 	//インスタンス化してるのでInput/Input.h"を持ってくればどのクラスでも使えるよ
 	if (Input::Instance()->KeybordPush(DIK_UP))
 	{
-		//	fbxObject1->PlayAnimation();
 	}
 	if (Input::Instance()->KeybordPush(DIK_DOWN))
 	{
@@ -191,9 +173,6 @@ void PlayScene::Draw()
 	enemy->Draw();
 
 
-	//fbxObject1->Draw();
-
-
 	//パーティクル描画
 	particleMan->Draw();
 
@@ -216,8 +195,6 @@ void PlayScene::Draw()
 	debugText.Print(10, 240, 2, "comboTime:%d", player->GetComboTime());
 
 	debugText.Print(10, 280, 2, "coolTime:%d", player->GetCoolTime());
-
-
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

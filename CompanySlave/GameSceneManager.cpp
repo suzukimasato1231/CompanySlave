@@ -1,5 +1,6 @@
 #include "GameSceneManager.h"
 #include"Input.h"
+#include"Shape.h"
 #include<sstream>
 #include<iomanip>
 GameSceneManager::GameSceneManager()
@@ -8,8 +9,9 @@ GameSceneManager::GameSceneManager()
 
 GameSceneManager::~GameSceneManager()
 {
-
-
+	safe_delete(title);
+	safe_delete(play);
+	safe_delete(select);
 }
 
 void GameSceneManager::Initialize(_DirectX* directX)
@@ -22,7 +24,14 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	select->Initialize(directX);
 	play = new PlayScene();
 	play->Initialize(directX);
-
+	//スプライトクラス作成
+	Sprite::Instance()->Init();
+	//FBX初期化
+	FBXObject3d::SetDevice(directX->GetDevice());
+	FBXObject3d::SetCmdList(directX->GetCmandList());
+	FBXObject3d::CreateGraphicsPipeline();
+	//図形モデル初期化
+	Shape::Init(directX->GetDevice());
 }
 
 void GameSceneManager::Init()
@@ -30,7 +39,6 @@ void GameSceneManager::Init()
 	title->Init();
 	select->Init();
 	play->Init();
-
 	scene = titleScene;
 }
 
