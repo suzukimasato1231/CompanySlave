@@ -93,6 +93,7 @@ void SelectScene::Update()
 	{
 		
 	}
+	//ステージ選択ボタン
 	if (Input::Instance()->KeybordTrigger(DIK_LEFT))
 	{
 		if (stage > 1) {
@@ -162,8 +163,8 @@ void SelectScene::Draw()
 	}
 
 	//デバックテキスト%dと%f対応
-	debugText.Print(10, 40, 2, "%d",stage);
-	debugText.Print(10, 80, 2, "%d", nCount2);
+	debugText.Print(10, 40, 2, "LeftArrow");
+	debugText.Print(10, 80, 2, "RightArrow");
 
 
 	//デバックテキスト描画ここは変わらない

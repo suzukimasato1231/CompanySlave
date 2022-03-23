@@ -29,13 +29,16 @@ private://定義
 		stage1,
 		scoreScene
 	};
+	//最初のシーン
 	Scene scene = titleScene;
+
 	Title* title = nullptr;
 	PlayScene* play = nullptr;
 	SelectScene* select = nullptr;
-
+	//フェードのフラグ(tがタイトルのやつでsがシーンチェンジのやつ)
 	bool tFadeFlag = false;
 	bool sFadeFlag = false;
+	//フェード(tがタイトルのやつでsがシーンチェンジのやつ)
 	float tFade = 1;
 	float sFade = 1;
 };
