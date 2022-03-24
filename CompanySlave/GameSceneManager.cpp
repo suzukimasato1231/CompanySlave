@@ -14,7 +14,7 @@ GameSceneManager::~GameSceneManager()
 	safe_delete(select);
 }
 
-void GameSceneManager::Initialize(_DirectX* directX)
+void GameSceneManager::Initialize(_DirectX *directX)
 {
 	assert(directX);
 	this->directX = directX;
@@ -24,7 +24,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	select->Initialize(directX);
 	play = new PlayScene();
 	play->Initialize(directX);
-	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(),window_width,window_height);
+	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), window_width, window_height);
 	//スプライトクラス作成
 	Sprite::Instance()->Init();
 	//FBX初期化
@@ -47,7 +47,7 @@ void GameSceneManager::Init()
 void GameSceneManager::Update()
 {
 	if (scene == titleScene) {
-		if (Input::Instance()->KeybordTrigger(DIK_SPACE))
+		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
 			tFadeFlag = true;
 			//scene = selectScene;
@@ -61,25 +61,25 @@ void GameSceneManager::Update()
 			tFadeFlag = false;
 		}
 		title->SetFade(tFade);
-	
+
 
 		title->Update();
-	
+
 	}
 	else if (scene == selectScene) {
-	if (Input::Instance()->KeybordTrigger(DIK_SPACE)&& select->GetStage() == 1)
-	{
-		sFadeFlag = true;
-	}
+		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA) && select->GetStage() == 1)
+		{
+			sFadeFlag = true;
+		}
 
-	if (sFadeFlag == true) {
-		sFade -= 0.2f;
-	}
-	if (sFade < 0) {
-		scene = stage1;
-		sFadeFlag = false;
-	}
-	select->SetFade(sFade);
+		if (sFadeFlag == true) {
+			sFade -= 0.2f;
+		}
+		if (sFade < 0) {
+			scene = stage1;
+			sFadeFlag = false;
+		}
+		select->SetFade(sFade);
 
 		select->Update();
 	}
@@ -101,7 +101,7 @@ void GameSceneManager::Draw()
 	{
 		select->Draw();
 	}
-	else if (scene == stage1) 
+	else if (scene == stage1)
 	{
 		play->Draw();
 	}

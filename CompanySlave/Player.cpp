@@ -14,6 +14,8 @@ void Player::Init()
 	playerObject = Object::Instance()->CreateOBJ("player");
 	pBox.minPosition = XMVectorSet(0, 2, 0, 1);
 	pBox.maxPosition = XMVectorSet(0, 2, 0, 1);
+	pSphere.radius = r;
+	pSphere.center = XMVectorSet(0, 2, 0, 1);
 	oldPosition = position;
 
 	//コンボUI
@@ -40,6 +42,9 @@ void Player::Init()
 #if _DEBUG
 	attackField = Shape::CreateRect(10.0f, 20.0f);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
+
+	normalFieldOBJ = Shape::CreateRect(5.0f, 5.0f);
+	normalGraph = Object::Instance()->LoadTexture(L"Resources/kengeki.png");
 #endif
 }
 
@@ -53,6 +58,8 @@ void Player::Update(Enemy *enemy)
 	Move();
 	//プレイヤーの向きを決める
 	PDirection();
+	//通常攻撃
+	NormalAttack(enemy);
 
 	//斬りに行く敵の座標を探す
 	PlayerAttack(enemy);
@@ -65,6 +72,7 @@ void Player::Update(Enemy *enemy)
 	//座標を合わせる
 	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+	pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
 }
 
 void Player::Draw()
@@ -105,7 +113,9 @@ void Player::Move()
 	oldPosition = position;
 	//移動
 	if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->KeybordPush(DIK_LEFT)
-		|| Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->KeybordPush(DIK_DOWN))
+		|| Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->KeybordPush(DIK_DOWN)
+		|| Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft)
+		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
 		moveFlag = true;
 	}
@@ -115,19 +125,19 @@ void Player::Move()
 	if (attackFlag == false && nowComboTime <= 0 && avoidanceTime <= 0)
 	{
 		//移動
-		if (Input::Instance()->KeybordPush(DIK_RIGHT))
+		if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight))
 		{
 			position.x += speed.x;
 		}
-		if (Input::Instance()->KeybordPush(DIK_LEFT))
+		if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft))
 		{
 			position.x -= speed.x;
 		}
-		if (Input::Instance()->KeybordPush(DIK_UP))
+		if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp))
 		{
 			position.z += speed.z;
 		}
-		if (Input::Instance()->KeybordPush(DIK_DOWN))
+		if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown))
 		{
 			position.z -= speed.z;
 		}
@@ -142,9 +152,12 @@ void Player::PlayerAttack(Enemy *enemy)
 {
 	if (enemy == nullptr) { return; }
 	//攻撃開始
-	if (((Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->KeybordPush(DIK_UP) ||
-		Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->KeybordPush(DIK_RIGHT)))
-		&& coolTime <= 0 && attackFlag == false && Input::Instance()->KeybordPush(DIK_C))
+	if ((Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->KeybordPush(DIK_UP)
+		|| Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->KeybordPush(DIK_RIGHT)
+		|| Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft)
+		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+		&& (Input::Instance()->KeybordPush(DIK_C) || Input::Instance()->ControllerPush(ButtonA))
+		&& coolTime <= 0 && attackFlag == false)
 	{
 		attackAngle = Angle();
 		attackFlag = true;
@@ -219,6 +232,32 @@ void Player::StopAttack()
 	}
 }
 
+void Player::NormalAttack(Enemy *enemy)
+{
+	//クールタイム
+	if (normalAttackCoolTime >= 0)
+	{
+		normalAttackCoolTime--;
+		if (normalAttackCoolTime <= 0)
+		{
+			normalAttackFlag = false;
+		}
+	}
+	if (Input::Instance()->KeybordTrigger(DIK_D) && normalAttackFlag == false &&
+		attackFlag == false && comboFlag == false && avoidanceFlag == false)
+	{
+		normalAttackFlag = true;
+		normalAttackCoolTime = normalAttackCoolTimeMax;
+		for (int i = 0; i < enemy->GetEnemySize(); i++)
+		{
+			if (Collision::CheckSphere2Box(enemy->GetSphere(i), normalAttackBox))
+			{
+				enemy->DamegeNormal(i);
+			}
+		}
+	}
+}
+
 float  Player::Angle()
 {	//右上
 	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
@@ -241,19 +280,19 @@ float  Player::Angle()
 		float rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
 		return rad;
 	}//上
-	else if (Input::Instance()->KeybordPush(DIK_UP)) {
+	else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) {
 		float rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
 		return rad;
 	}//右
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) {
 		float rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
 		return rad;
 	}//下
-	else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
+	else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) {
 		float rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
 		return rad;
 	}//左
-	else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) {
 		float rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
 		return rad;
 	}
@@ -263,8 +302,19 @@ float  Player::Angle()
 
 void Player::Avoidance()
 {
+	//回避クールタイム減少
+	if (avoiCoolTime > 0)
+	{
+		avoiCoolTime--;
+		if (avoiCoolTime <= 0)
+		{
+			avoidanceFlag = false;
+		}
+	}
+
 	//回避開始
-	if (Input::Instance()->KeybordTrigger(DIK_F) && avoidanceFlag == false)
+	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonB))
+		&& attackFlag == false && comboFlag == false && avoidanceFlag == false)
 	{
 		avoidanceFlag = true;
 		avoidanceTime = avoidanceTimeMax;
@@ -290,39 +340,80 @@ void Player::Avoidance()
 		case Right:
 			position += Vec3(avoiSpeed, 0.0f, 0.0f); break;
 		case UpLeft:
-			 radDir = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
+			radDir = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
 			//敵の方向に向かっていく
 			position.x += attackSpeed.x * cosf(radDir);
 			position.z += attackSpeed.z * sinf(radDir);
 			break;
 		case UpRight:
-			 radDir = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
+			radDir = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
 			//敵の方向に向かっていく
 			position.x += attackSpeed.x * cosf(radDir);
 			position.z += attackSpeed.z * sinf(radDir);
 			break;
 		case DownLeft:
-			 radDir = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
+			radDir = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
 			//敵の方向に向かっていく
 			position.x += attackSpeed.x * cosf(radDir);
 			position.z += attackSpeed.z * sinf(radDir);
 			break;
 		case DownRight:
-			radDir = atan2(position.z - 10.0f - position.z, position.x +10.0f - position.x);
+			radDir = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
 			//敵の方向に向かっていく
 			position.x += attackSpeed.x * cosf(radDir);
 			position.z += attackSpeed.z * sinf(radDir);
 			break;
 		}
 	}
-	//回避クールタイム減少
-	if (avoiCoolTime > 0)
-	{
-		avoiCoolTime--;
-		if (avoiCoolTime <= 0)
-		{
-			avoidanceFlag = false;
-		}
+}
+
+
+void Player::PDirection()
+{
+	//右上
+	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
+		|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
+		direction = UpRight;
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalField, position.y, position.z + normalField, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x + normalFieldR, position.y, position.z + normalFieldR, 1);
+	}//右下
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
+		|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = DownRight;
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalField, position.y, position.z - normalField, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x + normalFieldR, position.y, position.z - normalFieldR, 1);
+	}//左下
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
+		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = DownLeft;
+		normalAttackBox.maxPosition = XMVectorSet(position.x - normalField, position.y, position.z - normalField, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalFieldR, position.y, position.z - normalFieldR, 1);
+	}//左上
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
+		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
+		direction = UpLeft;
+		normalAttackBox.maxPosition = XMVectorSet(position.x - normalField, position.y, position.z + normalField, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalFieldR, position.y, position.z + normalFieldR, 1);
+	}//上
+	else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) {
+		direction = Up;
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalFieldR, position.y, position.z + normalField, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalFieldR, position.y, position.z, 1);
+	}//右
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) {
+		direction = Right;
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalField, position.y, position.z + normalFieldR, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z - normalFieldR, 1);
+	}//下
+	else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = Down;
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalFieldR, position.y, position.z, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalFieldR, position.y, position.z - normalField, 1);
+	}//左
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) {
+		direction = Left;
+		normalAttackBox.maxPosition = XMVectorSet(position.x, position.y, position.z + normalFieldR, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalField, position.y, position.z - normalFieldR, 1);
 	}
 }
 
@@ -330,6 +421,7 @@ void Player::DebugDraw()
 {
 	Vec3 attackPosition{};
 	Vec3 attackAngle{};
+	//コンボ方向
 	if (Input::Instance()->KeybordPush(DIK_UP) && Input::Instance()->KeybordPush(DIK_RIGHT))
 	{
 		attackPosition = { position.x + 10.0f,position.y,position.z + 10.0f };
@@ -378,39 +470,35 @@ void Player::DebugDraw()
 		attackAngle = { 90.0f,0.0f,0.0f };
 		Object::Instance()->Draw(attackField, attackPosition, scale, attackAngle, color, redColor);
 	}
-}
-
-
-void Player::PDirection()
-{
-	//右上
-	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
-		|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
-		direction = UpRight;
-
-	}//右下
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
-		|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
-		direction = DownRight;
-	}//左下
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
-		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
-		direction = DownLeft;
-	}//左上
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
-		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
-		direction = UpLeft;
-	}//上
-	else if (Input::Instance()->KeybordPush(DIK_UP)) {
-		direction = Up;
-	}//右
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
-		direction = Right;
-	}//下
-	else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
-		direction = Down;
-	}//左
-	else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
-		direction = Left;
+	//通常攻撃エフェクト
+	if (normalAttackFlag == true && normalAttackCoolTime == normalAttackCoolTimeMax)
+	{
+		switch (direction)
+		{
+		case Up:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z + r), scale, UIAngle, color, normalGraph);
+			break;
+		case Down:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z - r), scale, UIAngle, color, normalGraph);
+			break;
+		case Left:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - r, position.y, position.z), scale, UIAngle, color, normalGraph);
+			break;
+		case Right:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + r, position.y, position.z), scale, UIAngle, color, normalGraph);
+			break;
+		case UpRight:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + r, position.y + r, position.z), scale, UIAngle, color, normalGraph);
+			break;
+		case UpLeft:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - r, position.y + r, position.z), scale, UIAngle, color, normalGraph);
+			break;
+		case DownRight:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + r, position.y - r, position.z), scale, UIAngle, color, normalGraph);
+			break;
+		case DownLeft:
+			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - r, position.y - r, position.z), scale, UIAngle, color, normalGraph);
+			break;
+		}
 	}
 }

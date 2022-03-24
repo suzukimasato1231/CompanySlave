@@ -272,9 +272,13 @@ bool Collision::CheckBox2Box(const Box &box1, const Box &box2)
 	{
 		//zŽ²‚Ì”»’è
 		if (box2.minPosition.m128_f32[2] <= box1.maxPosition.m128_f32[2] && box1.minPosition.m128_f32[2] <= box2.maxPosition.m128_f32[2])
-		{
 
-			return 1;
+		{
+			if (box2.minPosition.m128_f32[3] <= box1.maxPosition.m128_f32[3] && box1.minPosition.m128_f32[3] <= box2.maxPosition.m128_f32[3])
+			{
+
+				return 1;
+			}
 		}
 	}
 	return 0;
