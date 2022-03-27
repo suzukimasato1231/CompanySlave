@@ -23,11 +23,22 @@ private://構造体
 		bool wasAttackFlag = false;			//攻撃されたかどうか
 		int damegeTime = 0;					//点滅時間
 	};
+	//敵スポーン
+	struct EnemySpawner
+	{
+		Vec3 position;				//位置
+		int enemyNum;				//
+		float spawnTime = 0;		//今敵のスポーン間隔時間
+		float spawnTimemax = 50;	//敵のスポーン間隔時間
+		int enemyKind = 0;			//敵の種類
+	};
 private:
 	//敵最大数
 	static const int eNumMax = 20;
 	//敵配列
 	std::vector<EnemyData *>eData;
+	//敵スポーン
+	std::vector<EnemySpawner *>eSpawner;
 public:
 	Enemy();//コンストラクタ
 
@@ -57,7 +68,7 @@ private:
 	//削除
 	void Delete();
 	//エネミーとエネミーの押し戻し
-	void Enemy2Enemy();
+	void Enemy2Enemy(class Player *player);
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }

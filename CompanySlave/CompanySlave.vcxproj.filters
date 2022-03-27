@@ -63,6 +63,9 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{c6febe8c-872c-4591-9c56-5b0958c5d530}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{c4b4bd4d-4489-48a1-8095-a358dbe68352}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -204,9 +207,6 @@
     <ClInclude Include="PushCollision.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="GameSceneManager.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
@@ -221,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="Title.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -299,9 +302,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -319,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="Title.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

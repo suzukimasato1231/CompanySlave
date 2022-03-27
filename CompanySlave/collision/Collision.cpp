@@ -250,16 +250,16 @@ bool Collision::CheckRay2Sphere(const Ray &lay, const Sphere &sphere, float *dis
 }
 
 //球と球の当たり判定
-bool Collision::CheckSphere2Sphere(const Sphere &sphere1, const Sphere &sphere2)
+bool Collision::CheckSphere2Sphere(const Sphere &sphereA, const Sphere &sphereB)
 {
 	//２つの球の中心座標を結ぶベクトルを求める
-	XMVECTOR vec = sphere1.center - sphere2.center;
+	XMVECTOR vec = sphereA.center - sphereB.center;
 
 	//ベクトルの長さの２乗（２点間の距離の２乗）を求める
 	float sqLength = vec.m128_f32[0] * vec.m128_f32[0] + vec.m128_f32[1] * vec.m128_f32[1] + vec.m128_f32[2] * vec.m128_f32[2];
 
 	//2つの球の半径の合計を求める
-	float r = sphere1.radius + sphere2.radius;
+	float r = sphereA.radius + sphereB.radius;
 
 	//２点間の距離の２乗＜半径の合計の２乗なら２つの球は交差している
 	return  sqLength < r *r;

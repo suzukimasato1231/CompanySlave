@@ -78,7 +78,7 @@ public:
 	/// <param name="sphere1">球</param>
 	/// <param name="sphere2">球</param>
 	/// <returns></returns>
-	static bool CheckSphere2Sphere(const Sphere &sphere1, const Sphere &sphere2);
+	static bool CheckSphere2Sphere(const Sphere &sphereA, const Sphere &sphereB);
 
 	/// <summary>
 	/// 直方体と直方体
@@ -102,7 +102,7 @@ public:
 	/// <param name="sphere">球</param>
 	/// <param name="capsule">カプセル</param>
 	/// <returns></returns>
-	static bool CheckSphere2Capsule(const Sphere &sphere, const Capsule &capsule);
+	static bool CheckSphere2Capsule(const  Sphere &sphere, const Capsule &capsule);
 
 	/// <summary>
 	/// カプセルとカプセル
@@ -136,5 +136,5 @@ public:
 	/// <param name="radius2">２つ目の円の大きさ</param>
 	/// <returns></returns>
 	static bool CircleCollision(Vec2 circle1, Vec2 circle2, float radius1, float radius2);
-	
+
 };
