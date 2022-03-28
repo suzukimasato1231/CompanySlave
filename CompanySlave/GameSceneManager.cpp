@@ -22,11 +22,13 @@ void GameSceneManager::Initialize(_DirectX *directX)
 	title->Initialize(directX);
 	select = new SelectScene();
 	select->Initialize(directX);
-	play = new PlayScene();
-	play->Initialize(directX);
+	//play = new PlayScene();
+	//play->Initialize(directX);
 	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), window_width, window_height);
 	//スプライトクラス作成
 	Sprite::Instance()->Init();
+	//デバックテキスト初期化
+	debugText.Initialize();
 	//FBX初期化
 	FBXObject3d::SetDevice(directX->GetDevice());
 	FBXObject3d::SetCmdList(directX->GetCmandList());
@@ -38,21 +40,32 @@ void GameSceneManager::Initialize(_DirectX *directX)
 
 void GameSceneManager::Init()
 {
+	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
+
+	LoadUIGraph[0] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load1.png");
+	LoadUIGraph[1] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load2.png");
+	LoadUIGraph[2] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load3.png");
+	LoadUIGraph[3] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load4.png");
+	LoadUIGraph[4] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load5.png");
+	LoadUIGraph[5] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load6.png");
+	LoadUIGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
+
 	title->Init();
 	select->Init();
-	play->Init();
+	//play->Init();
 	scene = titleScene;
 }
 
 void GameSceneManager::Update()
 {
+	//タイトル
 	if (scene == titleScene) {
 		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
 			tFadeFlag = true;
 			//scene = selectScene;
 		}
-
+		//フェード
 		if (tFadeFlag == true) {
 			tFade -= 0.2f;
 		}
@@ -66,28 +79,57 @@ void GameSceneManager::Update()
 		title->Update();
 
 	}
+	//ステージ選択
 	else if (scene == selectScene) {
-		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA) && select->GetStage() == 1)
+		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
-			sFadeFlag = true;
+			//ステージ1の初期化
+			if (select->GetStage() == 1) {
+				play = new PlayScene();
+				play->Initialize(directX);
+				play->Init();
+			
+				sFadeFlag = true;
+			}
 		}
-
+		//フェード
 		if (sFadeFlag == true) {
 			sFade -= 0.2f;
 		}
 		if (sFade < 0) {
 			scene = stage1;
 			sFadeFlag = false;
+			LoadFlag = true;
 		}
 		select->SetFade(sFade);
 
 		select->Update();
 	}
-
+	//ステージ1
 	else if (scene == stage1) {
 		play->Update();
 	}
+	//ロード画面
+	if (LoadFlag == true) {
+		//play = new PlayScene();
+		//play->Initialize(directX);
+		//play->Init();
+		LoadTime-=1;
+		if (LoadTime > 0) {
+			
+			if (LoadCount < 6) {
+				LoadCount++;
+			}
+			else if (LoadCount == 6) {
+				LoadCount = 0;
+			}
+		}
+		if (LoadTime == 0) {
+			LoadCount = 0;
+			LoadFlag = false;
+		}
 
+	}
 }
 
 void GameSceneManager::Draw()
@@ -106,5 +148,14 @@ void GameSceneManager::Draw()
 		play->Draw();
 	}
 
+	if (LoadFlag == true) {
+		Sprite::Instance()->Draw(BGGraph, Vec2(0,0), window_width, window_height);
+		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
+		debugText.Print(10, 380, 2, "%d", LoadTime);
+	}
+	
 
+
+	//デバックテキスト描画ここは変わらない
+	debugText.DrawAll();
 }

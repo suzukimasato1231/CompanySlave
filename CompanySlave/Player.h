@@ -125,6 +125,12 @@ private:
 	const int normalGraceTimeMax = 50;					//連続切りまでの猶予
 	int normalGraceTime = 0;							//連続切りまでの猶予
 	float attackMoveSpeed = 0.7f;						//攻撃方向へ進むスピード
+	
+	//エフェクト関係
+	bool AttackEffect = false;
+	float AttackEffectSize = 5.0f;
+	Vec3 AttackScale{ 1.0f,1.0f,1.0f };
+	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };
@@ -135,11 +141,16 @@ private:
 	int comboNumberGraph[10];
 	int yellowColor;
 
+
+
 #if _DEBUG
 	Object::ObjectData attackField;//攻撃範囲可視化
 	int redColor;
 
 	Object::ObjectData normalFieldOBJ;//通常攻撃
 	int normalGraph;
+
+	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
+	int AttackEffectGraph;
 #endif
 };
