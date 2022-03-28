@@ -17,7 +17,7 @@ void Player::Init()
 	playerSwordWalkObject[3] = Object::Instance()->CreateOBJ("playerKari2-3");
 
 	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerKari3-0");
-	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerKari3-0");
+	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerKari3-1");
 	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerKari3-1");
 	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerKari3-1");
 
@@ -127,7 +127,7 @@ void Player::Move()
 		moveFlag = true;
 	}
 	else {
-		walkCount = 0;
+		walkNo = 0;
 		moveFlag = false;
 	}
 	if (avoidanceTime <= 0 && normalAttackTime <= 0)
