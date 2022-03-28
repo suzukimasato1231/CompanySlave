@@ -20,7 +20,13 @@ void MapStage::Init()
 
 	block = Shape::CreateSquare(10.0f, 10.0f, 10.0f);
 
-	blockGraph = Object::Instance()->LoadTexture(L"Resources/block.png");
+	blockGraph = Object::Instance()->LoadTexture(L"Resources/jimen.png");
+
+	wallBlock = Object::Instance()->CreateOBJ("wall");
+
+	cornerBlock = Object::Instance()->CreateOBJ("wall2");
+
+	strawBlock = Object::Instance()->CreateOBJ("wara2");
 }
 
 void MapStage::Update()
@@ -40,10 +46,37 @@ void MapStage::Draw()
 					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, blockGraph);
 				break;
-			case BLOCK:
+			case WALLWIDTH:
 				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, blockGraph);
+				Object::Instance()->Draw(wallBlock,
+					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0,90,0 }, color, blockGraph);
+				break;
+			case WALLHIGHT:
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, blockGraph);
+				Object::Instance()->Draw(wallBlock,
+					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color, blockGraph);
+				break;
+			case WALLCORNER:
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, blockGraph);
+				Object::Instance()->Draw(cornerBlock,
+					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color, blockGraph);
+				break;
+			case STRAW:
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, blockGraph);
+				Object::Instance()->Draw(strawBlock,
+					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					{ 3.0f, 3.0f, 3.0f }, Vec3{}, color, blockGraph);
 				break;
 			default:
 				break;

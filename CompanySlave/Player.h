@@ -77,7 +77,13 @@ public://取得系
 	bool GetMoveFlag() { return moveFlag; }
 
 private:
-	Object::ObjectData playerObject;	//プレイヤーオブジェクト
+	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
+	Object::ObjectData playerAttackObject[4];	//プレイヤー攻撃
+	int walkCount = 0;	//描画用カウント
+	int walkNo = 0;	//描画するNO
+	int attackCount = 0;	//描画用カウント
+	int attackNo = 0;	//描画するNO
+	bool attackMode = false;
 	Box pBox;							//プレイヤーの長方形
 	Sphere pSphere;						//プレイヤーの球
 	Vec3 position{ 10.0f,0.0f,0.0f };	//座標

@@ -20,12 +20,43 @@ Enemy::~Enemy()
 void Enemy::Init()
 {
 
-	eSpawner.push_back(new EnemySpawner);
+	/*eSpawner.push_back(new EnemySpawner);
 	eSpawner[eSpawner.size() - 1]->position = { 0.0f,0.0f,0.0f };
 
 	eSpawner.push_back(new EnemySpawner);
-	eSpawner[eSpawner.size() - 1]->position = { 500.0f,0.0f,200.0f };
+	eSpawner[eSpawner.size() - 1]->position = { 500.0f,0.0f,200.0f };*/
 
+
+	char *Filepath = (char *)"Resources/map/stage01spawnMap.csv";
+
+	LoadCSV(spawnMap, Filepath);
+
+	for (size_t j = 0; j < MAP_HEIGHT; j++)
+	{
+		for (size_t i = 0; i < MAP_WIDTH; i++)
+		{
+			switch (spawnMap[j][i])
+			{
+			case ONESPAWN:
+				eData.push_back(new EnemyData);
+				eData[eData.size() - 1]->enemyObject = Object::Instance()->CreateOBJ("OniKari");
+				eData[eData.size() - 1]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
+				eData[eData.size() - 1]->oldPosition = eData[eData.size() - 1]->position;
+				//À•W‚ð‡‚í‚¹‚é
+				eData[eData.size() - 1]->eBox.minPosition = XMVectorSet(
+					eData[eData.size() - 1]->position.x - eData[eData.size() - 1]->r,
+					eData[eData.size() - 1]->position.y - eData[eData.size() - 1]->r,
+					eData[eData.size() - 1]->position.z - eData[eData.size() - 1]->r, 1);
+				eData[eData.size() - 1]->eBox.maxPosition = XMVectorSet(
+					eData[eData.size() - 1]->position.x + eData[eData.size() - 1]->r,
+					eData[eData.size() - 1]->position.y + eData[eData.size() - 1]->r,
+					eData[eData.size() - 1]->position.z + eData[eData.size() - 1]->r, 1);
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
 
 void Enemy::Update(Player *player)

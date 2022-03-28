@@ -9,7 +9,10 @@
 enum ObjectStatus
 {
 	NONE,          //空
-	BLOCK,         //ブロック
+	WALLWIDTH,         //ブロック
+	WALLHIGHT,
+	WALLCORNER,
+	STRAW,
 };
 /// <summary>
 /// マップ・ステージ
@@ -43,6 +46,9 @@ public:
 	float GetSize();
 private:
 	Object::ObjectData block;//マップのブロック
+	Object::ObjectData wallBlock;//マップの壁ブロック
+	Object::ObjectData cornerBlock;//マップの壁ブロック
+	Object::ObjectData strawBlock;//藁
 
 	int blockGraph = 0;
 

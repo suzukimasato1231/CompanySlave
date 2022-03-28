@@ -11,7 +11,16 @@ Player::~Player()
 
 void Player::Init()
 {
-	playerObject = Object::Instance()->CreateOBJ("player");
+	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1");
+	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2");
+	playerSwordWalkObject[2] = Object::Instance()->CreateOBJ("playerKari2-1");
+	playerSwordWalkObject[3] = Object::Instance()->CreateOBJ("playerKari2-3");
+
+	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerKari3-0");
+	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerKari3-0");
+	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerKari3-1");
+	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerKari3-1");
+
 	pBox.minPosition = XMVectorSet(0, 2, 0, 1);
 	pBox.maxPosition = XMVectorSet(0, 2, 0, 1);
 	pSphere.radius = r;
@@ -80,7 +89,8 @@ void Player::Draw()
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
-		Object::Instance()->Draw(playerObject, position, scale, angle, color);
+		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
+		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
 }
 
@@ -88,15 +98,36 @@ void Player::Draw()
 void Player::Move()
 {
 	oldPosition = position;
+	//歩きアニメーション用
+	if (walkCount >= 5)
+	{
+		walkCount = 0;
+		walkNo++;
+	}
+	if (walkNo >= 4)
+	{
+		walkNo = 0;
+	}
 	//移動
 	if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->KeybordPush(DIK_LEFT)
 		|| Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->KeybordPush(DIK_DOWN)
 		|| Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft)
 		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
+		//向き変更
+		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
+		else if (Input::Instance()->KeybordPush(DIK_LEFT)) { angle.y = 180; }
+		else if (Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 270; }
+		else if (Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 90; }
+		if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 315; }
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 225; }
+		else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 45; }
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 135; }
+		walkCount++;//アニメーションのタイマー
 		moveFlag = true;
 	}
 	else {
+		walkCount = 0;
 		moveFlag = false;
 	}
 	if (avoidanceTime <= 0 && normalAttackTime <= 0)
@@ -125,10 +156,22 @@ void Player::Move()
 }
 
 void Player::NormalAttack(Enemy *enemy)
-{
-
+{//歩きアニメーション用
+	if (attackCount >= 10)
+	{
+		attackCount = 0;
+		attackNo++;
+	}
+	if (attackNo >= 4)
+	{
+		attackNo = 0;
+	}
+	if(attackMode == true){attackCount++;}//アニメーションのカウント
 	if (Input::Instance()->KeybordTrigger(DIK_D) && avoidanceTime <= 0)
 	{
+		attackCount = 0;//カウントリセット
+		attackNo = 0;//ナンバーをリセット
+		attackMode = true;
 		//連続攻撃を数える
 		if (normalAttackCount < 3)
 		{
@@ -170,6 +213,7 @@ void Player::NormalAttack(Enemy *enemy)
 		if (normalGraceTime <= 0)
 		{
 			normalAttackCount = 0;
+			attackMode = false;
 		}
 	}
 

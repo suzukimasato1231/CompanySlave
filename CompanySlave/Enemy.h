@@ -3,6 +3,15 @@
 #include"CollisionPrimitive.h"
 #include<vector>
 #include"Player.h"
+#include"LoadCSV.h"
+
+enum spawnNo
+{
+	NOTSPAWN,
+	ONESPAWN,
+	TWOSPAWN,
+};
+
 class Enemy
 {
 private://構造体
@@ -84,4 +93,10 @@ public://取得系
 	bool GetWasAttackFlag(int i) { return eData[i]->wasAttackFlag; }
 
 	float GetEnemyR(int i) { return eData[i]->r; }
+
+	int	spawnMap[MAP_HEIGHT][MAP_WIDTH];//沸き地のマップ
+
+	const float mapSize = 10.0f;
+
+	Vec3 basePosition = { 0,0,0 };//マップチップの初期位置
 };
