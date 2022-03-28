@@ -71,7 +71,7 @@ private://’è‹`
 	ParticleManager* particleMan = nullptr;
 
 	ParticleManager* particleMan2 = nullptr;
-
+	ParticleManager* particleMan3 = nullptr;
 	//FBX
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;

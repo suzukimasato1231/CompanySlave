@@ -45,6 +45,8 @@ private://定義
 	Sprite::SpriteData BGGraph;
 	Sprite::SpriteData Bottan;
 	Sprite::SpriteData Number[10];
+	Sprite::SpriteData LoadUIGraph;
+
 	//オブジェクト画像
 	int graph1;
 	int graph2;
@@ -64,5 +66,7 @@ private://定義
 	int nCount2 = 0;
 	//フェード
 	float fade = 1;
+
+
 
 };

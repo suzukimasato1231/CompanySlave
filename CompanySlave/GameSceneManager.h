@@ -35,10 +35,19 @@ private://定義
 	Title* title = nullptr;
 	PlayScene* play = nullptr;
 	SelectScene* select = nullptr;
+	DebugText debugText;
+	Sprite::SpriteData BGGraph;
+	Sprite::SpriteData LoadUIGraph[7];
+
 	//フェードのフラグ(tがタイトルのやつでsがシーンチェンジのやつ)
 	bool tFadeFlag = false;
 	bool sFadeFlag = false;
 	//フェード(tがタイトルのやつでsがシーンチェンジのやつ)
 	float tFade = 1;
 	float sFade = 1;
+
+	//疑似ロード画面関係変数
+	bool LoadFlag = false;
+	int LoadTime = 70;
+	int LoadCount = 0;
 };

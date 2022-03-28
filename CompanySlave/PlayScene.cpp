@@ -89,6 +89,8 @@ void PlayScene::Init()
 
 	particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
 
+	//particleMan3 = ParticleManager::Create(L"Resources/particle3.png", 1);
+
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -144,10 +146,12 @@ void PlayScene::Update()
 			particleMan->ParticleAdd(enemy->GetPosition(i), Vec4(1.0f, 0.0f, 0.0f, 1.0f), Vec4(1.0f, 0.4f, 0.0f, 1.0f));
 		}
 	}
+
 	//パーティクル更新
 	particleMan->Update();
 
 	particleMan2->Update();
+	//particleMan3->Update();
 	//ライト更新
 	lightGroup->Update();
 }
@@ -177,7 +181,7 @@ void PlayScene::Draw()
 	particleMan->Draw();
 
 	particleMan2->Draw();
-
+	//particleMan3->Draw();
 	//前景描画
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));
 #if _DEBUG

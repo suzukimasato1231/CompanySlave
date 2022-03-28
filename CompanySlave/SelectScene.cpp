@@ -54,7 +54,7 @@ void SelectScene::Init()
 
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
-	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/backgroundA.png");
+	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
 	Bottan = Sprite::Instance()->SpriteCreate(L"Resources/bottan.png");
 
 	Number[0] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/0.png");
@@ -67,6 +67,8 @@ void SelectScene::Init()
 	Number[7] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/7.png");
 	Number[8] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/8.png");
 	Number[9] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/9.png");
+
+	LoadUIGraph= Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
 
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
@@ -146,6 +148,8 @@ void SelectScene::Draw()
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
 	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
+	Sprite::Instance()->Draw(LoadUIGraph, Vec2(420, 280), 500, 150);
+
 	Sprite::Instance()->Draw(spriteGraph, Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 
 	Sprite::Instance()->Draw(Bottan, Vec2(580, 280), 200, 200, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
