@@ -55,10 +55,17 @@ void Player::Init()
 	normalFieldOBJ = Shape::CreateRect(normalLength, normalLength);
 	normalGraph = Object::Instance()->LoadTexture(L"Resources/kengeki.png");
 
-	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
-	AttackEffectGraph = Object::Instance()->LoadTexture(L"Resources/particle3.png");
-
 #endif
+	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
+	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
+	AttackEffectGraph[1] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect2.png");
+	AttackEffectGraph[2] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect3.png");
+	AttackEffectGraph[3] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect4.png");
+	AttackEffectGraph[4] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect5.png");
+	AttackEffectGraph[5] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect6.png");
+	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect7.png");
+	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
+	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
 
 }
 
@@ -95,6 +102,7 @@ void Player::Draw()
 #if _DEBUG
 	DebugDraw();
 #endif
+	EffectDraw();
 	//ÉvÉåÉCÉÑÅ[
 	if (damageTime % 2 == 0)
 	{
@@ -226,16 +234,28 @@ void Player::NormalAttack(Enemy *enemy)
 		}
 	}
 	if (normalAttackCount == 0) {
-		AttackScale = { 1.0f,1.0f,1.0f };
+		AttackScale = { 3.0f,3.0f,3.0f };
 	}
 	if (normalAttackCount == 1) {
-		AttackScale = { 1.0f,1.0f,1.0f };
+		AttackScale = { 3.0f,3.0f,3.0f };
 	}
 	if (normalAttackCount == 2) {
-		AttackScale = { 2.0f,2.0f,2.0f };
+		AttackScale = { 4.0f,4.0f,4.0f };
 	}
 	if (normalAttackCount == 3) {
-		AttackScale = { 3.0f,3.0f,3.0f };
+		AttackScale = { 5.0f,5.0f,5.0f };
+	}
+	if (normalAttackTime == normalAttackTimeMax) { AttackEffect = true; }
+
+	if (AttackEffect == true) {
+
+		if (effectCount < 8) {
+			effectCount++;
+		}
+		else if (effectCount == 8) {
+			effectCount = 0;
+			AttackEffect = false;
+		}
 	}
 
 }
@@ -397,55 +417,91 @@ void Player::DebugDraw()
 		{
 		case Up:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z + r + normalLength), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 90.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize + 5), AttackScale, AttackAngle, color, AttackEffectGraph);
 
 			break;
 		case Down:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z - r - normalLength), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 270.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize - 5), AttackScale, AttackAngle, color, AttackEffectGraph);
 
 			break;
 		case Left:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - r - normalLength, position.y, position.z), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 0.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize - 5, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph);
 
 			break;
 		case Right:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + r + normalLength, position.y, position.z), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 180.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize + 5, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph);
+
 			break;
 		case UpRight:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + normalLength, position.y, position.z + normalLength), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 120.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize + 5, position.y, position.z + AttackEffectSize + 5), AttackScale, AttackAngle, color, AttackEffectGraph);
 
 			break;
 		case UpLeft:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - normalLength, position.y, position.z + normalLength), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 60.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize - 5, position.y, position.z + AttackEffectSize + 5), AttackScale, AttackAngle, color, AttackEffectGraph);
 
 			break;
 		case DownRight:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + normalLength, position.y, position.z - normalLength), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 240.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize + 5, position.y, position.z - AttackEffectSize - 5), AttackScale, AttackAngle, color, AttackEffectGraph);
 
 			break;
 		case DownLeft:
 			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - normalLength, position.y, position.z - normalLength), scale, UIAngle, color, normalGraph);
-			AttackAngle.y = 300.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize - 5, position.y, position.z - AttackEffectSize - 5), AttackScale, AttackAngle, color, AttackEffectGraph);
 
 			break;
 		}
 		//AttackEffect = true;
 	}
 
+}
+
+void Player::EffectDraw()
+{
+	if (AttackEffect == true)
+	{
+		switch (direction)
+		{
+
+		case Up:
+			AttackAngle.y = 90.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+
+			break;
+		case Down:
+			AttackAngle.y = 270.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+
+			break;
+		case Left:
+			AttackAngle.y = 0.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+
+			break;
+		case Right:
+			AttackAngle.y = 180.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			break;
+		case UpRight:
+			AttackAngle.y = 120.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+
+			break;
+		case UpLeft:
+			AttackAngle.y = 60.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+
+			break;
+		case DownRight:
+			AttackAngle.y = 240.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+
+			break;
+		case DownLeft:
+			AttackAngle.y = 300.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+
+			break;
+		}
+	}
+	//AttackEffect = true;
 }
 
 

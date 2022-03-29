@@ -52,6 +52,9 @@ private:
 
 	//デバック描画
 	void DebugDraw();
+
+	//エフェクト描画
+	void EffectDraw();
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -119,6 +122,8 @@ private:
 	float AttackEffectSize = 5.0f;
 	Vec3 AttackScale{ 1.0f,1.0f,1.0f };
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
+	int effectTime = 10;
+	int effectCount = 0;
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };
@@ -138,7 +143,7 @@ private:
 	Object::ObjectData normalFieldOBJ;//通常攻撃
 	int normalGraph;
 
-	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
-	int AttackEffectGraph;
 #endif
+	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
+	int AttackEffectGraph[9];
 };
