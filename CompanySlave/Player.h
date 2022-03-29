@@ -36,6 +36,9 @@ private:
 	//通常攻撃
 	void NormalAttack(class Enemy *enemy);
 
+	//剣攻撃
+	void SwordAttack(class Enemy *enemy);
+
 	//攻撃角度決定
 	void Angle();
 
@@ -117,6 +120,16 @@ private:
 	int normalGraceTime = 0;							//連続切りまでの猶予
 	float attackMoveSpeed = 0.7f;						//攻撃方向へ進むスピード
 	
+	//剣攻撃
+	Object::ObjectData swordObject;	//剣
+	Vec3 swordPosition{ 10.0f,0.0f,0.0f };	//座標
+	Vec3 swordAngle{ 0.0f,0.0f,0.0f };		//角度
+	float swordSpeed = 3;//スピード
+	float swordAngleVec = 0;//飛ばす方向
+	bool isSwordAttack = false;
+	int stingCnt = 0;
+	bool haveSword = true;
+
 	//エフェクト関係
 	bool AttackEffect = false;
 	float AttackEffectSize = 5.0f;
@@ -124,6 +137,7 @@ private:
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;
 	int effectCount = 0;
+	Box swordAttackBox;								//実際の攻撃の当たり判定
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };

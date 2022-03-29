@@ -21,6 +21,7 @@ void Player::Init()
 	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerKari3-1");
 	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerKari3-1");
 
+	swordObject = Object::Instance()->CreateOBJ("sword");
 	pBox.minPosition = XMVectorSet(0, 2, 0, 1);
 	pBox.maxPosition = XMVectorSet(0, 2, 0, 1);
 	pSphere.radius = r;
@@ -66,7 +67,6 @@ void Player::Init()
 	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect7.png");
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
-
 }
 
 void Player::Update(Enemy *enemy)
@@ -82,7 +82,8 @@ void Player::Update(Enemy *enemy)
 	PDirection();
 	//通常攻撃
 	NormalAttack(enemy);
-
+	//剣攻撃
+	SwordAttack(enemy);
 	//回避
 	Avoidance();
 
@@ -109,6 +110,8 @@ void Player::Draw()
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
+	Object::Instance()->Draw(swordObject, swordPosition, { 1.5f,1.5f ,1.5f }, swordAngle, color);
+	
 }
 
 //移動
@@ -258,6 +261,53 @@ void Player::NormalAttack(Enemy *enemy)
 		}
 	}
 
+}
+
+void Player::SwordAttack(Enemy *enemy)
+{
+	if (Input::Instance()->KeybordPush(DIK_V) && haveSword)
+	{
+		isSwordAttack = true;
+		haveSword = false;
+	}
+	if (haveSword)
+	{
+		stingCnt = 0;
+		swordAngle = angle;
+		swordPosition = position;
+		swordAngleVec = (angle.y * 3.14) / -180;
+	}
+
+	if (isSwordAttack == true)
+	{
+		stingCnt++;
+		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+		{
+			if (Collision::CheckSphere2Box(enemy->GetSphere(i), swordAttackBox))
+			{
+				isSwordAttack = false;
+			}
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			swordPosition.x += cos(swordAngleVec) * 1;      // x座標を更新
+			swordPosition.z += sin(swordAngleVec) * 1;      // y座標を更新
+			swordAttackBox.maxPosition = XMVectorSet(swordPosition.x + 3, swordPosition.y, swordPosition.z + 3, 1);
+			swordAttackBox.minPosition = XMVectorSet(swordPosition.x - 3, swordPosition.y, swordPosition.z - 3, 1);
+		}
+
+		if (stingCnt >= 60)
+		{
+			isSwordAttack = false;
+		}
+	}
+	else if (isSwordAttack == false)
+	{
+		if (Collision::CheckBox2Box(pBox, swordAttackBox))
+		{
+			haveSword = true;
+		}
+	}
 }
 
 void   Player::Angle()
