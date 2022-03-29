@@ -141,10 +141,10 @@ void PlayScene::Update()
 	//パーティクル追加
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
-		if (enemy->GetWasAttackFlag(i) == true)
+		/*if (enemy->GetWasAttackFlag(i) == true)
 		{
 			particleMan->ParticleAdd(enemy->GetPosition(i), Vec4(1.0f, 0.0f, 0.0f, 1.0f), Vec4(1.0f, 0.4f, 0.0f, 1.0f));
-		}
+		}*/
 	}
 
 	//パーティクル更新

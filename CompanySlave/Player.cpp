@@ -79,6 +79,10 @@ void Player::Update(Enemy *enemy)
 	//回避
 	Avoidance();
 
+	if (damageTime > 0)
+	{
+		damageTime--;
+	}
 
 	//座標を合わせる
 	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -171,7 +175,7 @@ void Player::NormalAttack(Enemy *enemy)
 	{
 		attackNo = 0;
 	}
-	if(attackMode == true){attackCount++;}//アニメーションのカウント
+	if (attackMode == true) { attackCount++; }//アニメーションのカウント
 	if (Input::Instance()->KeybordTrigger(DIK_D) && avoidanceTime <= 0)
 	{
 		attackCount = 0;//カウントリセット
@@ -240,38 +244,38 @@ void   Player::Angle()
 {	//右上
 	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
 		|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
-		 rad = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
-		
+		rad = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
+
 	}//右下
 	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
 		|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
-		 rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
-		
+		rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
+
 	}//左下
 	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
 		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
-		 rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
-		
+		rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
+
 	}//左上
 	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
 		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
-		 rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
-	
+		rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
+
 	}//上
 	else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) {
-		 rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
-	
+		rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
+
 	}//右
 	else if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) {
-		 rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
-		
+		rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
+
 	}//下
 	else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) {
-		 rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
+		rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
 
 	}//左
 	else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) {
-		 rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
+		rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
 	}
 }
 
@@ -373,25 +377,11 @@ void Player::PDirection()
 	}
 }
 
-void Player::Damage(Enemy *enemy)
+void Player::Damage()
 {
-	if (avoidanceFlag == false)
-	{
-		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
-		{
-			Vec2 pPos = { position.x,position.z };
-			Vec2 ePos = { enemy->GetPosition(i).x,enemy->GetPosition(i).z };
-			if (Collision::CircleCollision(pPos, ePos, r, enemy->GetEnemyR(i)))
-			{
-				damageTime = damageTimeMax;
-				HP--;
-			}
-		}
-	}
-	if (damageTime > 0)
-	{
-		damageTime--;
-	}
+	//ダメージを食らう
+	damageTime = damageTimeMax;
+	HP--;
 }
 
 void Player::DebugDraw()

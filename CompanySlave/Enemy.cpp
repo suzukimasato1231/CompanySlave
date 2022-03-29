@@ -19,14 +19,6 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
-
-	/*eSpawner.push_back(new EnemySpawner);
-	eSpawner[eSpawner.size() - 1]->position = { 0.0f,0.0f,0.0f };
-
-	eSpawner.push_back(new EnemySpawner);
-	eSpawner[eSpawner.size() - 1]->position = { 500.0f,0.0f,200.0f };*/
-
-
 	char *Filepath = (char *)"Resources/map/stage01spawnMap.csv";
 
 	LoadCSV(spawnMap, Filepath);
@@ -57,22 +49,33 @@ void Enemy::Init()
 			}
 		}
 	}
+	debugField = Shape::CreateRect(attackEnemies.x, attackEnemies.y);
+	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
+	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 }
 
 void Enemy::Update(Player *player)
 {
-	//敵生成
-	Generation(player);
-
-	//敵が重ならないようにする
-	Enemy2Enemy(player);
-
 	for (size_t i = 0; i < eData.size(); i++)
 	{
-		//移動
-		Move(i, player);
-		//ダメージ
-		Damege(i, player);
+		switch (eData[i]->Status)
+		{
+		case NORMAL:
+			SearchPlayer(i, player);
+			break;
+		case MOVE:
+			eData[i]->direction = Direction(i, player);
+			//移動
+			Move(i, player);
+			break;
+		case ATTACK:
+			eData[i]->direction = Direction(i, player);
+			Attack(i, player);
+			break;
+		case ENEMIES:
+			break;
+		}
+
 		if (eData[i]->damegeTime > 0)
 		{
 			eData[i]->damegeTime--;
@@ -90,13 +93,90 @@ void Enemy::Draw()
 		{
 			Object::Instance()->Draw(eData[i]->enemyObject, eData[i]->position, eData[i]->scale, eData[i]->angle, eData[i]->color);
 		}
+		switch (eData[i]->Status)
+		{
+		case NORMAL:
+			switch (eData[i]->direction)
+			{
+			case Up:
+				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackEnemies.y / 2),
+					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				break;
+			case Down:
+				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackEnemies.y / 2),
+					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				break;
+			case Left:
+				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x - attackEnemies.y / 2, eData[i]->position.y, eData[i]->position.z),
+					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				break;
+			case Right:
+				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x + attackEnemies.y / 2, eData[i]->position.y, eData[i]->position.z),
+					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				break;
+			}
+			break;
+		case ATTACK:
+			switch (eData[i]->attackDirection)
+			{
+			case Up:
+				if (eData[i]->StatusTime == attackMotionDamege)
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				}
+				else
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+				}
+				break;
+			case Down:
+				if (eData[i]->StatusTime == attackMotionDamege)
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				}
+				else
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+				}
+				break;
+			case Left:
+				if (eData[i]->StatusTime == attackMotionDamege)
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				}
+				else
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+				}
+				break;
+			case Right:
+				if (eData[i]->StatusTime == attackMotionDamege)
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				}
+				else
+				{
+					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+				}
+				break;
+			}
+			break;
+		}
 	}
 }
 
 
 void Enemy::WasAttack(int i)
 {
-	eData[i]->wasAttackFlag = true;
+	//eData[i]->wasAttackFlag = true;
 }
 
 void Enemy::SetPosition(int i, Vec3 position)
@@ -114,66 +194,71 @@ void Enemy::Move(int i, Player *player)
 {
 	eData[i]->oldPosition = eData[i]->position;
 
-	//プレイヤーに向かって動いていく
-	
-	
-		//プレイヤーとエネミーの位置の差
-		Vec3 memoryPosition = player->GetPosition() - eData[i]->position;
-		//長さを求める
-		float length = memoryPosition.length();
+	//プレイヤーとエネミーの位置の差
+	Vec3 memoryPosition = player->GetPosition() - eData[i]->position;
+	//長さを求める
+	float length = memoryPosition.length();
 
+	if (length < 5.0f)
+	{
+		eData[i]->Status = ATTACK;
+		eData[i]->attackDirection = eData[i]->direction;
+		eData[i]->StatusTime = attackMotionTime;
+	}
+	else
+	{
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
 		eData[i]->position += direction * eData[i]->speed;
-	
 
-	//座標を合わせる
-	eData[i]->eBox.minPosition = XMVectorSet(eData[i]->position.x - eData[i]->r, eData[i]->position.y - eData[i]->r, eData[i]->position.z - eData[i]->r, 1);
-	eData[i]->eBox.maxPosition = XMVectorSet(eData[i]->position.x + eData[i]->r, eData[i]->position.y + eData[i]->r, eData[i]->position.z + eData[i]->r, 1);
-	eData[i]->eSphere.center = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z, 1);
-}
-
-void Enemy::Damege(int i, Player *player)
-{
-	////プレイヤーの攻撃が終わったらダメージを食らう
-	//if (player->GetAttackFlag() == false && player->GetComboTime() <= 0 && eData[i]->wasAttackFlag == true)
-	//{
-	//	eData[i]->damegeTime = 10;
-	//	if (player->GetComboNum() == 0)
-	//	{
-	//		eData[i]->HP -= 1;
-	//	}
-	//	else
-	//	{
-	//		eData[i]->HP -= player->GetComboNum();
-	//	}
-	//	eData[i]->wasAttackFlag = false;
-	//}
-}
-
-void Enemy::Generation(Player *player)
-{
-	for (int i = 0; i < eSpawner.size(); i++)
-	{
-		if (eSpawner[i]->spawnTime <= 0 && GetEnemySize() < eNumMax)
-		{
-			eSpawner[i]->spawnTime = eSpawner[i]->spawnTimemax;
-			eData.push_back(new EnemyData);
-			int eSize = eData.size() - 1;
-			eData[eSize]->enemyObject = Object::Instance()->CreateOBJ("enemy");
-			eData[eSize]->position = eSpawner[i]->position;
-			eData[eSize]->oldPosition = eData[eData.size() - 1]->position;
-			//座標を合わせる
-			eData[eSize]->eBox.minPosition = XMVectorSet(eData[eSize]->position.x - eData[eSize]->r, eData[eSize]->position.y - eData[eSize]->r, eData[eSize]->position.z - eData[eSize]->r, 1);
-			eData[eSize]->eBox.maxPosition = XMVectorSet(eData[eSize]->position.x + eData[eSize]->r, eData[eSize]->position.y + eData[eSize]->r, eData[eSize]->position.z + eData[eSize]->r, 1);
-			eData[eSize]->eSphere.radius = eData[eSize]->r;
-			eData[eSize]->eSphere.center = XMVectorSet(eData[eSize]->position.x, eData[eSize]->position.y, eData[eSize]->position.z, 1);
-		}
-		eSpawner[i]->spawnTime--;
+		//座標を合わせる
+		eData[i]->eBox.minPosition = XMVectorSet(eData[i]->position.x - eData[i]->r, eData[i]->position.y - eData[i]->r, eData[i]->position.z - eData[i]->r, 1);
+		eData[i]->eBox.maxPosition = XMVectorSet(eData[i]->position.x + eData[i]->r, eData[i]->position.y + eData[i]->r, eData[i]->position.z + eData[i]->r, 1);
+		eData[i]->eSphere.center = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z, 1);
 	}
+}
 
+void Enemy::SearchPlayer(int i, Player *player)
+{
+	Box enemiesBox = SearchField(i);
+	//索敵範囲内にプレイヤーがいたら
+	if (Collision::CheckBox2Box(player->GetBox(), enemiesBox))
+	{
+		//プレイヤーと敵の距離
+		float Length = Vec3(player->GetPosition() - eData[i]->position).length();
 
+		if (Length > player2EnemyLength)
+		{//プレイヤーが攻撃距離にいなかったら移動
+			eData[i]->Status = MOVE;
+			eData[i]->StatusTime = moveTime;
+		}
+		else
+		{//プレイヤーが攻撃距離にいたら
+			eData[i]->Status = ATTACK;
+			eData[i]->attackDirection = eData[i]->direction;
+			eData[i]->StatusTime = attackMotionTime;
+		}
+	}
+}
 
+void Enemy::Attack(int i, Player *player)
+{
+	Box attackBox = AttackField(i);
+	//攻撃モーション中のダメージを与えるタイミング
+	if (eData[i]->StatusTime == attackMotionDamege)
+	{
+		//攻撃範囲内にいたらプレイヤーにダメージ
+		if (Collision::CheckBox2Box(attackBox, player->GetBox()))
+		{
+			player->Damage();
+		}
+	}
+	//時間が終わったら索敵にもどる
+	eData[i]->StatusTime--;
+	if (eData[i]->StatusTime <= 0)
+	{
+		eData[i]->Status = MOVE;
+	}
 }
 
 void Enemy::Delete()
@@ -189,31 +274,97 @@ void Enemy::Delete()
 	}
 }
 
-void Enemy::Enemy2Enemy(Player *player)
+Box Enemy::SearchField(int i)
 {
-	for (size_t i = 0; i < GetEnemySize(); i++)
+	Box enemiesBox;
+	switch (eData[i]->direction)
 	{
-		for (size_t j = GetEnemySize() - 1; j > i; j--)
-		{
-			if (i == j) { break; }
-
-			if (Collision::CircleCollision(Vec2(eData[i]->position.x, eData[i]->position.z), Vec2(eData[j]->position.x, eData[j]->position.z), eData[i]->r, eData[j]->r)
-				&& Collision::CircleCollision(Vec2(player->GetPosition().x, player->GetPosition().z), Vec2(eData[i]->position.x, eData[i]->position.z), 20.0f, eData[i]->r))
-			{
-				float lengthI = Vec3(eData[i]->position - player->GetPosition()).length();
-				float lengthJ = Vec3(eData[j]->position - player->GetPosition()).length();
-				if (lengthI > lengthJ)
-				{
-					eData[i]->position = eData[i]->oldPosition;
-				}
-				else
-				{
-					eData[j]->position = eData[j]->oldPosition;
-				}
-			}
-		}
+	case Up:
+		enemiesBox.maxPosition = XMVectorSet(eData[i]->position.x + attackEnemies.x / 2, eData[i]->position.y, eData[i]->position.z + attackEnemies.y, 1);
+		enemiesBox.minPosition = XMVectorSet(eData[i]->position.x - attackEnemies.x / 2, eData[i]->position.y, eData[i]->position.z, 1);
+		break;
+	case Left:
+		enemiesBox.maxPosition = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackEnemies.x / 2, 1);
+		enemiesBox.minPosition = XMVectorSet(eData[i]->position.x - attackEnemies.y, eData[i]->position.y, eData[i]->position.z - attackEnemies.x / 2, 1);
+		break;
+	case Right:
+		enemiesBox.maxPosition = XMVectorSet(eData[i]->position.x + attackEnemies.y, eData[i]->position.y, eData[i]->position.z + attackEnemies.x / 2, 1);
+		enemiesBox.minPosition = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackEnemies.x / 2, 1);
+		break;
+	case Down:
+		enemiesBox.maxPosition = XMVectorSet(eData[i]->position.x + attackEnemies.x / 2, eData[i]->position.y, eData[i]->position.z, 1);
+		enemiesBox.minPosition = XMVectorSet(eData[i]->position.x - attackEnemies.x / 2, eData[i]->position.y, eData[i]->position.z - attackEnemies.y, 1);
+		break;
+	default:
+		enemiesBox.maxPosition = {};
+		enemiesBox.minPosition = {};
 	}
-
+	return enemiesBox;
 }
 
+Box Enemy::AttackField(int i)
+{
+	Box attackBox;
+	switch (eData[i]->attackDirection)
+	{
+	case Up:
+		attackBox.maxPosition = XMVectorSet(eData[i]->position.x + attackField.x / 2, eData[i]->position.y, eData[i]->position.z + attackField.y, 1);
+		attackBox.minPosition = XMVectorSet(eData[i]->position.x - attackField.x / 2, eData[i]->position.y, eData[i]->position.z, 1);
+		break;
+	case Left:
+		attackBox.maxPosition = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.x / 2, 1);
+		attackBox.minPosition = XMVectorSet(eData[i]->position.x - attackField.y, eData[i]->position.y, eData[i]->position.z - attackField.x / 2, 1);
+		break;
+	case Right:
+		attackBox.maxPosition = XMVectorSet(eData[i]->position.x + attackField.y, eData[i]->position.y, eData[i]->position.z + attackField.x / 2, 1);
+		attackBox.minPosition = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.x / 2, 1);
+		break;
+	case Down:
+		attackBox.maxPosition = XMVectorSet(eData[i]->position.x + attackField.x / 2, eData[i]->position.y, eData[i]->position.z, 1);
+		attackBox.minPosition = XMVectorSet(eData[i]->position.x - attackField.x / 2, eData[i]->position.y, eData[i]->position.z - attackField.y, 1);
+		break;
+	default:
+		attackBox.maxPosition = {};
+		attackBox.minPosition = {};
+	}
+	return attackBox;
+}
 
+int Enemy::Direction(int i, Player *player)
+{
+	int direction = Right;
+
+	float X = eData[i]->position.x - player->GetPosition().x;
+	if (X < 0)
+	{
+		X *= -1;
+	}
+	float Z = eData[i]->position.z - player->GetPosition().z;
+	if (Z < 0)
+	{
+		Z *= -1;
+	}
+
+	if (X > Z)
+	{
+		if (eData[i]->position.x < player->GetPosition().x)
+		{
+			return Right;
+		}
+		else
+		{
+			return Left;
+		}
+	}
+	else
+	{
+		if (eData[i]->position.z < player->GetPosition().z)
+		{
+			return Up;
+		}
+		else
+		{
+			return Down;
+		}
+	}
+}

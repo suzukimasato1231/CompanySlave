@@ -4,19 +4,7 @@
 #include"Easing.h"
 #include"Enemy.h"
 #include"Sprite.h"
-
-//プレイヤーの向いている向き
-enum Direction
-{
-	Up,
-	Down,
-	Left,
-	Right,
-	UpLeft,
-	UpRight,
-	DownLeft,
-	DownRight
-};
+#include"Direction.h"
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -34,6 +22,11 @@ public:
 	void Draw();//描画
 
 	void SetPosition(Vec3 position) { this->position = position; }
+
+	/// <summary>
+	/// ダメージ
+	/// </summary>
+	void Damage();
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -51,11 +44,6 @@ private:
 
 	//回避
 	void Avoidance();
-
-	/// <summary>
-	/// ダメージ
-	/// </summary>
-	void Damage(class Enemy *enemy);
 
 	/// <summary>
 	/// 通常攻撃の範囲を決める
