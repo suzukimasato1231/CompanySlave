@@ -35,7 +35,7 @@ public:
 	//XV
 	void Update();
 	//•`‰æ
-	void Draw();
+	void Draw(Vec3 pPos);
 
 	Box GetPositionBlock(int i, int j);
 

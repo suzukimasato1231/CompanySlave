@@ -33,12 +33,18 @@ void MapStage::Update()
 {
 }
 
-void MapStage::Draw()
+void MapStage::Draw(Vec3 pPos)
 {
-	for (size_t j = 0; j < MAP_HEIGHT; j++)
+	int X = pPos.x / mapSize;
+	int Z = pPos.z / (-mapSize);
+	for (int j = (Z - 6); j < (Z + 8); j++)
 	{
-		for (size_t i = 0; i < MAP_WIDTH; i++)
+		for (int i = (X - 11); i < (X + 13); i++)
 		{
+			if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
+			{
+				continue;
+			}
 			switch (map[j][i])
 			{
 			case NONE:

@@ -98,7 +98,7 @@ public://Žæ“¾Œn
 	//ƒGƒlƒ~[”Žæ“¾
 	int GetEnemySize() { return eData.size(); }
 	//UŒ‚‚³‚ê‚½‚©‚ðŽæ“¾
-	bool GetWasAttackFlag(int i) { return eData[i]->wasAttackFlag; }
+	//bool GetWasAttackFlag(int i) { return eData[i]->wasAttackFlag; }
 
 	float GetEnemyR(int i) { return eData[i]->r; }
 

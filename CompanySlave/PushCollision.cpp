@@ -3,11 +3,18 @@
 void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage)
 {
 	if (player == nullptr || mapStage == nullptr) { return; }
+	//判定する箇所だけ行うため
+	int X = player->GetPosition().x / mapStage->GetSize();
+	int Z = player->GetPosition().z / (-mapStage->GetSize());
 
-	for (int j = 0; j < MAP_HEIGHT; j++)
+	for (int j = (Z - 2); j < (Z + 2); j++)
 	{
-		for (int i = 0; i < MAP_WIDTH; i++)
+		for (int i = (X - 2); i < (X + 2); i++)
 		{
+			if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
+			{
+				continue;
+			}
 			if (mapStage->GetMap(i, j) != NONE || mapStage->GetMap(i, j) != NONE)//0以外当たり判定
 			{
 				//プレイヤー
@@ -18,8 +25,23 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 						mapStage->GetPosition(i, j), mapStage->GetSize() / 2,
 						mapStage->GetMap(i, (j + 1) % MAP_HEIGHT), mapStage->GetMap(i, (j - 1) % MAP_HEIGHT)));
 				}
-				//敵
-				for (int n = 0; n < enemy->GetEnemySize(); n++)
+			}
+		}
+	}
+	//敵
+	for (int n = 0; n < enemy->GetEnemySize(); n++)
+	{
+		X = player->GetPosition().x / mapStage->GetSize();
+		Z = player->GetPosition().z / (-mapStage->GetSize());
+		for (int j = (X - 2); j < (X + 2); j++)
+		{
+			for (int i = (Z - 2); i < (Z + 2); i++)
+			{
+				if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
+				{
+					continue;
+				}
+				if (mapStage->GetMap(i, j) != NONE || mapStage->GetMap(i, j) != NONE)//0以外当たり判定
 				{
 					bool HitFlag = Collision::CheckBox2Box(enemy->GetBox(n), mapStage->GetPositionBlock(i, j));
 					if (HitFlag)

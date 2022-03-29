@@ -170,7 +170,7 @@ void PlayScene::Draw()
 	//Object::Instance()->Draw(BossPolygon, pPos1, Vec3{ 1.0f,1.0f,1.0f }, angle, Vec4{ 1.0f,1.0f,1.0f ,1.0f });
 
 	//マップチップの描画
-	mapStage->Draw();
+	mapStage->Draw(player->GetPosition());
 	//プレイヤーの描画
 	player->Draw();
 
