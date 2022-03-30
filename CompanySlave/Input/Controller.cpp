@@ -2,8 +2,8 @@
 static LPDIRECTINPUT8 g_InputInterface;							//!< DIRECTINPUT8のポインタ
 static LPDIRECTINPUTDEVICE8 g_GamePadDevice;					//!< DIRECTINPUTDEVICE8のポインタ
 static ButtonState g_ButtonStates[ButtonKind::ButtonKindMax];
-static float angle;
-
+static float leftAngle;
+static float rightAngle;
 
 // 入力インターフェースの作成
 bool CreateInputInterface();
@@ -144,8 +144,14 @@ BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 	return DIENUM_CONTINUE;
 }
 
+float Controller::GetRightAngle()
+{
+	return rightAngle;
+}
+
 void Controller::SetAngle(DIJOYSTATE pad_data)
 {
+
 }
 
 bool Controller::InitController()
@@ -226,9 +232,9 @@ bool Controller::IsButtonDown(ButtonKind button)
 	return false;
 }
 
-float Controller::GetLightAngle()
+float Controller::GetLeftAngle()
 {
-	return angle;
+	return leftAngle;
 }
 
 bool CreateInputInterface()
@@ -360,50 +366,13 @@ void UpdateGamePad()
 	}
 
 	//角度を取得
-	//八方向
-	if (is_push[ButtonKind::LButtonUp] == true && is_push[ButtonKind::LButtonRight] == true)
-	{
-		angle = 45.0f;
-	}
-	else if (is_push[ButtonKind::LButtonDown] == true && is_push[ButtonKind::LButtonRight] == true)
-	{
-		angle = 135.0f;
-	}
-	else if (is_push[ButtonKind::LButtonDown] == true && is_push[ButtonKind::LButtonLeft] == true)
-	{
-		angle = 225.0f;
-	}
-	else if (is_push[ButtonKind::LButtonUp] == true && is_push[ButtonKind::LButtonLeft] == true)
-	{
-		angle = 315.0f;
-	}
-	//四方向
-	else if (is_push[ButtonKind::LButtonUp] == true)
-	{
-		angle = 0.0f;
-	}
-	else if (is_push[ButtonKind::LButtonRight] == true)
-	{
-		angle = 90.0f;
-	}
-	else if (is_push[ButtonKind::LButtonDown] == true)
-	{
-		angle = 180.0f;
-	}
-	else if (is_push[ButtonKind::LButtonLeft] == true)
-	{
-		angle = 270.0f;
-	}
-	else {
-		angle = 0.0f;
-	}
-
-
+#define PI 3.141592653589793
+	leftAngle = atan2(0 - pad_data.lX, 0 - pad_data.lY);
+	rightAngle = atan2(0 - pad_data.lRx, 0 - pad_data.lRy);
 
 	// 十字キー判定
 	if (pad_data.rgdwPOV[0] != 0xFFFFFFFF)
 	{
-#define PI 3.141592653589793
 		float rad = ((pad_data.rgdwPOV[0] / 100.0f) * 180.0 / PI);
 		float x = sinf(rad);
 		float y = cosf(rad);

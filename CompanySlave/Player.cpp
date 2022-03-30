@@ -75,6 +75,7 @@ void Player::Update(Enemy *enemy)
 	{
 		return;
 	}
+	
 	Angle();
 	//移動
 	Move();
@@ -111,7 +112,7 @@ void Player::Draw()
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
 	Object::Instance()->Draw(swordObject, swordPosition, { 1.5f,1.5f ,1.5f }, swordAngle, color);
-	
+
 }
 
 //移動
@@ -135,14 +136,20 @@ void Player::Move()
 		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
 		//向き変更
-		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
-		else if (Input::Instance()->KeybordPush(DIK_LEFT)) { angle.y = 180; }
-		else if (Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 270; }
-		else if (Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 90; }
-		if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 315; }
-		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 225; }
-		else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 45; }
-		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 135; }
+		if (Input::Instance()->KeybordPush(DIK_RIGHT)|| Input::Instance()->ControllerPush(LButtonRight)) { angle.y = 0; }
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) { angle.y = 180; }
+		else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) { angle.y = 270; }
+		else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) { angle.y = 90; }
+		if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))||
+			(Input::Instance()->ControllerPush(LButtonRight)&& Input::Instance()->ControllerPush(LButtonUp))) { angle.y = 315; }
+		else if ((Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP))
+			||(Input::Instance()->ControllerPush(LButtonLeft)&& Input::Instance()->ControllerPush(LButtonUp))){ angle.y = 225; }
+		else if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN))
+			||(Input::Instance()->ControllerPush(LButtonRight)&& Input::Instance()->ControllerPush(LButtonDown)))
+		{ angle.y = 45; }
+		else if ((Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN))
+			||(Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)))
+		{ angle.y = 135; }
 		walkCount++;//アニメーションのタイマー
 		moveFlag = true;
 	}
@@ -153,22 +160,31 @@ void Player::Move()
 	if (avoidanceTime <= 0 && normalAttackTime <= 0)
 	{
 		//移動
-		if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight))
+		//キーボード
+		if (Input::Instance()->KeybordPush(DIK_RIGHT))
 		{
 			position.x += speed.x;
 		}
-		if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft))
+		if (Input::Instance()->KeybordPush(DIK_LEFT))
 		{
 			position.x -= speed.x;
 		}
-		if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp))
+		if (Input::Instance()->KeybordPush(DIK_UP))
 		{
 			position.z += speed.z;
 		}
-		if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown))
+		if (Input::Instance()->KeybordPush(DIK_DOWN) )
 		{
 			position.z -= speed.z;
 		}
+		//コントローラー
+		if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
+			Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+		{
+			
+			position.x += speed.x * sinRad;
+			position.z += speed.z * cosRad;
+		}	
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
@@ -187,7 +203,7 @@ void Player::NormalAttack(Enemy *enemy)
 		attackNo = 0;
 	}
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
-	if (Input::Instance()->KeybordTrigger(DIK_D) && avoidanceTime <= 0)
+	if (Input::Instance()->KeybordTrigger(DIK_D)||Input::Instance()->ControllerDown(ButtonA) && avoidanceTime <= 0)
 	{
 		attackCount = 0;//カウントリセット
 		attackNo = 0;//ナンバーをリセット
@@ -203,8 +219,8 @@ void Player::NormalAttack(Enemy *enemy)
 	if (normalAttackTime > 0)
 	{
 		normalAttackTime--;
-		position.x += attackMoveSpeed * cosf(rad);
-		position.z += attackMoveSpeed * sinf(rad);
+		position.x += attackMoveSpeed * sinRad;
+		position.z += attackMoveSpeed * cosRad;
 	}
 
 	for (int j = 0; j < 3; j++)
@@ -328,46 +344,64 @@ void Player::SwordAttack(Enemy *enemy)
 
 			swordPosition = enemy->GetPosition(i);
 		}
-	
+
 	}
 }
 
 void   Player::Angle()
-{	//右上
-	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
-		|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
+{	
+	float rad = 0.0f;
+	//右上
+	if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
 		rad = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
-
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
 	}//右下
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
-		|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
-		rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
-
-	}//左下
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
-		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
-		rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
-
-	}//左上
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
-		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
 		rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
-
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
+	}//左下
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
+		rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
+	}//左上
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
+		rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
 	}//上
-	else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) {
-		rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
+	else if (Input::Instance()->KeybordPush(DIK_UP)) {
+		rad = atan2(position.z  - position.z, position.x + 10.0f - position.x);
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
 
 	}//右
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) {
-		rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
+		rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
 
 	}//下
-	else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) {
-		rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
+	else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
+		rad = atan2(position.z  - position.z, position.x - 10.0f - position.x);
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
 
 	}//左
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) {
-		rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
+	else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
+		rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
+		sinRad = sinf(rad);
+		cosRad = cosf(rad);
+	}
+	
+	if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
+		Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+	{
+		rad = Input::Instance()->GetAngle();
+		sinRad = sinf(-rad);
+		cosRad = cosf(rad);
 	}
 }
 
@@ -400,38 +434,8 @@ void Player::Avoidance()
 		{
 			avoiCoolTime = avoiCoolTimeMax;
 		}
-		float radDir = 0.0f;
-		switch (avoiDirection)
-		{
-		case Up:
-			position += Vec3(0.0f, 0.0f, +avoiSpeed); break;
-		case Down:
-			position += Vec3(0.0f, 0.0f, -avoiSpeed); break;
-		case Left:
-			position += Vec3(-avoiSpeed, 0.0f, 0.0f); break;
-		case Right:
-			position += Vec3(avoiSpeed, 0.0f, 0.0f); break;
-		case UpLeft:
-			radDir = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
-			position.x += avoiSpeed * cosf(radDir);
-			position.z += avoiSpeed * sinf(radDir);
-			break;
-		case UpRight:
-			radDir = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
-			position.x += avoiSpeed * cosf(radDir);
-			position.z += avoiSpeed * sinf(radDir);
-			break;
-		case DownLeft:
-			radDir = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
-			position.x += avoiSpeed * cosf(radDir);
-			position.z += avoiSpeed * sinf(radDir);
-			break;
-		case DownRight:
-			radDir = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
-			position.x += avoiSpeed * cosf(radDir);
-			position.z += avoiSpeed * sinf(radDir);
-			break;
-		}
+		position.x += avoiSpeed * sinRad;
+		position.z += avoiSpeed * cosRad;
 	}
 }
 

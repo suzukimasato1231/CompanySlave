@@ -77,11 +77,17 @@ public://ゲームパッド
 	/// <returns></returns>
 	bool IsButtonDown(ButtonKind button);
 	/// <summary>
-	/// 右パッド角度取得
+	/// 左パッド角度取得
 	/// </summary>
 	/// <returns></returns>
-	float GetLightAngle();
+	float GetLeftAngle();
+	/// <summary>
+	/// 右スティック角度取得
+	/// </summary>
+	/// <returns></returns>
+	float GetRightAngle();
 
 	//角度を取得
 	void SetAngle(DIJOYSTATE pad_data);
+
 };

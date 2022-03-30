@@ -45,7 +45,9 @@ public://ゲームパッド
 	bool ControllerDown(ButtonKind button);
 
 	//左スティック角度取得
-	float GetAngle();
+	float GetLeftAngle();
+
+	float GetRightAngle();
 public://マウス
 	bool MousePushLeft();
 

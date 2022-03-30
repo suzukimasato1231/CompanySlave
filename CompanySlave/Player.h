@@ -80,7 +80,7 @@ private:
 	bool attackMode = false;
 	Box pBox;							//プレイヤーの長方形
 	Sphere pSphere;						//プレイヤーの球
-	Vec3 position{ 10.0f,0.0f,0.0f };	//座標
+	Vec3 position{ 10.0f,0.0f,-10.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 1.5f,1.5f,1.5f };		//プレイヤースピード
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
@@ -88,7 +88,8 @@ private:
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
 	float r = 3;						//プレイヤーの半径
 	int  direction = 0;					//プレイヤーの向き
-	float rad = 0;
+	float sinRad = 0;
+	float cosRad = 0;
 	int HP = 10;						//プレイヤーHP
 	const int damageTimeMax = 20;
 	int damageTime = 0;					//ダメージ食らったかの見た目用
@@ -104,7 +105,7 @@ private:
 	float avoiSpeed = 5.0f;			//回避スピード
 	const int avoiCoolTimeMax = 20;	//回避クールタイム
 	int avoiCoolTime = 0;			//今回避クールタイム
-
+	float radDir = 0.0f;
 	bool invincibleFlag = false;	//無敵中か
 
 
