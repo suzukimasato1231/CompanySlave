@@ -399,7 +399,7 @@ void   Player::Angle()
 	if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
 		Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
-		rad = Input::Instance()->GetAngle();
+		rad = Input::Instance()->GetLeftAngle();
 		sinRad = sinf(-rad);
 		cosRad = cosf(rad);
 	}
