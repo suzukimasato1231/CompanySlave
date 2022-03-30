@@ -270,6 +270,17 @@ void Player::SwordAttack(Enemy *enemy)
 		isSwordAttack = true;
 		haveSword = false;
 	}
+
+	if (Input::Instance()->KeybordPush(DIK_B))
+	{
+		isSwordAttack = false;
+		haveSword = true;
+		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+		{
+			isEnemySting[i] = false;
+		}
+	}
+
 	if (haveSword)
 	{
 		stingCnt = 0;
@@ -286,6 +297,7 @@ void Player::SwordAttack(Enemy *enemy)
 			if (Collision::CheckSphere2Box(enemy->GetSphere(i), swordAttackBox))
 			{
 				isSwordAttack = false;
+				isEnemySting[i] = true;
 			}
 		}
 		for (int i = 0; i < 3; i++)
@@ -307,6 +319,16 @@ void Player::SwordAttack(Enemy *enemy)
 		{
 			haveSword = true;
 		}
+	}
+
+	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+	{
+		if (isEnemySting[i])
+		{
+
+			swordPosition = enemy->GetPosition(i);
+		}
+	
 	}
 }
 

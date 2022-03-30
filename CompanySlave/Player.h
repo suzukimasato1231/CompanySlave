@@ -129,6 +129,7 @@ private:
 	bool isSwordAttack = false;
 	int stingCnt = 0;
 	bool haveSword = true;
+	bool isEnemySting[4] = {false,false, false, false};
 
 	//エフェクト関係
 	bool AttackEffect = false;
