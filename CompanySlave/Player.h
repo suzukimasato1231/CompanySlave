@@ -125,15 +125,24 @@ private:
 	float attackMoveSpeed = 0.7f;						//攻撃方向へ進むスピード
 
 	//剣攻撃
-	Object::ObjectData swordObject;	//剣
-	Vec3 swordPosition{ 10.0f,0.0f,0.0f };	//座標
-	Vec3 swordAngle{ 0.0f,0.0f,0.0f };		//角度
-	float swordSpeed = 3;//スピード
-	float swordAngleVec = 0;//飛ばす方向
-	bool isSwordAttack = false;
-	int stingCnt = 0;
-	bool haveSword = true;
-	bool isEnemySting[4] = { false,false, false, false };
+	Object::ObjectData swordObject;//剣
+	int cursorGraph;	//カーソル
+	Object::ObjectData cursorObject;//カーソル
+
+	Vec3 swordPosition[7] = { { 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
+	Vec3 swordAngle[7] = { { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
+	float swordSpeed[7] = { 3,3,3,3,3,3,3 };//スピード
+	float swordAngleVec[7] = { 0,0,0,0,0,0,0 };//飛ばす方向
+	bool isSwordAttack[7] = { false,false,false,false,false,false,false };//アタックフラグ
+	int stingCnt[7] = { 0,0,0,0,0,0,0 };//刺さるまでの時間
+	bool haveSword[7] = { true,true,true,true,true,true,true };//持ってる剣
+	bool isEnemySting[7][4];//敵に刺さってるか
+	Box swordAttackBox[7];	//剣の当たり判定
+	int shotNo = 0;//どの剣か
+	bool returnFlag = false;//剣が戻る時のフラグ
+	float nowTime = 0;//剣が戻る時のラープ
+	float endTime = 5;//剣が戻る時のラープ
+	float timeRate = 0;//剣が戻る時のラープ
 
 	//エフェクト関係
 	bool AttackEffect = false;
@@ -142,7 +151,7 @@ private:
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;
 	int effectCount = 0;
-	Box swordAttackBox;								//実際の攻撃の当たり判定
+	
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };

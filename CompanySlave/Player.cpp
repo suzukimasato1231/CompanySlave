@@ -22,6 +22,9 @@ void Player::Init()
 	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerKari3-1");
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
+	cursorGraph = Object::Instance()->LoadTexture(L"Resources/Effect/Line.png");
+	cursorObject = Shape::CreateRect(5, 0.5);
+
 	pBox.minPosition = XMVectorSet(0, 2, 0, 1);
 	pBox.maxPosition = XMVectorSet(0, 2, 0, 1);
 	pSphere.radius = r;
@@ -74,6 +77,13 @@ void Player::Init()
 	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect7.png");
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
+	for (int i = 0; i < 7; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			isEnemySting[i][j] = false;
+		}
+	}
 }
 
 void Player::Update(Enemy *enemy)
@@ -118,7 +128,11 @@ void Player::Draw()
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
-	Object::Instance()->Draw(swordObject, swordPosition, { 1.5f,1.5f ,1.5f }, swordAngle, color);
+	for (int i = 0; i < 7; i++)
+	{
+		Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,1.5f }, swordAngle[i], color);
+	}
+	Object::Instance()->Draw(cursorObject, { position.x,0,position.z, }, { 10,10,10 }, { 90,angle.y,0 }, color, cursorGraph);
 
 }
 
@@ -296,70 +310,119 @@ void Player::NormalAttack(Enemy *enemy)
 
 void Player::SwordAttack(Enemy *enemy)
 {
-	if (Input::Instance()->KeybordPush(DIK_V) && haveSword)
+	//撃つ
+	if (Input::Instance()->KeybordTrigger(DIK_V) && haveSword[shotNo] && !returnFlag)
 	{
-		isSwordAttack = true;
-		haveSword = false;
+		isSwordAttack[shotNo] = true;
+		haveSword[shotNo] = false;
 	}
 
+	//剣撃つやつ入れ替え
+	if (!haveSword[shotNo])
+	{
+		shotNo++;
+	}
+	if (shotNo >= 7)
+	{
+		shotNo = 0;
+	}
+
+	//剣戻ってくるやつ発動
 	if (Input::Instance()->KeybordPush(DIK_B))
 	{
-		isSwordAttack = false;
-		haveSword = true;
-		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
-		{
-			isEnemySting[i] = false;
-		}
+		returnFlag = true;
 	}
 
-	if (haveSword)
+	//剣戻ってくるやつ処理
+	if (returnFlag)
 	{
-		stingCnt = 0;
-		swordAngle = angle;
-		swordPosition = position;
-		swordAngleVec = (angle.y * 3.14) / -180;
-	}
-
-	if (isSwordAttack == true)
-	{
-		stingCnt++;
-		for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+		nowTime += 0.1;
+		timeRate = min(nowTime / endTime, 1);
+		for (int i = 0; i < 7; i++)
 		{
-			if (Collision::CheckSphere2Box(enemy->GetSphere(i), swordAttackBox))
+			//ラープ
+			swordPosition[i] = Easing::lerp(swordPosition[i], position, timeRate);
+			
+			//戻ってるときの当たり判定
+			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				isSwordAttack = false;
-				isEnemySting[i] = true;
+				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
+				{
+					
+				}
 			}
 		}
-		for (int i = 0; i < 3; i++)
+		shotNo = 0;
+		if (nowTime >= 5)
 		{
-			swordPosition.x += cos(swordAngleVec) * 1;      // x座標を更新
-			swordPosition.z += sin(swordAngleVec) * 1;      // y座標を更新
-			swordAttackBox.maxPosition = XMVectorSet(swordPosition.x + 3, swordPosition.y, swordPosition.z + 3, 1);
-			swordAttackBox.minPosition = XMVectorSet(swordPosition.x - 3, swordPosition.y, swordPosition.z - 3, 1);
-		}
-
-		if (stingCnt >= 60)
-		{
-			isSwordAttack = false;
-		}
-	}
-	else if (isSwordAttack == false)
-	{
-		if (Collision::CheckBox2Box(pBox, swordAttackBox))
-		{
-			haveSword = true;
+			timeRate = 0;
+			nowTime = 0;
+			returnFlag = false;
 		}
 	}
 
-	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+	for (int i = 0; i < 7; i++)
 	{
-		if (isEnemySting[i])
-		{
+		//当たり判定のボックスの位置変
+		swordAttackBox[i].maxPosition = XMVectorSet(swordPosition[i].x + 3, swordPosition[i].y, swordPosition[i].z + 3, 1);
+		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 3, swordPosition[i].y, swordPosition[i].z - 3, 1);
 
-			swordPosition = enemy->GetPosition(i);
+		//剣の飛ぶ方向と向き替え
+		if (haveSword[i])
+		{
+			stingCnt[i] = 0;
+			swordAngle[i] = angle;
+			swordPosition[i] = position;
+			swordAngleVec[i] = (angle.y * 3.14) / -180;
 		}
 
+		//攻撃(飛んでから止まるまで)
+		if (isSwordAttack[i] == true)
+		{
+			stingCnt[i]++;//刺さるカウント
+			
+			//敵との当たり判定
+			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+			{
+				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
+				{
+					isSwordAttack[i] = false;
+					isEnemySting[i][j] = true;
+				}
+			}
+
+			//角度で進めてる
+			for (int s = 0; s < 3; s++)
+			{
+				swordPosition[i].x += cos(swordAngleVec[i]) * 1;      // x座標を更新
+				swordPosition[i].z += sin(swordAngleVec[i]) * 1;      // z座標を更新
+
+			}
+
+			//止まる
+			if (stingCnt[i] >= 60)
+			{
+				isSwordAttack[i] = false;
+			}
+		}
+
+		//当たって取るときの当たり判定たち
+		else if (isSwordAttack[i] == false)
+		{
+			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]))
+			{
+				haveSword[i] = true;
+			}
+		}
+		
+		//刺さった敵に剣が追っかける
+		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+		{
+			if (isEnemySting[i][j])
+			{
+				swordPosition[i] = enemy->GetPosition(j);
+			}
+		}
 	}
 }
 
