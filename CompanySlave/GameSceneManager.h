@@ -50,4 +50,5 @@ private://’è‹`
 	bool LoadFlag = false;
 	int LoadTime = 70;
 	int LoadCount = 0;
+	int LoadCount2 = 0;
 };

@@ -116,9 +116,10 @@ void GameSceneManager::Update()
 		//play->Init();
 		LoadTime-=1;
 		if (LoadTime > 0) {
-			
-			if (LoadCount < 6) {
+			LoadCount2++;
+			if (LoadCount < 6 && LoadCount2 >= 10) {
 				LoadCount++;
+				LoadCount2 = 0;
 			}
 			else if (LoadCount == 6) {
 				LoadCount = 0;
@@ -128,7 +129,6 @@ void GameSceneManager::Update()
 			LoadCount = 0;
 			LoadFlag = false;
 		}
-
 	}
 }
 
