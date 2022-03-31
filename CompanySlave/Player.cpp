@@ -29,16 +29,16 @@ void Player::Init()
 	oldPosition = position;
 
 	//コンボUI
-	comboPolygon = Shape::CreateRect(20.0f, 10.0f);
+	/*comboPolygon = Shape::CreateRect(20.0f, 10.0f);
 	comboGraph = Object::Instance()->LoadTexture(L"Resources/ComboUI/ComboGauge.png");
 
-	black = Shape::CreateRect(16.0f, 2.0f);
+	black = Shape::CreateRect(16.0f, 2.0f);*/
 	yellowColor = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 
 	//コンボ数字
-	comboNumberObj = Shape::CreateRect(5.0f, 7.0f);
+	//comboNumberObj = Shape::CreateRect(5.0f, 7.0f);
 
-	comboNumberGraph[0] = Object::Instance()->LoadTexture(L"Resources/ComboUI/0.png");
+	/*comboNumberGraph[0] = Object::Instance()->LoadTexture(L"Resources/ComboUI/0.png");
 	comboNumberGraph[1] = Object::Instance()->LoadTexture(L"Resources/ComboUI/1.png");
 	comboNumberGraph[2] = Object::Instance()->LoadTexture(L"Resources/ComboUI/2.png");
 	comboNumberGraph[3] = Object::Instance()->LoadTexture(L"Resources/ComboUI/3.png");
@@ -47,8 +47,15 @@ void Player::Init()
 	comboNumberGraph[6] = Object::Instance()->LoadTexture(L"Resources/ComboUI/6.png");
 	comboNumberGraph[7] = Object::Instance()->LoadTexture(L"Resources/ComboUI/7.png");
 	comboNumberGraph[8] = Object::Instance()->LoadTexture(L"Resources/ComboUI/8.png");
-	comboNumberGraph[9] = Object::Instance()->LoadTexture(L"Resources/ComboUI/9.png");
-
+	comboNumberGraph[9] = Object::Instance()->LoadTexture(L"Resources/ComboUI/9.png");*/
+	//プレイヤーHP
+	HPGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/HPGauge.png");
+	HPGaugeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
+	HPGaugeSub = Sprite::Instance()->SpriteCreate(L"Resources/color/yellow.png");
+	//ソードゲージUI
+	swordGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge.png");
+	swordGargeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
+	swordGargeSub = Sprite::Instance()->SpriteCreate(L"Resources/color/blue.png");
 #if _DEBUG
 	attackField = Shape::CreateRect(10.0f, 20.0f);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
@@ -75,7 +82,7 @@ void Player::Update(Enemy *enemy)
 	{
 		return;
 	}
-	
+
 	Angle();
 	//移動
 	Move();
@@ -136,20 +143,28 @@ void Player::Move()
 		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
 		//向き変更
-		if (Input::Instance()->KeybordPush(DIK_RIGHT)|| Input::Instance()->ControllerPush(LButtonRight)) { angle.y = 0; }
+		if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) { angle.y = 0; }
 		else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) { angle.y = 180; }
 		else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) { angle.y = 270; }
 		else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) { angle.y = 90; }
-		if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))||
-			(Input::Instance()->ControllerPush(LButtonRight)&& Input::Instance()->ControllerPush(LButtonUp))) { angle.y = 315; }
+		if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) ||
+			(Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
+			angle.y = 315;
+		}
 		else if ((Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP))
-			||(Input::Instance()->ControllerPush(LButtonLeft)&& Input::Instance()->ControllerPush(LButtonUp))){ angle.y = 225; }
+			|| (Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp))) {
+			angle.y = 225;
+		}
 		else if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN))
-			||(Input::Instance()->ControllerPush(LButtonRight)&& Input::Instance()->ControllerPush(LButtonDown)))
-		{ angle.y = 45; }
+			|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)))
+		{
+			angle.y = 45;
+		}
 		else if ((Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN))
-			||(Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)))
-		{ angle.y = 135; }
+			|| (Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)))
+		{
+			angle.y = 135;
+		}
 		walkCount++;//アニメーションのタイマー
 		moveFlag = true;
 	}
@@ -173,7 +188,7 @@ void Player::Move()
 		{
 			position.z += speed.z;
 		}
-		if (Input::Instance()->KeybordPush(DIK_DOWN) )
+		if (Input::Instance()->KeybordPush(DIK_DOWN))
 		{
 			position.z -= speed.z;
 		}
@@ -181,10 +196,10 @@ void Player::Move()
 		if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
 			Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 		{
-			
+
 			position.x += speed.x * sinRad;
 			position.z += speed.z * cosRad;
-		}	
+		}
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
@@ -203,7 +218,7 @@ void Player::NormalAttack(Enemy *enemy)
 		attackNo = 0;
 	}
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
-	if (Input::Instance()->KeybordTrigger(DIK_D)||Input::Instance()->ControllerDown(ButtonA) && avoidanceTime <= 0)
+	if (Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonA) && avoidanceTime <= 0)
 	{
 		attackCount = 0;//カウントリセット
 		attackNo = 0;//ナンバーをリセット
@@ -349,7 +364,7 @@ void Player::SwordAttack(Enemy *enemy)
 }
 
 void   Player::Angle()
-{	
+{
 	float rad = 0.0f;
 	//右上
 	if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
@@ -373,7 +388,7 @@ void   Player::Angle()
 		cosRad = cosf(rad);
 	}//上
 	else if (Input::Instance()->KeybordPush(DIK_UP)) {
-		rad = atan2(position.z  - position.z, position.x + 10.0f - position.x);
+		rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
 		sinRad = sinf(rad);
 		cosRad = cosf(rad);
 
@@ -385,7 +400,7 @@ void   Player::Angle()
 
 	}//下
 	else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
-		rad = atan2(position.z  - position.z, position.x - 10.0f - position.x);
+		rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
 		sinRad = sinf(rad);
 		cosRad = cosf(rad);
 
@@ -395,7 +410,7 @@ void   Player::Angle()
 		sinRad = sinf(rad);
 		cosRad = cosf(rad);
 	}
-	
+
 	if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
 		Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
@@ -478,6 +493,23 @@ void Player::Damage()
 	//ダメージを食らう
 	damageTime = damageTimeMax;
 	HP--;
+}
+
+void Player::UIDraw()
+{
+	//HP
+	if (HP > 0)
+	{
+		Sprite::Instance()->Draw(HPGaugeSub, Vec2(50.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeMain, Vec2(50.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+	}
+	Sprite::Instance()->Draw(HPGraph, Vec2(0.0f, 30.0f), 500.0f, 30.0f);
+
+	//ソードゲージ
+	//Sprite::Instance()->Draw(swordGargeSub, Vec2(), 100.0f, 100.0f);
+	//Sprite::Instance()->Draw(swordGargeMain, Vec2(), 100.0f, 100.0f);
+	Sprite::Instance()->Draw(swordGraph, Vec2(), 100.0f, 100.0f);
+
 }
 
 void Player::DebugDraw()

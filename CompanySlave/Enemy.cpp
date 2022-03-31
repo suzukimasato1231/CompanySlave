@@ -51,7 +51,16 @@ void Enemy::Init()
 	}
 	debugField = Shape::CreateRect(attackEnemies.x, attackEnemies.y);
 	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
+
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
+
+	//“GHP
+	hpGaugeOBJ = Shape::CreateRect(12.0f, 1.8f);
+	hpOBJ = Shape::CreateRect(15.0f, 2.0f);
+	hpGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/EnemyGauge.png");
+	hpGaugeGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/HP.png");
+
+
 }
 
 void Enemy::Update(Player *player)
@@ -169,6 +178,16 @@ void Enemy::Draw()
 				break;
 			}
 			break;
+		}
+		//HPƒQ[ƒW
+		float parsent = eData[i]->HP / eData[i]->HPMax;
+		if (parsent != 1.0f)
+		{
+			Object::Instance()->Draw(hpGaugeOBJ, Vec3(eData[i]->position.x - (1.0f - parsent) * 6.0, eData[i]->position.y + 5.0f, eData[i]->position.z + 5.0f),
+				Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGaugeGraph);
+			//HP˜g
+			Object::Instance()->Draw(hpOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 5.1f, eData[i]->position.z + 5.0f),
+				eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
 		}
 	}
 }

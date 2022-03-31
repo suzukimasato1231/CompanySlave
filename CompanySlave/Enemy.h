@@ -36,7 +36,8 @@ private://構造体
 		Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 		Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
 		Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
-		int HP = 10;						//HP
+		float HPMax = 10;					//最大HP
+		float HP = 10;						//HP
 		float r = 5;						//大きさ
 		int Status = NORMAL;				//状態
 		int StatusTime = 0;					//状態時間
@@ -119,6 +120,12 @@ private:
 
 	const float player2EnemyLength = 10.0f;			//プレイヤーと敵の距離
 
+	//HPUI
+	Object::ObjectData hpOBJ;
+	Object::ObjectData hpGaugeOBJ;
+	int hpGaugeGraph;
+	int hpGraph;
+	//デバック用
 	Object::ObjectData debugField;	//索敵
 	Object::ObjectData debugField2;//攻撃範囲
 	int redColor;

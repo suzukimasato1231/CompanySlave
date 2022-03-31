@@ -27,6 +27,8 @@ public:
 	/// ダメージ
 	/// </summary>
 	void Damage();
+	//プレイヤーUI描画
+	void UIDraw();
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -90,7 +92,8 @@ private:
 	int  direction = 0;					//プレイヤーの向き
 	float sinRad = 0;
 	float cosRad = 0;
-	int HP = 10;						//プレイヤーHP
+	const float HPMAX = 10;
+	float HP = 10;						//プレイヤーHP
 	const int damageTimeMax = 20;
 	int damageTime = 0;					//ダメージ食らったかの見た目用
 
@@ -120,7 +123,7 @@ private:
 	const int normalGraceTimeMax = 50;					//連続切りまでの猶予
 	int normalGraceTime = 0;							//連続切りまでの猶予
 	float attackMoveSpeed = 0.7f;						//攻撃方向へ進むスピード
-	
+
 	//剣攻撃
 	Object::ObjectData swordObject;	//剣
 	Vec3 swordPosition{ 10.0f,0.0f,0.0f };	//座標
@@ -130,7 +133,7 @@ private:
 	bool isSwordAttack = false;
 	int stingCnt = 0;
 	bool haveSword = true;
-	bool isEnemySting[4] = {false,false, false, false};
+	bool isEnemySting[4] = { false,false, false, false };
 
 	//エフェクト関係
 	bool AttackEffect = false;
@@ -143,11 +146,22 @@ private:
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };
-	Object::ObjectData comboPolygon;
-	Object::ObjectData  comboNumberObj;//１桁目
-	Object::ObjectData black;
-	int comboGraph;
-	int comboNumberGraph[10];
+
+	//プレイヤーHP
+	Sprite::SpriteData HPGraph;
+	Sprite::SpriteData HPGaugeSub;
+	Sprite::SpriteData HPGaugeMain;
+
+	//ソードゲージ
+	Sprite::SpriteData swordGraph;
+	Sprite::SpriteData swordGargeSub;
+	Sprite::SpriteData swordGargeMain;
+
+	//Object::ObjectData comboPolygon;
+	//Object::ObjectData  comboNumberObj;//１桁目
+	//Object::ObjectData black;
+	/*int comboGraph;
+	int comboNumberGraph[10];*/
 	int yellowColor;
 
 
