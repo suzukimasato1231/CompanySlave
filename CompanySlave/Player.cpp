@@ -196,12 +196,11 @@ void Player::Draw()
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
+	Object::Instance()->Draw(cursorObject, { position.x,-1,position.z, }, { 10,10,10 }, { 90,angle.y,0 }, color, cursorGraph);
 	for (int i = 0; i < 7; i++)
 	{
-		Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,1.5f }, swordAngle[i], color);
+		Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, swordAngle[i], color);
 	}
-	Object::Instance()->Draw(cursorObject, { position.x,0,position.z, }, { 10,10,10 }, { 90,angle.y,0 }, color, cursorGraph);
-
 }
 
 //ˆÚ“®
@@ -376,6 +375,7 @@ void Player::NormalAttack(Enemy *enemy)
 
 }
 
+//Œ•Œ‚‚Â
 void Player::SwordAttack(Enemy *enemy)
 {
 	//Œ‚‚Â
@@ -409,6 +409,8 @@ void Player::SwordAttack(Enemy *enemy)
 		timeRate = min(nowTime / endTime, 1);
 		for (int i = 0; i < 7; i++)
 		{
+			//Ž©•ª‚Ì•ûŒü‚­
+			swordAngle[i].y = XMConvertToDegrees(atan2(position.x - swordPosition[i].x, position.z - swordPosition[i].z)) + 270;
 			//Žh‚³‚Á‚½ƒtƒ‰ƒOÁ‚·
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
