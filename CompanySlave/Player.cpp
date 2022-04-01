@@ -336,12 +336,19 @@ void Player::SwordAttack(Enemy *enemy)
 	//剣戻ってくるやつ処理
 	if (returnFlag)
 	{
+		
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		for (int i = 0; i < 7; i++)
 		{
+			//刺さったフラグ消す
+			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+			{
+				isEnemySting[i][j] = false;
+			}
+
 			//ラープ
-			swordPosition[i] = Easing::lerp(swordPosition[i], position, timeRate);
+			swordPosition[i] = Easing::easeIn(swordPosition[i], position, timeRate);
 			
 			//戻ってるときの当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
