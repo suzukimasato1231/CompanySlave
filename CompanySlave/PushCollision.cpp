@@ -1,6 +1,6 @@
 #include"PushCollision.h"
 
-void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage)
+void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage, bool &stageFlag)
 {
 	if (player == nullptr || mapStage == nullptr) { return; }
 	//判定する箇所だけ行うため
@@ -24,6 +24,14 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 					player->SetPosition(PushBack(player->GetPosition(), player->GetOldPosition(), player->GetPSize(),
 						mapStage->GetPosition(i, j), mapStage->GetSize() / 2,
 						mapStage->GetMap(i, (j + 1) % MAP_HEIGHT), mapStage->GetMap(i, (j - 1) % MAP_HEIGHT)));
+				}
+			}
+			//このブロックに触れたら次のステージへ
+			if (mapStage->GetMap(i, j) == NextStageBlock)
+			{
+				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
+				{
+					stageFlag = true;
 				}
 			}
 		}

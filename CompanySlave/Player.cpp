@@ -86,6 +86,74 @@ void Player::Init()
 	}
 }
 
+void Player::StageInit(int stageNum)
+{
+	//ステージごと
+	switch (stageNum)
+	{
+	case 1:
+		position = { 10.0f,0.0f,-10.0f };	//座標
+		oldPosition = position;				//1つ前の座標
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		direction = Right;					//プレイヤーの向き
+		break;
+	case 2:
+		position = { 10.0f,0.0f,-30.0f };	//座標
+		oldPosition = position;				//1つ前の座標
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		direction = Right;
+		break;
+	}
+	//ステージ変わった時の初期化
+	walkCount = 0;						//描画用カウント
+	walkNo = 0;							//描画するNO
+	attackCount = 0;					//描画用カウント
+	attackNo = 0;						//描画するNO
+	attackMode = false;
+	damageTime = 0;						//ダメージ食らったかの見た目用
+	moveFlag = false;					//動いているかどうか
+	//回避
+	avoidanceFlag = false;				//回避中か
+	avoidanceTime = 0;					//今回避時間
+	avoiCoolTime = 0;					//今回避クールタイム
+	//通常攻撃
+	for (int i = 0; i < 3; i++)
+	{
+		normalAttackFlag[i] = false;				//通常攻撃可能か
+	}
+	normalAttackTime = 0;							//攻撃と攻撃の間
+	normalDirection = 0;							//攻撃の向き
+	normalAttackCount = 0;							//通常攻撃の何回目か
+	normalGraceTime = 0;							//連続切りまでの猶予
+
+   //剣攻撃
+	for (int i = 0; i < 7; i++)
+	{
+		swordPosition[i] = position;	//座標
+		swordAngle[i] = { 0.0f,0.0f,0.0f };		//角度
+		swordAngleVec[i] = 0;//飛ばす方向
+		isSwordAttack[i] = false;//アタックフラグ
+		stingCnt[i] = 0;//刺さるまでの時間
+		haveSword[i] = true;//持ってる剣
+	}
+	shotNo = 0;//どの剣か
+	returnFlag = false;//剣が戻る時のフラグ
+	nowTime = 0;//剣が戻る時のラープ
+	timeRate = 0;//剣が戻る時のラープ
+
+
+   //エフェクト関係
+	AttackEffect = false;
+	effectTime = 10;
+	effectCount = 0;
+}
+
 void Player::Update(Enemy *enemy)
 {
 	if (enemy == nullptr)
@@ -336,7 +404,7 @@ void Player::SwordAttack(Enemy *enemy)
 	//剣戻ってくるやつ処理
 	if (returnFlag)
 	{
-		
+
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		for (int i = 0; i < 7; i++)
@@ -349,13 +417,13 @@ void Player::SwordAttack(Enemy *enemy)
 
 			//ラープ
 			swordPosition[i] = Easing::easeIn(swordPosition[i], position, timeRate);
-			
+
 			//戻ってるときの当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
 				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
 				{
-					
+
 				}
 			}
 		}
@@ -387,7 +455,7 @@ void Player::SwordAttack(Enemy *enemy)
 		if (isSwordAttack[i] == true)
 		{
 			stingCnt[i]++;//刺さるカウント
-			
+
 			//敵との当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
@@ -421,7 +489,7 @@ void Player::SwordAttack(Enemy *enemy)
 				haveSword[i] = true;
 			}
 		}
-		
+
 		//刺さった敵に剣が追っかける
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{

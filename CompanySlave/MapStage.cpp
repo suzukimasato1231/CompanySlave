@@ -14,10 +14,6 @@ MapStage::~MapStage()
 
 void MapStage::Init()
 {
-	char *Filepath = (char *)"Resources/map/stage01.csv";
-
-	LoadCSV(map, Filepath);
-
 	block = Shape::CreateSquare(10.0f, 10.0f, 10.0f);
 
 	blockGraph = Object::Instance()->LoadTexture(L"Resources/jimen.png");
@@ -27,10 +23,44 @@ void MapStage::Init()
 	cornerBlock = Object::Instance()->CreateOBJ("wall2");
 
 	strawBlock = Object::Instance()->CreateOBJ("wara2");
+	//‰¼
+	smokeGraph = Object::Instance()->LoadTexture(L"Resources/color/red.png");
+	nextGraph = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 }
 
-void MapStage::Update()
+void MapStage::StageInit(int stageNum)
 {
+	char *Filepath;
+	switch (stageNum)
+	{
+	case 1:
+		Filepath = (char *)"Resources/map/stage01.csv";
+		LoadCSV(map, Filepath);
+		break;
+	case 2:
+		Filepath = (char *)"Resources/map/stage01.csv";
+		LoadCSV(map, Filepath);
+		break;
+	default:
+		break;
+	}
+}
+
+void MapStage::Update(Enemy *enemy)
+{
+	if (enemy->GetEnemySize() == 0)
+	{
+		for (size_t y = 0; y < MAP_HEIGHT; y++)
+		{
+			for (size_t x = 0; x < MAP_WIDTH; x++)
+			{
+				if (map[y][x] == SMOKEWALL)
+					// ‰Šú‰»
+					map[y][x] = NONE;
+			}
+		}
+	}
+
 }
 
 void MapStage::Draw(Vec3 pPos)
@@ -83,6 +113,19 @@ void MapStage::Draw(Vec3 pPos)
 				Object::Instance()->Draw(strawBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 3.0f, 3.0f, 3.0f }, Vec3{}, color, blockGraph);
+				break;
+			case SMOKEWALL:
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, blockGraph);
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, smokeGraph);
+				break;
+			case NextStageBlock:
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, nextGraph);
 				break;
 			default:
 				break;

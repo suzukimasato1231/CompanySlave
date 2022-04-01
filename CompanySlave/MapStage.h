@@ -3,16 +3,19 @@
 #include"Object.h"
 #include <string>
 #include"CollisionPrimitive.h"
+#include"Enemy.h"
 /// <summary>
 /// ブロックの種類
 /// </summary>
 enum ObjectStatus
 {
-	NONE,          //空
+	NONE,			//空
 	WALLWIDTH,         //ブロック
 	WALLHIGHT,
 	WALLCORNER,
 	STRAW,
+	SMOKEWALL,//敵全部倒したら消える壁
+	NextStageBlock,//ここに触れたら次のステージへ
 };
 /// <summary>
 /// マップ・ステージ
@@ -32,8 +35,10 @@ public://定数
 public:
 	//初期化
 	void Init();
+	//ステージが変わるときの初期化
+	void StageInit(int stageNum);
 	//更新
-	void Update();
+	void Update(Enemy *enemy);
 	//描画
 	void Draw(Vec3 pPos);
 
@@ -51,6 +56,8 @@ private:
 	Object::ObjectData strawBlock;//藁
 
 	int blockGraph = 0;
+	int nextGraph = 0;//仮
+	int smokeGraph = 0;//仮
 
 	int	map[MAP_HEIGHT][MAP_WIDTH];//マップチップ
 

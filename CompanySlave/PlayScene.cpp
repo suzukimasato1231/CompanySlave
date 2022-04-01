@@ -24,7 +24,7 @@ PlayScene::~PlayScene()
 	Audio::SoundUnload(&sound2);
 	safe_delete(audio);
 }
-void PlayScene::Initialize(_DirectX* directX)
+void PlayScene::Initialize(_DirectX *directX)
 {
 	assert(directX);
 	this->directX = directX;
@@ -49,7 +49,7 @@ void PlayScene::Init()
 {
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/i.wav");
-	
+
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
@@ -100,32 +100,54 @@ void PlayScene::Init()
 	//敵
 	enemy = new Enemy;
 	enemy->Init();
+
+	//ステージ初期化
+	stageFlag = true;
+	stageNum = 1;
+	StageInit();
+}
+
+void PlayScene::StageInit()
+{
+	if (stageFlag == true)
+	{
+		switch (stageNum)
+		{
+		case 1:
+			player->StageInit(stageNum);
+			enemy->StageInit(stageNum);
+			mapStage->StageInit(stageNum);
+			break;
+		case 2:
+			player->StageInit(stageNum);
+			enemy->StageInit(stageNum);
+			mapStage->StageInit(stageNum);
+			break;
+		default:
+			break;
+		}
+		stageNum++;
+		stageFlag = false;
+	}
 }
 
 void PlayScene::Update()
 {
-	//キー入力
-	//Inputクラスにマウスとコントローラもあるよ
-	//インスタンス化してるのでInput/Input.h"を持ってくればどのクラスでも使えるよ
-	if (Input::Instance()->KeybordPush(DIK_UP))
-	{
-	}
-	if (Input::Instance()->KeybordPush(DIK_DOWN))
-	{
-	}
-	if (Input::Instance()->KeybordPush(DIK_LEFT))
-	{
-	}
-	if (Input::Instance()->KeybordPush(DIK_RIGHT))
-	{
-	}
+	//nextステージ
+
+	StageInit();
+
+
+
 	//プレイヤーの更新
 	player->Update(enemy);
 
 	enemy->Update(player);
 
+	mapStage->Update(enemy);
+
 	//マップチップとプレイヤーの押し戻し処理
-	PushCollision::Player2Mapchip(player, enemy, mapStage);
+	PushCollision::Player2Mapchip(player, enemy, mapStage, stageFlag);
 
 
 	fbxObject1->Update();

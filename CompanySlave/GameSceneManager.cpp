@@ -83,7 +83,7 @@ void GameSceneManager::Update()
 	else if (scene == selectScene) {
 		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
-			//ステージ1の初期化
+			//プレイ開始
 			if (select->GetStage() == 1) {
 				play = new PlayScene();
 				play->Initialize(directX);

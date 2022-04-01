@@ -58,6 +58,9 @@ public:
 
 	void Init();//初期化
 
+	//ステージごとの初期化
+	void StageInit(int stageNum);
+
 	void Update(class Player *player);//更新
 
 	void Draw();//描画

@@ -29,6 +29,8 @@ public:
 
 	void Init();
 
+	void StageInit();
+
 	void Update();
 
 	void Draw();
@@ -75,4 +77,9 @@ private://’è‹`
 	//FBX
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
+
+
+	int stageNum = 1;
+
+	bool stageFlag = true;
 };

@@ -19,7 +19,38 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
-	char *Filepath = (char *)"Resources/map/stage01spawnMap.csv";
+	debugField = Shape::CreateRect(attackEnemies.x, attackEnemies.y);
+	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
+
+	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
+
+	//“GHP
+	hpGaugeOBJ = Shape::CreateRect(12.0f, 1.8f);
+	hpOBJ = Shape::CreateRect(15.0f, 2.0f);
+	hpGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/EnemyGauge.png");
+	hpGaugeGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/HP.png");
+}
+
+void Enemy::StageInit(int stageNum)
+{
+	//ƒƒ‚ƒŠ‰ð•ú
+	for (int i = (int)eData.size() - 1; i >= 0; i--)
+	{
+		delete eData[i];
+		eData.erase(eData.begin() + i);
+	}
+	char *Filepath = (char *)"";
+	switch (stageNum)
+	{
+	case 1:
+		Filepath = (char *)"Resources/map/stage01spawnMap.csv";
+		break;
+	case 2:
+		Filepath = (char *)"Resources/map/stage01spawnMap.csv";
+		break;
+	default:
+		break;
+	}
 
 	LoadCSV(spawnMap, Filepath);
 
@@ -49,18 +80,6 @@ void Enemy::Init()
 			}
 		}
 	}
-	debugField = Shape::CreateRect(attackEnemies.x, attackEnemies.y);
-	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
-
-	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
-
-	//“GHP
-	hpGaugeOBJ = Shape::CreateRect(12.0f, 1.8f);
-	hpOBJ = Shape::CreateRect(15.0f, 2.0f);
-	hpGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/EnemyGauge.png");
-	hpGaugeGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/HP.png");
-
-
 }
 
 void Enemy::Update(Player *player)
