@@ -114,14 +114,14 @@ public://取得系
 private:
 	const Vec2 attackEnemies{ 40.0f,40.0f };		//索敵範囲:width,height
 
-	const Vec2 attackField{ 10.0f,10.0f };			//攻撃範囲
+	const Vec2 attackField{ 15.0f,15.0f };			//攻撃範囲
 
 	const int moveTime = 40;						//移動時間
 
-	const int attackMotionTime = 60;				//攻撃モーションの時間
+	const int attackMotionTime = 100;				//攻撃モーションの時間
 	const int attackMotionDamege = 10;				//攻撃モーション中のどの時間でダメージを与えるか
 
-	const float player2EnemyLength = 10.0f;			//プレイヤーと敵の距離
+	const float player2EnemyLength = 15.0f;			//プレイヤーと敵の距離
 
 	//HPUI
 	Object::ObjectData hpOBJ;

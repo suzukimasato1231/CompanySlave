@@ -84,7 +84,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)2d\;$(ProjectDir)3d\;$(ProjectDir)base\;$(ProjectDir)Pipeline\;$(ProjectDir)Helper\;$(ProjectDir)Collision\;$(ProjectDir)Input\;$(ProjectDir)Audio\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjecctDir)lib\fbx_sdk\include;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjecctDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

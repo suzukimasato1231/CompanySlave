@@ -237,7 +237,7 @@ void Enemy::Move(int i, Player *player)
 	//’·‚³‚ğ‹‚ß‚é
 	float length = memoryPosition.length();
 
-	if (length < 5.0f)
+	if (length < player2EnemyLength)
 	{
 		eData[i]->Status = ATTACK;
 		eData[i]->attackDirection = eData[i]->direction;

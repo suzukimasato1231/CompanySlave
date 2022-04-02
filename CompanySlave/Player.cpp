@@ -654,9 +654,9 @@ void Player::UIDraw()
 
 void Player::DebugDraw()
 {
+#if _DEBUG
 	Vec3 attackPosition{};
 	Vec3 attackAngle{};
-
 	//通常攻撃エフェクト
 
 	if (normalAttackTime == normalAttackTimeMax)
@@ -698,7 +698,7 @@ void Player::DebugDraw()
 		}
 		//AttackEffect = true;
 	}
-
+#endif
 }
 
 void Player::EffectDraw()

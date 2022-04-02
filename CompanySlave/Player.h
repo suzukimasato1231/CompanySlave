@@ -107,7 +107,7 @@ private:
 	const int avoidanceTimeMax = 10;//回避時間
 	int avoiDirection = 0;			//回避向き
 	int avoidanceTime = 0;			//今回避時間
-	float avoiSpeed = 5.0f;			//回避スピード
+	float avoiSpeed = 4.0f;			//回避スピード
 	const int avoiCoolTimeMax = 20;	//回避クールタイム
 	int avoiCoolTime = 0;			//今回避クールタイム
 	float radDir = 0.0f;
@@ -116,7 +116,7 @@ private:
 
 	//通常攻撃
 	bool normalAttackFlag[3] = { false,false,false };	//通常攻撃可能か
-	float normalLength = 5.0f;							//攻撃の半径
+	float normalLength = 10.0f;							//攻撃の半径
 	const int normalAttackTimeMax = 20;					//攻撃と攻撃の間の時間
 	int normalAttackTime = 0;							//攻撃と攻撃の間
 	int normalDirection = 0;							//攻撃の向き
@@ -124,7 +124,7 @@ private:
 	int normalAttackCount = 0;							//通常攻撃の何回目か
 	const int normalGraceTimeMax = 50;					//連続切りまでの猶予
 	int normalGraceTime = 0;							//連続切りまでの猶予
-	float attackMoveSpeed = 0.7f;						//攻撃方向へ進むスピード
+	float attackMoveSpeed = 0.3f;						//攻撃方向へ進むスピード
 
 	//剣攻撃
 	Object::ObjectData swordObject;//剣
