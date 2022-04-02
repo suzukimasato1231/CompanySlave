@@ -116,7 +116,8 @@ private:
 
 	//’ÊíUŒ‚
 	bool normalAttackFlag[3] = { false,false,false };	//’ÊíUŒ‚‰Â”\‚©
-	float normalLength = 10.0f;							//UŒ‚‚Ì”¼Œa
+	float normalLength = 20.0f;							//UŒ‚‚Ì”¼Œa
+	float normalLengthSub = 15.0f;						//Œü‚¢‚Ä‚¢‚È‚¢•ûŒü‚ÌUŒ‚‚Ì”¼Œa
 	const int normalAttackTimeMax = 20;					//UŒ‚‚ÆUŒ‚‚ÌŠÔ‚ÌŠÔ
 	int normalAttackTime = 0;							//UŒ‚‚ÆUŒ‚‚ÌŠÔ
 	int normalDirection = 0;							//UŒ‚‚ÌŒü‚«
@@ -182,7 +183,7 @@ private:
 	int redColor;
 
 	Object::ObjectData normalFieldOBJ;//’ÊíUŒ‚
-	int normalGraph;
+	//int normalGraph;
 
 #endif
 	Object::ObjectData AttackEffectOBJ;//’ÊíUŒ‚ƒGƒtƒFƒNƒg

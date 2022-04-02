@@ -32,7 +32,7 @@ private://構造体
 		Sphere eSphere;						//敵球
 		Vec3 position{ 50.0f,0.0f,0.0f };	//座標
 		Vec3 oldPosition{};					//1個前の座標
-		float speed = 0.5f;					//敵スピード
+		float speed = 0.3f;					//敵スピード
 		Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 		Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
 		Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
@@ -112,7 +112,7 @@ public://取得系
 
 	Vec3 basePosition = { 0,0,0 };//マップチップの初期位置
 private:
-	const Vec2 attackEnemies{ 40.0f,40.0f };		//索敵範囲:width,height
+	const Vec2 attackEnemies{ 100.0f,80.0f };		//索敵範囲:width,height
 
 	const Vec2 attackField{ 15.0f,15.0f };			//攻撃範囲
 

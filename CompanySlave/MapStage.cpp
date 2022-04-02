@@ -24,8 +24,8 @@ void MapStage::Init()
 
 	strawBlock = Object::Instance()->CreateOBJ("wara2");
 	//‰¼
-	smokeGraph = Object::Instance()->LoadTexture(L"Resources/color/red.png");
-	nextGraph = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
+	smokeGraph = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
+	//nextGraph = Object::Instance()->LoadTexture(L"Resources/color/.png");
 }
 
 void MapStage::StageInit(int stageNum)
@@ -125,7 +125,7 @@ void MapStage::Draw(Vec3 pPos)
 			case NextStageBlock:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, nextGraph);
+					scale, Vec3{}, color, blockGraph);
 				break;
 			default:
 				break;

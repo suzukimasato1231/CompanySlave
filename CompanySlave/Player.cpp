@@ -31,26 +31,9 @@ void Player::Init()
 	pSphere.center = XMVectorSet(0, 2, 0, 1);
 	oldPosition = position;
 
-	//コンボUI
-	/*comboPolygon = Shape::CreateRect(20.0f, 10.0f);
-	comboGraph = Object::Instance()->LoadTexture(L"Resources/ComboUI/ComboGauge.png");
 
-	black = Shape::CreateRect(16.0f, 2.0f);*/
 	yellowColor = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 
-	//コンボ数字
-	//comboNumberObj = Shape::CreateRect(5.0f, 7.0f);
-
-	/*comboNumberGraph[0] = Object::Instance()->LoadTexture(L"Resources/ComboUI/0.png");
-	comboNumberGraph[1] = Object::Instance()->LoadTexture(L"Resources/ComboUI/1.png");
-	comboNumberGraph[2] = Object::Instance()->LoadTexture(L"Resources/ComboUI/2.png");
-	comboNumberGraph[3] = Object::Instance()->LoadTexture(L"Resources/ComboUI/3.png");
-	comboNumberGraph[4] = Object::Instance()->LoadTexture(L"Resources/ComboUI/4.png");
-	comboNumberGraph[5] = Object::Instance()->LoadTexture(L"Resources/ComboUI/5.png");
-	comboNumberGraph[6] = Object::Instance()->LoadTexture(L"Resources/ComboUI/6.png");
-	comboNumberGraph[7] = Object::Instance()->LoadTexture(L"Resources/ComboUI/7.png");
-	comboNumberGraph[8] = Object::Instance()->LoadTexture(L"Resources/ComboUI/8.png");
-	comboNumberGraph[9] = Object::Instance()->LoadTexture(L"Resources/ComboUI/9.png");*/
 	//プレイヤーHP
 	HPGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/HPGauge.png");
 	HPGaugeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
@@ -64,7 +47,7 @@ void Player::Init()
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
 	normalFieldOBJ = Shape::CreateRect(normalLength, normalLength);
-	normalGraph = Object::Instance()->LoadTexture(L"Resources/kengeki.png");
+	//normalGraph = Object::Instance()->LoadTexture(L"Resources/kengeki.png");
 
 #endif
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
@@ -92,7 +75,7 @@ void Player::StageInit(int stageNum)
 	switch (stageNum)
 	{
 	case 1:
-		position = { 10.0f,0.0f,-10.0f };	//座標
+		position = { 100.0f,0.0f,-120.0f };	//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -101,7 +84,7 @@ void Player::StageInit(int stageNum)
 		direction = Right;					//プレイヤーの向き
 		break;
 	case 2:
-		position = { 10.0f,0.0f,-30.0f };	//座標
+		position = { 100.0f,0.0f,-120.0f };	//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -655,49 +638,7 @@ void Player::UIDraw()
 void Player::DebugDraw()
 {
 #if _DEBUG
-	Vec3 attackPosition{};
-	Vec3 attackAngle{};
-	//通常攻撃エフェクト
-
-	if (normalAttackTime == normalAttackTimeMax)
-	{
-		switch (direction)
-		{
-		case Up:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z + r + normalLength), scale, UIAngle, color, normalGraph);
-
-			break;
-		case Down:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z - r - normalLength), scale, UIAngle, color, normalGraph);
-
-			break;
-		case Left:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - r - normalLength, position.y, position.z), scale, UIAngle, color, normalGraph);
-
-			break;
-		case Right:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + r + normalLength, position.y, position.z), scale, UIAngle, color, normalGraph);
-
-			break;
-		case UpRight:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + normalLength, position.y, position.z + normalLength), scale, UIAngle, color, normalGraph);
-
-			break;
-		case UpLeft:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - normalLength, position.y, position.z + normalLength), scale, UIAngle, color, normalGraph);
-
-			break;
-		case DownRight:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + normalLength, position.y, position.z - normalLength), scale, UIAngle, color, normalGraph);
-
-			break;
-		case DownLeft:
-			Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - normalLength, position.y, position.z - normalLength), scale, UIAngle, color, normalGraph);
-
-			break;
-		}
-		//AttackEffect = true;
-	}
+	
 #endif
 }
 
@@ -758,20 +699,20 @@ void Player::NormalFieldDirection()
 	switch (direction)
 	{
 	case Up:
-		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLength / 2, position.y, position.z + r, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength / 2, position.y, position.z + r + normalLength, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLengthSub / 2, position.y, position.z, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLengthSub / 2, position.y, position.z + normalLength, 1);
 		break;
 	case Down:
-		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLength / 2, position.y, position.z - r, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength / 2, position.y, position.z - r - normalLength, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLengthSub / 2, position.y, position.z, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLengthSub / 2, position.y, position.z - normalLength, 1);
 		break;
 	case Left:
-		normalAttackBox.maxPosition = XMVectorSet(position.x - r, position.y, position.z + normalLength / 2, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x - r - normalLength, position.y, position.z - normalLength / 2, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x, position.y, position.z + normalLengthSub / 2, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength, position.y, position.z - normalLengthSub / 2, 1);
 		break;
 	case Right:
-		normalAttackBox.maxPosition = XMVectorSet(position.x + r + normalLength, position.y, position.z + normalLength / 2, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x + r, position.y, position.z - normalLength / 2, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLength, position.y, position.z + normalLengthSub / 2, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z - normalLengthSub / 2, 1);
 		break;
 	case UpRight:
 		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLength, position.y, position.z + normalLength, 1);

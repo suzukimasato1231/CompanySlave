@@ -19,7 +19,7 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
-	debugField = Shape::CreateRect(attackEnemies.x, attackEnemies.y);
+	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
 	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
@@ -53,7 +53,7 @@ void Enemy::StageInit(int stageNum)
 	}
 
 	LoadCSV(spawnMap, Filepath);
-
+	int  num = 0;
 	for (size_t j = 0; j < MAP_HEIGHT; j++)
 	{
 		for (size_t i = 0; i < MAP_WIDTH; i++)
@@ -62,18 +62,18 @@ void Enemy::StageInit(int stageNum)
 			{
 			case ONESPAWN:
 				eData.push_back(new EnemyData);
-				eData[eData.size() - 1]->enemyObject = Object::Instance()->CreateOBJ("OniKari");
-				eData[eData.size() - 1]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
-				eData[eData.size() - 1]->oldPosition = eData[eData.size() - 1]->position;
+				num = eData.size() - 1;
+				eData[num]->enemyObject = Object::Instance()->CreateOBJ("OniKari");
+				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
+				eData[num]->oldPosition = eData[eData.size() - 1]->position;
 				//座標を合わせる
-				eData[eData.size() - 1]->eBox.minPosition = XMVectorSet(
-					eData[eData.size() - 1]->position.x - eData[eData.size() - 1]->r,
-					eData[eData.size() - 1]->position.y - eData[eData.size() - 1]->r,
-					eData[eData.size() - 1]->position.z - eData[eData.size() - 1]->r, 1);
-				eData[eData.size() - 1]->eBox.maxPosition = XMVectorSet(
-					eData[eData.size() - 1]->position.x + eData[eData.size() - 1]->r,
-					eData[eData.size() - 1]->position.y + eData[eData.size() - 1]->r,
-					eData[eData.size() - 1]->position.z + eData[eData.size() - 1]->r, 1);
+				eData[num]->eBox.minPosition = XMVectorSet(
+					eData[num]->position.x - eData[num]->r, eData[num]->position.y - eData[num]->r,
+					eData[num]->position.z - eData[num]->r, 1);
+				eData[num]->eBox.maxPosition = XMVectorSet(
+					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r,
+					eData[num]->position.z + eData[num]->r, 1);
+				eData[num]->direction = Left;
 				break;
 			default:
 				break;
@@ -103,6 +103,11 @@ void Enemy::Update(Player *player)
 		case ENEMIES:
 			break;
 		}
+
+		//座標を合わせる
+		eData[i]->eBox.minPosition = XMVectorSet(eData[i]->position.x - eData[i]->r, eData[i]->position.y - eData[i]->r, eData[i]->position.z - eData[i]->r, 1);
+		eData[i]->eBox.maxPosition = XMVectorSet(eData[i]->position.x + eData[i]->r, eData[i]->position.y + eData[i]->r, eData[i]->position.z + eData[i]->r, 1);
+		eData[i]->eSphere.center = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z, 1);
 
 		if (eData[i]->damegeTime > 0)
 		{
@@ -248,11 +253,6 @@ void Enemy::Move(int i, Player *player)
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
 		eData[i]->position += direction * eData[i]->speed;
-
-		//座標を合わせる
-		eData[i]->eBox.minPosition = XMVectorSet(eData[i]->position.x - eData[i]->r, eData[i]->position.y - eData[i]->r, eData[i]->position.z - eData[i]->r, 1);
-		eData[i]->eBox.maxPosition = XMVectorSet(eData[i]->position.x + eData[i]->r, eData[i]->position.y + eData[i]->r, eData[i]->position.z + eData[i]->r, 1);
-		eData[i]->eSphere.center = XMVectorSet(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z, 1);
 	}
 }
 
