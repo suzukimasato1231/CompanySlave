@@ -179,7 +179,7 @@ void Player::Draw()
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
-	Object::Instance()->Draw(cursorObject, { position.x,-1,position.z, }, { 10,10,10 }, { 90,angle.y,0 }, color, cursorGraph);
+	Object::Instance()->Draw(cursorObject, { position.x,-2,position.z, }, { 10,2,1 }, { 90,angle.y,0 }, color, cursorGraph);
 	for (int i = 0; i < 7; i++)
 	{
 		Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, swordAngle[i], color);
@@ -362,7 +362,7 @@ void Player::NormalAttack(Enemy *enemy)
 void Player::SwordAttack(Enemy *enemy)
 {
 	//Œ‚‚Â
-	if (Input::Instance()->KeybordTrigger(DIK_V) && haveSword[shotNo] && !returnFlag)
+	if ((Input::Instance()->KeybordTrigger(DIK_V) || Input::Instance()->ControllerDown(ButtonRB)) && haveSword[shotNo] && !returnFlag)
 	{
 		isSwordAttack[shotNo] = true;
 		haveSword[shotNo] = false;
@@ -379,7 +379,7 @@ void Player::SwordAttack(Enemy *enemy)
 	}
 
 	//Œ•–ß‚Á‚Ä‚­‚é‚â‚Â”­“®
-	if (Input::Instance()->KeybordPush(DIK_B))
+	if (Input::Instance()->KeybordPush(DIK_B) || Input::Instance()->ControllerDown(ButtonLB))
 	{
 		returnFlag = true;
 	}
@@ -638,7 +638,7 @@ void Player::UIDraw()
 void Player::DebugDraw()
 {
 #if _DEBUG
-	
+
 #endif
 }
 
@@ -699,8 +699,8 @@ void Player::NormalFieldDirection()
 	switch (direction)
 	{
 	case Up:
-		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLengthSub / 2, position.y, position.z, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x - normalLengthSub / 2, position.y, position.z + normalLength, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLengthSub / 2, position.y, position.z + normalLength, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLengthSub / 2, position.y, position.z , 1);
 		break;
 	case Down:
 		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLengthSub / 2, position.y, position.z, 1);

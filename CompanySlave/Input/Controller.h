@@ -17,6 +17,8 @@ enum ButtonKind
 	ButtonB,
 	ButtonX,
 	ButtonY,
+	ButtonRB,
+	ButtonLB,
 	ButtonKindMax,
 };
 

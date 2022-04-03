@@ -70,4 +70,6 @@ private:
 	Vec4 color = { 1.0f,1.0f,1.0f,1.0f };//ブロックの色
 
 	Vec4 color2 = { 0.0f,0.0f,0.0f,0.5f };
+
+	bool nextFlag = false;
 };

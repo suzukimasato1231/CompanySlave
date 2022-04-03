@@ -44,21 +44,35 @@ void MapStage::StageInit(int stageNum)
 	default:
 		break;
 	}
+	nextFlag = false;
 }
 
 void MapStage::Update(Enemy *enemy)
 {
-	if (enemy->GetEnemySize() == 0)
+	bool isFlag = true;
+	//敵が全員倒していたら
+	for (int e = 0; e < enemy->GetEnemySize(); e++)
+	{
+		if (enemy->GetHP(e) > 0)
+		{
+			isFlag = false;
+		}
+	}
+	//次のマップへ進める
+	if (nextFlag == false && isFlag == true)
 	{
 		for (size_t y = 0; y < MAP_HEIGHT; y++)
 		{
 			for (size_t x = 0; x < MAP_WIDTH; x++)
 			{
 				if (map[y][x] == SMOKEWALL)
+				{
 					// 初期化
 					map[y][x] = NONE;
+				}
 			}
 		}
+		nextFlag = true;
 	}
 
 }

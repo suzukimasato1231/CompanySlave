@@ -34,7 +34,6 @@ private://構造体
 		Vec3 oldPosition{};					//1個前の座標
 		float speed = 0.3f;					//敵スピード
 		Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
-		Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
 		Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
 		float HPMax = 10;					//最大HP
 		float HP = 10;						//HP
@@ -90,6 +89,8 @@ private:
 	Box AttackField(int i);
 	//敵が向いている方向
 	int Direction(int i, class Player *player);
+	//向きによって敵の描画角度を取得
+	Vec3 DirectionAngle(int direction);
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }
@@ -140,4 +141,8 @@ private:
 	bool BloodFlag[eNumMax] = { false,false,false,false };
 	Vec3 BloodPosition[eNumMax] = { Vec3(0,0,0),Vec3(0,0,0) ,Vec3(0,0,0) ,Vec3(0,0,0) };
 
+	//エネミーアタック
+	Object::ObjectData attackOBJ[2];
+	Object::ObjectData attackEfectOBJ;
+	int attackEfectGraph;
 };

@@ -33,6 +33,12 @@ void Enemy::Init()
 	Blood = Shape::CreateRect(10, 10);
 	BloodGraph = Object::Instance()->LoadTexture(L"Resources/Blood/Blood.png");
 
+	//“GƒGƒlƒ~[UŒ‚
+	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
+
+	attackEfectOBJ = Shape::CreateRect(10.0f, 10.0f);
+	attackEfectGraph = Object::Instance()->LoadTexture(L"Resources/Effect/2effect12.png");
 }
 
 void Enemy::StageInit(int stageNum)
@@ -46,9 +52,6 @@ void Enemy::StageInit(int stageNum)
 		BloodFlag[i] = false;
 
 	}
-	
-		
-	
 
 	char *Filepath = (char *)"";
 	switch (stageNum)
@@ -138,13 +141,11 @@ void Enemy::Draw()
 	{
 		if (eData[i]->HP > 0)
 		{
-			if (eData[i]->damegeTime % 2 == 0)
-			{
-				Object::Instance()->Draw(eData[i]->enemyObject, eData[i]->position, eData[i]->scale, eData[i]->angle, eData[i]->color);
-			}
+
 			switch (eData[i]->Status)
 			{
 			case NORMAL:
+				Object::Instance()->Draw(eData[i]->enemyObject, eData[i]->position, eData[i]->scale, DirectionAngle(eData[i]->direction), eData[i]->color);
 				switch (eData[i]->direction)
 				{
 				case Up:
@@ -165,7 +166,19 @@ void Enemy::Draw()
 					break;
 				}
 				break;
+			case MOVE:
+				Object::Instance()->Draw(eData[i]->enemyObject, eData[i]->position, eData[i]->scale, DirectionAngle(eData[i]->direction), eData[i]->color);
+				break;
 			case ATTACK:
+				if (eData[i]->StatusTime >= attackMotionDamege)
+				{//•ŠíU‚èã‚°
+					Object::Instance()->Draw(attackOBJ[0], eData[i]->position, eData[i]->scale, DirectionAngle(eData[i]->attackDirection), eData[i]->color);
+				}
+				else
+				{//•ŠíU‚è‰º‚ë‚µ
+					Object::Instance()->Draw(attackOBJ[1], eData[i]->position, eData[i]->scale, DirectionAngle(eData[i]->attackDirection), eData[i]->color);
+				}
+
 				switch (eData[i]->attackDirection)
 				{
 				case Up:
@@ -174,22 +187,12 @@ void Enemy::Draw()
 						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
 							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
 					}
-					else
-					{
-						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
-							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
-					}
 					break;
 				case Down:
 					if (eData[i]->StatusTime == attackMotionDamege)
 					{
 						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
 							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-					}
-					else
-					{
-						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
-							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
 					}
 					break;
 				case Left:
@@ -198,22 +201,12 @@ void Enemy::Draw()
 						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
 							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
 					}
-					else
-					{
-						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
-							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
-					}
 					break;
 				case Right:
 					if (eData[i]->StatusTime == attackMotionDamege)
 					{
 						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
 							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-					}
-					else
-					{
-						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
-							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
 					}
 					break;
 				}
@@ -231,8 +224,8 @@ void Enemy::Draw()
 			}
 		}
 		if (BloodFlag[i] == true) {
-			Object::Instance()->Draw(Blood, BloodPosition[i],
-				Vec3(2, 2, 2), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
+			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 2.0f, BloodPosition[i].z),
+				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
 		}
 	}
 
@@ -331,10 +324,8 @@ void Enemy::Delete()
 		if (eData[i]->HP <= 0)
 		{
 			BloodFlag[i] = true;
-			//delete eData[i];
-			//eData.erase(eData.begin() + i);
 		}
-	
+
 	}
 }
 
@@ -431,4 +422,27 @@ int Enemy::Direction(int i, Player *player)
 			return Down;
 		}
 	}
+}
+
+Vec3 Enemy::DirectionAngle(int direction)
+{
+	Vec3 angle = {};
+	switch (direction)
+	{
+	case Up:
+		angle = { 0.0f,90.0f,0.0f };
+		break;
+	case Left:
+		angle = { 0.0f,0.0f,0.0f };
+		break;
+	case Right:
+		angle = { 0.0f,180.0f,0.0f };
+		break;
+	case Down:
+		angle = { 0.0f,270.0f,0.0f };
+		break;
+	default:
+		angle = { 0.0f,0.0f,0.0f };
+	}
+	return angle;
 }
