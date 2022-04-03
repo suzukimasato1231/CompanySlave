@@ -29,6 +29,10 @@ void Enemy::Init()
 	hpOBJ = Shape::CreateRect(15.0f, 2.0f);
 	hpGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/EnemyGauge.png");
 	hpGaugeGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/HP.png");
+	//ŒŒ
+	Blood = Shape::CreateRect(10, 10);
+	BloodGraph = Object::Instance()->LoadTexture(L"Resources/Blood/Blood.png");
+
 }
 
 void Enemy::StageInit(int stageNum)
@@ -38,7 +42,14 @@ void Enemy::StageInit(int stageNum)
 	{
 		delete eData[i];
 		eData.erase(eData.begin() + i);
+		//ŒŒ‚Ì‰Šú‰»
+		BloodFlag[i] = false;
+
 	}
+	
+		
+	
+
 	char *Filepath = (char *)"";
 	switch (stageNum)
 	{
@@ -86,22 +97,25 @@ void Enemy::Update(Player *player)
 {
 	for (size_t i = 0; i < eData.size(); i++)
 	{
-		switch (eData[i]->Status)
+		if (eData[i]->HP > 0)
 		{
-		case NORMAL:
-			SearchPlayer(i, player);
-			break;
-		case MOVE:
-			eData[i]->direction = Direction(i, player);
-			//ˆÚ“®
-			Move(i, player);
-			break;
-		case ATTACK:
-			eData[i]->direction = Direction(i, player);
-			Attack(i, player);
-			break;
-		case ENEMIES:
-			break;
+			switch (eData[i]->Status)
+			{
+			case NORMAL:
+				SearchPlayer(i, player);
+				break;
+			case MOVE:
+				eData[i]->direction = Direction(i, player);
+				//ˆÚ“®
+				Move(i, player);
+				break;
+			case ATTACK:
+				eData[i]->direction = Direction(i, player);
+				Attack(i, player);
+				break;
+			case ENEMIES:
+				break;
+			}
 		}
 
 		//À•W‚ğ‡‚í‚¹‚é
@@ -122,98 +136,107 @@ void Enemy::Draw()
 {
 	for (size_t i = 0; i < eData.size(); i++)
 	{
-		if (eData[i]->damegeTime % 2 == 0)
+		if (eData[i]->HP > 0)
 		{
-			Object::Instance()->Draw(eData[i]->enemyObject, eData[i]->position, eData[i]->scale, eData[i]->angle, eData[i]->color);
-		}
-		switch (eData[i]->Status)
-		{
-		case NORMAL:
-			switch (eData[i]->direction)
+			if (eData[i]->damegeTime % 2 == 0)
 			{
-			case Up:
-				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackEnemies.y / 2),
-					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+				Object::Instance()->Draw(eData[i]->enemyObject, eData[i]->position, eData[i]->scale, eData[i]->angle, eData[i]->color);
+			}
+			switch (eData[i]->Status)
+			{
+			case NORMAL:
+				switch (eData[i]->direction)
+				{
+				case Up:
+					Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackEnemies.y / 2),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					break;
+				case Down:
+					Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackEnemies.y / 2),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					break;
+				case Left:
+					Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x - attackEnemies.y / 2, eData[i]->position.y, eData[i]->position.z),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					break;
+				case Right:
+					Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x + attackEnemies.y / 2, eData[i]->position.y, eData[i]->position.z),
+						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					break;
+				}
 				break;
-			case Down:
-				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackEnemies.y / 2),
-					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-				break;
-			case Left:
-				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x - attackEnemies.y / 2, eData[i]->position.y, eData[i]->position.z),
-					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-				break;
-			case Right:
-				Object::Instance()->Draw(debugField, Vec3(eData[i]->position.x + attackEnemies.y / 2, eData[i]->position.y, eData[i]->position.z),
-					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+			case ATTACK:
+				switch (eData[i]->attackDirection)
+				{
+				case Up:
+					if (eData[i]->StatusTime == attackMotionDamege)
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					}
+					else
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+					}
+					break;
+				case Down:
+					if (eData[i]->StatusTime == attackMotionDamege)
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					}
+					else
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+					}
+					break;
+				case Left:
+					if (eData[i]->StatusTime == attackMotionDamege)
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					}
+					else
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+					}
+					break;
+				case Right:
+					if (eData[i]->StatusTime == attackMotionDamege)
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
+					}
+					else
+					{
+						Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
+							eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
+					}
+					break;
+				}
 				break;
 			}
-			break;
-		case ATTACK:
-			switch (eData[i]->attackDirection)
+			//HPƒQ[ƒW
+			float parsent = eData[i]->HP / eData[i]->HPMax;
+			if (parsent != 1.0f)
 			{
-			case Up:
-				if (eData[i]->StatusTime == attackMotionDamege)
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-				}
-				else
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + attackField.y / 2),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
-				}
-				break;
-			case Down:
-				if (eData[i]->StatusTime == attackMotionDamege)
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-				}
-				else
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - attackField.y / 2),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
-				}
-				break;
-			case Left:
-				if (eData[i]->StatusTime == attackMotionDamege)
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-				}
-				else
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x - attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
-				}
-				break;
-			case Right:
-				if (eData[i]->StatusTime == attackMotionDamege)
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color, redColor);
-				}
-				else
-				{
-					Object::Instance()->Draw(debugField2, Vec3(eData[i]->position.x + attackField.y / 2, eData[i]->position.y, eData[i]->position.z),
-						eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), eData[i]->color);
-				}
-				break;
+				Object::Instance()->Draw(hpGaugeOBJ, Vec3(eData[i]->position.x - (1.0f - parsent) * 6.0, eData[i]->position.y + 5.0f, eData[i]->position.z + 5.0f),
+					Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGaugeGraph);
+				//HP˜g
+				Object::Instance()->Draw(hpOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 5.1f, eData[i]->position.z + 5.0f),
+					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
 			}
-			break;
 		}
-		//HPƒQ[ƒW
-		float parsent = eData[i]->HP / eData[i]->HPMax;
-		if (parsent != 1.0f)
-		{
-			Object::Instance()->Draw(hpGaugeOBJ, Vec3(eData[i]->position.x - (1.0f - parsent) * 6.0, eData[i]->position.y + 5.0f, eData[i]->position.z + 5.0f),
-				Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGaugeGraph);
-			//HP˜g
-			Object::Instance()->Draw(hpOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 5.1f, eData[i]->position.z + 5.0f),
-				eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
+		if (BloodFlag[i] == true) {
+			Object::Instance()->Draw(Blood, BloodPosition[i],
+				Vec3(2, 2, 2), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
 		}
 	}
+
+
 }
 
 
@@ -304,11 +327,14 @@ void Enemy::Delete()
 	//“G‚ªÁ‚¦‚é
 	for (int i = (int)eData.size() - 1; i >= 0; i--)
 	{
+		BloodPosition[i] = eData[i]->position;
 		if (eData[i]->HP <= 0)
 		{
-			delete eData[i];
-			eData.erase(eData.begin() + i);
+			BloodFlag[i] = true;
+			//delete eData[i];
+			//eData.erase(eData.begin() + i);
 		}
+	
 	}
 }
 

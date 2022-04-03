@@ -94,6 +94,8 @@ public://æ“¾Œn
 	// À•Wæ“¾
 	Vec3 GetPosition(int i) { return eData[i]->position; }
 
+	float GetHP(int i) { return eData[i]->HP; }
+
 	Vec3 GetOldPosition(int i) { return eData[i]->oldPosition; }
 
 	Box GetBox(int i) { return eData[i]->eBox; }
@@ -132,4 +134,10 @@ private:
 	Object::ObjectData debugField;	//õ“G
 	Object::ObjectData debugField2;//UŒ‚”ÍˆÍ
 	int redColor;
+	//ŒŒŠÖŒW‚Ì•Ï”
+	Object::ObjectData Blood;
+	int BloodGraph;
+	bool BloodFlag[eNumMax] = { false,false,false,false };
+	Vec3 BloodPosition[eNumMax] = { Vec3(0,0,0),Vec3(0,0,0) ,Vec3(0,0,0) ,Vec3(0,0,0) };
+
 };
