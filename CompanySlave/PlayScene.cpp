@@ -212,8 +212,11 @@ void PlayScene::Draw()
 
 	particleMan2->Draw();
 	//particleMan3->Draw();
-	 particleMan4->Draw();
-	//‘OŒi•`‰æ
+	if (mapStage->GetMap(74,6) == 5)
+	{
+		particleMan4->Draw();
+	}
+	 //‘OŒi•`‰æ
 	player->UIDraw();
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));
 #if _DEBUG
