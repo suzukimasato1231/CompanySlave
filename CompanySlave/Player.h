@@ -25,6 +25,7 @@ public:
 
 	void SetPosition(Vec3 position) { this->position = position; }
 
+	void SetSwordAttack(int i) { this->isSwordAttack[i] = false; }
 	/// <summary>
 	/// ダメージ
 	/// </summary>
@@ -74,6 +75,10 @@ public://取得系
 
 	bool GetMoveFlag() { return moveFlag; }
 
+	//座標
+	Vec3 GetSwordPosition(int No) { return swordPosition[No]; }
+	//プレイヤーのBox
+	Box GetSwordBox(int No) { return swordAttackBox[No]; }
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
 	Object::ObjectData playerAttackObject[4];	//プレイヤー攻撃
@@ -134,7 +139,7 @@ private:
 
 	Vec3 swordPosition[7] = { { 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
 	Vec3 swordAngle[7] = { { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
-	float swordSpeed[7] = { 3,3,3,3,3,3,3 };//スピード
+	float swordSpeed = 3;//スピード
 	float swordAngleVec[7] = { 0,0,0,0,0,0,0 };//飛ばす方向
 	bool isSwordAttack[7] = { false,false,false,false,false,false,false };//アタックフラグ
 	int stingCnt[7] = { 0,0,0,0,0,0,0 };//刺さるまでの時間

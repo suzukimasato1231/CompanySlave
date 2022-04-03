@@ -452,18 +452,18 @@ void Player::SwordAttack(Enemy *enemy)
 			}
 
 			//角度で進めてる
-			for (int s = 0; s < 3; s++)
+			for (int s = 0; s < swordSpeed; s++)
 			{
 				swordPosition[i].x += cos(swordAngleVec[i]) * 1;      // x座標を更新
 				swordPosition[i].z += sin(swordAngleVec[i]) * 1;      // z座標を更新
 
 			}
 
-			//止まる
-			if (stingCnt[i] >= 60)
-			{
-				isSwordAttack[i] = false;
-			}
+			////止まる
+			//if (stingCnt[i] >= 60)
+			//{
+			//	isSwordAttack[i] = false;
+			//}
 		}
 
 		//当たって取るときの当たり判定たち
