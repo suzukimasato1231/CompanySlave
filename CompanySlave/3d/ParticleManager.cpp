@@ -104,6 +104,23 @@ void ParticleManager::Add(int life, Vec3 position, Vec3 velocity, Vec3 accel, fl
 	p.e_color = end_color;
 }
 
+void ParticleManager::Add2(int life, Vec3 position, Vec3 velocity, Vec3 accel, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color)
+{
+	//リストに要素を追加
+	particles.emplace_front();
+	//追加した要素の参照
+	Particle &p = particles.front();
+	//値のリセット
+	p.position = position;
+	p.velocity = velocity;
+	p.accel = accel;
+	p.num_frame = life;
+	p.s_scale = start_scale;
+	p.e_scale = end_scale;
+	p.s_color = start_color;
+	p.e_color = end_color;
+}
+
 void ParticleManager::ParticleAdd(Vec3 Pos, Vec4 start_color, Vec4 end_color)
 {
 	for (int i = 0; i < 1; i++)
@@ -132,6 +149,33 @@ void ParticleManager::ParticleAdd(Vec3 Pos, Vec4 start_color, Vec4 end_color)
 	}
 }
 
+void ParticleManager::ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color)
+{
+	for (int i = 0; i < 1; i++)
+	{
+		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
+		const float md_pos = 0.5f;
+		Vec3 pos = Pos;
+		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.y += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		////X,Y,Z全て{-0.05f,+0.05f}でランダムに分布
+		const float md_vel = 0.1f;
+		Vec3 vel{};
+		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		//重力に見立ててYのみ{-0.001f,0}でランダム分布
+		Vec3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = (float)rand() / RAND_MAX * md_acc;
+
+		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
+		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
+			//追加
+		Add2(90, pos, vel, acc, 4.0f, 8.0f, start_color, end_color);
+	}
+}
 
 bool ParticleManager::InitializeDescriptorHeap()
 {

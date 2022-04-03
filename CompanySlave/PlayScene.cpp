@@ -11,6 +11,7 @@ PlayScene::~PlayScene()
 {
 	safe_delete(particleMan);
 	safe_delete(particleMan2);
+	safe_delete(particleMan4);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
@@ -91,6 +92,8 @@ void PlayScene::Init()
 
 	//particleMan3 = ParticleManager::Create(L"Resources/particle3.png", 1);
 
+	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg", 0);
+
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -169,11 +172,16 @@ void PlayScene::Update()
 		}*/
 	}
 
+	particleMan4->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 6 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
+	particleMan4->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 5 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
+
+
 	//パーティクル更新
 	particleMan->Update();
 
 	particleMan2->Update();
 	//particleMan3->Update();
+	particleMan4->Update();
 	//ライト更新
 	lightGroup->Update();
 }
@@ -204,6 +212,7 @@ void PlayScene::Draw()
 
 	particleMan2->Draw();
 	//particleMan3->Draw();
+	 particleMan4->Draw();
 	//前景描画
 	player->UIDraw();
 	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));

@@ -62,6 +62,34 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 			}
 		}
 	}
+
+	//剣
+	for (int n = 0; n < 7; n++)
+	{
+		//判定する箇所だけ行うため
+		int X = player->GetSwordPosition(n).x / mapStage->GetSize();
+		int Z = player->GetSwordPosition(n).z / (-mapStage->GetSize());
+
+		for (int j = (Z - 2); j < (Z + 2); j++)
+		{
+			for (int i = (X - 2); i < (X + 2); i++)
+			{
+				if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
+				{
+					continue;
+				}
+				if (mapStage->GetMap(i, j) != NONE || mapStage->GetMap(i, j) != NONE)//0以外当たり判定
+				{
+					//プレイヤー
+					bool HitFlag = Collision::CheckBox2Box(player->GetSwordBox(n), mapStage->GetPositionBlock(i, j));
+					if (HitFlag)
+					{
+						player->SetSwordAttack(n);
+					}
+				}
+			}
+		}
+	}
 }
 
 

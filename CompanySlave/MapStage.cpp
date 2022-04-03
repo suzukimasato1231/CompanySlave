@@ -118,9 +118,9 @@ void MapStage::Draw(Vec3 pPos)
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-10,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, blockGraph);
-				Object::Instance()->Draw(block,
+				/*Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, smokeGraph);
+					scale, Vec3{}, color, smokeGraph);*/
 				break;
 			case NextStageBlock:
 				Object::Instance()->Draw(block,
