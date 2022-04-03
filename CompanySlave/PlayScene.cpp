@@ -66,9 +66,9 @@ void PlayScene::Init()
 
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
-	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/backgroundA.png");
+	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	Parent = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
-
+	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
@@ -212,13 +212,13 @@ void PlayScene::Draw()
 
 	particleMan2->Draw();
 	//particleMan3->Draw();
-	if (mapStage->GetMap(74,6) == 5)
+	if (mapStage->GetMap(74, 6) == 5)
 	{
 		particleMan4->Draw();
 	}
-	 //前景描画
+	//前景描画
 	player->UIDraw();
-	//Sprite::Instance()->Draw(spriteGraph, Vec2(400, 400), 100, 100, Vec2(0.5f, 0.5f));
+	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width,window_height);
 #if _DEBUG
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "E:button");

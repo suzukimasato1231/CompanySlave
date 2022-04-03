@@ -282,7 +282,7 @@ void Player::NormalAttack(Enemy *enemy)
 		attackNo = 0;
 	}
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
-	if (Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonA) && avoidanceTime <= 0)
+	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0)
 	{
 		attackCount = 0;//カウントリセット
 		attackNo = 0;//ナンバーをリセット
@@ -557,7 +557,7 @@ void Player::Avoidance()
 	}
 
 	//回避開始
-	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonB))
+	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonA))
 		&& avoidanceFlag == false && normalAttackTime <= 0)
 	{
 		avoidanceFlag = true;

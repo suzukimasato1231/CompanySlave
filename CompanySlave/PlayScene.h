@@ -50,7 +50,7 @@ private://定義
 	Sprite::SpriteData spriteGraph;
 	Sprite::SpriteData BGGraph;
 	Sprite::SpriteData Parent;
-
+	Sprite::SpriteData controlGraph;
 	//オブジェクトデータ
 
 	//オブジェクト画像
