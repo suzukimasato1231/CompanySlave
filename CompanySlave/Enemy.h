@@ -63,6 +63,8 @@ public:
 	void Update(class Player *player);//XV
 
 	void Draw();//•`‰æ
+	//ŒŒ­•`‰æ
+	void BloodDraw();
 
 	//TRUE‚É‚·‚é
 	void WasAttack(int i);

@@ -223,13 +223,24 @@ void Enemy::Draw()
 					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
 			}
 		}
-		if (BloodFlag[i] == true) {
-			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 2.0f, BloodPosition[i].z),
-				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
-		}
+		/*	if (BloodFlag[i] == true) {
+				Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 2.0f, BloodPosition[i].z),
+					Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
+			}*/
 	}
 
 
+}
+
+void Enemy::BloodDraw()
+{
+	for (size_t i = 0; i < eData.size(); i++)
+	{
+		if (BloodFlag[i] == true) {
+			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 4.9f, BloodPosition[i].z),
+				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
+		}
+	}
 }
 
 

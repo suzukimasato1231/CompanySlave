@@ -59,7 +59,14 @@ void GameSceneManager::Init()
 void GameSceneManager::Update()
 {
 	//タイトル
+
 	if (scene == titleScene) {
+		if (initFlag == true)
+		{
+			initFlag = false;
+			tFadeFlag = false;
+			tFade = 1;
+		}
 		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
 			tFadeFlag = true;
@@ -71,6 +78,7 @@ void GameSceneManager::Update()
 		}
 		if (tFade < 0) {
 			scene = selectScene;
+			initFlag = true;
 			tFadeFlag = false;
 		}
 		title->SetFade(tFade);
@@ -81,14 +89,22 @@ void GameSceneManager::Update()
 	}
 	//ステージ選択
 	else if (scene == selectScene) {
+		if (initFlag == true)
+		{
+			sFadeFlag = false;
+			sFade = 1;
+			LoadCount2 = 0;
+			LoadTime = 70;
+			initFlag = false;
+		}
 		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
 			//プレイ開始
 			if (select->GetStage() == 1) {
 				play = new PlayScene();
-				play->Initialize(directX);
+				play->Initialize();
 				play->Init();
-			
+
 				sFadeFlag = true;
 			}
 		}
@@ -108,13 +124,16 @@ void GameSceneManager::Update()
 	//ステージ1
 	else if (scene == stage1) {
 		play->Update();
+		if (play->GetSceneFlag() == true)
+		{
+			scene = titleScene;
+			initFlag = true;
+			safe_delete(play);
+		}
 	}
 	//ロード画面
 	if (LoadFlag == true) {
-		//play = new PlayScene();
-		//play->Initialize(directX);
-		//play->Init();
-		LoadTime-=1;
+		LoadTime -= 1;
 		if (LoadTime > 0) {
 			LoadCount2++;
 			if (LoadCount < 6 && LoadCount2 >= 10) {
@@ -125,7 +144,7 @@ void GameSceneManager::Update()
 				LoadCount = 0;
 			}
 		}
-		if (LoadTime == 0) {
+		if (LoadTime <= 0) {
 			LoadCount = 0;
 			LoadFlag = false;
 		}
@@ -149,11 +168,11 @@ void GameSceneManager::Draw()
 	}
 
 	if (LoadFlag == true) {
-		Sprite::Instance()->Draw(BGGraph, Vec2(0,0), window_width, window_height);
+		Sprite::Instance()->Draw(BGGraph, Vec2(0, 0), window_width, window_height);
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
 		debugText.Print(10, 380, 2, "%d", LoadTime);
 	}
-	
+
 
 
 	//デバックテキスト描画ここは変わらない

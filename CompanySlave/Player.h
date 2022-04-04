@@ -26,6 +26,8 @@ public:
 	void SetPosition(Vec3 position) { this->position = position; }
 
 	void SetSwordAttack(int i) { this->isSwordAttack[i] = false; }
+
+	int GetHP() { return HP; }
 	/// <summary>
 	/// ƒ_ƒ[ƒW
 	/// </summary>

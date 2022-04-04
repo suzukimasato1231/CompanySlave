@@ -20,12 +20,11 @@ class PlayScene :public Singleton<PlayScene>
 {
 private:
 	friend Singleton<PlayScene>;
-	_DirectX* directX = nullptr;
 public:
 	PlayScene();
 	~PlayScene();
 
-	void Initialize(_DirectX* directX);
+	void Initialize();
 
 	void Init();
 
@@ -35,6 +34,7 @@ public:
 
 	void Draw();
 
+	bool GetSceneFlag();
 private:
 	Camera* camera = nullptr;
 	LightGroup* lightGroup = nullptr;
@@ -83,4 +83,6 @@ private://’è‹`
 	int stageNum = 1;
 
 	bool stageFlag = true;
+
+	bool sceneFlag = false;
 };

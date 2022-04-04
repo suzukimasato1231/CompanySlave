@@ -24,6 +24,7 @@ public:
 
 private://定義
 	enum Scene {
+		titleSceneInit,
 		titleScene,
 		selectScene,
 		stage1,
@@ -51,4 +52,6 @@ private://定義
 	int LoadTime = 70;
 	int LoadCount = 0;
 	int LoadCount2 = 0;
+	//シーンごとの初期化
+	bool initFlag = true;
 };

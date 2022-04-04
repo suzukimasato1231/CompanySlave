@@ -25,10 +25,8 @@ PlayScene::~PlayScene()
 	Audio::SoundUnload(&sound2);
 	safe_delete(audio);
 }
-void PlayScene::Initialize(_DirectX *directX)
+void PlayScene::Initialize()
 {
-	assert(directX);
-	this->directX = directX;
 	//Audioクラス作成
 	audio = Audio::Create();
 	//カメラクラス作成
@@ -143,11 +141,12 @@ void PlayScene::Update()
 
 
 	//プレイヤーの更新
+	mapStage->Update(enemy);
+
 	player->Update(enemy);
 
 	enemy->Update(player);
 
-	mapStage->Update(enemy);
 
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, enemy, mapStage, stageFlag);
@@ -184,6 +183,12 @@ void PlayScene::Update()
 	particleMan4->Update();
 	//ライト更新
 	lightGroup->Update();
+
+	//プレイシーンを抜ける
+	if (player->GetHP() == 0)
+	{
+		sceneFlag = true;
+	}
 }
 
 void PlayScene::Draw()
@@ -201,11 +206,14 @@ void PlayScene::Draw()
 
 	//マップチップの描画
 	mapStage->Draw(player->GetPosition());
+
+	//敵の血痕
+	enemy->BloodDraw();
+
 	//プレイヤーの描画
 	player->Draw();
 
 	enemy->Draw();
-
 
 	//パーティクル描画
 	particleMan->Draw();
@@ -218,7 +226,7 @@ void PlayScene::Draw()
 	}
 	//前景描画
 	player->UIDraw();
-	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width,window_height);
+	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 #if _DEBUG
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "E:button");
@@ -230,4 +238,9 @@ void PlayScene::Draw()
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
 #endif
+}
+
+bool PlayScene::GetSceneFlag()
+{
+	return sceneFlag;
 }
