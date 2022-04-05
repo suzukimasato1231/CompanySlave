@@ -36,9 +36,18 @@ void Enemy::Init()
 	//敵エネミー攻撃
 	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
 	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
+	
+	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
+	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
+	AttackEffectGraph[1] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect2.png");
+	AttackEffectGraph[2] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect3.png");
+	AttackEffectGraph[3] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect4.png");
+	AttackEffectGraph[4] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect5.png");
+	AttackEffectGraph[5] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect6.png");
+	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect7.png");
+	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
+	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
 
-	attackEfectOBJ = Shape::CreateRect(10.0f, 10.0f);
-	attackEfectGraph = Object::Instance()->LoadTexture(L"Resources/Effect/2effect12.png");
 }
 
 void Enemy::StageInit(int stageNum)
@@ -178,7 +187,7 @@ void Enemy::Draw()
 				{//武器振り下ろし
 					Object::Instance()->Draw(attackOBJ[1], eData[i]->position, eData[i]->scale, DirectionAngle(eData[i]->attackDirection), eData[i]->color);
 				}
-
+				EffectDraw(i);
 				switch (eData[i]->attackDirection)
 				{
 				case Up:
@@ -306,16 +315,33 @@ void Enemy::SearchPlayer(int i, Player *player)
 	}
 }
 
-void Enemy::Attack(int i, Player *player)
+void Enemy::Attack(int i, Player* player)
 {
 	Box attackBox = AttackField(i);
 	//攻撃モーション中のダメージを与えるタイミング
 	if (eData[i]->StatusTime == attackMotionDamege)
 	{
+
+
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(attackBox, player->GetBox()))
 		{
+			//エフェクトのフラグTRUE
+			AttackEffect = true;
+
 			player->Damage();
+
+		}
+	}
+	//エフェクト関係
+	if (AttackEffect == true) {
+
+		if (effectCount < 8) {
+			effectCount++;
+		}
+		else if (effectCount == 8) {
+			effectCount = 0;
+			AttackEffect = false;
 		}
 	}
 	//時間が終わったら索敵にもどる
@@ -457,3 +483,54 @@ Vec3 Enemy::DirectionAngle(int direction)
 	}
 	return angle;
 }
+void Enemy::EffectDraw(int i)
+{
+	if (AttackEffect == true)
+	{
+		switch (eData[i]->attackDirection)
+		{
+
+		case Up:
+			AttackAngle.y = 90.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z + eData[i]->r + AttackEffectSize), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+
+			break;
+		case Down:
+			AttackAngle.y = 270.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x, eData[i]->position.y, eData[i]->position.z - eData[i]->r - AttackEffectSize), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+
+			break;
+		case Left:
+			AttackAngle.y = 0.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x - eData[i]->r - AttackEffectSize, eData[i]->position.y, eData[i]->position.z), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+
+			break;
+		case Right:
+			AttackAngle.y = 180.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x + eData[i]->r + AttackEffectSize, eData[i]->position.y, eData[i]->position.z), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+			break;
+		case UpRight:
+			AttackAngle.y = 120.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x + AttackEffectSize, eData[i]->position.y, eData[i]->position.z + AttackEffectSize), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+
+			break;
+		case UpLeft:
+			AttackAngle.y = 60.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x - AttackEffectSize, eData[i]->position.y, eData[i]->position.z + AttackEffectSize), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+
+			break;
+		case DownRight:
+			AttackAngle.y = 240.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x + AttackEffectSize, eData[i]->position.y, eData[i]->position.z - AttackEffectSize), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+
+			break;
+		case DownLeft:
+			AttackAngle.y = 300.0f;
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(eData[i]->position.x - AttackEffectSize, eData[i]->position.y, eData[i]->position.z - AttackEffectSize), AttackScale, AttackAngle, eData[i]->color, AttackEffectGraph[effectCount]);
+
+			break;
+		}
+	}
+	//AttackEffect = true;
+}
+

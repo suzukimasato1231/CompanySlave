@@ -93,6 +93,7 @@ private:
 	int Direction(int i, class Player *player);
 	//向きによって敵の描画角度を取得
 	Vec3 DirectionAngle(int direction);
+	void EffectDraw(int i);
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }
@@ -145,6 +146,13 @@ private:
 
 	//エネミーアタック
 	Object::ObjectData attackOBJ[2];
-	Object::ObjectData attackEfectOBJ;
-	int attackEfectGraph;
+	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
+	int AttackEffectGraph[9];
+	//エフェクト関係
+	bool AttackEffect = false;
+	float AttackEffectSize = 5.0f;
+	Vec3 AttackScale{ 2.0f,2.0f,2.0f };
+	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
+	int effectTime = 10;
+	int effectCount = 0;
 };
