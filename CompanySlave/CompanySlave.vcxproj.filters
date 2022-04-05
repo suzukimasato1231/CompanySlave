@@ -228,6 +228,15 @@
     <ClInclude Include="Direction.h">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="OniType.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyHelper.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="OniBow.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -324,6 +333,12 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="OniType.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="OniBow.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
   </ItemGroup>

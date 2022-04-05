@@ -246,6 +246,7 @@
     <ClInclude Include="collision\CollisionPrimitive.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyHelper.h" />
     <ClInclude Include="GameSceneManager.h" />
     <ClInclude Include="Helper\Easing.h" />
     <ClInclude Include="Helper\LoadCSV.h" />
@@ -255,6 +256,8 @@
     <ClInclude Include="Input\Keybord.h" />
     <ClInclude Include="Input\Mouse.h" />
     <ClInclude Include="MapStage.h" />
+    <ClInclude Include="OniBow.h" />
+    <ClInclude Include="OniType.h" />
     <ClInclude Include="Pipeline\Pipeline.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
@@ -289,6 +292,8 @@
     <ClCompile Include="Input\Mouse.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapStage.cpp" />
+    <ClCompile Include="OniBow.cpp" />
+    <ClCompile Include="OniType.cpp" />
     <ClCompile Include="Pipeline\Pipeline.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
