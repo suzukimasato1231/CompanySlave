@@ -86,9 +86,8 @@ void PlayScene::Init()
 	//パーティクルクラス作成
 	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
-	particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
+	particleMan2 = ParticleManager::Create(L"Resources/Blood/Blood.png", 1);
 
-	//particleMan3 = ParticleManager::Create(L"Resources/particle3.png", 1);
 
 	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
@@ -106,6 +105,8 @@ void PlayScene::Init()
 	stageFlag = true;
 	stageNum = 1;
 	StageInit();
+
+
 }
 
 void PlayScene::StageInit()
@@ -159,20 +160,24 @@ void PlayScene::Update()
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
 	{
-		particleMan->ParticleAdd(player->GetPosition(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
+		particleMan4->ParticleAdd(player->GetPosition(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
 	}
 
 	//パーティクル追加
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
-		/*if (enemy->GetWasAttackFlag(i) == true)
-		{
-			particleMan->ParticleAdd(enemy->GetPosition(i), Vec4(1.0f, 0.0f, 0.0f, 1.0f), Vec4(1.0f, 0.4f, 0.0f, 1.0f));
-		}*/
-	}
 
-	particleMan4->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 6 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
-	particleMan4->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 5 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
+		if (enemy->GetParticleFlag(i) == true) {
+
+			if (enemy->GetParticleTime(i) > 0) {
+
+				particleMan2->ParticleAdd(enemy->GetPosition(i), Vec4(0.2f, 0.2f, 0.2f, 1.0f), Vec4(0.2f, 0.2f, 0.2f, 1.0f));
+			}
+		}
+
+	}
+	particleMan->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 6 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
+	particleMan->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 5 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
 
 
 	//パーティクル更新
@@ -216,13 +221,13 @@ void PlayScene::Draw()
 	enemy->Draw();
 
 	//パーティクル描画
-	particleMan->Draw();
+	particleMan4->Draw();
 
 	particleMan2->Draw();
 	//particleMan3->Draw();
 	if (mapStage->GetMap(74, 6) == 5)
 	{
-		particleMan4->Draw();
+		particleMan->Draw();
 	}
 	//前景描画
 	player->UIDraw();
@@ -234,6 +239,8 @@ void PlayScene::Draw()
 	debugText.Print(10, 80, 2, "D:Attack");
 
 	debugText.Print(10, 120, 2, "F:kamikaihi");
+	
+	debugText.Print(10, 180, 2, "%d",enemy->GetParticleTime(0));
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

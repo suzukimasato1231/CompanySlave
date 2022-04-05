@@ -79,7 +79,6 @@ private://’è‹`
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
 
-
 	int stageNum = 1;
 
 	bool stageFlag = true;

@@ -112,6 +112,9 @@ public://取得系
 
 	float GetEnemyR(int i) { return eData[i]->r; }
 
+	bool GetParticleFlag(int i) { return particleFlag[i]; }
+	int GetParticleTime(int i) { return particleTime[i]; }
+
 	int	spawnMap[MAP_HEIGHT][MAP_WIDTH];//沸き地のマップ
 
 	const float mapSize = 10.0f;
@@ -141,8 +144,8 @@ private:
 	//血関係の変数
 	Object::ObjectData Blood;
 	int BloodGraph;
-	bool BloodFlag[eNumMax] = { false,false,false,false };
-	Vec3 BloodPosition[eNumMax] = { Vec3(0,0,0),Vec3(0,0,0) ,Vec3(0,0,0) ,Vec3(0,0,0) };
+	bool BloodFlag[eNumMax] = { false };
+	Vec3 BloodPosition[eNumMax] = { Vec3(0,0,0) };
 
 	//エネミーアタック
 	Object::ObjectData attackOBJ[2];
@@ -155,4 +158,7 @@ private:
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;
 	int effectCount = 0;
+
+	int particleTime[eNumMax];
+	bool particleFlag[eNumMax];
 };

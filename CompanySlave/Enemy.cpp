@@ -48,6 +48,10 @@ void Enemy::Init()
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
 
+	for (int i = 0; i < eNumMax; i++) {
+		particleFlag[i] = false;
+		particleTime[i] = 60;
+	}
 }
 
 void Enemy::StageInit(int stageNum)
@@ -61,7 +65,10 @@ void Enemy::StageInit(int stageNum)
 		BloodFlag[i] = false;
 
 	}
-
+	for (int i = 0; i < eNumMax; i++) {
+		particleFlag[i] = false;
+		particleTime[i] = 60;
+	}
 	char *Filepath = (char *)"";
 	switch (stageNum)
 	{
@@ -361,6 +368,16 @@ void Enemy::Delete()
 		if (eData[i]->HP <= 0)
 		{
 			BloodFlag[i] = true;
+			particleFlag[i] = true;
+		
+		}
+		if (particleFlag[i] == true) {
+			if (particleTime[i] > 0) {
+				particleTime[i]--;
+			}
+		}
+		if (particleTime[i] == 0) {
+			particleFlag[i] = false;
 		}
 
 	}
