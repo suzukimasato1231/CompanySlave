@@ -1,9 +1,8 @@
 #include"PushCollision.h"
-#include<time.h>
 
 void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage, bool &stageFlag)
 {
-	srand(time(NULL));
+
 	if (player == nullptr || mapStage == nullptr) { return; }
 	//”»’è‚·‚é‰ÓŠ‚¾‚¯s‚¤‚½‚ß
 	int X = player->GetPosition().x / mapStage->GetSize();
@@ -86,9 +85,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 					bool HitFlag = Collision::CheckBox2Box(player->GetSwordBox(n), mapStage->GetPositionBlock(i, j));
 					if (HitFlag)
 					{
-						float reverseWallAngle = rand() % 78 - 39;
-						float b = reverseWallAngle / 100;
-						player->SetSwordReverse(3.141592 +  b, n);
+						player->SetSwordReverse(3.141592, n);
 						player->SetSwordStop(n);
 					}
 				}

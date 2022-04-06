@@ -75,9 +75,9 @@ void SelectScene::Init()
 	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
 	//3Dobjファイル読み込み。
 	//パーティクルクラス作成
-	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
+	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
-	particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
+	//particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
 }
 
 void SelectScene::Update()
@@ -132,8 +132,8 @@ void SelectScene::Update()
 	}
 
 	//パーティクル更新
-	particleMan->Update();
-	particleMan2->Update();
+	//particleMan->Update();
+	//particleMan2->Update();
 
 	//ライト更新
 	lightGroup->Update();

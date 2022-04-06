@@ -61,7 +61,7 @@ public: // サブクラス
 	std::forward_list<Particle>particles;
 
 private: // 定数
-	static const int vertexCount = 1024;//頂点数
+	static const int vertexCount = 2024;//頂点数
 public: // 静的メンバ関数
 	/// <summary>
 	/// 静的初期化

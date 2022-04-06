@@ -36,10 +36,10 @@ public:
 
 	bool GetSceneFlag();
 private:
-	Camera* camera = nullptr;
-	LightGroup* lightGroup = nullptr;
+	Camera *camera = nullptr;
+	LightGroup *lightGroup = nullptr;
 	DebugText debugText;
-	Audio* audio = nullptr;
+	Audio *audio = nullptr;
 private://定義
 
 	//音データ
@@ -67,23 +67,23 @@ private://定義
 	float timeRate = 0;//ラープ
 
 	//マップチップ
-	MapStage* mapStage = nullptr;
+	MapStage *mapStage = nullptr;
 
 	//プレイヤー
-	Player* player = nullptr;
+	Player *player = nullptr;
 
 	//エネミー
-	Enemy* enemy = nullptr;
+	Enemy *enemy = nullptr;
 
 	//パーティクル
-	ParticleManager* particleMan = nullptr;
+	ParticleManager *particleMan = nullptr;
 
-	ParticleManager* particleMan2 = nullptr;
-	ParticleManager* particleMan3 = nullptr;
+	ParticleManager *particleMan2 = nullptr;
+	ParticleManager *particleMan3 = nullptr;
 	ParticleManager *particleMan4 = nullptr;
 	//FBX
-	Model* model1 = nullptr;
-	FBXObject3d* fbxObject1 = nullptr;
+	Model *model1 = nullptr;
+	FBXObject3d *fbxObject1 = nullptr;
 
 	int stageNum = 1;
 

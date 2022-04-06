@@ -59,16 +59,16 @@ void Title::Init()
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
 
 	//パーティクルクラス作成
-	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
+	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
-	particleMan2 = ParticleManager::Create(L"Resources/particle2.png", 1);
+	//particleMan2 = ParticleManager::Create(L"Resources/particle2.png", 1);
 }
 
 void Title::Update()
 {
 	//パーティクル更新
-	particleMan->Update();
-	particleMan2->Update();
+	//particleMan->Update();
+	//particleMan2->Update();
 
 	//ライト更新
 	lightGroup->Update();

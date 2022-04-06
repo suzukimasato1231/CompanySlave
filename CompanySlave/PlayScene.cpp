@@ -90,7 +90,7 @@ void PlayScene::Init()
 	particleMan2 = ParticleManager::Create(L"Resources/Blood/Blood.png", 1);
 
 
-	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg", 0);
+	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg", 2);
 
 	//マップチップの初期化
 	mapStage = new MapStage;
@@ -161,8 +161,10 @@ void PlayScene::Update()
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
 	{
-		particleMan4->ParticleAdd(player->GetPosition(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
+		
 	}
+
+	particleMan4->ParticleAdd(player->GetPosition(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
 
 	//パーティクル追加
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
