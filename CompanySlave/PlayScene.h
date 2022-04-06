@@ -51,6 +51,7 @@ private://定義
 	Sprite::SpriteData BGGraph;
 	Sprite::SpriteData Parent;
 	Sprite::SpriteData controlGraph;
+	Sprite::SpriteData GameOverGraph;
 	//オブジェクトデータ
 
 	//オブジェクト画像
@@ -58,7 +59,12 @@ private://定義
 	int graph2;
 	int graph3;
 
+
 	Vec2 pos = { 0.0f,0.0f };
+	Vec2 deadGraphPos = { 0.0f,-800.0f };
+	float nowTime = 0;//ラープ
+	float endTime = 5;//ラープ
+	float timeRate = 0;//ラープ
 
 	//マップチップ
 	MapStage* mapStage = nullptr;

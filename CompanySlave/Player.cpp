@@ -3,6 +3,8 @@
 #include"Input.h"
 #include "MapStage.h"
 #include"Collision.h"
+#include<time.h>
+
 Player::Player()
 {}
 
@@ -24,6 +26,7 @@ void Player::Init()
 	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerKari3-1");
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
+	swordEffectObject = Object::Instance()->CreateOBJ("Effect");
 	cursorGraph = Object::Instance()->LoadTexture(L"Resources/Effect/Line.png");
 	cursorObject = Shape::CreateRect(5, 0.5);
 
@@ -131,12 +134,13 @@ void Player::StageInit(int stageNum)
 	returnFlag = false;//剣が戻る時のフラグ
 	nowTime = 0;//剣が戻る時のラープ
 	timeRate = 0;//剣が戻る時のラープ
-
+	srand(time(NULL));
 
    //エフェクト関係
 	AttackEffect = false;
 	effectTime = 10;
 	effectCount = 0;
+
 }
 
 void Player::Update(Enemy *enemy)
@@ -184,7 +188,14 @@ void Player::Draw()
 	Object::Instance()->Draw(cursorObject, { position.x,-2,position.z, }, { 10,2,1 }, { 90,angle.y,0 }, color, cursorGraph);
 	for (int i = 0; i < 7; i++)
 	{
-		Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, swordAngle[i], color);
+		if (haveSword[i] == true || isSwordAttack[i] == false)
+		{
+			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+		}
+		else
+		{
+			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,1.2f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
+		}
 	}
 }
 
@@ -265,6 +276,7 @@ void Player::Move()
 
 			position.x += speed.x * sinRad;
 			position.z += speed.z * cosRad;
+			angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
 		}
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -363,8 +375,12 @@ void Player::NormalAttack(Enemy *enemy)
 //剣撃つ
 void Player::SwordAttack(Enemy *enemy)
 {
+	if (Input::Instance()->KeybordPush(DIK_U))
+	{
+		//HP = 0;
+	}
 	//撃つ
-	if ((Input::Instance()->KeybordTrigger(DIK_V) || Input::Instance()->ControllerDown(ButtonRB)) && haveSword[shotNo] && !returnFlag)
+	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag)
 	{
 		isSwordAttack[shotNo] = true;
 		haveSword[shotNo] = false;
@@ -381,8 +397,16 @@ void Player::SwordAttack(Enemy *enemy)
 	}
 
 	//剣戻ってくるやつ発動
-	if (Input::Instance()->KeybordPush(DIK_B) || Input::Instance()->ControllerDown(ButtonLB))
+	if (Input::Instance()->ControllerDown(ButtonLB))
 	{
+		for (int i = 0; i < 7; i++)
+		{
+			reverseAngle[i] = 0;
+			reverseValue[i] = 0;
+			isSwordAttack[i] = false;
+			swordStop[i] == false;
+			stingCnt[i] = 0;
+		}
 		returnFlag = true;
 	}
 
@@ -410,7 +434,7 @@ void Player::SwordAttack(Enemy *enemy)
 			{
 				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
 				{
-
+					enemy->DamegeSword(j);
 				}
 			}
 		}
@@ -426,23 +450,25 @@ void Player::SwordAttack(Enemy *enemy)
 	for (int i = 0; i < 7; i++)
 	{
 		//当たり判定のボックスの位置変
-		swordAttackBox[i].maxPosition = XMVectorSet(swordPosition[i].x + 3, swordPosition[i].y, swordPosition[i].z + 3, 1);
-		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 3, swordPosition[i].y, swordPosition[i].z - 3, 1);
+		swordAttackBox[i].maxPosition = XMVectorSet(swordPosition[i].x + 2, swordPosition[i].y, swordPosition[i].z + 2, 1);
+		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 2, swordPosition[i].y, swordPosition[i].z - 2, 1);
 
 		//剣の飛ぶ方向と向き替え
 		if (haveSword[i])
 		{
+			reverseAngle[i] = 0;
+			reverseValue[i] = 0;
 			stingCnt[i] = 0;
 			swordAngle[i] = angle;
 			swordPosition[i] = position;
 			swordAngleVec[i] = (angle.y * 3.14) / -180;
+			swordStop[i] = false;
+			stingCnt[i] = 0;
 		}
 
 		//攻撃(飛んでから止まるまで)
 		if (isSwordAttack[i] == true)
 		{
-			stingCnt[i]++;//刺さるカウント
-
 			//敵との当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
@@ -450,22 +476,17 @@ void Player::SwordAttack(Enemy *enemy)
 				{
 					isSwordAttack[i] = false;
 					isEnemySting[i][j] = true;
+					enemy->DamegeNormal(j);
 				}
 			}
 
 			//角度で進めてる
 			for (int s = 0; s < swordSpeed; s++)
 			{
-				swordPosition[i].x += cos(swordAngleVec[i]) * 1;      // x座標を更新
-				swordPosition[i].z += sin(swordAngleVec[i]) * 1;      // z座標を更新
+				swordPosition[i].x += cos(swordAngleVec[i] + reverseValue[i]) * 1;      // x座標を更新
+				swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 1;      // z座標を更新
 
 			}
-
-			////止まる
-			//if (stingCnt[i] >= 60)
-			//{
-			//	isSwordAttack[i] = false;
-			//}
 		}
 
 		//当たって取るときの当たり判定たち
@@ -484,6 +505,21 @@ void Player::SwordAttack(Enemy *enemy)
 			{
 				swordPosition[i] = enemy->GetPosition(j);
 			}
+		}
+
+		if (swordStop[i] == true)
+		{
+			//reverseValue[i] = 180;
+			stingCnt[i]++;//刺さるカウント	
+			reverseAngle[i] = 180;
+		}
+
+		//止まる
+		if (stingCnt[i] >= 2 + rand() % 20)
+		{
+			isSwordAttack[i] = false;
+			swordStop[i] == false;
+			stingCnt[i] = 0;
 		}
 	}
 }

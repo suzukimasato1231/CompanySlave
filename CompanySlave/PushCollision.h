@@ -6,6 +6,8 @@
 class PushCollision
 {
 public:
+
+
 	/// <summary>
 	/// マップチップとプレイヤー
 	/// </summary>
