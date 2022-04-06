@@ -103,9 +103,9 @@ void Score::Init()
 	fbxObject1->SetModel(model1);
 
 	//パーティクルクラス作成
-	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
+	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
-	particleMan2 = ParticleManager::Create(L"Resources/particle2.png", 1);
+	//particleMan2 = ParticleManager::Create(L"Resources/particle2.png", 1);
 
 
 
@@ -126,8 +126,8 @@ void Score::Update()
 	fbxObject1->Update();
 
 	//パーティクル更新
-	particleMan->Update();
-	particleMan2->Update();
+	//particleMan->Update();
+	//particleMan2->Update();
 
 	//ライト更新
 	lightGroup->Update();
