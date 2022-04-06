@@ -92,6 +92,12 @@ BOOL SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
 		return false;
 	}
 
+	diprg.diph.dwObj = DIJOFS_Z;
+	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph)))
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -364,6 +370,15 @@ void UpdateGamePad()
 	{
 		is_push[ButtonKind::RButtonDown] = true;
 	}
+	//T
+	if (pad_data.lZ > unresponsive_range)
+	{
+		is_push[ButtonKind::ButtonLT] = true;
+	}
+	else if (pad_data.lZ < -unresponsive_range)
+	{
+		is_push[ButtonKind::ButtonRT] = true;
+	}
 
 	//Šp“x‚ðŽæ“¾
 #define PI 3.141592653589793
@@ -395,7 +410,7 @@ void UpdateGamePad()
 			is_push[ButtonKind::LButtonDown] = true;
 		}
 	}
-
+	
 	// ƒ{ƒ^ƒ“”»’è
 	for (int i = 0; i < 32; i++)
 	{
