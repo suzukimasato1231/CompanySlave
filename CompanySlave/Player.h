@@ -27,6 +27,12 @@ public:
 
 	void SetSwordAttack(int i) { this->isSwordAttack[i] = false; }
 
+	void SetSwordReverse(float reverseValue, int i) { this->reverseValue[i] = reverseValue; }
+
+	void SetSwordAngle(Vec3 swordAngle, int i) { this->swordAngle[i] = swordAngle; }
+
+	void SetSwordStop(int i) { this->swordStop[i] = true; }
+
 	int GetHP() { return HP; }
 	/// <summary>
 	/// ダメージ
@@ -79,6 +85,8 @@ public://取得系
 
 	//座標
 	Vec3 GetSwordPosition(int No) { return swordPosition[No]; }
+	
+	Vec3 GetSwordAngle(int i) { return swordAngle[i]; }
 	//プレイヤーのBox
 	Box GetSwordBox(int No) { return swordAttackBox[No]; }
 private:
@@ -140,6 +148,7 @@ private:
 	Object::ObjectData cursorObject;//カーソル
 
 	Vec3 swordPosition[7] = { { 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
+	Object::ObjectData swordEffectObject;//剣
 	Vec3 swordAngle[7] = { { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
 	float swordSpeed = 3;//スピード
 	float swordAngleVec[7] = { 0,0,0,0,0,0,0 };//飛ばす方向
@@ -153,6 +162,9 @@ private:
 	float nowTime = 0;//剣が戻る時のラープ
 	float endTime = 5;//剣が戻る時のラープ
 	float timeRate = 0;//剣が戻る時のラープ
+	float reverseValue[7] = { 0,0,0,0,0,0,0 };
+	int reverseAngle[7] = { 0,0,0,0,0,0,0 };
+	bool swordStop[7] = { false,false,false,false,false,false,false };
 
 	//エフェクト関係
 	bool AttackEffect = false;

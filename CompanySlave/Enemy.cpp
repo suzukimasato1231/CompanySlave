@@ -191,6 +191,12 @@ void Enemy::DamegeNormal(int i)
 	eData[i]->damegeTime = 10;
 }
 
+void Enemy::DamegeSword(int i)
+{
+	eData[i]->HP -= 0.3;
+	eData[i]->damegeTime = 10;
+}
+
 void Enemy::Delete()
 {
 	//“G‚ªÁ‚¦‚é

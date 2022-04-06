@@ -67,6 +67,7 @@ void PlayScene::Init()
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	Parent = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
+	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
@@ -139,7 +140,7 @@ void PlayScene::Update()
 
 	StageInit();
 
-
+	
 
 	//プレイヤーの更新
 	mapStage->Update(enemy);
@@ -179,7 +180,23 @@ void PlayScene::Update()
 	particleMan->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 6 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
 	particleMan->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 5 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
 
+	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
+	{
+		nowTime += 0.1;
+		timeRate = min(nowTime / endTime, 1);
+		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
+	}
 
+	//プレイシーンを抜ける
+	if (Input::Instance()->ControllerDown(ButtonA) && timeRate == 1)
+	{
+		deadGraphPos.y = -800;
+		nowTime = 0;
+		endTime = 5;
+		timeRate = 0;
+		sceneFlag = true;
+	}
+	
 	//パーティクル更新
 	particleMan->Update();
 
@@ -189,11 +206,7 @@ void PlayScene::Update()
 	//ライト更新
 	lightGroup->Update();
 
-	//プレイシーンを抜ける
-	if (player->GetHP() == 0)
-	{
-		sceneFlag = true;
-	}
+	
 }
 
 void PlayScene::Draw()
@@ -241,6 +254,8 @@ void PlayScene::Draw()
 	debugText.Print(10, 120, 2, "F:kamikaihi");
 	
 	debugText.Print(10, 180, 2, "%d",enemy->GetParticleTime(0));
+
+	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

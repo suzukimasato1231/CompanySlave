@@ -39,6 +39,8 @@ public:
 	/// プレイヤーの通常攻撃ダメージ
 	/// </summary>
 	void DamegeNormal(int i);
+
+	void DamegeSword(int i);
 private:
 	//削除
 	void Delete();
