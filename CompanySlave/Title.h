@@ -51,10 +51,6 @@ private://定義
 	//オブジェクトデータ
 	Vec2 pos = { 0.0f,0.0f };
 
-	//パーティクル
-	ParticleManager *particleMan = nullptr;
-
-	ParticleManager *particleMan2 = nullptr;
 
 	int scene = 0;
 	float fade = 1;

@@ -82,7 +82,7 @@ public://æ“¾Œn
 	Box GetBox() { return pBox; }
 
 	bool GetMoveFlag() { return moveFlag; }
-
+	Vec3 GetAngle() { return angle; }
 	//À•W
 	Vec3 GetSwordPosition(int No) { return swordPosition[No]; }
 	

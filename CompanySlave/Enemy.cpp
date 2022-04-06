@@ -79,7 +79,7 @@ void Enemy::StageInit(int stageNum)
 		{
 			switch (spawnMap[j][i])
 			{
-			case ONESPAWN:
+			case ONI:
 				eData.push_back(new EnemyData);
 				num = eData.size() - 1;
 				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
@@ -93,6 +93,21 @@ void Enemy::StageInit(int stageNum)
 					eData[num]->position.z + eData[num]->r, 1);
 				eData[num]->direction = Left;
 				eData[num]->type = Oni;
+				break;
+			case ONIBOW:
+				eData.push_back(new EnemyData);
+				num = eData.size() - 1;
+				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
+				eData[num]->oldPosition = eData[eData.size() - 1]->position;
+				//À•W‚ð‡‚í‚¹‚é
+				eData[num]->eBox.minPosition = XMVectorSet(
+					eData[num]->position.x - eData[num]->r, eData[num]->position.y - eData[num]->r,
+					eData[num]->position.z - eData[num]->r, 1);
+				eData[num]->eBox.maxPosition = XMVectorSet(
+					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r,
+					eData[num]->position.z + eData[num]->r, 1);
+				eData[num]->direction = Left;
+				eData[num]->type = OniBow;
 				break;
 			default:
 				break;
@@ -165,10 +180,12 @@ void Enemy::Draw()
 
 void Enemy::BloodDraw()
 {
+	float size = 0.0f;
 	for (size_t i = 0; i < eData.size(); i++)
 	{
+		size += 0.01;
 		if (BloodFlag[i] == true) {
-			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 4.9f, BloodPosition[i].z),
+			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 4.9f + size, BloodPosition[i].z),
 				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
 		}
 	}

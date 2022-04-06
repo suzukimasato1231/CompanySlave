@@ -41,7 +41,7 @@ private:
 
 	const float bowSpeed = 2.0f;					//矢が飛んでいくスピード
 	const int bowTimeMax = 100;
-	const Vec2 bowSize{ 5.0f,5.0f };			//矢のサイズ
+	const Vec3 bowSize{ 4.0f,1.0f,8.0f };			//矢のサイズ
 	Object::ObjectData bowOBJ;//矢の描画
 	Object::ObjectData bowRaysOBJ;//矢の射線
 

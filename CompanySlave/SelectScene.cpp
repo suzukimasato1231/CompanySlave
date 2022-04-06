@@ -9,8 +9,6 @@ SelectScene::SelectScene()
 {}
 SelectScene::~SelectScene()
 {
-	safe_delete(particleMan);
-	safe_delete(particleMan2);
 	safe_delete(lightGroup);
 	//XAudio2‰ð•ú
 	audio->xAudio2.Reset();

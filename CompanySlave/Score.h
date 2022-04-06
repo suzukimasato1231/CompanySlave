@@ -86,13 +86,6 @@ private://定義
 	//エネミー
 	Enemy* enemy = nullptr;
 
-	//パーティクル
-	ParticleManager* particleMan = nullptr;
-
-	ParticleManager* particleMan2 = nullptr;
-
-
-
 	//FBX
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;

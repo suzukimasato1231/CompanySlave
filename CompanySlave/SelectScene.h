@@ -54,10 +54,6 @@ private://定義
 
 	Vec2 pos = { 0.0f,0.0f };
 
-	//パーティクル
-	ParticleManager* particleMan = nullptr;
-
-	ParticleManager* particleMan2 = nullptr;
 
 	int stage = 1;
 	//一の位

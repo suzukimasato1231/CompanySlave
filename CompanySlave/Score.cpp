@@ -10,8 +10,6 @@ Score::Score()
 {}
 Score::~Score()
 {
-	safe_delete(particleMan);
-	safe_delete(particleMan2);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);

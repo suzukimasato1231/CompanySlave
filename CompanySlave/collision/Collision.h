@@ -138,3 +138,28 @@ public:
 	static bool CircleCollision(Vec2 circle1, Vec2 circle2, float radius1, float radius2);
 
 };
+
+
+
+class OBB
+{
+protected:
+	Vec3 m_Pos;              // 位置
+	Vec3 m_NormaDirect[3];   // 方向ベクトル
+	float m_fLength[3];         // 各軸方向の長さ
+public:
+	//XMfloat3 Pos 位置, XMMATRIX rotM 回転行列、float xの半分の長さ、 float yの半分の長さ、 float zの半分の長さ、
+	void Initilize(Vec3 pos, Vec3 rotM, Vec3 scale);
+
+	Vec3 GetDirect(int elem);   // 指定軸番号の方向ベクトルを取得
+	float GetLen_W(int elem);   // 指定軸方向の長さを取得
+	Vec3 GetPos_W();            // 位置を取得
+};
+
+class OBBCollision :OBB
+{
+public:
+	static bool ColOBBs(OBB &obb1, OBB &obb2);
+
+	static float LenSegOnSeparateAxis(Vec3 &Sep, Vec3 &e1, Vec3 &e2, Vec3 e3 = { 0,0,0 });
+};

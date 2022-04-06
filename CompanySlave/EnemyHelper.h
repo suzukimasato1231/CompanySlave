@@ -12,8 +12,8 @@ enum EnemyType
 enum spawnNo
 {
 	NOTSPAWN,
-	ONESPAWN,
-	TWOSPAWN,
+	ONI,
+	ONIBOW,
 };
 
 //“G‚Ìó‘Ô

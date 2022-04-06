@@ -22,7 +22,7 @@ void OniBow::Init()
 	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
 	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
 
-	bowOBJ = Shape::CreateRect(bowSize.x, bowSize.y);
+	bowOBJ = Shape::CreateSquare(bowSize.x, bowSize.y, bowSize.z);
 }
 
 void OniBow::Draw(EnemyData *oniData)
@@ -72,7 +72,10 @@ void OniBow::Draw(EnemyData *oniData)
 
 
 	//矢の描画
-
+	if (oniData->bowTime > 0)
+	{
+		Object::Instance()->Draw(bowOBJ, oniData->bowPos, Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, XMConvertToDegrees(oniData->bowAngle) + 0, 0.0f));
+	}
 
 }
 
@@ -130,12 +133,12 @@ void OniBow::Attack(EnemyData *oniData, Player *player)
 	}
 
 	//プレイヤーを狙う
-	if (oniData->StatusTime >= attackMotionDamege)
+	if (oniData->StatusTime > attackMotionDamege)
 	{
 		oniData->bowAngle = atan2(player->GetPosition().z - oniData->position.z, player->GetPosition().x - oniData->position.x);
 	}
 	//プレイヤーに撃つ
-	else if (oniData->StatusTime == attackMotionDamege)
+	else if (oniData->StatusTime == attackMotionDamege && oniData->bowTime <= 0)
 	{
 		oniData->bowFlag = true;
 		oniData->bowPos = oniData->position;
@@ -153,21 +156,29 @@ void OniBow::Attack(EnemyData *oniData, Player *player)
 
 void OniBow::BowUpdate(EnemyData *oniData, Player *player)
 {
-	//Box attackBox = AttackField(oniData);
-	//oniData->bowPos.x += cosf(oniData->bowAngle) * bowSpeed;
-	//oniData->bowPos.z += sinf(oniData->bowAngle) * bowSpeed;
+	if (oniData->bowTime >= 0)
+	{
+		OBB playerOBB;
+		playerOBB.Initilize(player->GetPosition(), player->GetAngle(), Vec3(player->GetPSize(), player->GetPSize(), player->GetPSize()));
+		OBB bowOBB;
+		bowOBB.Initilize(oniData->bowPos, Vec3(0.0f, 0.0f, oniData->bowAngle), bowSize);
 
-	////攻撃範囲内にいたらプレイヤーにダメージ
-	//if (Collision::CheckBox2Box(attackBox, player->GetBox()) && oniData->bowFlag == true)
-	//{
-	//	player->Damage();
-	//	oniData->bowFlag = false;
-	//}
-	//oniData->bowTime--;
-	//if (oniData->bowTime <= 0)
-	//{
-	//	oniData->bowFlag = false;
-	//}
+		oniData->bowPos.x += cosf(oniData->bowAngle) * bowSpeed;
+		oniData->bowPos.z += sinf(oniData->bowAngle) * bowSpeed;
+
+		//攻撃範囲内にいたらプレイヤーにダメージ
+		if (OBBCollision::ColOBBs(playerOBB, bowOBB) && oniData->bowFlag == true)
+		{
+			player->Damage();
+			oniData->bowFlag = false;
+		}
+		oniData->bowTime--;
+		if (oniData->bowTime <= 0)
+		{
+			oniData->bowFlag = false;
+		}
+		//壁にあったら消える処理
+	}
 }
 
 Box OniBow::SearchField(EnemyData *oniData)
