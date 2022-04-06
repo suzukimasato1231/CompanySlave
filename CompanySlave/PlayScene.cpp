@@ -140,7 +140,7 @@ void PlayScene::Update()
 
 	StageInit();
 
-	
+
 
 	//プレイヤーの更新
 	mapStage->Update(enemy);
@@ -156,12 +156,12 @@ void PlayScene::Update()
 
 	fbxObject1->Update();
 	//
-	camera->FollowCamera(player->GetPosition(), Vec3{ 0,100,-10 });
+	camera->FollowCamera(player->GetPosition(), Vec3{ 0,100,-10 }, 0.0f, -15.0f);
 
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
 	{
-		
+
 	}
 
 	particleMan4->ParticleAdd(player->GetPosition(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
@@ -198,7 +198,7 @@ void PlayScene::Update()
 		timeRate = 0;
 		sceneFlag = true;
 	}
-	
+
 	//パーティクル更新
 	particleMan->Update();
 
@@ -208,7 +208,7 @@ void PlayScene::Update()
 	//ライト更新
 	lightGroup->Update();
 
-	
+
 }
 
 void PlayScene::Draw()
@@ -254,8 +254,8 @@ void PlayScene::Draw()
 	debugText.Print(10, 80, 2, "D:Attack");
 
 	debugText.Print(10, 120, 2, "F:kamikaihi");
-	
-	debugText.Print(10, 180, 2, "%d",enemy->GetParticleTime(0));
+
+	debugText.Print(10, 180, 2, "%d", enemy->GetParticleTime(0));
 
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 
