@@ -85,12 +85,12 @@ void PlayScene::Init()
 	fbxObject1->SetModel(model1);
 
 	//パーティクルクラス作成
-	particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
-	particleMan2 = ParticleManager::Create(L"Resources/Blood/Blood.png", 1);
+	particleMan = ParticleManager::Create(L"Resources/particle.jpg");
 
+	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg");
 
-	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg", 2);
+	particleMan2 = ParticleManager::Create(L"Resources/Blood/Blood.png");
 
 	//マップチップの初期化
 	mapStage = new MapStage;
@@ -198,16 +198,17 @@ void PlayScene::Update()
 		sceneFlag = true;
 	}
 
+	particleMan4->Update();
+
+	particleMan2->Update();
 	//パーティクル更新
 	particleMan->Update();
 
-	particleMan2->Update();
-	//particleMan3->Update();
-	particleMan4->Update();
+
+
+
 	//ライト更新
 	lightGroup->Update();
-
-
 }
 
 void PlayScene::Draw()
@@ -235,14 +236,17 @@ void PlayScene::Draw()
 	enemy->Draw();
 
 	//パーティクル描画
-	particleMan4->Draw();
 
-	particleMan2->Draw();
-	//particleMan3->Draw();
 	if (mapStage->GetMap(74, 6) == 5)
 	{
 		particleMan->Draw();
 	}
+
+	particleMan4->Draw();
+
+	particleMan2->Draw();
+	//particleMan3->Draw();
+
 	//前景描画
 	player->UIDraw();
 	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);

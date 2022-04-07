@@ -15,11 +15,6 @@ Camera *ParticleManager::camera = nullptr;
 UINT ParticleManager::descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList *ParticleManager::cmdList = nullptr;
 Pipeline::PipelineSet ParticleManager::PartclePipelineSet;
-ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap;
-ComPtr<ID3D12Resource> ParticleManager::vertBuff;
-ComPtr<ID3D12Resource>  ParticleManager::constBuff; // 定数バッファ
-D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
-ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
 XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
 XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
 
@@ -33,15 +28,11 @@ bool ParticleManager::StaticInitialize(ID3D12Device *device, ID3D12GraphicsComma
 
 	ParticleManager::cmdList = cmdList;
 
-	// デスクリプタヒープの初期化
-	InitializeDescriptorHeap();
-
 	// パイプライン初期化
-	//InitializeGraphicsPipeline();
 	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device);
 
 	// モデル生成
-	CreateModel();
+	//CreateModel();
 
 	return true;
 }
@@ -66,6 +57,11 @@ ParticleManager *ParticleManager::Create(const wchar_t *filename, int textureNum
 {
 	// 3Dオブジェクトのインスタンスを生成
 	ParticleManager *particle = new ParticleManager();
+
+	particle->InitializeDescriptorHeap();
+
+	particle->CreateModel();
+
 	if (particle == nullptr) {
 		return nullptr;
 	}
@@ -185,7 +181,7 @@ bool ParticleManager::InitializeDescriptorHeap()
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
-	descHeapDesc.NumDescriptors = 50; // シェーダーリソースビュー1つ
+	descHeapDesc.NumDescriptors = textureMax; // シェーダーリソースビュー1つ
 	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
 	if (FAILED(result)) {
 		assert(0);
@@ -250,21 +246,21 @@ bool ParticleManager::LoadTexture(const wchar_t *filename, int textureNum)
 	}
 
 	//// シェーダリソースビュー作成
-	//cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
-	//gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
+	cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
+	gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
 
 
+	//UINT descHandleIncrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	//デスクリプタヒープの先頭ハンドルを取得
-	cpuDescHandleSRV = descHeap->GetCPUDescriptorHandleForHeapStart();
-	//ハンドルのアドレスを進める
-	cpuDescHandleSRV.ptr += textureNum * device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	////デスクリプタヒープの先頭ハンドルを取得
+	//cpuDescHandleSRV = descHeap->GetCPUDescriptorHandleForHeapStart();
+	////ハンドルのアドレスを進める
+	//cpuDescHandleSRV.ptr += textureNum * descHandleIncrementSize;
 
-	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleStart = descHeap->GetGPUDescriptorHandleForHeapStart();
-	UINT descHandleIncrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	//1番SRV
-	gpuDescHandleSRV = gpuDescHandleStart;
-	gpuDescHandleSRV.ptr += descHandleIncrementSize * textureNum;
+	//D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleStart = descHeap->GetGPUDescriptorHandleForHeapStart();
+	////1番SRV
+	//gpuDescHandleSRV = gpuDescHandleStart;
+	//gpuDescHandleSRV.ptr += textureNum * descHandleIncrementSize;
 
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体

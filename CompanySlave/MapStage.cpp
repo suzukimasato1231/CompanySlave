@@ -81,9 +81,9 @@ void MapStage::Draw(Vec3 pPos)
 {
 	int X = pPos.x / mapSize;
 	int Z = pPos.z / (-mapSize);
-	for (int j = (Z - 9); j < (Z + 7); j++)
+	for (int j = (Z - 8); j < (Z + 7); j++)
 	{
-		for (int i = (X - 11); i < (X + 13); i++)
+		for (int i = (X - 14); i < (X + 16); i++)
 		{
 			if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
 			{

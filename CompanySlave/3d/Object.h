@@ -85,12 +85,6 @@ public://構造体
 		PSC psc;
 	};
 
-	struct ConstBuffer
-	{
-		//GPUリソースの生成
-		ComPtr<ID3D12Resource>constBuff = nullptr;
-	};
-
 	//OBJデータ関連
 	// 定数バッファ用データ構造体
 	struct ConstBufferDataB0
@@ -132,8 +126,6 @@ public://変数
 	std::vector<OBJData *> OBJdata;
 	//定数バッファ用のデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap >descHeap = { nullptr };
-	//オブジェクトのコンストバッファ
-	std::vector <ConstBuffer *>objectBuffer;
 public:
 	Object() {};
 	~Object();

@@ -57,11 +57,21 @@ public: // サブクラス
 		Vec4 e_color = {};
 
 	};
+	//テクスチャデータ
+	struct TextureData
+	{
+		D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+		D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
+		ComPtr<ID3D12Resource> texbuff;
+	};
+
 	//パーティクル配列
 	std::forward_list<Particle>particles;
 
 private: // 定数
-	static const int vertexCount = 2024;//頂点数
+	static const int vertexCount = 1024;//頂点数
+
+	static const int textureMax = 256;
 public: // 静的メンバ関数
 	/// <summary>
 	/// 静的初期化
@@ -87,7 +97,7 @@ public: // 静的メンバ関数
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	static ParticleManager *Create(const wchar_t *filename, int textureNum);
+	static ParticleManager *Create(const wchar_t *filename, int textureNum = 0);
 
 	//カメラをセット
 	static void SetCamera(Camera *camera) { ParticleManager::camera = camera; }
@@ -119,17 +129,17 @@ private: // 静的メンバ変数
 	// コマンドリスト
 	static ID3D12GraphicsCommandList *cmdList;
 	// デスクリプタヒープ
-	static ComPtr<ID3D12DescriptorHeap> descHeap;
+	//static ComPtr<ID3D12DescriptorHeap> descHeap;
 	// 頂点バッファ
-	static ComPtr<ID3D12Resource> vertBuff;
+	//static ComPtr<ID3D12Resource> vertBuff;
 
-	static ComPtr<ID3D12Resource> constBuff; // 定数バッファ
+	//static ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 
 	// 頂点バッファビュー
-	static D3D12_VERTEX_BUFFER_VIEW vbView;
+	//static D3D12_VERTEX_BUFFER_VIEW vbView;
 
 	// 頂点データ配列
-	static VertexPos vertices[vertexCount];
+	//static VertexPos vertices[vertexCount];
 
 	//ビルボード行列
 	static XMMATRIX matBillboard;
@@ -143,18 +153,12 @@ private:// 静的メンバ関数
 	/// デスクリプタヒープの初期化
 	/// </summary>
 	/// <returns></returns>
-	static bool InitializeDescriptorHeap();
-
-	/// <summary>
-	/// グラフィックパイプライン生成
-	/// </summary>
-	/// <returns>成否</returns>
-	//static bool InitializeGraphicsPipeline();
+	bool InitializeDescriptorHeap();
 
 	/// <summary>
 	/// モデル作成
 	/// </summary>
-	static void CreateModel();
+	void CreateModel();
 	/// <summary>
 	/// ビルボート行列の更新
 	/// </summary>
@@ -194,5 +198,11 @@ private: // メンバ変数
 	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
 
 	int textureNum = 0;
+	ComPtr<ID3D12Resource> vertBuff;
+	ComPtr<ID3D12Resource>constBuff; // 定数バッファ
+
+	ComPtr<ID3D12DescriptorHeap> descHeap;
+	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	ParticleManager::VertexPos vertices[vertexCount];
 };
 

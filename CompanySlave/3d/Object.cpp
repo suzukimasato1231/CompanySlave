@@ -21,12 +21,6 @@ Object::~Object()
 		OBJdata.erase(OBJdata.begin() + i);
 	}
 
-	for (int i = (int)objectBuffer.size() - 1; i >= 0; i--)
-	{
-		delete objectBuffer[i];
-		objectBuffer.erase(objectBuffer.begin() + i);
-	}
-
 	for (int i = (int)textureData.size() - 1; i >= 0; i--)
 	{
 		delete textureData[i];
@@ -143,13 +137,13 @@ int  Object::LoadTexture(const wchar_t *filename)
 		(UINT)img->slicePitch//全サイズ
 	);
 
+	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//デスクリプタヒープの先頭ハンドルを取得
 	textureData[texNum]->cpuDescHandleSRV = descHeap->GetCPUDescriptorHandleForHeapStart();
 	//ハンドルのアドレスを進める
-	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * descHandleIncrementSize;
 
 	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleStart = descHeap->GetGPUDescriptorHandleForHeapStart();
-	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//1番SRV
 	textureData[texNum]->gpuDescHandleSRV = gpuDescHandleStart;
 	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
