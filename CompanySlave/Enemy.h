@@ -35,6 +35,7 @@ public:
 	void WasAttack(int i);
 	//敵の位置を設定
 	void SetPosition(int i, Vec3 position);
+
 	/// <summary>
 	/// プレイヤーの通常攻撃ダメージ
 	/// </summary>

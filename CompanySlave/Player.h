@@ -89,6 +89,8 @@ public://取得系
 	Vec3 GetSwordAngle(int i) { return swordAngle[i]; }
 	//プレイヤーのBox
 	Box GetSwordBox(int No) { return swordAttackBox[No]; }
+
+	float GetSlow() { return slowValue; }
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
 	Object::ObjectData playerAttackObject[4];	//プレイヤー攻撃
@@ -160,11 +162,15 @@ private:
 	int shotNo = 0;//どの剣か
 	bool returnFlag = false;//剣が戻る時のフラグ
 	float nowTime = 0;//剣が戻る時のラープ
-	float endTime = 5;//剣が戻る時のラープ
+	float endTime = 3;//剣が戻る時のラープ
 	float timeRate = 0;//剣が戻る時のラープ
 	float reverseValue[7] = { 0,0,0,0,0,0,0 };
 	int reverseAngle[7] = { 0,0,0,0,0,0,0 };
 	bool swordStop[7] = { false,false,false,false,false,false,false };
+	bool holdingFlag[7] = { true,true,true,true,true,true,true };
+	bool explosion[7] = { false,false,false,false,false,false,false };
+	int explosionCount[7] = { 0,0,0,0,0,0,0 };
+	float slowValue = 1;
 
 	//エフェクト関係
 	bool AttackEffect = false;

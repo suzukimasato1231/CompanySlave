@@ -50,5 +50,7 @@ private:
 	Object::ObjectData debugField;	//õ“G
 	Object::ObjectData debugField2;//UŒ‚”ÍˆÍ
 	int redColor;
+
+	float slowValue= 1;
 };
 
