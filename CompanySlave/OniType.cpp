@@ -114,7 +114,7 @@ void OniType::Draw(EnemyData *oniData)
 void OniType::Move(EnemyData *oniData, Player *player)
 {
 	oniData->oldPosition = oniData->position;
-
+	slowValue = player->GetSlow();
 	//プレイヤーとエネミーの位置の差
 	Vec3 memoryPosition = player->GetPosition() - oniData->position;
 	//長さを求める
@@ -130,7 +130,7 @@ void OniType::Move(EnemyData *oniData, Player *player)
 	{
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
-		oniData->position += direction * oniData->speed;
+		oniData->position += direction * oniData->speed * slowValue;
 	}
 }
 

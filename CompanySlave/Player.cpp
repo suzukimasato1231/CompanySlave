@@ -188,7 +188,11 @@ void Player::Draw()
 	Object::Instance()->Draw(cursorObject, { position.x,-2,position.z, }, { 10,2,1 }, { 90,angle.y,0 }, color, cursorGraph);
 	for (int i = 0; i < 7; i++)
 	{
-		if (haveSword[i] == true || isSwordAttack[i] == false)
+		if (returnFlag == true)
+		{
+			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
+		}
+		else if (haveSword[i] == true || isSwordAttack[i] == false)
 		{
 			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
 		}
@@ -255,27 +259,27 @@ void Player::Move()
 		//キーボード
 		if (Input::Instance()->KeybordPush(DIK_RIGHT))
 		{
-			position.x += speed.x;
+			position.x += speed.x * slowValue;
 		}
 		if (Input::Instance()->KeybordPush(DIK_LEFT))
 		{
-			position.x -= speed.x;
+			position.x -= speed.x * slowValue;
 		}
 		if (Input::Instance()->KeybordPush(DIK_UP))
 		{
-			position.z += speed.z;
+			position.z += speed.z * slowValue;
 		}
 		if (Input::Instance()->KeybordPush(DIK_DOWN))
 		{
-			position.z -= speed.z;
+			position.z -= speed.z * slowValue;
 		}
 		//コントローラー
 		if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
 			Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 		{
 
-			position.x += speed.x * sinRad;
-			position.z += speed.z * cosRad;
+			position.x += speed.x * sinRad * slowValue;
+			position.z += speed.z * cosRad * slowValue;
 			angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
 		}
 		//座標を合わせる
@@ -312,8 +316,8 @@ void Player::NormalAttack(Enemy *enemy)
 	if (normalAttackTime > 0)
 	{
 		normalAttackTime--;
-		position.x += attackMoveSpeed * sinRad;
-		position.z += attackMoveSpeed * cosRad;
+		position.x += attackMoveSpeed * sinRad * slowValue;
+		position.z += attackMoveSpeed * cosRad * slowValue;
 	}
 
 	for (int j = 0; j < 3; j++)
@@ -377,13 +381,14 @@ void Player::SwordAttack(Enemy *enemy)
 {
 	if (Input::Instance()->KeybordPush(DIK_U))
 	{
-		//HP = 0;
+		
 	}
 	//撃つ
 	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag)
 	{
 		isSwordAttack[shotNo] = true;
 		haveSword[shotNo] = false;
+		holdingFlag[shotNo] = false;
 	}
 
 	//剣撃つやつ入れ替え
@@ -399,13 +404,16 @@ void Player::SwordAttack(Enemy *enemy)
 	//剣戻ってくるやつ発動
 	if (Input::Instance()->ControllerDown(ButtonLB))
 	{
+		slowValue = 0.25;
 		for (int i = 0; i < 7; i++)
 		{
 			reverseAngle[i] = 0;
 			reverseValue[i] = 0;
 			isSwordAttack[i] = false;
-			swordStop[i] == false;
+			swordStop[i] = false;
 			stingCnt[i] = 0;
+			holdingFlag[i] = true;
+			swordAngle[i].z = 0;
 		}
 		returnFlag = true;
 	}
@@ -443,6 +451,7 @@ void Player::SwordAttack(Enemy *enemy)
 		{
 			timeRate = 0;
 			nowTime = 0;
+			slowValue = 1;
 			returnFlag = false;
 		}
 	}
@@ -454,7 +463,7 @@ void Player::SwordAttack(Enemy *enemy)
 		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 2, swordPosition[i].y, swordPosition[i].z - 2, 1);
 
 		//剣の飛ぶ方向と向き替え
-		if (haveSword[i])
+		if (haveSword[i] && holdingFlag[i])
 		{
 			reverseAngle[i] = 0;
 			reverseValue[i] = 0;
@@ -472,7 +481,7 @@ void Player::SwordAttack(Enemy *enemy)
 			//敵との当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
+				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0)
 				{
 					isSwordAttack[i] = false;
 					isEnemySting[i][j] = true;
@@ -483,21 +492,22 @@ void Player::SwordAttack(Enemy *enemy)
 			//角度で進めてる
 			for (int s = 0; s < swordSpeed; s++)
 			{
-				swordPosition[i].x += cos(swordAngleVec[i] + reverseValue[i]) * 1;      // x座標を更新
-				swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 1;      // z座標を更新
+				swordPosition[i].x += cos(swordAngleVec[i] + reverseValue[i]) * 1 * slowValue;      // x座標を更新
+				swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 1 * slowValue;      // z座標を更新
 
 			}
 		}
-
 		//当たって取るときの当たり判定たち
-		else if (isSwordAttack[i] == false)
+		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
-			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]))
+			if (isSwordAttack[i] == false )
 			{
-				haveSword[i] = true;
+				if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
+				{
+					haveSword[i] = true;
+				}
 			}
 		}
-
 		//刺さった敵に剣が追っかける
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
@@ -517,9 +527,33 @@ void Player::SwordAttack(Enemy *enemy)
 		//止まる
 		if (stingCnt[i] >= 2 + rand() % 20)
 		{
+			swordAngle[i].z = -90;
 			isSwordAttack[i] = false;
-			swordStop[i] == false;
+			swordStop[i] = false;
 			stingCnt[i] = 0;
+			holdingFlag[i] = true;
+		}
+
+		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+		{
+			if (enemy->GetHP(j) <= 0 && isEnemySting[i][j] == true)
+			{
+				explosion[i] = true;
+				isEnemySting[i][j] = false;
+			}
+		}
+
+		if (explosion[i])
+		{
+			explosionCount[i]++;
+			swordPosition[i].x += cos(swordAngleVec[i] + reverseValue[i]) * 2 * slowValue;      // x座標を更新
+			swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 2 * slowValue;      // z座標を更新
+			holdingFlag[i] = true;
+			if (explosionCount[i] >= 20)
+			{
+				swordAngle[i].z = -90;
+				explosion[i] = false;
+			}
 		}
 	}
 }
@@ -610,8 +644,8 @@ void Player::Avoidance()
 		{
 			avoiCoolTime = avoiCoolTimeMax;
 		}
-		position.x += avoiSpeed * sinRad;
-		position.z += avoiSpeed * cosRad;
+		position.x += avoiSpeed * sinRad * slowValue;
+		position.z += avoiSpeed * cosRad * slowValue;
 	}
 }
 

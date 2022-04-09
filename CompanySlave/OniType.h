@@ -61,5 +61,8 @@ private:
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;
 	int effectCount = 0;
+
+
+	float slowValue = 1;
 };
 
