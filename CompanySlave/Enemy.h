@@ -81,6 +81,9 @@ public://取得系
 	bool GetParticleFlag(int i) { return particleFlag[i]; }
 	int GetParticleTime(int i) { return particleTime[i]; }
 
+	bool GetDamegeFlag(int i) { return eData[i]->DamegeFlag; }
+	bool SetDamegeFlag(int i, bool DamegeFlag);
+
 	int	spawnMap[MAP_HEIGHT][MAP_WIDTH];//沸き地のマップ
 
 	const float mapSize = 10.0f;

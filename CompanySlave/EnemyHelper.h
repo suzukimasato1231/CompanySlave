@@ -43,6 +43,8 @@ struct EnemyData
 	int direction = Down;				//向いている向き
 	int attackDirection = Down;			//攻撃の向き
 	int damegeTime = 0;					//点滅時間
+	bool DamegeFlag = false;			//ダメージを受けたか
+
 	int type = 0;						//敵の種類
 	//ノックバック数値
 	int nockbackTime = 0;				//ノックバック時間

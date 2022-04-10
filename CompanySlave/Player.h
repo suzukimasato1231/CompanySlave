@@ -91,6 +91,7 @@ public://取得系
 	Box GetSwordBox(int No) { return swordAttackBox[No]; }
 
 	float GetSlow() { return slowValue; }
+	float GetenemyDamegeTime(int i) { return enemyDamegeTime[i]; }
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
 	Object::ObjectData playerAttackObject[9];	//プレイヤー攻撃
@@ -180,6 +181,7 @@ private:
 	int effectTime = 10;
 	int effectCount = 0;
 	
+	float enemyDamegeTime[20] = { 60,60,60,60,60,60,60,60,60,60 };
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };

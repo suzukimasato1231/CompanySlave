@@ -90,7 +90,7 @@ void PlayScene::Init()
 
 	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg");
 
-	particleMan2 = ParticleManager::Create(L"Resources/Blood/Blood.png");
+	particleMan2 = ParticleManager::Create(L"Resources/particle3.png");
 
 	//マップチップの初期化
 	mapStage = new MapStage;
@@ -161,7 +161,7 @@ void PlayScene::Update()
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
 	{
-		particleMan4->ParticleAdd(player->GetPosition(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
+		particleMan4->ParticleAdd3(player->GetPosition(), 0.1f,Vec4(0.5f, 0.2f, 0.1f, 0.0f), Vec4(0.25f, 0.2f, 0.1f, 0.0f));
 	}
 
 
@@ -169,12 +169,9 @@ void PlayScene::Update()
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
 
-		if (enemy->GetParticleFlag(i) == true) {
+		if (enemy->GetDamegeFlag(i) == true) {
 
-			if (enemy->GetParticleTime(i) > 0) {
-
-				particleMan2->ParticleAdd(enemy->GetPosition(i), Vec4(0.2f, 0.2f, 0.2f, 1.0f), Vec4(0.2f, 0.2f, 0.2f, 1.0f));
-			}
+				particleMan2->ParticleAdd(enemy->GetPosition(i), 0.5f, Vec4(0.3f, 0.1f, 0.1f, 1.0f), Vec4(0.3f, 0.1f, 0.1f, 1.0f));
 		}
 
 	}
@@ -258,7 +255,7 @@ void PlayScene::Draw()
 
 	debugText.Print(10, 120, 2, "F:kamikaihi");
 
-	debugText.Print(10, 180, 2, "%d", enemy->GetParticleTime(0));
+	debugText.Print(10, 180, 2, "%f", player->GetenemyDamegeTime(1));
 
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 

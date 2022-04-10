@@ -58,14 +58,14 @@ void Enemy::StageInit(int stageNum)
 		particleFlag[i] = false;
 		particleTime[i] = 60;
 	}
-	char *Filepath = (char *)"";
+	char* Filepath = (char*)"";
 	switch (stageNum)
 	{
 	case 1:
-		Filepath = (char *)"Resources/map/stage01spawnMap.csv";
+		Filepath = (char*)"Resources/map/stage01spawnMap.csv";
 		break;
 	case 2:
-		Filepath = (char *)"Resources/map/stage01spawnMap.csv";
+		Filepath = (char*)"Resources/map/stage01spawnMap.csv";
 		break;
 	default:
 		break;
@@ -116,7 +116,7 @@ void Enemy::StageInit(int stageNum)
 	}
 }
 
-void Enemy::Update(Player *player)
+void Enemy::Update(Player* player)
 {
 	for (size_t i = 0; i < eData.size(); i++)
 	{
@@ -223,6 +223,7 @@ void Enemy::DamegeSword(int i)
 	eData[i]->damegeTime = 10;
 }
 
+
 void Enemy::Delete()
 {
 	//“G‚ªÁ‚¦‚é
@@ -249,7 +250,7 @@ void Enemy::Delete()
 
 
 
-int Enemy::Direction(int i, Player *player)
+int Enemy::Direction(int i, Player* player)
 {
 	int direction = Right;
 
@@ -309,6 +310,11 @@ Vec3 Enemy::DirectionAngle(int direction)
 		angle = { 0.0f,0.0f,0.0f };
 	}
 	return angle;
+}
+
+bool Enemy::SetDamegeFlag(int i, bool DamegeFlag)
+{
+	return eData[i]->DamegeFlag = DamegeFlag;
 }
 
 void Enemy::NockBack(int i)
@@ -375,7 +381,7 @@ void Enemy::UpdateOni(int i, Player *player)
 	}
 }
 
-void Enemy::UpdateBow(int i, Player *player)
+void Enemy::UpdateBow(int i, Player* player)
 {
 	switch (eData[i]->Status)
 	{

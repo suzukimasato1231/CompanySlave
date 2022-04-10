@@ -146,7 +146,7 @@ void Player::StageInit(int stageNum)
 
 }
 
-void Player::Update(Enemy *enemy)
+void Player::Update(Enemy* enemy)
 {
 	if (enemy == nullptr)
 	{
@@ -293,7 +293,7 @@ void Player::Move()
 	}
 }
 
-void Player::NormalAttack(Enemy *enemy)
+void Player::NormalAttack(Enemy* enemy)
 {//歩きアニメーション用
 	if (attackCount >= 10 && attackMode == true)
 	{
@@ -345,9 +345,14 @@ void Player::NormalAttack(Enemy *enemy)
 			NormalFieldDirection();
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
-				if (Collision::CheckSphere2Box(enemy->GetSphere(i), normalAttackBox))
-				{
-					enemy->DamegeNormal(i, direction);
+				if (enemy->GetHP(i) > 0) {
+					if (Collision::CheckSphere2Box(enemy->GetSphere(i), normalAttackBox))
+					{
+						enemy->DamegeNormal(i);
+
+						enemy->SetDamegeFlag(i, true);
+
+					}
 				}
 			}
 			normalAttackTime = normalAttackTimeMax;
@@ -365,6 +370,10 @@ void Player::NormalAttack(Enemy *enemy)
 			normalAttackCount = 0;
 			attackMode = false;
 			attackNo = 0;
+			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+			{
+				enemy->SetDamegeFlag(i, false);
+			}
 		}
 	}
 	if (normalAttackCount == 0) {
@@ -394,7 +403,7 @@ void Player::NormalAttack(Enemy *enemy)
 }
 
 //剣撃つ
-void Player::SwordAttack(Enemy *enemy)
+void Player::SwordAttack(Enemy* enemy)
 {
 	if (Input::Instance()->KeybordPush(DIK_U))
 	{
@@ -449,6 +458,7 @@ void Player::SwordAttack(Enemy *enemy)
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
 				isEnemySting[i][j] = false;
+				enemy->SetDamegeFlag(j, false);
 			}
 
 			//ラープ
@@ -457,9 +467,12 @@ void Player::SwordAttack(Enemy *enemy)
 			//戻ってるときの当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
-				{
-					enemy->DamegeSword(j);
+				if (enemy->GetHP(j) > 0) {
+					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
+					{
+						enemy->DamegeSword(j);
+						enemy->SetDamegeFlag(j, true);
+					}
 				}
 			}
 		}
@@ -498,12 +511,19 @@ void Player::SwordAttack(Enemy *enemy)
 			//敵との当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0)
-				{
-					isSwordAttack[i] = false;
-					isEnemySting[i][j] = true;
-					enemy->DamegeThrowSword(j);
+				if (enemy->GetHP(j) > 0) {
+					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0)
+					{
+						isSwordAttack[i] = false;
+						isEnemySting[i][j] = true;
+						enemy->DamegeNormal(j);
+						if (enemyDamegeTime[j] > 0) {
+							enemy->SetDamegeFlag(j, true);
+						}
+
+					}
 				}
+			
 			}
 
 			//角度で進めてる
@@ -512,6 +532,19 @@ void Player::SwordAttack(Enemy *enemy)
 				swordPosition[i].x += cos(swordAngleVec[i] + reverseValue[i]) * 1 * slowValue;      // x座標を更新
 				swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 1 * slowValue;      // z座標を更新
 
+			}
+		}
+		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+		{
+			if (enemy->GetDamegeFlag(j) == true) {
+					enemyDamegeTime[j]-=0.1f;
+			}
+			if (enemy->GetDamegeFlag(j) == false) {
+				enemyDamegeTime[j] = 60.0f;
+			}
+
+			if (enemyDamegeTime[j] <= 0) {
+				enemy->SetDamegeFlag(j, false);
 			}
 		}
 		//当たって取るときの当たり判定たち
@@ -574,6 +607,8 @@ void Player::SwordAttack(Enemy *enemy)
 		}
 	}
 }
+
+
 
 void   Player::Angle()
 {
