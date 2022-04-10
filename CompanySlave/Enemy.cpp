@@ -131,6 +131,7 @@ void Enemy::Update(Player *player)
 				UpdateBow(i, player);
 				break;
 			}
+			NockBack(i);
 		}
 
 		//座標を合わせる
@@ -202,7 +203,15 @@ void Enemy::SetPosition(int i, Vec3 position)
 	eData[i]->position = position;
 }
 
-void Enemy::DamegeNormal(int i)
+void Enemy::DamegeNormal(int i, int pAttackDirection)
+{
+	eData[i]->HP -= 2;
+	eData[i]->damegeTime = 10;
+	eData[i]->nockbackTime = nockBackTimeMax;
+	eData[i]->nockDirection = pAttackDirection;
+}
+
+void Enemy::DamegeThrowSword(int i)
 {
 	eData[i]->HP -= 2;
 	eData[i]->damegeTime = 10;
@@ -300,6 +309,51 @@ Vec3 Enemy::DirectionAngle(int direction)
 		angle = { 0.0f,0.0f,0.0f };
 	}
 	return angle;
+}
+
+void Enemy::NockBack(int i)
+{
+	//ノックバック用
+	if (eData[i]->nockbackTime > 0)
+	{
+		eData[i]->Status = NOCKBACK;
+		eData[i]->nockbackTime--;
+		if (eData[i]->nockbackTime == 0)
+		{
+			eData[i]->Status = MOVE;
+		}
+		switch (eData[i]->nockDirection)
+		{
+		case Up:
+			eData[i]->position.z += nockPower;
+			break;
+		case Down:
+			eData[i]->position.z -= nockPower;
+			break;
+		case Left:
+			eData[i]->position.x -= nockPower;
+			break;
+		case Right:
+			eData[i]->position.x += nockPower;
+			break;
+		case UpRight:
+			eData[i]->position.z += nockPower;
+			eData[i]->position.x += nockPower;
+			break;
+		case UpLeft:
+			eData[i]->position.z += nockPower;
+			eData[i]->position.x -= nockPower;
+			break;
+		case DownRight:
+			eData[i]->position.z -= nockPower;
+			eData[i]->position.x += nockPower;
+			break;
+		case DownLeft:
+			eData[i]->position.z -= nockPower;
+			eData[i]->position.x -= nockPower;
+			break;
+		}
+	}
 }
 
 void Enemy::UpdateOni(int i, Player *player)

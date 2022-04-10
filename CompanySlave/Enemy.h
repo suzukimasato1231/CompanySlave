@@ -39,8 +39,17 @@ public:
 	/// <summary>
 	/// プレイヤーの通常攻撃ダメージ
 	/// </summary>
-	void DamegeNormal(int i);
+	void DamegeNormal(int i, int pAttackDirection);
 
+	/// <summary>
+	/// 剣のダメージ投げ
+	/// </summary>
+	/// <param name="i"></param>
+	void DamegeThrowSword(int i);
+	/// <summary>
+	/// 剣のダメージ戻し
+	/// </summary>
+	/// <param name="i"></param>
 	void DamegeSword(int i);
 private:
 	//削除
@@ -49,6 +58,8 @@ private:
 	int Direction(int i, class Player *player);
 	//向きによって敵の描画角度を取得
 	Vec3 DirectionAngle(int direction);
+	//ノックバック処理
+	void NockBack(int i);
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }
@@ -84,6 +95,9 @@ private://エネミー１
 
 	void UpdateBow(int i, class Player *player);
 private:
+	//ノックバックステータス
+	const float nockPower = 0.8f;
+	const int nockBackTimeMax = 5;
 	//HPUI
 	Object::ObjectData hpOBJ;
 	Object::ObjectData hpGaugeOBJ;

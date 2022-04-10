@@ -347,7 +347,7 @@ void Player::NormalAttack(Enemy *enemy)
 			{
 				if (Collision::CheckSphere2Box(enemy->GetSphere(i), normalAttackBox))
 				{
-					enemy->DamegeNormal(i);
+					enemy->DamegeNormal(i, direction);
 				}
 			}
 			normalAttackTime = normalAttackTimeMax;
@@ -502,7 +502,7 @@ void Player::SwordAttack(Enemy *enemy)
 				{
 					isSwordAttack[i] = false;
 					isEnemySting[i][j] = true;
-					enemy->DamegeNormal(j);
+					enemy->DamegeThrowSword(j);
 				}
 			}
 

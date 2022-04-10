@@ -20,6 +20,10 @@ void OniType::Init()
 	//攻撃モーション
 	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
 	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
+	//ノックバック
+	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
+	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
+
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
@@ -106,6 +110,16 @@ void OniType::Draw(EnemyData *oniData)
 					oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			}
 			break;
+		}
+		break;
+	case NOCKBACK:
+		if (oniData->nockbackTime >= 3)
+		{
+			Object::Instance()->Draw(nockBackOBJ[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		}
+		else
+		{
+			Object::Instance()->Draw(nockBackOBJ[1], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		}
 		break;
 	}

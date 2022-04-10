@@ -23,6 +23,7 @@ enum Status
 	MOVE,	//動き
 	ATTACK,	//攻撃
 	ENEMIES,//敵を見つけたら
+	NOCKBACK,//ノックバック中
 };
 //敵の情報
 struct EnemyData
@@ -43,6 +44,9 @@ struct EnemyData
 	int attackDirection = Down;			//攻撃の向き
 	int damegeTime = 0;					//点滅時間
 	int type = 0;						//敵の種類
+	//ノックバック数値
+	int nockbackTime = 0;				//ノックバック時間
+	int nockDirection = 0;				//ノックバックする方向
 	//遠距離用数値
 	float bowAngle = 0.0f;				//狙う角度
 	Vec3 bowPos = {};					//矢の座標
