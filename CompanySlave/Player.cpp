@@ -9,9 +9,7 @@ Player::Player()
 {}
 
 Player::~Player()
-{
-	
-}
+{}
 
 void Player::Init()
 {
@@ -20,10 +18,15 @@ void Player::Init()
 	playerSwordWalkObject[2] = Object::Instance()->CreateOBJ("playerKari2-1");
 	playerSwordWalkObject[3] = Object::Instance()->CreateOBJ("playerKari2-3");
 
-	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerKari3-0");
-	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerKari3-1");
-	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerKari3-1");
-	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerKari3-1");
+	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerAttack1-1");
+	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerAttack1-2");
+	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerAttack1-3");
+	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerAttack2-1");
+	playerAttackObject[4] = Object::Instance()->CreateOBJ("playerAttack2-2");
+	playerAttackObject[5] = Object::Instance()->CreateOBJ("playerAttack2-3");
+	playerAttackObject[6] = Object::Instance()->CreateOBJ("playerAttack3-1");
+	playerAttackObject[7] = Object::Instance()->CreateOBJ("playerAttack3-2");
+	playerAttackObject[8] = Object::Instance()->CreateOBJ("playerAttack3-3");
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
 	swordEffectObject = Object::Instance()->CreateOBJ("Effect");
@@ -136,7 +139,7 @@ void Player::StageInit(int stageNum)
 	timeRate = 0;//剣が戻る時のラープ
 	srand(time(NULL));
 
-   //エフェクト関係
+	//エフェクト関係
 	AttackEffect = false;
 	effectTime = 10;
 	effectCount = 0;
@@ -178,12 +181,13 @@ void Player::Draw()
 #if _DEBUG
 	DebugDraw();
 #endif
-	EffectDraw();
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
+
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
+
 	}
 	Object::Instance()->Draw(cursorObject, { position.x,-2,position.z, }, { 10,2,1 }, { 90,angle.y,0 }, color, cursorGraph);
 	for (int i = 0; i < 7; i++)
@@ -201,6 +205,7 @@ void Player::Draw()
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
 		}
 	}
+	EffectDraw();
 }
 
 //移動
@@ -290,20 +295,23 @@ void Player::Move()
 
 void Player::NormalAttack(Enemy *enemy)
 {//歩きアニメーション用
-	if (attackCount >= 10)
+	if (attackCount >= 10 && attackMode == true)
 	{
 		attackCount = 0;
 		attackNo++;
+		if (attackNo >= 9)
+		{
+			attackNo = 8;
+		}
 	}
-	if (attackNo >= 4)
-	{
-		attackNo = 0;
-	}
+	if (normalAttackFlag[2] && attackNo >= 9) { attackNo = 8; }
+	if (normalAttackFlag[1] && attackNo >= 6) { attackNo = 5; }
+	if (normalAttackFlag[0] && attackNo >= 3) { attackNo = 2; }
+
+
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
 	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0)
 	{
-		attackCount = 0;//カウントリセット
-		attackNo = 0;//ナンバーをリセット
 		attackMode = true;
 		//連続攻撃を数える
 		if (normalAttackCount < 3)
@@ -312,6 +320,15 @@ void Player::NormalAttack(Enemy *enemy)
 			normalAttackCount++;
 		}
 	}
+	//描画するNO
+	if (normalAttackTime == normalAttackTimeMax)
+	{
+		if (normalAttackFlag[0]) { attackNo = 0; }
+		else if (normalAttackFlag[1]) { attackNo = 3; }
+		else if (normalAttackFlag[2]) { attackNo = 6; }
+		attackCount = 0;//カウントリセット
+	}
+
 	//攻撃している時間
 	if (normalAttackTime > 0)
 	{
@@ -347,6 +364,7 @@ void Player::NormalAttack(Enemy *enemy)
 		{
 			normalAttackCount = 0;
 			attackMode = false;
+			attackNo = 0;
 		}
 	}
 	if (normalAttackCount == 0) {
@@ -361,7 +379,7 @@ void Player::NormalAttack(Enemy *enemy)
 	if (normalAttackCount == 3) {
 		AttackScale = { 5.0f,5.0f,5.0f };
 	}
-	if (normalAttackTime == normalAttackTimeMax) { AttackEffect = true; }
+	if (normalAttackTime == normalAttackTimeMax / 2) { AttackEffect = true; }
 
 	if (AttackEffect == true) {
 
@@ -373,7 +391,6 @@ void Player::NormalAttack(Enemy *enemy)
 			AttackEffect = false;
 		}
 	}
-
 }
 
 //剣撃つ
@@ -381,7 +398,7 @@ void Player::SwordAttack(Enemy *enemy)
 {
 	if (Input::Instance()->KeybordPush(DIK_U))
 	{
-		
+
 	}
 	//撃つ
 	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag)
@@ -500,7 +517,7 @@ void Player::SwordAttack(Enemy *enemy)
 		//当たって取るときの当たり判定たち
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
-			if (isSwordAttack[i] == false )
+			if (isSwordAttack[i] == false)
 			{
 				if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
 				{
@@ -772,7 +789,7 @@ void Player::NormalFieldDirection()
 	{
 	case Up:
 		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLengthSub / 2, position.y, position.z + normalLength, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x - normalLengthSub / 2, position.y, position.z , 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLengthSub / 2, position.y, position.z, 1);
 		break;
 	case Down:
 		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLengthSub / 2, position.y, position.z, 1);

@@ -93,7 +93,7 @@ public://取得系
 	float GetSlow() { return slowValue; }
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
-	Object::ObjectData playerAttackObject[4];	//プレイヤー攻撃
+	Object::ObjectData playerAttackObject[9];	//プレイヤー攻撃
 	int walkCount = 0;	//描画用カウント
 	int walkNo = 0;	//描画するNO
 	int attackCount = 0;	//描画用カウント
