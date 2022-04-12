@@ -26,4 +26,6 @@ public:
 	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device *dev);
 	//パーティクル
 	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device *dev);
+
+	static PipelineSet ParticleCreateGraphicsNoAplaha(ID3D12Device* dev);
 };

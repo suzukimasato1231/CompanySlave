@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -265,6 +265,7 @@
     <ClInclude Include="Score.h" />
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="WOLF.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2d\DebugText.cpp" />
@@ -301,6 +302,7 @@
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="WOLF.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

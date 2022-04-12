@@ -7,6 +7,7 @@ enum EnemyType
 {
 	Oni = 1,//‹ßÚ‹S
 	OniBow,//‹|‹S
+	Wolf//˜T,
 };
 
 enum spawnNo
@@ -14,6 +15,7 @@ enum spawnNo
 	NOTSPAWN,
 	ONI,
 	ONIBOW,
+	WOLF,
 };
 
 //“G‚Ìó‘Ô

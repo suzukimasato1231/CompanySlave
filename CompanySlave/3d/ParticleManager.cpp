@@ -15,6 +15,7 @@ Camera *ParticleManager::camera = nullptr;
 UINT ParticleManager::descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList *ParticleManager::cmdList = nullptr;
 Pipeline::PipelineSet ParticleManager::PartclePipelineSet;
+Pipeline::PipelineSet ParticleManager::ParticlePipelineSetNotAlpha;
 XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
 XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
 
@@ -30,6 +31,8 @@ bool ParticleManager::StaticInitialize(ID3D12Device *device, ID3D12GraphicsComma
 
 	// パイプライン初期化
 	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device);
+
+	ParticlePipelineSetNotAlpha = Pipeline::ParticleCreateGraphicsNoAplaha(device);
 
 	// モデル生成
 	//CreateModel();
@@ -53,10 +56,12 @@ void ParticleManager::PostDraw()
 	ParticleManager::cmdList = nullptr;
 }
 
-ParticleManager *ParticleManager::Create(const wchar_t *filename, int textureNum)
+ParticleManager *ParticleManager::Create(const wchar_t *filename, int partcleNum)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	ParticleManager *particle = new ParticleManager();
+
+	
 
 	particle->InitializeDescriptorHeap();
 
@@ -66,7 +71,7 @@ ParticleManager *ParticleManager::Create(const wchar_t *filename, int textureNum
 		return nullptr;
 	}
 
-	if (!particle->LoadTexture(filename, textureNum))
+	if (!particle->LoadTexture(filename))
 	{
 		assert(0);
 		return nullptr;
@@ -78,6 +83,8 @@ ParticleManager *ParticleManager::Create(const wchar_t *filename, int textureNum
 		assert(0);
 		return nullptr;
 	}
+
+	particle->pieplineNum = partcleNum;
 
 	return particle;
 }
@@ -222,10 +229,10 @@ bool ParticleManager::InitializeDescriptorHeap()
 }
 
 
-bool ParticleManager::LoadTexture(const wchar_t *filename, int textureNum)
+bool ParticleManager::LoadTexture(const wchar_t *filename)
 {
 	HRESULT result = S_FALSE;
-	this->textureNum = textureNum;
+
 	// WICテクスチャのロード
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
@@ -514,11 +521,21 @@ void ParticleManager::Draw()
 	// nullptrチェック
 	assert(device);
 	assert(ParticleManager::cmdList);
-
-	// パイプラインステートの設定
-	cmdList->SetPipelineState(PartclePipelineSet.pipelinestate.Get());
-	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(PartclePipelineSet.rootsignature.Get());
+	if (pieplineNum == 1)
+	{
+		// パイプラインステートの設定
+		cmdList->SetPipelineState(ParticlePipelineSetNotAlpha.pipelinestate.Get());
+		// ルートシグネチャの設定
+		cmdList->SetGraphicsRootSignature(ParticlePipelineSetNotAlpha.rootsignature.Get());
+	}
+	else
+	{
+		// パイプラインステートの設定
+		cmdList->SetPipelineState(PartclePipelineSet.pipelinestate.Get());
+		// ルートシグネチャの設定
+		cmdList->SetGraphicsRootSignature(PartclePipelineSet.rootsignature.Get());
+	}
+	
 	// プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 

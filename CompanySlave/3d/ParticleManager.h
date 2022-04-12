@@ -80,13 +80,13 @@ public: // 静的メンバ関数
 	/// <param name="window_width">画面幅</param>
 	/// <param name="window_height">画面高さ</param>
 	/// <returns>成否</returns>
-	static bool StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height);
+	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height);
 
 	/// <summary>
 	/// 描画前処理
 	/// </summary>
 	/// <param name="cmdList">描画コマンドリスト</param>
-	static void PreDraw(ID3D12GraphicsCommandList *cmdList);
+	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
 	/// 描画後処理
@@ -96,11 +96,13 @@ public: // 静的メンバ関数
 	/// <summary>
 	/// 3Dオブジェクト生成
 	/// </summary>
+	/// <param name="filename">ファイル名</param>
+	/// <param name="partcleNum">0:add,1:alpha</param>
 	/// <returns></returns>
-	static ParticleManager *Create(const wchar_t *filename, int textureNum = 0);
+	static ParticleManager* Create(const wchar_t* filename, int partcleNum = 0);
 
 	//カメラをセット
-	static void SetCamera(Camera *camera) { ParticleManager::camera = camera; }
+	static void SetCamera(Camera* camera) { ParticleManager::camera = camera; }
 
 	/// <summary>
 	/// パーティクルの追加
@@ -122,14 +124,14 @@ public: // 静的メンバ関数
 
 private: // 静的メンバ変数
 	// デバイス
-	static ID3D12Device *device;
+	static ID3D12Device* device;
 
-	static Camera *camera;
+	static Camera* camera;
 
 	// デスクリプタサイズ
 	static UINT descriptorHandleIncrementSize;
 	// コマンドリスト
-	static ID3D12GraphicsCommandList *cmdList;
+	static ID3D12GraphicsCommandList* cmdList;
 	// デスクリプタヒープ
 	//static ComPtr<ID3D12DescriptorHeap> descHeap;
 	// 頂点バッファ
@@ -149,6 +151,8 @@ private: // 静的メンバ変数
 	static XMMATRIX matBillboardY;
 	//パイプライン設定
 	static Pipeline::PipelineSet PartclePipelineSet;
+
+	static Pipeline::PipelineSet ParticlePipelineSetNotAlpha;
 
 private:// 静的メンバ関数
 	/// <summary>
@@ -183,7 +187,7 @@ public: // メンバ関数
 	/// テクスチャ読み込み
 	/// </summary>
 	/// <returns>成否</returns>
-	bool LoadTexture(const wchar_t *filename, int textureNum);
+	bool LoadTexture(const wchar_t* filename);
 
 private: // メンバ変数
 
@@ -206,5 +210,7 @@ private: // メンバ変数
 	ComPtr<ID3D12DescriptorHeap> descHeap;
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 	ParticleManager::VertexPos vertices[vertexCount];
+
+	int pieplineNum = 0;
 };
 

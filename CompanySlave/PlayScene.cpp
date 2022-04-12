@@ -90,7 +90,7 @@ void PlayScene::Init()
 
 	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg");
 
-	particleMan2 = ParticleManager::Create(L"Resources/particle3.png");
+	particleMan2 = ParticleManager::Create(L"Resources/particle3.png",1);
 
 	//マップチップの初期化
 	mapStage = new MapStage;

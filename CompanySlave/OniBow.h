@@ -1,6 +1,9 @@
 #pragma once
 #include"EnemyHelper.h"
 class Player;
+/// <summary>
+/// ‹S‰“‹——£ƒNƒ‰ƒX
+/// </summary>
 class OniBow
 {
 public:

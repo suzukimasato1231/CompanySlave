@@ -1,37 +1,38 @@
 #pragma once
 #include"EnemyHelper.h"
-
 class Player;
 /// <summary>
-/// 鬼近接クラス
+/// 狼クラス
 /// </summary>
-class OniType
+class WOLF
 {
 public:
-	OniType();
-	~OniType();
+	WOLF();
+	~WOLF();
 
 	void Init();
 
-	void Draw(EnemyData *oniData);
+	void Draw(EnemyData* oniData);
 	//移動
-	void Move(EnemyData *oniData, class  Player *player);
+	void Move(EnemyData* oniData, class  Player* player);
 	//索敵
-	void SearchPlayer(EnemyData *oniData, class Player *player);
+	void SearchPlayer(EnemyData* oniData, class Player* player);
 	//攻撃
-	void Attack(EnemyData *oniData, class Player *player);
+	void Attack(EnemyData* oniData, class Player* player);
 private:
 	//敵の攻撃エフェクト
-	void EffectDraw(EnemyData *oniData);
+	void EffectDraw(EnemyData* oniData);
 
 	//向きによって索敵範囲の決定
-	Box SearchField(EnemyData *oniData);
+	Box SearchField(EnemyData* oniData);
 	//向きによって敵の描画角度を取得
 	Vec3 DirectionAngle(int direction);
 
 	//向きによって攻撃範囲の決定
-	Box AttackField(EnemyData *oniData);
+	Box AttackField(EnemyData* oniData);
 private:
+
+	EnemyData wolfData;
 
 	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
 
@@ -69,4 +70,6 @@ private:
 
 	float slowValue = 1;
 };
+
+
 
