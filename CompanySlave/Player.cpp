@@ -412,6 +412,9 @@ void Player::SwordAttack(Enemy* enemy)
 	//撃つ
 	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag)
 	{
+		swordPosition[shotNo] = position;
+		swordAngle[shotNo].z = 0;
+		swordAngle[shotNo] = Rangle;
 		isSwordAttack[shotNo] = true;
 		haveSword[shotNo] = false;
 		holdingFlag[shotNo] = false;
@@ -443,49 +446,88 @@ void Player::SwordAttack(Enemy* enemy)
 		}
 		returnFlag = true;
 	}
-
-	//剣戻ってくるやつ処理
-	if (returnFlag)
+	for (int i = 0; i < 7; i++)
 	{
+		if (haveSword[i])
+		{
+			swordAngle[i].z = -100;
+			swordAngle[i].y = 51.4 * i;
 
+			for (int k = 0; k < 25; k++)
+			{
+				if (position.x + 6.0 < swordPosition[i].x)
+				{
+					swordPosition[i].x -= 0.1f;
+				}
+				else if (position.x - 6.0 > swordPosition[i].x)
+				{
+					swordPosition[i].x += 0.1f;
+				}
+			}
+			for (int k = 0; k < 25; k++)
+			{
+				if (position.z + 6.0 < swordPosition[i].z)
+				{
+					swordPosition[i].z -= 0.1f;
+				}
+				else if (position.z - 6.0 > swordPosition[i].z)
+				{
+					swordPosition[i].z += 0.1f;
+				}
+			}
+		}
+	}
+	//剣戻ってくるやつ処理
+	if (returnFlag )
+	{
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		for (int i = 0; i < 7; i++)
 		{
-			//自分の方向く
-			swordAngle[i].y = XMConvertToDegrees(atan2(position.x - swordPosition[i].x, position.z - swordPosition[i].z)) + 270;
-			//刺さったフラグ消す
-			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+			if (!haveSword[i])
 			{
-				isEnemySting[i][j] = false;
-				enemy->SetDamegeFlag(j, false);
-			}
+				//自分の方向く
+				swordAngle[i].y = XMConvertToDegrees(atan2(position.x - swordPosition[i].x, position.z - swordPosition[i].z)) + 270;
+				//刺さったフラグ消す
+				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+				{
+					isEnemySting[i][j] = false;
+					enemy->SetDamegeFlag(j, false);
+				}
 
-			//ラープ
-			swordPosition[i] = Easing::easeIn(swordPosition[i], position, timeRate);
+				if (Collision::CheckBox2Box(pBox, swordAttackBox[i]))
+				{
+					haveSword[i] = true;
+				}
+				swordPosition[i].x += cos((swordAngle[i].y * 3.14) / -180) * 5;      // x座標を更新
+				swordPosition[i].z += sin((swordAngle[i].y * 3.14) / -180) * 5;      // z座標を更新
 
-			//戻ってるときの当たり判定
-			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
-			{
-				if (enemy->GetHP(j) > 0) {
-					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
-					{
-						enemy->DamegeSword(j);
-						enemy->SetDamegeFlag(j, true);
+				//戻ってるときの当たり判定
+				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+				{
+					if (enemy->GetHP(j) > 0) {
+						if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
+						{
+							enemy->DamegeSword(j);
+							if (enemyDamegeTime[j] > 0) {
+								enemy->SetDamegeFlag(j, true);
+							}
+						}
 					}
 				}
 			}
 		}
 		shotNo = 0;
-		if (nowTime >= 5)
+		if (haveSword[0] && haveSword[1] && haveSword[2] && haveSword[3] && haveSword[4] && haveSword[5] && haveSword[6])
 		{
+			shotNo = 0;
 			timeRate = 0;
 			nowTime = 0;
 			slowValue = 1;
 			returnFlag = false;
 		}
 	}
-
+	
 	for (int i = 0; i < 7; i++)
 	{
 		//当たり判定のボックスの位置変
@@ -498,11 +540,11 @@ void Player::SwordAttack(Enemy* enemy)
 			reverseAngle[i] = 0;
 			reverseValue[i] = 0;
 			stingCnt[i] = 0;
-			swordAngle[i] = Rangle;
-			swordPosition[i] = position;
 			swordAngleVec[i] = (Rangle.y * 3.14) / -180;
 			swordStop[i] = false;
 			stingCnt[i] = 0;
+
+			//swordPosition[i] = position;
 		}
 
 		//攻撃(飛んでから止まるまで)
@@ -586,10 +628,19 @@ void Player::SwordAttack(Enemy* enemy)
 
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
-			if (enemy->GetHP(j) <= 0 && isEnemySting[i][j] == true)
+			if (enemy->GetHP(j) <= 0 && isEnemySting[i][j] == true )
 			{
 				explosion[i] = true;
 				isEnemySting[i][j] = false;
+				enemy->SetExplosionFlag(j);
+			}
+
+			if(enemy->GetExplosionFlag(j) == true && isEnemySting[i][j] == true)
+			{
+				explosion[i] = true;
+				isEnemySting[i][j] = false;
+				enemy->SetExplosionFlag(j);
+				enemy->SetExplosionCount(j);
 			}
 		}
 

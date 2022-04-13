@@ -56,4 +56,9 @@ struct EnemyData
 	Vec3 bowPos = {};					//–î‚ÌÀ•W
 	bool bowFlag = false;				//‹|‚ğŒ‚‚Á‚½‚©
 	int bowTime = 0;					//–î‚ª”ò‚ñ‚Å‚¢‚­ŠÔ
+
+	//”j‚Ì‚â‚Â
+	bool explosionFlag = false;
+	int explosionCount = 2;
+	bool explosionDelay = 0;
 };
