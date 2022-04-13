@@ -31,7 +31,8 @@ void Enemy::Init()
 	Blood = Shape::CreateRect(10, 10);
 	BloodGraph = Object::Instance()->LoadTexture(L"Resources/Blood/Blood.png");
 
-
+	explosionOBJ = Shape::CreateRect(10, 10);
+	explosionGraph = Object::Instance()->LoadTexture(L"Resources/Point.png");
 	//ãSÇP
 	oniType.Init();
 	//ã|
@@ -40,6 +41,7 @@ void Enemy::Init()
 	for (int i = 0; i < eNumMax; i++) {
 		particleFlag[i] = false;
 		particleTime[i] = 60;
+		delayCount[i] = 0;
 	}
 }
 
@@ -52,7 +54,7 @@ void Enemy::StageInit(int stageNum)
 		eData.erase(eData.begin() + i);
 		//ååÇÃèâä˙âª
 		BloodFlag[i] = false;
-
+		explosionFlag[i] = false;
 	}
 	for (int i = 0; i < eNumMax; i++) {
 		particleFlag[i] = false;
@@ -145,6 +147,32 @@ void Enemy::Update(Player* player)
 		{
 			eData[i]->damegeTime--;
 		}
+		if (eData[i]->explosionCount <= 0)
+		{
+			eData[i]->explosionFlag = true;
+
+		}
+		if (eData[i]->explosionDelay)
+		{
+			delayCount[i]++;
+			explosionFlag[i] = true;
+			if (delayCount[i] >= 20)
+			{
+				eData[i]->explosionCount = 2;
+				eData[i]->explosionFlag = false;
+				delayCount[i] = 0;
+				eData[i]->explosionDelay = false;
+			}
+		}
+		if (explosionFlag[i])
+		{
+			explosionGraphCnt[i]++;
+		}
+		if (explosionGraphCnt[i] > 30)
+		{
+			explosionGraphCnt[i] = 0;
+			explosionFlag[i] = false;
+		}
 	}
 	//çÌèú
 	Delete();
@@ -154,6 +182,10 @@ void Enemy::Draw()
 {
 	for (size_t i = 0; i < eData.size(); i++)
 	{
+		if (explosionFlag[i] == true) {
+			Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 0.0f, eData[i]->position.z),
+				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
+		}
 		if (eData[i]->HP > 0)
 		{
 			switch (eData[i]->type)
@@ -216,12 +248,14 @@ void Enemy::DamegeNormal(int i, int pAttackDirection)
 void Enemy::DamegeThrowSword(int i)
 {
 	eData[i]->HP -= 2;
+	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
 }
 
 void Enemy::DamegeSword(int i)
 {
-	eData[i]->HP -= 0.3;
+	eData[i]->HP -= 2;
+	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
 }
 
@@ -317,6 +351,16 @@ Vec3 Enemy::DirectionAngle(int direction)
 bool Enemy::SetDamegeFlag(int i, bool DamegeFlag)
 {
 	return eData[i]->DamegeFlag = DamegeFlag;
+}
+
+bool Enemy::SetExplosionFlag(int i)
+{
+	return eData[i]->explosionFlag = false;
+}
+
+bool Enemy::SetExplosionCount(int i)
+{
+	return eData[i]->explosionDelay = true;
 }
 
 void Enemy::NockBack(int i)

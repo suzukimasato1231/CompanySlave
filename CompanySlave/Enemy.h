@@ -84,6 +84,12 @@ public://取得系
 	bool GetDamegeFlag(int i) { return eData[i]->DamegeFlag; }
 	bool SetDamegeFlag(int i, bool DamegeFlag);
 
+	bool GetExplosionFlag(int i) { return eData[i]->explosionFlag; }
+	bool SetExplosionFlag(int i);
+
+	bool GetExplosionCount(int i) { return eData[i]->explosionCount; }
+	bool SetExplosionCount(int i);
+
 	int	spawnMap[MAP_HEIGHT][MAP_WIDTH];//沸き地のマップ
 
 	const float mapSize = 10.0f;
@@ -104,8 +110,10 @@ private:
 	//HPUI
 	Object::ObjectData hpOBJ;
 	Object::ObjectData hpGaugeOBJ;
+	Object::ObjectData explosionOBJ;
 	int hpGaugeGraph;
 	int hpGraph;
+	int explosionGraph;
 
 	int redColor;
 	//血関係の変数
@@ -116,4 +124,10 @@ private:
 
 	int particleTime[eNumMax];
 	bool particleFlag[eNumMax];
+
+	//破
+	int delayCount[eNumMax];
+	int explosionGraphCnt[eNumMax];
+	bool explosionFlag[eNumMax] = { false };
+	Vec3 explosionPosition[eNumMax] = { Vec3(0,0,0) };
 };
