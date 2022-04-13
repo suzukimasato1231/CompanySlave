@@ -154,6 +154,8 @@ void Player::Update(Enemy* enemy)
 	}
 
 	Angle();
+
+	SwordAngle();
 	//移動
 	Move();
 	//プレイヤーの向きを決める
@@ -184,12 +186,10 @@ void Player::Draw()
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
-
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
-
 	}
-	Object::Instance()->Draw(cursorObject, { position.x,-2,position.z, }, { 10,2,1 }, { 90,angle.y,0 }, color, cursorGraph);
+	Object::Instance()->Draw(cursorObject, { position.x,-2,position.z, }, { 10,2,1 }, { 90,Rangle.y,0 }, color, cursorGraph);
 	for (int i = 0; i < 7; i++)
 	{
 		if (returnFlag == true)
@@ -229,27 +229,29 @@ void Player::Move()
 		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
 		//向き変更
-		if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) { angle.y = 0; }
-		else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) { angle.y = 180; }
-		else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) { angle.y = 270; }
-		else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) { angle.y = 90; }
-		if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) ||
-			(Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
+		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
+		else if (Input::Instance()->KeybordPush(DIK_LEFT)) { angle.y = 180; }
+		else if (Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 270; }
+		else if (Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 90; }
+		if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
 			angle.y = 315;
 		}
-		else if ((Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP))
-			|| (Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp))) {
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
 			angle.y = 225;
 		}
-		else if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN))
-			|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)))
+		else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN))
 		{
 			angle.y = 45;
 		}
-		else if ((Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN))
-			|| (Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)))
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN))
 		{
 			angle.y = 135;
+		}
+
+		if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft)
+			|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+		{
+			angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
 		}
 		walkCount++;//アニメーションのタイマー
 		moveFlag = true;
@@ -282,10 +284,8 @@ void Player::Move()
 		if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
 			Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 		{
-
 			position.x += speed.x * sinRad * slowValue;
 			position.z += speed.z * cosRad * slowValue;
-			angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
 		}
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -348,7 +348,7 @@ void Player::NormalAttack(Enemy* enemy)
 				if (enemy->GetHP(i) > 0) {
 					if (Collision::CheckSphere2Box(enemy->GetSphere(i), normalAttackBox))
 					{
-						enemy->DamegeNormal(i,direction);
+						enemy->DamegeNormal(i, direction);
 
 						enemy->SetDamegeFlag(i, true);
 
@@ -498,9 +498,9 @@ void Player::SwordAttack(Enemy* enemy)
 			reverseAngle[i] = 0;
 			reverseValue[i] = 0;
 			stingCnt[i] = 0;
-			swordAngle[i] = angle;
+			swordAngle[i] = Rangle;
 			swordPosition[i] = position;
-			swordAngleVec[i] = (angle.y * 3.14) / -180;
+			swordAngleVec[i] = (Rangle.y * 3.14) / -180;
 			swordStop[i] = false;
 			stingCnt[i] = 0;
 		}
@@ -523,7 +523,7 @@ void Player::SwordAttack(Enemy* enemy)
 
 					}
 				}
-			
+
 			}
 
 			//角度で進めてる
@@ -537,7 +537,7 @@ void Player::SwordAttack(Enemy* enemy)
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
 			if (enemy->GetDamegeFlag(j) == true) {
-					enemyDamegeTime[j]-=0.1f;
+				enemyDamegeTime[j] -= 0.1f;
 			}
 			if (enemy->GetDamegeFlag(j) == false) {
 				enemyDamegeTime[j] = 60.0f;
@@ -664,6 +664,20 @@ void   Player::Angle()
 		rad = Input::Instance()->GetLeftAngle();
 		sinRad = sinf(-rad);
 		cosRad = cosf(rad);
+	}
+}
+
+void Player::SwordAngle()
+{
+	//右コントローラ
+	if (Input::Instance()->ControllerPush(RButtonRight) || Input::Instance()->ControllerPush(RButtonLeft) ||
+		Input::Instance()->ControllerPush(RButtonUp) || Input::Instance()->ControllerPush(RButtonDown))
+	{
+		float rad = 0.0f;
+		rad = Input::Instance()->GetRightAngle();
+		RsinRad = sinf(-rad);
+		RcosRad = cosf(rad);
+		Rangle.y = XMConvertToDegrees(atan2(RsinRad, RcosRad)) - 90;
 	}
 }
 

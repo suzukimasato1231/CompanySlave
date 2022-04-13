@@ -19,7 +19,7 @@ public:
 
 	void StageInit(int stageNum);//ステージごとの初期化
 
-	void Update(class Enemy *enemy);//更新
+	void Update(class Enemy* enemy);//更新
 
 	void Draw();//描画
 
@@ -47,13 +47,15 @@ private:
 	void Move();
 
 	//通常攻撃
-	void NormalAttack(class Enemy *enemy);
+	void NormalAttack(class Enemy* enemy);
 
 	//剣攻撃
-	void SwordAttack(class Enemy *enemy);
+	void SwordAttack(class Enemy* enemy);
 
 	//攻撃角度決定
 	void Angle();
+	//剣の向きを決める
+	void SwordAngle();
 
 	//プレイヤーの向きを決める
 	void PDirection();
@@ -85,7 +87,7 @@ public://取得系
 	Vec3 GetAngle() { return angle; }
 	//座標
 	Vec3 GetSwordPosition(int No) { return swordPosition[No]; }
-	
+
 	Vec3 GetSwordAngle(int i) { return swordAngle[i]; }
 	//プレイヤーのBox
 	Box GetSwordBox(int No) { return swordAttackBox[No]; }
@@ -112,6 +114,9 @@ private:
 	int  direction = 0;					//プレイヤーの向き
 	float sinRad = 0;
 	float cosRad = 0;
+	float RsinRad = 0;
+	float RcosRad = 0;
+	Vec3 Rangle = { 0.0f ,0.0f,0.0f };
 	const float HPMAX = 10;
 	float HP = 10;						//プレイヤーHP
 	const int damageTimeMax = 20;
@@ -180,7 +185,7 @@ private:
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;
 	int effectCount = 0;
-	
+
 	float enemyDamegeTime[20] = { 60,60,60,60,60,60,60,60,60,60 };
 
 	//UI

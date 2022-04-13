@@ -97,6 +97,26 @@ BOOL SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
 	{
 		return false;
 	}
+	//右スティック
+	diprg.diph.dwObj = DIJOFS_RX;
+	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph)))
+	{
+		return false;
+	}
+
+	// Y軸の値の範囲設定
+	diprg.diph.dwObj = DIJOFS_RY;
+	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph)))
+	{
+		return false;
+	}
+
+	diprg.diph.dwObj = DIJOFS_RZ;
+	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph)))
+	{
+		return false;
+	}
+
 
 	return true;
 }
@@ -148,16 +168,6 @@ BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 	parameter->FindCount++;
 
 	return DIENUM_CONTINUE;
-}
-
-float Controller::GetRightAngle()
-{
-	return rightAngle;
-}
-
-void Controller::SetAngle(DIJOYSTATE pad_data)
-{
-
 }
 
 bool Controller::InitController()
@@ -242,6 +252,12 @@ float Controller::GetLeftAngle()
 {
 	return leftAngle;
 }
+
+float Controller::GetRightAngle()
+{
+	return rightAngle;
+}
+
 
 bool CreateInputInterface()
 {

@@ -52,6 +52,7 @@ public://ç\ë¢ëÃ
 	struct PSC
 	{
 		Vec3 position = {};
+		Vec3 angle = {};
 		Vec3 scale = {};
 		Vec4 color = {};
 	};

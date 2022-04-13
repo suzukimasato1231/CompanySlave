@@ -91,7 +91,4 @@ public://ゲームパッド
 	/// <returns></returns>
 	float GetRightAngle();
 
-	//角度を取得
-	void SetAngle(DIJOYSTATE pad_data);
-
 };

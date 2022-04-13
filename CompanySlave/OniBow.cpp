@@ -13,19 +13,22 @@ OniBow::~OniBow()
 void OniBow::Init()
 {
 	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
-	//debugField2 = Shape::CreateRect(attackField.x, attackField.y);
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
+	//敵の読み込み
 	enemyObject = Object::Instance()->CreateOBJ("OniKari");
-
+	//敵の攻撃状態の読み込み
 	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
 	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
 
+	//矢のobj読込
 	bowOBJ = Shape::CreateSquare(bowSize.x, bowSize.y, bowSize.z);
+
+	bowRaysOBJ = Shape::CreateRect(2.0f, 10.0f);
 }
 
-void OniBow::Draw(EnemyData *oniData)
+void OniBow::Draw(EnemyData* oniData)
 {
 	if (oniData == nullptr)
 	{
@@ -76,10 +79,14 @@ void OniBow::Draw(EnemyData *oniData)
 	{
 		Object::Instance()->Draw(bowOBJ, oniData->bowPos, Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, XMConvertToDegrees(oniData->bowAngle) + 0, 0.0f));
 	}
-
+	//矢の射線方向の描画
+	if (oniData->StatusTime >= attackMotionDamege)
+	{
+		Object::Instance()->Draw(bowRaysOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, XMConvertToDegrees(oniData->bowAngle) + 0, 0.0f));
+	}
 }
 
-void OniBow::Move(EnemyData *oniData, Player *player)
+void OniBow::Move(EnemyData* oniData, Player* player)
 {
 	oniData->oldPosition = oniData->position;
 	slowValue = player->GetSlow();
@@ -88,22 +95,38 @@ void OniBow::Move(EnemyData *oniData, Player *player)
 	Vec3 memoryPosition = player->GetPosition() - oniData->position;
 	//長さを求める
 	float length = memoryPosition.length();
-
-	if (length < player2EnemyLength)
+	//プレイヤーと敵が近すぎたら離れる
+	if (length < player2EnemyDislikeLength)
+	{
+		//プレイヤーの向き
+		Vec3 direction = memoryPosition.normalize();
+		oniData->position -= direction * oniData->speed * slowValue;
+		if (oniData->StatusTime <= 0)
+		{
+			oniData->Status = ATTACK;
+			oniData->attackDirection = oniData->direction;
+			oniData->StatusTime = attackMotionTime;
+		}
+	}
+	//プレイヤーと敵が良い距離だったら攻撃
+	else if (length < player2EnemyLength)
 	{
 		oniData->Status = ATTACK;
 		oniData->attackDirection = oniData->direction;
 		oniData->StatusTime = attackMotionTime;
 	}
+	//プレイヤーと離れすぎたら攻撃
 	else
 	{
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
 		oniData->position += direction * oniData->speed * slowValue;
 	}
+
+	oniData->StatusTime--;
 }
 
-void OniBow::SearchPlayer(EnemyData *oniData, Player *player)
+void OniBow::SearchPlayer(EnemyData* oniData, Player* player)
 {
 	Box enemiesBox = SearchField(oniData);
 	//索敵範囲内にプレイヤーがいたら
@@ -112,7 +135,7 @@ void OniBow::SearchPlayer(EnemyData *oniData, Player *player)
 		//プレイヤーと敵の距離
 		float Length = Vec3(player->GetPosition() - oniData->position).length();
 
-		if (Length > player2EnemyLength)
+		if (Length < player2EnemyLength)
 		{//プレイヤーが攻撃距離にいなかったら移動
 			oniData->Status = MOVE;
 			oniData->StatusTime = moveTime;
@@ -126,7 +149,7 @@ void OniBow::SearchPlayer(EnemyData *oniData, Player *player)
 	}
 }
 
-void OniBow::Attack(EnemyData *oniData, Player *player)
+void OniBow::Attack(EnemyData* oniData, Player* player)
 {
 	if (oniData == nullptr)
 	{
@@ -151,11 +174,12 @@ void OniBow::Attack(EnemyData *oniData, Player *player)
 	if (oniData->StatusTime <= 0)
 	{
 		oniData->Status = MOVE;
+		oniData->StatusTime = moveTime;
 		oniData->bowPos = { 0.0f,0.0f,0.0f };
 	}
 }
 
-void OniBow::BowUpdate(EnemyData *oniData, Player *player)
+void OniBow::BowUpdate(EnemyData* oniData, Player* player)
 {
 	if (oniData->bowTime >= 0)
 	{
@@ -182,7 +206,7 @@ void OniBow::BowUpdate(EnemyData *oniData, Player *player)
 	}
 }
 
-Box OniBow::SearchField(EnemyData *oniData)
+Box OniBow::SearchField(EnemyData* oniData)
 {
 	Box enemiesBox;
 	switch (oniData->direction)

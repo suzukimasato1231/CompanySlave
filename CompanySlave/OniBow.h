@@ -39,7 +39,9 @@ private:
 	const int attackMotionTime = 200;				//攻撃モーションの時間
 	const int attackMotionDamege = 100;				//攻撃モーション中のどの時間でダメージを与えるか
 
-	const float player2EnemyLength = 50.0f;			//プレイヤーと敵の距離
+	const float player2EnemyLength = 60.0f;			//プレイヤーと敵の距離
+
+	const float player2EnemyDislikeLength = 20.0f;	//敵がプレイヤーと距離を置く距離
 
 
 	const float bowSpeed = 2.0f;					//矢が飛んでいくスピード

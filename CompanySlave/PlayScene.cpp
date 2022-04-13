@@ -90,7 +90,7 @@ void PlayScene::Init()
 
 	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg");
 
-	particleMan2 = ParticleManager::Create(L"Resources/particle3.png",1);
+	particleMan2 = ParticleManager::Create(L"Resources/particle3.png", 1);
 
 	//マップチップの初期化
 	mapStage = new MapStage;
@@ -161,7 +161,7 @@ void PlayScene::Update()
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
 	{
-		particleMan4->ParticleAdd3(player->GetPosition(), 0.1f,Vec4(0.5f, 0.2f, 0.1f, 0.0f), Vec4(0.25f, 0.2f, 0.1f, 0.0f));
+		particleMan4->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(0.5f, 0.2f, 0.1f, 0.0f), Vec4(0.25f, 0.2f, 0.1f, 0.0f));
 	}
 
 
@@ -171,7 +171,7 @@ void PlayScene::Update()
 
 		if (enemy->GetDamegeFlag(i) == true) {
 
-				particleMan2->ParticleAdd(enemy->GetPosition(i), 0.5f, Vec4(0.3f, 0.1f, 0.1f, 1.0f), Vec4(0.3f, 0.1f, 0.1f, 1.0f));
+			particleMan2->ParticleAdd(enemy->GetPosition(i), 0.5f, Vec4(0.3f, 0.1f, 0.1f, 1.0f), Vec4(0.3f, 0.1f, 0.1f, 1.0f));
 		}
 
 	}
@@ -186,7 +186,7 @@ void PlayScene::Update()
 	}
 
 	//プレイシーンを抜ける
-	if (Input::Instance()->ControllerDown(ButtonA) && timeRate == 1)
+	if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
 	{
 		deadGraphPos.y = -800;
 		nowTime = 0;

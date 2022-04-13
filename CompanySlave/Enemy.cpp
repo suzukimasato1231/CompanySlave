@@ -133,6 +133,8 @@ void Enemy::Update(Player* player)
 			}
 			NockBack(i);
 		}
+		//–î‚ÌXV
+		oniBow.BowUpdate(eData[i], player);
 
 		//À•W‚ğ‡‚í‚¹‚é
 		eData[i]->eBox.minPosition = XMVectorSet(eData[i]->position.x - eData[i]->r, eData[i]->position.y - eData[i]->r, eData[i]->position.z - eData[i]->r, 1);
@@ -362,7 +364,7 @@ void Enemy::NockBack(int i)
 	}
 }
 
-void Enemy::UpdateOni(int i, Player *player)
+void Enemy::UpdateOni(int i, Player* player)
 {
 	switch (eData[i]->Status)
 	{

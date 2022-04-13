@@ -169,6 +169,7 @@ void Object::MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotati
 	HRESULT result;
 	if (polygon.psc.position.x != position.x || polygon.psc.position.y != position.y || polygon.psc.position.z != position.z
 		|| polygon.psc.scale.x != scale.x || polygon.psc.scale.y != scale.y || polygon.psc.scale.z != scale.z
+		||polygon.psc.angle.x !=rotation.x || polygon.psc.angle.y != rotation.y || polygon.psc.angle.z != rotation.z
 		|| polygon.psc.color.x != color.x || polygon.psc.color.y != color.y || polygon.psc.color.z != color.z || polygon.psc.color.w != color.w)
 	{
 		//ワールド変換：//スケーリング//回転行列XMMATRIX//平行移動行列
