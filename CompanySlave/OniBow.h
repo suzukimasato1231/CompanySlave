@@ -9,9 +9,9 @@ class OniBow
 public:
 	OniBow();
 	~OniBow();
-
+	//初期化
 	void Init();
-
+	//描画
 	void Draw(EnemyData *oniData);
 	//移動
 	void Move(EnemyData *oniData, class  Player *player);
@@ -34,26 +34,26 @@ private:
 
 	const Vec2 attackEnemies{ 100.0f,80.0f };		//索敵範囲:width,height
 
-	const int moveTime = 40;						//移動時間
+	const int moveTime = 60;						//移動時間
 
 	const int attackMotionTime = 200;				//攻撃モーションの時間
-	const int attackMotionDamege = 100;				//攻撃モーション中のどの時間でダメージを与えるか
+	const int attackMotionDamege = 100;				//攻撃モーション中のどの時間で矢を放つか
 
-	const float player2EnemyLength = 60.0f;			//プレイヤーと敵の距離
+	const float player2EnemyLength = 100.0f;		//プレイヤーと敵の距離
 
-	const float player2EnemyDislikeLength = 20.0f;	//敵がプレイヤーと距離を置く距離
+	const float player2EnemyDislikeLength = 40.0f;	//敵がプレイヤーと距離を置く距離
 
 
 	const float bowSpeed = 2.0f;					//矢が飛んでいくスピード
-	const int bowTimeMax = 100;
+	const int bowTimeMax = 100;						//矢が存在している時間
 	const Vec3 bowSize{ 4.0f,1.0f,8.0f };			//矢のサイズ
-	Object::ObjectData bowOBJ;//矢の描画
-	Object::ObjectData bowRaysOBJ;//矢の射線
+	Object::ObjectData bowOBJ;						//矢の描画
+	Object::ObjectData bowRaysOBJ;					//矢の射線
 
 
 	//デバック用
-	Object::ObjectData debugField;	//索敵
-	Object::ObjectData debugField2;//攻撃範囲
+	Object::ObjectData debugField;					//索敵
+	Object::ObjectData debugField2;					//攻撃範囲
 	int redColor;
 
 	float slowValue= 1;

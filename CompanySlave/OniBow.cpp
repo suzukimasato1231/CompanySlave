@@ -77,12 +77,12 @@ void OniBow::Draw(EnemyData* oniData)
 	//矢の描画
 	if (oniData->bowTime > 0)
 	{
-		Object::Instance()->Draw(bowOBJ, oniData->bowPos, Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, XMConvertToDegrees(oniData->bowAngle) + 0, 0.0f));
+		Object::Instance()->Draw(bowOBJ, oniData->bowPos, Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f));
 	}
 	//矢の射線方向の描画
 	if (oniData->StatusTime >= attackMotionDamege)
 	{
-		Object::Instance()->Draw(bowRaysOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, XMConvertToDegrees(oniData->bowAngle) + 0, 0.0f));
+		Object::Instance()->Draw(bowRaysOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f));
 	}
 }
 
@@ -159,6 +159,7 @@ void OniBow::Attack(EnemyData* oniData, Player* player)
 	//プレイヤーを狙う
 	if (oniData->StatusTime > attackMotionDamege)
 	{
+
 		oniData->bowAngle = atan2(player->GetPosition().z - oniData->position.z, player->GetPosition().x - oniData->position.x);
 	}
 	//プレイヤーに撃つ

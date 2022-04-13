@@ -1,15 +1,15 @@
 #include "WOLF.h"
 #include"Player.h"
 #include"Shape.h"
-WOLF::WOLF()
+Wolf::Wolf()
 {
 }
 
-WOLF::~WOLF()
+Wolf::~Wolf()
 {
 }
 
-void WOLF::Init()
+void Wolf::Init()
 {
 	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
 	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
@@ -35,35 +35,9 @@ void WOLF::Init()
 	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect7.png");
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
-
-	//狼初期値
-	wolfData.speed = 0.5;
-	wolfData.scale = { 1.0f,1.0f,1.0f };
-	wolfData.color = { 1.0f,1.0f,1.0f,1.0f };
-	
-	
-	float HPMax = 10;					//最大HP
-	float HP = 10;						//HP
-	float r = 5;						//大きさ
-	int Status = NORMAL;				//状態
-	int StatusTime = 0;					//状態時間
-	int direction = Down;				//向いている向き
-	int attackDirection = Down;			//攻撃の向き
-	int damegeTime = 0;					//点滅時間
-	bool DamegeFlag = false;			//ダメージを受けたか
-
-	int type = 0;						//敵の種類
-	//ノックバック数値
-	int nockbackTime = 0;				//ノックバック時間
-	int nockDirection = 0;				//ノックバックする方向
-	//遠距離用数値
-	float bowAngle = 0.0f;				//狙う角度
-	Vec3 bowPos = {};					//矢の座標
-	bool bowFlag = false;				//弓を撃ったか
-	int bowTime = 0;					//矢が飛んでいく時間
 }
 
-void WOLF::Draw(EnemyData* oniData)
+void Wolf::Draw(EnemyData* oniData)
 {
 	if (oniData == nullptr)
 	{
@@ -151,7 +125,7 @@ void WOLF::Draw(EnemyData* oniData)
 	}
 }
 
-void WOLF::Move(EnemyData* oniData, Player* player)
+void Wolf::Move(EnemyData* oniData, Player* player)
 {
 	oniData->oldPosition = oniData->position;
 	slowValue = player->GetSlow();
@@ -174,7 +148,7 @@ void WOLF::Move(EnemyData* oniData, Player* player)
 	}
 }
 
-void WOLF::SearchPlayer(EnemyData* oniData, Player* player)
+void Wolf::SearchPlayer(EnemyData* oniData, Player* player)
 {
 	Box enemiesBox = SearchField(oniData);
 	//索敵範囲内にプレイヤーがいたら
@@ -197,7 +171,7 @@ void WOLF::SearchPlayer(EnemyData* oniData, Player* player)
 	}
 }
 
-void WOLF::Attack(EnemyData* oniData, Player* player)
+void Wolf::Attack(EnemyData* oniData, Player* player)
 {
 	if (oniData == nullptr)
 	{
@@ -235,7 +209,7 @@ void WOLF::Attack(EnemyData* oniData, Player* player)
 	}
 }
 
-void WOLF::EffectDraw(EnemyData* oniData)
+void Wolf::EffectDraw(EnemyData* oniData)
 {
 	if (AttackEffect == true)
 	{
@@ -283,7 +257,7 @@ void WOLF::EffectDraw(EnemyData* oniData)
 	}
 }
 
-Box WOLF::SearchField(EnemyData* oniData)
+Box Wolf::SearchField(EnemyData* oniData)
 {
 	Box enemiesBox;
 	switch (oniData->direction)
@@ -311,7 +285,7 @@ Box WOLF::SearchField(EnemyData* oniData)
 	return enemiesBox;
 }
 
-Vec3 WOLF::DirectionAngle(int direction)
+Vec3 Wolf::DirectionAngle(int direction)
 {
 	Vec3 angle = {};
 	switch (direction)
@@ -334,7 +308,7 @@ Vec3 WOLF::DirectionAngle(int direction)
 	return angle;
 }
 
-Box WOLF::AttackField(EnemyData* oniData)
+Box Wolf::AttackField(EnemyData* oniData)
 {
 	Box attackBox;
 	switch (oniData->attackDirection)

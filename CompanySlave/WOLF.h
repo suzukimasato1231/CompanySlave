@@ -1,14 +1,15 @@
 #pragma once
 #include"EnemyHelper.h"
+
 class Player;
 /// <summary>
-/// 狼クラス
+/// 狼
 /// </summary>
-class WOLF
+class Wolf
 {
 public:
-	WOLF();
-	~WOLF();
+	Wolf();
+	~Wolf();
 
 	void Init();
 
@@ -31,8 +32,6 @@ private:
 	//向きによって攻撃範囲の決定
 	Box AttackField(EnemyData* oniData);
 private:
-
-	EnemyData wolfData;
 
 	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
 
@@ -70,6 +69,4 @@ private:
 
 	float slowValue = 1;
 };
-
-
 
