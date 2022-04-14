@@ -5,12 +5,9 @@
 /// </summary>
 
 MapStage::MapStage()
-{
-}
-
+{}
 MapStage::~MapStage()
-{
-}
+{}
 
 void MapStage::Init()
 {
@@ -25,25 +22,25 @@ void MapStage::Init()
 	strawBlock = Object::Instance()->CreateOBJ("wara2");
 	//‰¼
 	smokeGraph = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
-	//nextGraph = Object::Instance()->LoadTexture(L"Resources/color/.png");
 }
 
 void MapStage::StageInit(int stageNum)
 {
-	char *Filepath;
+	char *Filepath ="";
 	switch (stageNum)
 	{
 	case 1:
 		Filepath = (char *)"Resources/map/stage01.csv";
-		LoadCSV(map, Filepath);
 		break;
 	case 2:
 		Filepath = (char *)"Resources/map/stage01.csv";
-		LoadCSV(map, Filepath);
+		break;
+	case 3 :
 		break;
 	default:
 		break;
 	}
+	LoadCSV(map, Filepath);
 	nextFlag = false;
 }
 

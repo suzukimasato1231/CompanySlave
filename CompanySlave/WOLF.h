@@ -55,6 +55,7 @@ private:
 	Object::ObjectData debugField2;//攻撃範囲
 	int redColor;
 
+
 	//エネミーアタック
 	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
 	int AttackEffectGraph[9];

@@ -156,7 +156,7 @@ void PlayScene::Update()
 
 	fbxObject1->Update();
 	//
-	camera->FollowCamera(player->GetPosition(), Vec3{ 0,100,-10 }, 0.0f, -15.0f);
+	camera->FollowCamera(player->GetPosition(), Vec3{ 0,80,-10 }, 0.0f, -15.0f);
 
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)

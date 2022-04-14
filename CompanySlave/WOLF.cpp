@@ -2,12 +2,10 @@
 #include"Player.h"
 #include"Shape.h"
 Wolf::Wolf()
-{
-}
+{}
 
 Wolf::~Wolf()
-{
-}
+{}
 
 void Wolf::Init()
 {
