@@ -3,10 +3,8 @@
 #include"Input.h"
 #include "MapStage.h"
 #include"Collision.h"
-
 Enemy::Enemy()
-{
-}
+{}
 
 Enemy::~Enemy()
 {
@@ -58,7 +56,7 @@ void Enemy::StageInit(int stageNum)
 	}
 	for (int i = 0; i < eNumMax; i++) {
 		particleFlag[i] = false;
-		particleTime[i] = 60;
+		particleTime[i] = 30;
 	}
 	char* Filepath = (char*)"";
 	switch (stageNum)
@@ -79,21 +77,22 @@ void Enemy::StageInit(int stageNum)
 	{
 		for (size_t i = 0; i < MAP_WIDTH; i++)
 		{
+			num = 0;
 			switch (spawnMap[j][i])
 			{
-			case ONI:
+			case ONILEFT:
+			case ONIUP:
+			case ONIDOWN:
+			case ONIRIGHT:
 				eData.push_back(new EnemyData);
 				num = eData.size() - 1;
 				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
 				eData[num]->oldPosition = eData[eData.size() - 1]->position;
 				//À•W‚ð‡‚í‚¹‚é
 				eData[num]->eBox.minPosition = XMVectorSet(
-					eData[num]->position.x - eData[num]->r, eData[num]->position.y - eData[num]->r,
-					eData[num]->position.z - eData[num]->r, 1);
+					eData[num]->position.x - eData[num]->r, eData[num]->position.y - eData[num]->r, eData[num]->position.z - eData[num]->r, 1);
 				eData[num]->eBox.maxPosition = XMVectorSet(
-					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r,
-					eData[num]->position.z + eData[num]->r, 1);
-				eData[num]->direction = Left;
+					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r, eData[num]->position.z + eData[num]->r, 1);
 				eData[num]->type = Oni;
 				break;
 			case ONIBOW:
@@ -113,6 +112,24 @@ void Enemy::StageInit(int stageNum)
 				break;
 			default:
 				break;
+			}
+			if (num > 0)
+			{//“G‚ÌŒü‚«‚ðÝ’è‚P‚ÌŒ…
+				switch (spawnMap[j][i] % 10)
+				{
+				case Up:
+					eData[num]->direction = Left;
+					break;
+				case Left:
+					eData[num]->direction = Left;
+					break;
+				case Right:
+					eData[num]->direction = Left;
+					break;
+				case Down:
+					eData[num]->direction = Left;
+					break;
+				}
 			}
 		}
 	}
@@ -152,10 +169,17 @@ void Enemy::Update(Player* player)
 			eData[i]->explosionFlag = true;
 
 		}
+		if (eData[i]->explosionCount == 1)
+		{
+			explosionFlag[i] = true;
+		}
+		else if (eData[i]->explosionCount == 2)
+		{
+			explosionGraphCnt[i] = 0;
+		}
 		if (eData[i]->explosionDelay)
 		{
 			delayCount[i]++;
-			explosionFlag[i] = true;
 			if (delayCount[i] >= 20)
 			{
 				eData[i]->explosionCount = 2;
@@ -164,13 +188,13 @@ void Enemy::Update(Player* player)
 				eData[i]->explosionDelay = false;
 			}
 		}
+		
 		if (explosionFlag[i])
 		{
 			explosionGraphCnt[i]++;
 		}
 		if (explosionGraphCnt[i] > 30)
 		{
-			explosionGraphCnt[i] = 0;
 			explosionFlag[i] = false;
 		}
 	}
@@ -181,11 +205,7 @@ void Enemy::Update(Player* player)
 void Enemy::Draw()
 {
 	for (size_t i = 0; i < eData.size(); i++)
-	{
-		if (explosionFlag[i] == true) {
-			Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 0.0f, eData[i]->position.z),
-				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
-		}
+	{	
 		if (eData[i]->HP > 0)
 		{
 			switch (eData[i]->type)
@@ -207,6 +227,11 @@ void Enemy::Draw()
 				Object::Instance()->Draw(hpOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 5.1f, eData[i]->position.z + 5.0f),
 					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
 			}
+			//“G@”j@
+			if (explosionFlag[i] == true) {
+				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
+					Vec3(0.5f, 0.5f, 0.5f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
+			}
 		}
 	}
 
@@ -217,7 +242,7 @@ void Enemy::BloodDraw()
 {
 	float size = 0.0f;
 	for (size_t i = 0; i < eData.size(); i++)
-	{
+	{//ŒŒ­‚Ì•`‰æ
 		size += 0.01;
 		if (BloodFlag[i] == true) {
 			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 4.9f + size, BloodPosition[i].z),

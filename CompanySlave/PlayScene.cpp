@@ -12,6 +12,7 @@ PlayScene::~PlayScene()
 	safe_delete(particleMan);
 	safe_delete(particleMan2);
 	safe_delete(particleMan4);
+	safe_delete(particleMan5);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
@@ -92,6 +93,8 @@ void PlayScene::Init()
 
 	particleMan2 = ParticleManager::Create(L"Resources/particle3.png", 1);
 
+	particleMan5 = ParticleManager::Create(L"Resources/Eblood/BloodCircle.png", 1);
+
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -168,10 +171,10 @@ void PlayScene::Update()
 	//パーティクル追加
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
-
 		if (enemy->GetDamegeFlag(i) == true) {
 
-			particleMan2->ParticleAdd(enemy->GetPosition(i), 0.5f, Vec4(0.3f, 0.1f, 0.1f, 1.0f), Vec4(0.3f, 0.1f, 0.1f, 1.0f));
+			particleMan5->AddBlood(enemy->GetPosition(i));
+			//particleMan2->ParticleAdd(enemy->GetPosition(i), 0.5f, Vec4(0.3f, 0.1f, 0.1f, 1.0f), Vec4(0.3f, 0.1f, 0.1f, 1.0f));
 		}
 
 	}
@@ -201,6 +204,7 @@ void PlayScene::Update()
 	//パーティクル更新
 	particleMan->Update();
 
+	particleMan5->Update();
 
 
 
@@ -243,6 +247,8 @@ void PlayScene::Draw()
 
 	particleMan2->Draw();
 	//particleMan3->Draw();
+
+	particleMan5->Draw();
 
 	//前景描画
 	player->UIDraw();

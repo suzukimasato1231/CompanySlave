@@ -13,7 +13,10 @@ enum EnemyType
 enum spawnNo
 {
 	NOTSPAWN,
-	ONI,
+	ONILEFT,
+	ONIRIGHT,
+	ONIUP,
+	ONIDOWN,
 	ONIBOW,
 	WOLF,
 };
@@ -37,8 +40,8 @@ struct EnemyData
 	float speed = 0.3f;					//敵スピード
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
-	float HPMax = 10;					//最大HP
-	float HP = 10;						//HP
+	float HPMax = 15;					//最大HP
+	float HP = 15;						//HP
 	float r = 5;						//大きさ
 	int Status = NORMAL;				//状態
 	int StatusTime = 0;					//状態時間

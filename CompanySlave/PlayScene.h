@@ -81,6 +81,8 @@ private://定義
 	ParticleManager *particleMan2 = nullptr;
 	ParticleManager *particleMan3 = nullptr;
 	ParticleManager *particleMan4 = nullptr;
+	//敵死んだ時のパーティクル
+	ParticleManager* particleMan5 = nullptr;
 	//FBX
 	Model *model1 = nullptr;
 	FBXObject3d *fbxObject1 = nullptr;

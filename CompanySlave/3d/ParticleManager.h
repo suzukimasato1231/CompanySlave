@@ -122,6 +122,9 @@ public: // 静的メンバ関数
 	void ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color);
 	void ParticleAdd3(Vec3 Pos, float md_vel, Vec4 start_color, Vec4 end_color);
 
+	//血が飛び出るパーティクル
+	void AddBlood(Vec3 Pos);
+
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device* device;
