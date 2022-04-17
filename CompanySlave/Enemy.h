@@ -78,8 +78,7 @@ public://æ“¾Œn
 
 	float GetEnemyR(int i) { return eData[i]->r; }
 
-	bool GetParticleFlag(int i) { return particleFlag[i]; }
-	int GetParticleTime(int i) { return particleTime[i]; }
+	int GetTime(int i){ return BloodTime[i]; }
 
 	bool GetDamegeFlag(int i) { return eData[i]->DamegeFlag; }
 	bool SetDamegeFlag(int i, bool DamegeFlag);
@@ -117,13 +116,18 @@ private:
 
 	int redColor;
 	//ŒŒŠÖŒW‚Ì•Ï”
-	Object::ObjectData Blood;
+
+	Object::ObjectData Blood;	//ŒŒ­
 	int BloodGraph;
 	bool BloodFlag[eNumMax] = { false };
 	Vec3 BloodPosition[eNumMax] = { Vec3(0,0,0) };
 
-	int particleTime[eNumMax];
-	bool particleFlag[eNumMax];
+	Object::ObjectData Blood2;	//”ò‚ñ‚Å‚¢‚éŒŒ
+	int Blood2Graph;
+	int Blood2Flag[eNumMax];
+	int BloodTime[eNumMax];
+
+
 
 	//”j
 	int delayCount[eNumMax];

@@ -29,6 +29,10 @@ void Enemy::Init()
 	Blood = Shape::CreateRect(10, 10);
 	BloodGraph = Object::Instance()->LoadTexture(L"Resources/Blood/Blood.png");
 
+	Blood2 = Shape::CreateRect(10, 10);
+	Blood2Graph = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodEffect.png");
+
+
 	explosionOBJ = Shape::CreateRect(10, 10);
 	explosionGraph = Object::Instance()->LoadTexture(L"Resources/Point.png");
 	//鬼１
@@ -37,8 +41,8 @@ void Enemy::Init()
 	oniBow.Init();
 
 	for (int i = 0; i < eNumMax; i++) {
-		particleFlag[i] = false;
-		particleTime[i] = 60;
+
+		BloodTime[i] = 60;
 		delayCount[i] = 0;
 	}
 }
@@ -55,8 +59,8 @@ void Enemy::StageInit(int stageNum)
 		explosionFlag[i] = false;
 	}
 	for (int i = 0; i < eNumMax; i++) {
-		particleFlag[i] = false;
-		particleTime[i] = 30;
+
+		BloodTime[i] = 60;
 	}
 	char* Filepath = (char*)"";
 	switch (stageNum)
@@ -233,6 +237,13 @@ void Enemy::Draw()
 					Vec3(0.5f, 0.5f, 0.5f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
 			}
 		}
+		if (eData[i]->HP <= 0)
+		{
+			if (BloodTime[i] > 0) {
+				Object::Instance()->Draw(Blood2, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
+					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2Graph);
+			}
+		}
 	}
 
 
@@ -245,7 +256,7 @@ void Enemy::BloodDraw()
 	{//血痕の描画
 		size += 0.01;
 		if (BloodFlag[i] == true) {
-			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 4.9f + size, BloodPosition[i].z),
+			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y + size, BloodPosition[i].z),
 				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
 		}
 	}
@@ -288,25 +299,26 @@ void Enemy::DamegeSword(int i)
 void Enemy::Delete()
 {
 	//敵が消える
-	for (int i = (int)eData.size() - 1; i >= 0; i--)
-	{
-		BloodPosition[i] = eData[i]->position;
-		if (eData[i]->HP <= 0)
+
+		for (int i = (int)eData.size() - 1; i >= 0; i--)
 		{
-			BloodFlag[i] = true;
-			particleFlag[i] = true;
+			BloodPosition[i] = eData[i]->position;
+			//BloodEffectが消えたら血痕が表示される
+			if (eData[i]->HP <= 0)
+			{
+				//0になるまでタイムのマイナス
+				if (BloodTime[i] > 0) {
+					BloodTime[i]--;
+				}
 
-		}
-		if (particleFlag[i] == true) {
-			if (particleTime[i] > 0) {
-				particleTime[i]--;
 			}
-		}
-		if (particleTime[i] == 0) {
-			particleFlag[i] = false;
-		}
+			//0になったら血痕の表示
+			if (BloodTime[i] <= 0) {
+				BloodFlag[i] = true;
+			}
 
-	}
+		}
+	
 }
 
 

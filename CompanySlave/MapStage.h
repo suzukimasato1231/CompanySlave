@@ -60,6 +60,9 @@ public:
 	int GetMap(int i, int j);
 
 	float GetSize();
+
+	int GetObjectStatus() { ObjectStatus; }
+
 private:
 	Object::ObjectData block;//マップのブロック
 	Object::ObjectData wallBlock;//マップの壁ブロック

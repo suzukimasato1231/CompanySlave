@@ -124,7 +124,7 @@ void ParticleManager::Add2(int life, Vec3 position, Vec3 velocity, Vec3 accel, f
 	p.e_color = end_color;
 }
 
-void ParticleManager::ParticleAdd(Vec3 Pos, float md_vel, Vec4 start_color, Vec4 end_color)
+void ParticleManager::ParticleAdd(Vec3 Pos, float md_vel, float md_vel2, Vec4 start_color, Vec4 end_color)
 {
 	for (int i = 0; i < 1; i++)
 	{
@@ -135,11 +135,28 @@ void ParticleManager::ParticleAdd(Vec3 Pos, float md_vel, Vec4 start_color, Vec4
 		pos.y += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		////X,Y,Z全て{-0.05f,+0.05f}でランダムに分布
-
 		Vec3 vel{};
-		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		//左右
+		if (particleDirection == 0 || particleDirection == 1) {
+
+			vel.x = (float)rand() / RAND_MAX * md_vel;
+			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		}
+		//上下
+		if (particleDirection == 2 || particleDirection == 3) {
+
+			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * md_vel;
+		}
+		//斜め
+		if (particleDirection == 4 || particleDirection == 5 || particleDirection == 6 || particleDirection == 7) {
+
+			vel.x = (float)rand() / RAND_MAX * md_vel;
+			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * md_vel2;
+		}
 		//重力に見立ててYのみ{-0.001f,0}でランダム分布
 		Vec3 acc{};
 		const float md_acc = 0.001f;
@@ -148,7 +165,7 @@ void ParticleManager::ParticleAdd(Vec3 Pos, float md_vel, Vec4 start_color, Vec4
 		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
 		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
 			//追加
-		Add(60, pos, vel, acc, 2.0f, 2.0f, start_color, end_color);
+		Add(10, pos, vel, acc, 0.5f, 0.5f, start_color, end_color);
 	}
 }
 
@@ -579,4 +596,8 @@ void ParticleManager::Draw()
 	cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
+}
+int ParticleManager::SetParticleDirection(int particleDirection)
+{
+	return this->particleDirection = particleDirection;
 }

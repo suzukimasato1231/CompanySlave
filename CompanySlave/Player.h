@@ -98,6 +98,7 @@ public://取得系
 
 	float GetSlow() { return slowValue; }
 	float GetenemyDamegeTime(int i) { return enemyDamegeTime[i]; }
+	int GetDirection() { return direction; }
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
 	Object::ObjectData playerAttackObject[9];	//プレイヤー攻撃
