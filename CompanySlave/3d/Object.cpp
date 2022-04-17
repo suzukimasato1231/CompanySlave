@@ -164,6 +164,53 @@ int  Object::LoadTexture(const wchar_t *filename)
 	return (int)texNum - 1;
 }
 
+void Object::NormalizeUV(Object::ObjectData objectData,int texNum)
+{
+	// テクスチャデータ取得
+	D3D12_RESOURCE_DESC resDesc = textureData[texNum]->texbuff->GetDesc();
+	float left = 0, right = 0, top = 0, bottom = 0;
+
+	for (size_t i = 0; i < objectData.vertices.size(); i++)
+	{
+		if (objectData.vertices[i]->pos.x < left)
+		{
+			left = objectData.vertices[i]->pos.x;
+		}
+		if (objectData.vertices[i]->pos.x > right)
+		{
+			right = objectData.vertices[i]->pos.x;
+		}
+		if (objectData.vertices[i]->pos.y < top)
+		{
+			top = objectData.vertices[i]->pos.y;
+		}
+		if (objectData.vertices[i]->pos.y > bottom)
+		{
+			bottom = objectData.vertices[i]->pos.y;
+		}
+	}
+	DirectX::XMFLOAT2 size = { right - left, bottom - top };
+	size = { size.x / resDesc.Width, size.y / resDesc.Height };
+
+	for (size_t i = 0; i < objectData.vertices.size(); i++)
+	{
+		objectData.vertices[i]->uv.x *= size.x;
+		objectData.vertices[i]->uv.y *= size.y;
+	}
+	Vertex* vertMap = nullptr;
+	objectData.vertBuff->Map(0, nullptr, (void**)&vertMap);
+
+	// 全頂点に対して
+	for (UINT i = 0; i < objectData.vertices.size(); i++)
+	{
+		vertMap[i] = *objectData.vertices[i]; //座標をコピー
+	}
+
+	// マップを解除
+	objectData.vertBuff->Unmap(0, nullptr);
+
+}
+
 void Object::MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color)
 {
 	HRESULT result;

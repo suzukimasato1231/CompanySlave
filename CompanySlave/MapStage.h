@@ -4,13 +4,24 @@
 #include <string>
 #include"CollisionPrimitive.h"
 #include"Enemy.h"
+#include <ParticleManager.h>
 /// <summary>
 /// ブロックの種類
 /// </summary>
 enum ObjectStatus
 {
+	FLOOR_TILE1,//石タイル１
+	FLOOR_TILE2,//石タイル２
+	FLOOR_TILE3,//石端１
+	FLOOR_TILE4,//石端２
+	FLOOR_TILE5,
+	FLOOR_TILE6,
+	FLOOR_TILE7,
+	FLOOR_TILE8,
+	FLOOR_TILE9,
+	FLOOR_TILE10,
 	NONE,			//空
-	WALLWIDTH,         //ブロック
+	WALLWIDTH,      //ブロック
 	WALLHIGHT,
 	WALLCORNER,
 	STRAW,
@@ -55,7 +66,18 @@ private:
 	Object::ObjectData cornerBlock;//マップの壁ブロック
 	Object::ObjectData strawBlock;//藁
 
-	int blockGraph = 0;
+	//int blockGraph = 0;
+	int floor_Tile1 = 0;
+	int floor_Tile2 = 0;
+	int floor_Tile3 = 0;
+	int floor_Tile4 = 0;
+	int floor_Tile5 = 0;
+	int floor_Tile6 = 0;
+	int floor_Tile7 = 0;
+	int floor_Tile8 = 0;
+	int floor_Tile9 = 0;
+	int floor_Tile10 = 0;
+
 	int nextGraph = 0;//仮
 	int smokeGraph = 0;//仮
 
@@ -65,11 +87,13 @@ private:
 
 	Vec3 basePosition = { 0,0,0 };//マップチップの初期位置
 
-	Vec3 scale = { 1.0f,1.0f,1.0f };//ブロックの大きさ
+	Vec3 scale = { 5.0f,1.0f,5.0f };//ブロックの大きさ
 
 	Vec4 color = { 1.0f,1.0f,1.0f,1.0f };//ブロックの色
 
 	Vec4 color2 = { 0.0f,0.0f,0.0f,0.5f };
 
 	bool nextFlag = false;
+	//もくもく煙
+	ParticleManager* particleMan = nullptr;
 };

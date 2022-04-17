@@ -10,15 +10,15 @@
 #include"Singleton.h"
 #pragma comment(lib,"d3d12.lib")
 
- const int constBufferNum = 256;
-class Object:public Singleton<Object>
+const int constBufferNum = 256;
+class Object :public Singleton<Object>
 {
 public:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	friend Singleton<Object>;
 public:
-	static ID3D12Device *dev;					//デバイス
-	static ID3D12GraphicsCommandList *cmdList;	//コマンドリスト
+	static ID3D12Device* dev;					//デバイス
+	static ID3D12GraphicsCommandList* cmdList;	//コマンドリスト
 public://構造体
 	////頂点データ構造体
 	struct Vertex
@@ -61,9 +61,9 @@ public://構造体
 	struct ObjectData
 	{
 		//頂点データ
-		std::vector<Vertex *> vertices;
+		std::vector<Vertex*> vertices;
 		//インデックスデータ
-		std::vector<unsigned short *> indices;
+		std::vector<unsigned short*> indices;
 		//頂点バッファの生成
 		ComPtr<ID3D12Resource> vertBuff = nullptr;
 		//インデックスバッファ
@@ -79,7 +79,7 @@ public://構造体
 		//ワールド変換
 		XMMATRIX matWorld;
 		//親クラス
-		ObjectData *parent = nullptr;
+		ObjectData* parent = nullptr;
 		//マテリアル
 		Material material;
 		//位置、大きさ、色情報
@@ -122,36 +122,36 @@ public://パイプライン設定
 	Pipeline::PipelineSet objPipelineSet;		//OBJ読み込み
 public://変数	
 	//テクスチャデータの作成
-	std::vector <TextureData *>textureData;
+	std::vector <TextureData*>textureData;
 	//OBJデータ
-	std::vector<OBJData *> OBJdata;
+	std::vector<OBJData*> OBJdata;
 	//定数バッファ用のデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap >descHeap = { nullptr };
 public:
 	Object() {};
 	~Object();
 	//初期化
-	void Init(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList);
+	void Init(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 	/// <summary>
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	static Object *Create();
+	static Object* Create();
 	/// <summary>
 	/// カメラをセット
 	/// </summary>
 	/// <param name="camera"></param>
-	static void SetCamera(Camera *camera) { Object::camera = camera; }
+	static void SetCamera(Camera* camera) { Object::camera = camera; }
 	/// <summary>
 	/// ライトをセット
 	/// </summary>
 	/// <param name="lightGroup"></param>
-	static void SetLight(LightGroup *lightGroup) { Object::lightGroup = lightGroup; }
+	static void SetLight(LightGroup* lightGroup) { Object::lightGroup = lightGroup; }
 public:
 	//カメラクラス
-	static Camera *camera;
+	static Camera* camera;
 	//ライトクラス
-	static LightGroup *lightGroup;
+	static LightGroup* lightGroup;
 public://図形モデル作成
 	/// <summary>
 	/// OBJオブジェクト作成
@@ -162,31 +162,33 @@ public://図形モデル作成
 	ObjectData CreateOBJ(const std::string filename, bool smoothing = false);
 public://オブジェクト関連
 	// テクスチャ読み込み
-	int LoadTexture(const wchar_t *filename);
+	int LoadTexture(const wchar_t* filename);
+
+	void NormalizeUV(Object::ObjectData objectData, int texNum);
 	//オブジェクト描画前
 	void PreDraw();
 public://OBJ関連
-	int OBJLoadTexture(const std::string &directoryPath, const std::string &filename);
+	int OBJLoadTexture(const std::string& directoryPath, const std::string& filename);
 	//マテリアル読み込み
-	int LoadMaterial(const std::string &directoryPath, const std::string &filename, ObjectData &polygon);
+	int LoadMaterial(const std::string& directoryPath, const std::string& filename, ObjectData& polygon);
 	/// <summary>
 	/// エッジ平滑化データの追加
 	/// </summary>
 	/// <param name="indexPosition">座標インデックス</param>
 	/// <param name="indexVertex">頂点インデックス</param>
-	void AddSmoothData(ObjectData &polygon, unsigned short indexPosition, unsigned short indexVertex);
+	void AddSmoothData(ObjectData& polygon, unsigned short indexPosition, unsigned short indexVertex);
 	///<summary>
 	///平滑化された頂点法線の計算
 	/// </summary>
-	void CalculateSmoothedVertexNormals(ObjectData &polygon);
+	void CalculateSmoothedVertexNormals(ObjectData& polygon);
 
 	/// <summary>
 	/// 頂点データの数を取得
 	/// </summary>
 	/// <returns>頂点データの数</returns>
-	inline size_t GetVertexCount(ObjectData &polygon);
+	inline size_t GetVertexCount(ObjectData& polygon);
 	//モデル作成
-	void OBJCreateModel(ObjectData &polygon);
+	void OBJCreateModel(ObjectData& polygon);
 	//定数バッファ設定
 	void OBJConstantBuffer();
 	/// <summary>
@@ -196,7 +198,7 @@ public://OBJ関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	void MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color);
+	void MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color);
 	/// <summary>
 	/// OBJ描画
 	/// </summary>
@@ -205,7 +207,7 @@ public://OBJ関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	void Draw(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0);
+	void Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0);
 public:
 	size_t OBJNum = 0;//OBJ読み込みの数
 	size_t objNum = 0;//オブジェクトの数

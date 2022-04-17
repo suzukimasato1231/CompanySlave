@@ -76,7 +76,6 @@ private://定義
 	Enemy *enemy = nullptr;
 
 	//パーティクル
-	ParticleManager *particleMan = nullptr;
 
 	ParticleManager *particleMan2 = nullptr;
 	ParticleManager *particleMan3 = nullptr;

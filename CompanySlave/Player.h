@@ -5,12 +5,16 @@
 #include"Enemy.h"
 #include"Sprite.h"
 #include"Direction.h"
+#include <array>
 /// <summary>
 /// プレイヤークラス
 /// </summary>
 class Player
 {
+private:
+
 public:
+
 	Player();//コンストラクタ
 
 	~Player();//ですコンストラクタ
@@ -138,7 +142,7 @@ private:
 
 
 	//通常攻撃
-	bool normalAttackFlag[3] = { false,false,false };	//通常攻撃可能か
+	std::array <bool, 3> normalAttackFlag = { false,false,false };	//通常攻撃可能か
 	float normalLength = 20.0f;							//攻撃の半径
 	float normalLengthSub = 15.0f;						//向いていない方向の攻撃の半径
 	const int normalAttackTimeMax = 20;					//攻撃と攻撃の間の時間
@@ -155,27 +159,27 @@ private:
 	int cursorGraph;	//カーソル
 	Object::ObjectData cursorObject;//カーソル
 
-	Vec3 swordPosition[7] = { { 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
+	std::array <Vec3,7> swordPosition = { Vec3{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
 	Object::ObjectData swordEffectObject;//剣
-	Vec3 swordAngle[7] = { { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
+	std::array<Vec3,7> swordAngle = { Vec3{ 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
 	float swordSpeed = 7;//スピード
-	float swordAngleVec[7] = { 0,0,0,0,0,0,0 };//飛ばす方向
-	bool isSwordAttack[7] = { false,false,false,false,false,false,false };//アタックフラグ
-	int stingCnt[7] = { 0,0,0,0,0,0,0 };//刺さるまでの時間
-	bool haveSword[7] = { true,true,true,true,true,true,true };//持ってる剣
+	std::array<float,7> swordAngleVec = { 0,0,0,0,0,0,0 };//飛ばす方向
+	std::array<bool,7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
+	std::array<int,7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間
+	std::array<bool,7> haveSword = { true,true,true,true,true,true,true };//持ってる剣
 	bool isEnemySting[7][4];//敵に刺さってるか
-	Box swordAttackBox[7];	//剣の当たり判定
+	std::array < Box, 7> swordAttackBox;	//剣の当たり判定
 	int shotNo = 0;//どの剣か
 	bool returnFlag = false;//剣が戻る時のフラグ
 	float nowTime = 0;//剣が戻る時のラープ
 	float endTime = 3;//剣が戻る時のラープ
 	float timeRate = 0;//剣が戻る時のラープ
-	float reverseValue[7] = { 0,0,0,0,0,0,0 };
-	int reverseAngle[7] = { 0,0,0,0,0,0,0 };
-	bool swordStop[7] = { false,false,false,false,false,false,false };
-	bool holdingFlag[7] = { true,true,true,true,true,true,true };
-	bool explosion[7] = { false,false,false,false,false,false,false };
-	int explosionCount[7] = { 0,0,0,0,0,0,0 };
+	std::array<float, 7> reverseValue = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
+	std::array<int, 7>  reverseAngle = { 0,0,0,0,0,0,0 };
+	std::array<bool,7>  swordStop = { false,false,false,false,false,false,false };
+	std::array<bool,7>  holdingFlag = { true,true,true,true,true,true,true };
+	std::array<bool,7>  explosion = { false,false,false,false,false,false,false };
+	std::array<int,7> explosionCount = { 0,0,0,0,0,0,0 };
 	float slowValue = 1;
 
 	//エフェクト関係
@@ -186,7 +190,8 @@ private:
 	int effectTime = 10;
 	int effectCount = 0;
 
-	float enemyDamegeTime[20] = { 60,60,60,60,60,60,60,60,60,60 };
+	std::array<float, 20 >enemyDamegeTime = { 60,60,60,60,60,60,60,60,60,60 };
+
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };

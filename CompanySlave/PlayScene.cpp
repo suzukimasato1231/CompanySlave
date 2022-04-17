@@ -9,7 +9,6 @@ PlayScene::PlayScene()
 {}
 PlayScene::~PlayScene()
 {
-	safe_delete(particleMan);
 	safe_delete(particleMan2);
 	safe_delete(particleMan4);
 	safe_delete(particleMan5);
@@ -66,7 +65,6 @@ void PlayScene::Init()
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
-	Parent = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
 	//3Dオブジェクト画像読み込み
@@ -86,8 +84,6 @@ void PlayScene::Init()
 	fbxObject1->SetModel(model1);
 
 	//パーティクルクラス作成
-
-	particleMan = ParticleManager::Create(L"Resources/particle.jpg");
 
 	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg");
 
@@ -178,9 +174,7 @@ void PlayScene::Update()
 		}
 
 	}
-	particleMan->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 6 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
-	particleMan->ParticleAdd2(Vec3{ 0 + 74 * 10,2, 0 + 5 * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
-
+	
 	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
 	{
 		nowTime += 0.1;
@@ -202,7 +196,6 @@ void PlayScene::Update()
 
 	particleMan2->Update();
 	//パーティクル更新
-	particleMan->Update();
 
 	particleMan5->Update();
 
@@ -236,12 +229,6 @@ void PlayScene::Draw()
 
 	enemy->Draw();
 
-	//パーティクル描画
-
-	if (mapStage->GetMap(74, 6) == 5)
-	{
-		particleMan->Draw();
-	}
 
 	particleMan4->Draw();
 
@@ -253,6 +240,7 @@ void PlayScene::Draw()
 	//前景描画
 	player->UIDraw();
 	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
+
 #if _DEBUG
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "E:button");
