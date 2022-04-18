@@ -30,7 +30,8 @@ void Enemy::Init()
 	BloodGraph = Object::Instance()->LoadTexture(L"Resources/Blood/Blood.png");
 
 	Blood2 = Shape::CreateRect(10, 10);
-	Blood2Graph = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodEffect.png");
+	Blood2Graph[0] = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodEffect1.png");
+	Blood2Graph[1] = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodEffect2.png");
 
 
 	explosionOBJ = Shape::CreateRect(10, 10);
@@ -42,7 +43,7 @@ void Enemy::Init()
 
 	for (int i = 0; i < eNumMax; i++) {
 
-		BloodTime[i] = 60;
+		BloodTime[i] = bloodTimeMax;
 		delayCount[i] = 0;
 	}
 }
@@ -60,7 +61,7 @@ void Enemy::StageInit(int stageNum)
 	}
 	for (int i = 0; i < eNumMax; i++) {
 
-		BloodTime[i] = 60;
+		BloodTime[i] = bloodTimeMax;
 	}
 	char* Filepath = (char*)"";
 	switch (stageNum)
@@ -192,7 +193,7 @@ void Enemy::Update(Player* player)
 				eData[i]->explosionDelay = false;
 			}
 		}
-		
+
 		if (explosionFlag[i])
 		{
 			explosionGraphCnt[i]++;
@@ -209,7 +210,7 @@ void Enemy::Update(Player* player)
 void Enemy::Draw()
 {
 	for (size_t i = 0; i < eData.size(); i++)
-	{	
+	{
 		if (eData[i]->HP > 0)
 		{
 			switch (eData[i]->type)
@@ -239,9 +240,13 @@ void Enemy::Draw()
 		}
 		if (eData[i]->HP <= 0)
 		{
-			if (BloodTime[i] > 0) {
+			if (BloodTime[i] > 30) {
 				Object::Instance()->Draw(Blood2, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
-					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2Graph);
+					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2Graph[0]);
+			}
+			else if (BloodTime[i] > 0) {
+				Object::Instance()->Draw(Blood2, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
+					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2Graph[1]);
 			}
 		}
 	}
@@ -256,7 +261,7 @@ void Enemy::BloodDraw()
 	{//血痕の描画
 		size += 0.01;
 		if (BloodFlag[i] == true) {
-			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y + size, BloodPosition[i].z),
+			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, BloodPosition[i].y - 0.9f + size, BloodPosition[i].z),
 				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
 		}
 	}
@@ -300,25 +305,25 @@ void Enemy::Delete()
 {
 	//敵が消える
 
-		for (int i = (int)eData.size() - 1; i >= 0; i--)
+	for (int i = (int)eData.size() - 1; i >= 0; i--)
+	{
+		BloodPosition[i] = eData[i]->position;
+		//BloodEffectが消えたら血痕が表示される
+		if (eData[i]->HP <= 0)
 		{
-			BloodPosition[i] = eData[i]->position;
-			//BloodEffectが消えたら血痕が表示される
-			if (eData[i]->HP <= 0)
-			{
-				//0になるまでタイムのマイナス
-				if (BloodTime[i] > 0) {
-					BloodTime[i]--;
-				}
-
-			}
-			//0になったら血痕の表示
-			if (BloodTime[i] <= 0) {
-				BloodFlag[i] = true;
+			//0になるまでタイムのマイナス
+			if (BloodTime[i] > 0) {
+				BloodTime[i]--;
 			}
 
 		}
-	
+		//0になったら血痕の表示
+		if (BloodTime[i] <= 0) {
+			BloodFlag[i] = true;
+		}
+
+	}
+
 }
 
 

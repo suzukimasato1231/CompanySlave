@@ -139,33 +139,33 @@ void ParticleManager::ParticleAdd(Vec3 Pos, float md_vel, float md_vel2, Vec4 st
 		//左右
 		if (particleDirection == 0 || particleDirection == 1) {
 
-			vel.x = (float)rand() / RAND_MAX * md_vel;
-			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.x += (float)rand() / RAND_MAX * md_vel;
+			vel.y += (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z += (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		}
 		//上下
 		if (particleDirection == 2 || particleDirection == 3) {
 
-			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.z = (float)rand() / RAND_MAX * md_vel;
+			vel.x += (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.y += (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z += (float)rand() / RAND_MAX * md_vel;
 		}
 		//斜め
 		if (particleDirection == 4 || particleDirection == 5 || particleDirection == 6 || particleDirection == 7) {
 
-			vel.x = (float)rand() / RAND_MAX * md_vel;
-			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.z = (float)rand() / RAND_MAX * md_vel2;
+			vel.x += (float)rand() / RAND_MAX * md_vel;
+			vel.y += (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z += (float)rand() / RAND_MAX * md_vel2;
 		}
 		//重力に見立ててYのみ{-0.001f,0}でランダム分布
 		Vec3 acc{};
-		const float md_acc = 0.001f;
-		acc.y = (float)rand() / RAND_MAX * md_acc;
+		const float md_acc = 0.011f;
+		acc.z = (float)rand() / RAND_MAX * md_acc;
 
 		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
 		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
 			//追加
-		Add(10, pos, vel, acc, 0.5f, 0.5f, start_color, end_color);
+		Add(15, pos, vel, acc, 4.0f, 0.3f, start_color, end_color);
 	}
 }
 

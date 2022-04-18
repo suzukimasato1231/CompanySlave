@@ -123,10 +123,10 @@ private:
 	Vec3 BloodPosition[eNumMax] = { Vec3(0,0,0) };
 
 	Object::ObjectData Blood2;	//”ò‚ñ‚Å‚¢‚éŒŒ
-	int Blood2Graph;
+	int Blood2Graph[2];
 	int Blood2Flag[eNumMax];
 	int BloodTime[eNumMax];
-
+	const int bloodTimeMax = 30;//”ò‚ÑU‚éŒŒ‚Ì‰æ‘œ‚ªo‚Ä‚¢‚éŠÔ
 
 
 	//”j
