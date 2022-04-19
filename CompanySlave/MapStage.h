@@ -24,7 +24,7 @@ enum ObjectStatus
 	WALLWIDTH,      //ブロック
 	WALLHIGHT,
 	WALLCORNER,
-	STRAW,
+	OKE,
 	SMOKEWALL,//敵全部倒したら消える壁
 	NextStageBlock,//ここに触れたら次のステージへ
 };
@@ -67,7 +67,7 @@ private:
 	Object::ObjectData block;//マップのブロック
 	Object::ObjectData wallBlock;//マップの壁ブロック
 	Object::ObjectData cornerBlock;//マップの壁ブロック
-	Object::ObjectData strawBlock;//藁
+	Object::ObjectData okeBlock;//藁
 
 	//int blockGraph = 0;
 	int floor_Tile1 = 0;

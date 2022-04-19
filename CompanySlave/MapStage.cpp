@@ -36,7 +36,7 @@ void MapStage::Init()
 
 	cornerBlock = Object::Instance()->CreateOBJ("wall2");
 
-	strawBlock = Object::Instance()->CreateOBJ("wara2");
+	okeBlock = Object::Instance()->CreateOBJ("oke");
 	//‰¼
 	smokeGraph = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 
@@ -172,7 +172,7 @@ void MapStage::Draw(Vec3 pPos)
 			case WALLWIDTH:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile10);
+					scale, Vec3{}, color, floor_Tile9);
 				Object::Instance()->Draw(wallBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0,90,0 }, color);
@@ -180,7 +180,7 @@ void MapStage::Draw(Vec3 pPos)
 			case WALLHIGHT:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile10);
+					scale, Vec3{}, color, floor_Tile9);
 				Object::Instance()->Draw(wallBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
@@ -188,18 +188,18 @@ void MapStage::Draw(Vec3 pPos)
 			case WALLCORNER:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile10);
+					scale, Vec3{}, color, floor_Tile9);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
 				break;
-			case STRAW:
+			case OKE:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, floor_Tile9);
-				Object::Instance()->Draw(strawBlock,
+				Object::Instance()->Draw(okeBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 3.0f, 3.0f, 3.0f }, Vec3{}, color);
+					{ 3.0f, 3.0f, 3.0f }, Vec3{0.0f,45.0f,0.0f}, color);
 				break;
 			case SMOKEWALL:
 				Object::Instance()->Draw(block,
