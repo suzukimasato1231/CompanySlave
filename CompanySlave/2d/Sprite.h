@@ -13,37 +13,38 @@ const int spriteSRVCount = 256;
 extern const int window_width;
 extern const int window_height;
 
+struct SpriteData
+{
+	//頂点バッファの生成
+	ComPtr<ID3D12Resource> vertBuff;
+	//頂点バッファビューの作成
+	D3D12_VERTEX_BUFFER_VIEW vbView;
+	//Z軸回りの回転角
+	float rotation = 0.0f;
+	//座標
+	Vec3 position = { 0,0,0 };
+	//ワールド行列
+	XMMATRIX matWorld;
+	//テクスチャ番号
+	UINT texNumber = 0;
+	//大きさ
+	Vec2 size = { 100,100 };
+
+	Vec2 texLeftTop = { 0,0 };
+
+	Vec2 texSize = { 0,0 };
+	//アンカーポイント
+	Vec2 anchorpoint = { 0.5f,0.5f };
+	//親
+	SpriteData* parent = nullptr;
+};
+
 class Sprite :public Singleton<Sprite>
 {
 	friend Singleton<Sprite>;
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMMATRIX = DirectX::XMMATRIX;
 public://構造体
-	struct SpriteData
-	{
-		//頂点バッファの生成
-		ComPtr<ID3D12Resource> vertBuff;
-		//頂点バッファビューの作成
-		D3D12_VERTEX_BUFFER_VIEW vbView;
-		//Z軸回りの回転角
-		float rotation = 0.0f;
-		//座標
-		Vec3 position = { 0,0,0 };
-		//ワールド行列
-		XMMATRIX matWorld;
-		//テクスチャ番号
-		UINT texNumber = 0;
-		//大きさ
-		Vec2 size = { 100,100 };
-
-		Vec2 texLeftTop = { 0,0 };
-
-		Vec2 texSize = { 0,0 };
-		//アンカーポイント
-		Vec2 anchorpoint = { 0.5f,0.5f };
-		//親
-		SpriteData *parent = nullptr;
-	};
 
 	struct VertexPosUv
 	{

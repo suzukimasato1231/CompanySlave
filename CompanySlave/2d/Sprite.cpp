@@ -47,7 +47,7 @@ void Sprite::Init()
 	SpriteAllInitialization(window_width, window_height);
 }
 
-Sprite::SpriteData Sprite::SpriteCreate(const wchar_t *filename)
+SpriteData Sprite::SpriteCreate(const wchar_t *filename)
 {
 	HRESULT result = S_FALSE;
 

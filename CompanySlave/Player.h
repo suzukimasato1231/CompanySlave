@@ -198,14 +198,14 @@ private:
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };
 
 	//プレイヤーHP
-	Sprite::SpriteData HPGraph;
-	Sprite::SpriteData HPGaugeSub;
-	Sprite::SpriteData HPGaugeMain;
+	SpriteData HPGraph;
+	SpriteData HPGaugeSub;
+	SpriteData HPGaugeMain;
 
 	//ソードゲージ
-	Sprite::SpriteData swordGraph;
-	Sprite::SpriteData swordGargeSub;
-	Sprite::SpriteData swordGargeMain;
+	SpriteData swordGraph;
+	SpriteData swordGargeSub;
+	SpriteData swordGargeMain;
 
 	//Object::ObjectData comboPolygon;
 	//Object::ObjectData  comboNumberObj;//１桁目

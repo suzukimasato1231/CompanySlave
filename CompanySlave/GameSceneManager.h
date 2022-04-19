@@ -37,8 +37,8 @@ private://定義
 	PlayScene* play = nullptr;
 	SelectScene* select = nullptr;
 	DebugText debugText;
-	Sprite::SpriteData BGGraph;
-	Sprite::SpriteData LoadUIGraph[7];
+	SpriteData BGGraph;
+	SpriteData LoadUIGraph[7];
 
 	//フェードのフラグ(tがタイトルのやつでsがシーンチェンジのやつ)
 	bool tFadeFlag = false;

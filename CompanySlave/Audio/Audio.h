@@ -4,38 +4,38 @@
 #include <fstream>
 #include <cassert>
 #include<d3dx12.h>
+//チャンクヘッダ
+struct ChunkHeader
+{
+	char id[4];
+	int32_t size;//チャンクサイズ
+};
+
+struct RiffHeader
+{
+	ChunkHeader chunk;
+	char type[4];
+};
+
+struct FormatChunk
+{
+	ChunkHeader chunk;
+	WAVEFORMATEX fmt;
+};
+
+struct SoundData
+{
+	WAVEFORMATEX wfex;
+	BYTE* pBuffer;
+	unsigned int BufferSize;
+};
+
 class Audio
 {
 public:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	ComPtr<IXAudio2>xAudio2;
 	IXAudio2MasteringVoice *masterVoice;
-
-	//チャンクヘッダ
-	struct ChunkHeader
-	{
-		char id[4];
-		int32_t size;//チャンクサイズ
-	};
-
-	struct RiffHeader
-	{
-		ChunkHeader chunk;
-		char type[4];
-	};
-
-	struct FormatChunk
-	{
-		ChunkHeader chunk;
-		WAVEFORMATEX fmt;
-	};
-
-	struct SoundData
-	{
-		WAVEFORMATEX wfex;
-		BYTE *pBuffer;
-		unsigned int BufferSize;
-	};
 
 	Audio();
 	void Init();

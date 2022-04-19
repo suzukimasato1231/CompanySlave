@@ -43,15 +43,15 @@ private:
 private://定義
 
 	//音データ
-	Audio::SoundData sound1;
-	Audio::SoundData sound2;
+	SoundData sound1;
+	SoundData sound2;
 
 	//スプライトデータ
-	Sprite::SpriteData spriteGraph;
-	Sprite::SpriteData BGGraph;
-	Sprite::SpriteData Parent;
-	Sprite::SpriteData controlGraph;
-	Sprite::SpriteData GameOverGraph;
+	SpriteData spriteGraph;
+	SpriteData BGGraph;
+	SpriteData Parent;
+	SpriteData controlGraph;
+	SpriteData GameOverGraph;
 	//オブジェクトデータ
 
 	//オブジェクト画像

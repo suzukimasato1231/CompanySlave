@@ -41,11 +41,11 @@ private:
 	Audio* audio = nullptr;
 private://定義
 	//スプライトデータ
-	Sprite::SpriteData spriteGraph;
-	Sprite::SpriteData BGGraph;
-	Sprite::SpriteData Bottan;
-	Sprite::SpriteData Number[10];
-	Sprite::SpriteData LoadUIGraph;
+	SpriteData spriteGraph;
+	SpriteData BGGraph;
+	SpriteData Bottan;
+	SpriteData Number[10];
+	SpriteData LoadUIGraph;
 
 	//オブジェクト画像
 	int graph1;

@@ -37,7 +37,7 @@ private:
 	Sprite *sprite = nullptr;
 
 	// スプライトデータの配列
-	Sprite::SpriteData sprites[maxCharCount] = {};
+	SpriteData sprites[maxCharCount] = {};
 	// スプライトデータ配列の添え字番号
 	int spriteIndex = 0;
 };
