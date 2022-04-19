@@ -9,9 +9,10 @@ PlayScene::PlayScene()
 {}
 PlayScene::~PlayScene()
 {
+	safe_delete(particleMan);
 	safe_delete(particleMan2);
+	safe_delete(particleMan3);
 	safe_delete(particleMan4);
-	safe_delete(particleMan5);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
@@ -85,11 +86,11 @@ void PlayScene::Init()
 
 	//パーティクルクラス作成
 
-	particleMan4 = ParticleManager::Create(L"Resources/particle.jpg");
-
-
-	particleMan2 = ParticleManager::Create(L"Resources/Eblood/BloodCircle.png", 1);
-
+	particleMan = ParticleManager::Create(L"Resources/Eblood/BloodCircle.png", 0);
+	particleMan2 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile1.png",0);
+	particleMan3 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile3.png",0);
+	particleMan4 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile7.png",0);
+	particleMan5 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile9.png",0);
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -159,8 +160,32 @@ void PlayScene::Update()
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
 	{
-		particleMan4->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(0.5f, 0.2f, 0.1f, 0.0f), Vec4(0.25f, 0.2f, 0.1f, 0.0f));
+
+	
+				if (mapStage->GetfloorNum()==0) {
+					particleMan2->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				}
+				if (mapStage->GetfloorNum() == 1) {
+					particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				}
+				if (mapStage->GetfloorNum() == 2) {
+					particleMan4->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				}
+				if (mapStage->GetfloorNum() == 3) {
+					particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				}
+			
 	}
+			/*	else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 2 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 3)
+				{
+					particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				}
+				else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 8 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 9)
+				{
+					particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+				}*/
+	
 
 
 	//パーティクル追加
@@ -170,36 +195,36 @@ void PlayScene::Update()
 		//ダメージを受けたら描画
 		if (enemy->GetDamegeFlag(i) == true) {
 			if (player->GetDirection() == Right) {
-				particleMan2->SetParticleDirection(0);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), 1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(0);
+				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (player->GetDirection() == Left) {
-				particleMan2->SetParticleDirection(1);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), -1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(1);
+				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (player->GetDirection() == Up) {
-				particleMan2->SetParticleDirection(2);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), 1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(2);
+				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (player->GetDirection() == Down) {
-				particleMan2->SetParticleDirection(3);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), -1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(3);
+				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (player->GetDirection() == UpRight) {
-				particleMan2->SetParticleDirection(4);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), 1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(4);
+				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (player->GetDirection() == UpLeft) {
-				particleMan2->SetParticleDirection(5);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), -1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(5);
+				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (player->GetDirection() == DownRight) {
-				particleMan2->SetParticleDirection(6);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), 1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(6);
+				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (player->GetDirection() == DownLeft) {
-				particleMan2->SetParticleDirection(7);
-				particleMan2->ParticleAdd(enemy->GetPosition(i), -1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->SetParticleDirection(7);
+				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 
 		}
@@ -224,12 +249,12 @@ void PlayScene::Update()
 		sceneFlag = true;
 	}
 
-	particleMan4->Update();
-
+	
+	particleMan->Update();
 	particleMan2->Update();
-	//パーティクル更新
-
-	//particleMan5->Update();
+	particleMan3->Update();
+	particleMan4->Update();
+	particleMan5->Update();
 
 
 
@@ -262,12 +287,12 @@ void PlayScene::Draw()
 	enemy->Draw();
 
 
-	particleMan4->Draw();
 
+	particleMan->Draw();
 	particleMan2->Draw();
-	//particleMan3->Draw();
-
-	//particleMan5->Draw();
+	particleMan3->Draw();
+	particleMan4->Draw();
+	particleMan5->Draw();
 
 	//前景描画
 	player->UIDraw();
@@ -281,7 +306,7 @@ void PlayScene::Draw()
 
 	debugText.Print(10, 120, 2, "F:kamikaihi");
 
-	debugText.Print(10, 180, 2, "%f", enemy->GetTime(1));
+	debugText.Print(10, 180, 2, "%d,%d", (int)player->GetPosition().x, (int)player->GetPosition().x);
 
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 

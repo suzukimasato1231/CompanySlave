@@ -61,14 +61,17 @@ public:
 
 	float GetSize();
 
-	int GetObjectStatus() { ObjectStatus; }
+	//floorNumのGetterとSetter
+	int GetfloorNum() { return FloorNum; }
+	int SetfloorNum(int floorNum) { return this->FloorNum = floorNum; }
 
+	
 private:
 	Object::ObjectData block;//マップのブロック
 	Object::ObjectData wallBlock;//マップの壁ブロック
 	Object::ObjectData cornerBlock;//マップの壁ブロック
 	Object::ObjectData okeBlock;//藁
-
+	ObjectStatus status;
 	//int blockGraph = 0;
 	int floor_Tile1 = 0;
 	int floor_Tile2 = 0;
@@ -85,6 +88,8 @@ private:
 	int smokeGraph = 0;//仮
 
 	int	map[MAP_HEIGHT][MAP_WIDTH];//マップチップ
+	
+	int FloorNum = 0;//パーティクル用の変数
 
 	const float mapSize = 10.0f;
 

@@ -76,11 +76,12 @@ private://定義
 	Enemy *enemy = nullptr;
 
 	//パーティクル
-
+	//敵死んだ時のパーティクル
+	ParticleManager* particleMan = nullptr;
+	//歩行パーティクル	
 	ParticleManager *particleMan2 = nullptr;
 	ParticleManager *particleMan3 = nullptr;
 	ParticleManager *particleMan4 = nullptr;
-	//敵死んだ時のパーティクル
 	ParticleManager* particleMan5 = nullptr;
 	//FBX
 	Model *model1 = nullptr;
