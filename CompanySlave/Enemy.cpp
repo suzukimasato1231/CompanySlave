@@ -29,9 +29,12 @@ void Enemy::Init()
 	Blood = Shape::CreateRect(10, 10);
 	BloodGraph = Object::Instance()->LoadTexture(L"Resources/Blood/Blood.png");
 
-	Blood2 = Shape::CreateRect(10, 10);
-	Blood2Graph[0] = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodEffect1.png");
-	Blood2Graph[1] = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodEffect2.png");
+	BloodFrount = Shape::CreateRect(10, 10);
+	BloodBack = Shape::CreateRect(10, 10);
+	Blood2Graph[0] = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodFront1.png");
+	Blood2Graph[1] = Object::Instance()->LoadTexture(L"Resources/Eblood/BloodFront2.png");
+	Blood2GraphBack[0] = Object::Instance()->LoadTexture(L"Resources/Eblood/Bloodback1.png");
+	Blood2GraphBack[1] = Object::Instance()->LoadTexture(L"Resources/Eblood/Bloodback2.png");
 
 
 	explosionOBJ = Shape::CreateRect(10, 10);
@@ -240,12 +243,17 @@ void Enemy::Draw()
 		}
 		if (eData[i]->HP <= 0)
 		{
-			if (BloodTime[i] > 30) {
-				Object::Instance()->Draw(Blood2, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
+			if (BloodTime[i] > 15) {
+			
+				Object::Instance()->Draw(BloodBack, Vec3(eData[i]->position.x, eData[i]->position.y + 5.0f, eData[i]->position.z),
+					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2GraphBack[0]);
+				Object::Instance()->Draw(BloodFrount, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
 					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2Graph[0]);
 			}
 			else if (BloodTime[i] > 0) {
-				Object::Instance()->Draw(Blood2, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
+				Object::Instance()->Draw(BloodBack, Vec3(eData[i]->position.x, eData[i]->position.y + 5.0f, eData[i]->position.z),
+					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2GraphBack[1]);
+				Object::Instance()->Draw(BloodFrount, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),
 					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2Graph[1]);
 			}
 		}
