@@ -13,6 +13,7 @@ PlayScene::~PlayScene()
 	safe_delete(particleMan2);
 	safe_delete(particleMan3);
 	safe_delete(particleMan4);
+	safe_delete(particleMan5);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
@@ -87,10 +88,10 @@ void PlayScene::Init()
 	//パーティクルクラス作成
 
 	particleMan = ParticleManager::Create(L"Resources/Eblood/BloodCircle.png", 0);
-	particleMan2 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile1.png",0);
-	particleMan3 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile3.png",0);
-	particleMan4 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile7.png",0);
-	particleMan5 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile9.png",0);
+	particleMan2 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile1.png", 0);
+	particleMan3 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile3.png", 0);
+	particleMan4 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile7.png", 0);
+	particleMan5 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile9.png", 0);
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -161,34 +162,34 @@ void PlayScene::Update()
 	if (player->GetMoveFlag() == true)
 	{
 
-	
-				if (mapStage->GetfloorNum()==0) {
-					particleMan2->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				}
-				if (mapStage->GetfloorNum() == 1) {
-					particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				}
-				if (mapStage->GetfloorNum() == 2) {
-					particleMan4->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				}
-				if (mapStage->GetfloorNum() == 3) {
-					particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				}
-			
+
+		if (mapStage->GetfloorNum() == 0) {
+			particleMan2->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+		if (mapStage->GetfloorNum() == 1) {
+			particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+		if (mapStage->GetfloorNum() == 2) {
+			particleMan4->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+		if (mapStage->GetfloorNum() == 3) {
+			particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+
 	}
-			/*	else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 2 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 3)
-				{
-					particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				}
-				else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 8 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 9)
-				{
-					particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	/*	else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 2 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 3)
+		{
+			particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+		else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 8 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 9)
+		{
+			particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
-				}*/
-	
+		}*/
 
 
-	//パーティクル追加
+
+		//パーティクル追加
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
 
@@ -249,7 +250,7 @@ void PlayScene::Update()
 		sceneFlag = true;
 	}
 
-	
+
 	particleMan->Update();
 	particleMan2->Update();
 	particleMan3->Update();

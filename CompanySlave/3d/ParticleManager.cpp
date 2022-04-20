@@ -221,7 +221,7 @@ void ParticleManager::ParticleAdd3(Vec3 Pos, float md_vel, Vec4 start_color, Vec
 		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
 		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
 			//追加
-		Add(60, pos, vel, acc, 1.0f, 1.0f, start_color, end_color);
+		Add(20, pos, vel, acc, 1.0f, 0.0f, start_color, end_color);
 	}
 }
 void ParticleManager::AddBlood(Vec3 Pos)
