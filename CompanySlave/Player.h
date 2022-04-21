@@ -77,6 +77,9 @@ private:
 
 	//エフェクト描画
 	void EffectDraw();
+
+	//プレイヤーに一番近い敵を求める
+	int  EnemyNeedNumber(Enemy* enemy);
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }

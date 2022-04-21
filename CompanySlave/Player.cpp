@@ -193,6 +193,7 @@ void Player::Update(Enemy* enemy)
 	Angle();
 
 	SwordAngle();
+
 	//移動
 	Move();
 	//プレイヤーの向きを決める
@@ -954,6 +955,24 @@ void Player::EffectDraw()
 		}
 	}
 	//AttackEffect = true;
+}
+
+int Player::EnemyNeedNumber(Enemy* enemy)
+{
+	//プレイヤーに一番近い敵を求める
+	float pNeedLength = 9999.9f;
+	int number = 0;
+	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+	{
+		//プレイヤーと敵との距離
+		float length = Vec3(position - enemy->GetPosition(i)).length();
+		if (pNeedLength > length)
+		{
+			pNeedLength = length;
+			number = i;
+		}
+	}
+	return number;
 }
 
 
