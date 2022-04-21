@@ -29,6 +29,7 @@ void Player::Init()
 	playerAttackObject[8] = Object::Instance()->CreateOBJ("playerAttack3-3");
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
+	tornadoObject = Object::Instance()->CreateOBJ("tornado");
 	swordEffectObject = Object::Instance()->CreateOBJ("Effect");
 	cursorGraph = Object::Instance()->LoadTexture(L"Resources/Effect/Line.png");
 	cursorObject = Shape::CreateRect(5, 0.5);
@@ -192,7 +193,7 @@ void Player::Draw()
 	Object::Instance()->Draw(cursorObject, { position.x,0,position.z, }, { 10,2,1 }, { 90,Rangle.y,0 }, color, cursorGraph);
 	for (int i = 0; i < 7; i++)
 	{
-		if (returnFlag == true)
+		if (returnFlag == true && haveSword[i] == false)
 		{
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
 		}
@@ -204,6 +205,16 @@ void Player::Draw()
 		{
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
 		}
+	}
+	if (returnFlag)
+	{
+		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale,tornadoScale + 0.2f,tornadoScale }, { 0,tornadoAngle,0 }, color);
+		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale,tornadoScale + 0.2f,tornadoScale }, { 0,tornadoAngle + 120,0 }, color);
+		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale,tornadoScale + 0.2f,tornadoScale }, { 0,tornadoAngle + 240,0 }, color);
+
+		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale - 0.2f,tornadoScale - 0.2f,tornadoScale - 0.2f }, { 0,tornadoAngle + 285,0 }, color);
+		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale - 0.2f,tornadoScale - 0.2f,tornadoScale - 0.2f }, { 0,tornadoAngle + 45,0 }, color);
+		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale - 0.2f,tornadoScale - 0.2f,tornadoScale - 0.2f }, { 0,tornadoAngle + 165,0 }, color);
 	}
 	EffectDraw();
 }
@@ -433,7 +444,8 @@ void Player::SwordAttack(Enemy* enemy)
 	//剣戻ってくるやつ発動
 	if (Input::Instance()->ControllerDown(ButtonLB))
 	{
-		slowValue = 0.25;
+		slowValue = 0.15;
+		slowFlag = true;
 		for (int i = 0; i < 7; i++)
 		{
 			reverseAngle[i] = 0;
@@ -445,41 +457,56 @@ void Player::SwordAttack(Enemy* enemy)
 			swordAngle[i].z = 0;
 		}
 		returnFlag = true;
+		tornadoScale = 0.5f;
 	}
 	for (int i = 0; i < 7; i++)
 	{
+		for (int k = 0; k < 25; k++)
+		{
+			if (position.x + 6.0 < havePosition.x)
+			{
+				havePosition.x -= 0.1f;
+			}
+			else if (position.x - 6.0 > havePosition.x)
+			{
+				havePosition.x += 0.1f;
+			}
+		}
+		for (int k = 0; k < 25; k++)
+		{
+			if (position.z + 6.0 < havePosition.z)
+			{
+				havePosition.z -= 0.1f;
+			}
+			else if (position.z - 6.0 > havePosition.z)
+			{
+				havePosition.z += 0.1f;
+			}
+		}
+
 		if (haveSword[i])
 		{
-			swordAngle[i].z = -100;
+			swordAngle[i].z = -90;
 			swordAngle[i].y = 51.4 * i;
 
-			for (int k = 0; k < 25; k++)
-			{
-				if (position.x + 6.0 < swordPosition[i].x)
-				{
-					swordPosition[i].x -= 0.1f;
-				}
-				else if (position.x - 6.0 > swordPosition[i].x)
-				{
-					swordPosition[i].x += 0.1f;
-				}
-			}
-			for (int k = 0; k < 25; k++)
-			{
-				if (position.z + 6.0 < swordPosition[i].z)
-				{
-					swordPosition[i].z -= 0.1f;
-				}
-				else if (position.z - 6.0 > swordPosition[i].z)
-				{
-					swordPosition[i].z += 0.1f;
-				}
-			}
+			swordPosition[i] = havePosition;
 		}
 	}
 	//剣戻ってくるやつ処理
-	if (returnFlag )
+	if (returnFlag)
 	{
+		tornadoScale -= 0.01 * slowValue;
+		tornadoAngle += 24 * slowValue;
+		if (slowFlag)
+		{
+			slowCount++;
+		}
+		if (slowCount > 10)
+		{
+			slowValue = 1;
+			slowCount = 0;
+			slowFlag = false;
+		}
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		for (int i = 0; i < 7; i++)
@@ -487,7 +514,7 @@ void Player::SwordAttack(Enemy* enemy)
 			if (!haveSword[i])
 			{
 				//自分の方向く
-				swordAngle[i].y = XMConvertToDegrees(atan2(position.x - swordPosition[i].x, position.z - swordPosition[i].z)) + 270;
+				swordAngle[i].y = XMConvertToDegrees(atan2(havePosition.x - swordPosition[i].x, havePosition.z - swordPosition[i].z)) + 270;
 				//刺さったフラグ消す
 				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 				{
@@ -495,12 +522,12 @@ void Player::SwordAttack(Enemy* enemy)
 					enemy->SetDamegeFlag(j, false);
 				}
 
-				if (Collision::CheckBox2Box(pBox, swordAttackBox[i]))
+				/*if (Collision::CheckBox2Box(pBox, swordAttackBox[i]))
 				{
 					haveSword[i] = true;
-				}
-				swordPosition[i].x += cos((swordAngle[i].y * 3.14) / -180) * 5;      // x座標を更新
-				swordPosition[i].z += sin((swordAngle[i].y * 3.14) / -180) * 5;      // z座標を更新
+				}*/
+				swordPosition[i].x += cos((swordAngle[i].y * 3.14) / -180) * swordSpeed * slowValue;      // x座標を更新
+				swordPosition[i].z += sin((swordAngle[i].y * 3.14) / -180) * swordSpeed * slowValue;      // z座標を更新
 
 				//戻ってるときの当たり判定
 				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
@@ -514,12 +541,17 @@ void Player::SwordAttack(Enemy* enemy)
 							}
 						}
 					}
+					if (Collision::CheckBox2Box(haveBox, swordAttackBox[i]) && holdingFlag[i])
+					{
+						haveSword[i] = true;
+					}
 				}
 			}
 		}
 		shotNo = 0;
 		if (haveSword[0] && haveSword[1] && haveSword[2] && haveSword[3] && haveSword[4] && haveSword[5] && haveSword[6])
 		{
+			tornadoAngle = 0;
 			shotNo = 0;
 			timeRate = 0;
 			nowTime = 0;
@@ -527,12 +559,14 @@ void Player::SwordAttack(Enemy* enemy)
 			returnFlag = false;
 		}
 	}
-	
+	haveBox.minPosition = XMVectorSet(havePosition.x - (r + 5), havePosition.y - r, havePosition.z - (r + 5), 1);
+	haveBox.maxPosition = XMVectorSet(havePosition.x + (r + 5), havePosition.y + r, havePosition.z + (r + 5), 1);
+
 	for (int i = 0; i < 7; i++)
 	{
 		//当たり判定のボックスの位置変
-		swordAttackBox[i].maxPosition = XMVectorSet(swordPosition[i].x + 2, swordPosition[i].y, swordPosition[i].z + 2, 1);
-		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 2, swordPosition[i].y, swordPosition[i].z - 2, 1);
+		swordAttackBox[i].maxPosition = XMVectorSet(swordPosition[i].x + 1.5f, swordPosition[i].y, swordPosition[i].z + 1.5f, 1);
+		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 1.5f, swordPosition[i].y, swordPosition[i].z - 1.5f, 1);
 
 		//剣の飛ぶ方向と向き替え
 		if (haveSword[i] && holdingFlag[i])
@@ -592,7 +626,7 @@ void Player::SwordAttack(Enemy* enemy)
 		//当たって取るときの当たり判定たち
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
-			if (isSwordAttack[i] == false)
+			if (isSwordAttack[i] == false && !returnFlag)
 			{
 				if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
 				{
@@ -628,17 +662,18 @@ void Player::SwordAttack(Enemy* enemy)
 
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
-			if (enemy->GetHP(j) <= 0 && isEnemySting[i][j] == true )
+			if (enemy->GetHP(j) <= 0 && isEnemySting[i][j] == true)
 			{
 				explosion[i] = true;
 				isEnemySting[i][j] = false;
 				enemy->SetExplosionFlag(j);
 			}
 
-			if(enemy->GetExplosionFlag(j) == true && isEnemySting[i][j] == true)
+			if (enemy->GetExplosionFlag(j) == true && isEnemySting[i][j] == true)
 			{
 				explosion[i] = true;
 				isEnemySting[i][j] = false;
+				explosionAngle[i] = rand() % 360;
 				enemy->SetExplosionFlag(j);
 				enemy->SetExplosionCount(j);
 			}
@@ -647,8 +682,10 @@ void Player::SwordAttack(Enemy* enemy)
 		if (explosion[i])
 		{
 			explosionCount[i]++;
-			swordPosition[i].x += cos(swordAngleVec[i] + reverseValue[i]) * 2 * slowValue;      // x座標を更新
-			swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 2 * slowValue;      // z座標を更新
+			swordAngle[i].z = 0;
+			swordAngle[i].y = -explosionAngle[i] - 180;
+			swordPosition[i].x += cos(XMConvertToRadians(explosionAngle[i])) * 2 * slowValue;      // x座標を更新
+			swordPosition[i].z += sin(XMConvertToRadians(explosionAngle[i])) * 2 * slowValue;      // z座標を更新
 			holdingFlag[i] = true;
 			if (explosionCount[i] >= 20)
 			{
