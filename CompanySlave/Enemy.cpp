@@ -71,10 +71,16 @@ void Enemy::StageInit(int stageNum)
 	switch (stageNum)
 	{
 	case 1:
-		Filepath = (char*)"Resources/map/stage01spawnMap.csv";
+		Filepath = (char*)"Resources/map/Enemy_Tile1.csv";
 		break;
 	case 2:
-		Filepath = (char*)"Resources/map/stage02spawnMap.csv";
+		Filepath = (char*)"Resources/map/Enemy_Tile2.csv";
+		break;
+	case 3:
+		Filepath = (char*)"Resources/map/Enemy_Tile3.csv";
+		break;
+	case 4:
+		Filepath = (char*)"Resources/map/Enemy_Tile4.csv";
 		break;
 	default:
 		break;

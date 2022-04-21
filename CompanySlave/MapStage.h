@@ -24,9 +24,9 @@ enum ObjectStatus
 	WALLWIDTH,      //壁の横
 	WALLHIGHT,		//壁の縦
 	WALL_LU,		//壁の接続部左上
-	WALL_LD,		//壁の接続部左下
 	WALL_RU,		//壁の接続部右上
 	WALL_RD,		//壁の接続部右下
+	WALL_LD,		//壁の接続部左下
 	OKE,			//桶のオブジェクト
 	SMOKEWALL,		//敵全部倒したら消える壁
 	NextStageBlock,//次のステージへ

@@ -45,12 +45,16 @@ void MapStage::StageInit(int stageNum)
 	switch (stageNum)
 	{
 	case 1:
-		Filepath = (char*)"Resources/map/stage01.csv";
+		Filepath = (char*)"Resources/map/Floor_Tile1.csv";
 		break;
 	case 2:
-		Filepath = (char*)"Resources/map/stage02.csv";
+		Filepath = (char*)"Resources/map/Floor_Tile2.csv";
 		break;
 	case 3:
+		Filepath = (char*)"Resources/map/Floor_Tile3.csv";
+		break;
+	case 4:
+		Filepath = (char*)"Resources/map/Floor_Tile4.csv";
 		break;
 	default:
 		break;
@@ -181,47 +185,45 @@ void MapStage::Draw(Vec3 pPos)
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
 				break;
-			case WALL_LD:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile9);
-				Object::Instance()->Draw(cornerBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
-				break;
 			case WALL_LU:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, floor_Tile9);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{0.0f,0.0f,0.0f}, color);
-				break; 
-			case WALL_RD:
-					Object::Instance()->Draw(block,
-						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-						scale, Vec3{}, color, floor_Tile9);
-					Object::Instance()->Draw(cornerBlock,
-						Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-						{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
-					break;
+					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,0.0f,0.0f }, color);
+				break;
 			case WALL_RU:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, floor_Tile9);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
+					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,90.0f,0.0f }, color);
+				break;		
+			case WALL_RD:
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, floor_Tile9);
+				Object::Instance()->Draw(cornerBlock,
+					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					{ 1.25f, 1.25f, 1.25f }, Vec3{0.0f,180.0f,0.0f}, color);
 				break;
-
-
+			case WALL_LD:
+				Object::Instance()->Draw(block,
+					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+					scale, Vec3{}, color, floor_Tile9);
+				Object::Instance()->Draw(cornerBlock,
+					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,270.0f,0.0f }, color);
+				break;
 			case OKE:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, floor_Tile9);
 				Object::Instance()->Draw(okeBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 3.0f, 3.0f, 3.0f }, Vec3{0.0f,45.0f,0.0f}, color);
+					{ 3.0f, 3.0f, 3.0f }, Vec3{ 0.0f,45.0f,0.0f }, color);
 				break;
 			case SMOKEWALL:
 				Object::Instance()->Draw(block,

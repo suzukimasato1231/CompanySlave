@@ -80,11 +80,47 @@ void Player::Init()
 
 void Player::StageInit(int stageNum)
 {
+	//仮
+	char* Filepath = (char*)"";
+	switch (stageNum)
+	{
+	case 1:
+		Filepath = (char*)"Resources/map/Enemy_Tile1.csv";
+		break;
+	case 2:
+		Filepath = (char*)"Resources/map/Enemy_Tile2.csv";
+		break;
+	case 3:
+		Filepath = (char*)"Resources/map/Enemy_Tile3.csv";
+		break;
+	case 4:
+		Filepath = (char*)"Resources/map/Enemy_Tile4.csv";
+		break;
+	default:
+		break;
+	}
+	int spawnMap[MAP_HEIGHT][MAP_WIDTH] = {};
+	const float mapSize = 10.0f;
+	LoadCSV(spawnMap, Filepath);
+
+	Vec3 memoryPos = {};
+	for (size_t j = 0; j < MAP_HEIGHT; j++)
+	{
+		for (size_t i = 0; i < MAP_WIDTH; i++)
+		{
+			if (spawnMap[j][i] == 1)
+			{
+				memoryPos = { i * mapSize, 0, j * (-mapSize) };
+				break;
+			}
+		}
+	}
+
 	//ステージごと
 	switch (stageNum)
 	{
 	case 1:
-		position = { 100.0f,0.0f,-120.0f };	//座標
+		position = memoryPos;	//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -93,7 +129,7 @@ void Player::StageInit(int stageNum)
 		direction = Right;					//プレイヤーの向き
 		break;
 	case 2:
-		position = { 100.0f,0.0f,-70.0f };	//座標
+		position = memoryPos;	//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -947,14 +983,14 @@ void Player::NormalFieldDirection()
 		break;
 	case UpLeft:
 		normalAttackBox.maxPosition = XMVectorSet(position.x, position.y, position.z + normalLength, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength, position.y, position.z , 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength, position.y, position.z, 1);
 		break;
 	case DownRight:
 		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLength, position.y, position.z, 1);
 		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z - normalLength, 1);
 		break;
 	case DownLeft:
-		normalAttackBox.maxPosition = XMVectorSet(position.x , position.y, position.z, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x, position.y, position.z, 1);
 		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength, position.y, position.z - normalLength, 1);
 		break;
 	}
