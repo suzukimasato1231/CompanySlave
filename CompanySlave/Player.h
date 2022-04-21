@@ -157,6 +157,7 @@ private:
 
 	//剣攻撃
 	Object::ObjectData swordObject;//剣
+	Object::ObjectData tornadoObject;//剣
 	int cursorGraph;	//カーソル
 	Object::ObjectData cursorObject;//カーソル
 
@@ -181,7 +182,14 @@ private:
 	std::array<bool,7>  holdingFlag = { true,true,true,true,true,true,true };
 	std::array<bool,7>  explosion = { false,false,false,false,false,false,false };
 	std::array<int,7> explosionCount = { 0,0,0,0,0,0,0 };
+	std::array<float, 7> explosionAngle = { 0,0,0,0,0,0,0 };
+	Vec3 havePosition = { 10.0f, 0.0f, 0.0f };
+	Box haveBox;
+	float tornadoAngle = 0;
+	float tornadoScale = 0.5;
 	float slowValue = 1;
+	int slowCount = 0;
+	bool slowFlag = false;
 
 	//エフェクト関係
 	bool AttackEffect = false;
