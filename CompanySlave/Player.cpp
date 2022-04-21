@@ -945,16 +945,16 @@ void Player::NormalFieldDirection()
 		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z, 1);
 		break;
 	case UpLeft:
-		normalAttackBox.maxPosition = XMVectorSet(position.x - normalLength, position.y, position.z + normalLength, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x, position.y, position.z + normalLength, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength, position.y, position.z , 1);
 		break;
 	case DownRight:
-		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLength, position.y, position.z - normalLength, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x + normalLength, position.y, position.z, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z - normalLength, 1);
 		break;
 	case DownLeft:
-		normalAttackBox.maxPosition = XMVectorSet(position.x - normalLength, position.y, position.z - normalLength, 1);
-		normalAttackBox.minPosition = XMVectorSet(position.x, position.y, position.z, 1);
+		normalAttackBox.maxPosition = XMVectorSet(position.x , position.y, position.z, 1);
+		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength, position.y, position.z - normalLength, 1);
 		break;
 	}
 }

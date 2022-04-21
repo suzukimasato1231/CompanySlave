@@ -348,6 +348,12 @@ void UpdateGamePad()
 	}
 
 	bool is_push[ButtonKind::ButtonKindMax];
+
+	for (int i = 0; i < ButtonKind::ButtonKindMax;i++)
+	{
+		is_push[i] = false;
+	}
+
 	// スティック判定
 	int unresponsive_range = 200;
 	//左スティック
@@ -401,31 +407,31 @@ void UpdateGamePad()
 	leftAngle = atan2(0 - pad_data.lX, 0 - pad_data.lY);
 	rightAngle = atan2(0 - pad_data.lRx, 0 - pad_data.lRy);
 
-	//// 十字キー判定
-	//if (pad_data.rgdwPOV[0] != 0xFFFFFFFF)
-	//{
-	//	float rad = ((pad_data.rgdwPOV[0] / 100.0f) * 180.0 / PI);
-	//	float x = sinf(rad);
-	//	float y = cosf(rad);
+	// 十字キー判定
+	if (pad_data.rgdwPOV[0] != 0xFFFFFFFF)
+	{
+		float rad = ((pad_data.rgdwPOV[0] / 100.0f) * 180.0 / PI);
+		float x = sinf(rad);
+		float y = cosf(rad);
 
-	//	if (x < -0.01f)
-	//	{
-	//		is_push[ButtonKind::LButtonLeft] = true;
-	//	}
-	//	else if (x > 0.01f)
-	//	{
-	//		is_push[ButtonKind::LButtonRight] = true;
-	//	}
+		if (x < -0.01f)
+		{
+			is_push[ButtonKind::LButtonLeft] = true;
+		}
+		else if (x > 0.01f)
+		{
+			is_push[ButtonKind::LButtonRight] = true;
+		}
 
-	//	if (y > 0.01f)
-	//	{
-	//		is_push[ButtonKind::LButtonUp] = true;
-	//	}
-	//	else if (y < -0.01f)
-	//	{
-	//		is_push[ButtonKind::LButtonDown] = true;
-	//	}
-	//}
+		if (y > 0.01f)
+		{
+			is_push[ButtonKind::LButtonUp] = true;
+		}
+		else if (y < -0.01f)
+		{
+			is_push[ButtonKind::LButtonDown] = true;
+		}
+	}
 	
 	// ボタン判定
 	for (int i = 0; i < 32; i++)
