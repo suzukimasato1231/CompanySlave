@@ -93,7 +93,7 @@ void Player::StageInit(int stageNum)
 		direction = Right;					//プレイヤーの向き
 		break;
 	case 2:
-		position = { 100.0f,0.0f,-120.0f };	//座標
+		position = { 100.0f,0.0f,-70.0f };	//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -690,6 +690,7 @@ void Player::SwordAttack(Enemy* enemy)
 			if (explosionCount[i] >= 20)
 			{
 				swordAngle[i].z = -90;
+				explosionCount[i] = 0;
 				explosion[i] = false;
 			}
 		}

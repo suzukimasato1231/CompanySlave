@@ -12,13 +12,15 @@ enum EnemyType
 
 enum spawnNo
 {
-	NOTSPAWN,
+	ONIUP = 10,
+	ONIDOWN,
 	ONILEFT,
 	ONIRIGHT,
-	ONIUP,
-	ONIDOWN,
-	ONIBOW,
-	WOLF,
+	ONIBOWUP = 20,
+	ONIBOWDOWN,
+	ONIBOWLEFT,
+	ONIBOWRIGHT,
+	WOLFLEFT = 30,
 };
 
 //ìGÇÃèÛë‘

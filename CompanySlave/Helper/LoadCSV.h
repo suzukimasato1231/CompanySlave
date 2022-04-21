@@ -1,7 +1,7 @@
 #pragma once
 
 #define MAP_WIDTH (100) //‰¡‚ÌÅ‘å–‡”
-#define MAP_HEIGHT (20)  //c‚ÌÅ‘å–‡”
+#define MAP_HEIGHT (40)  //c‚ÌÅ‘å–‡”
 
 /// <summary>
 /// CSVƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ

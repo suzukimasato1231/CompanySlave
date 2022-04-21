@@ -28,6 +28,8 @@ public:
 
 	void Init();
 
+	void Load();
+
 	void StageInit();
 
 	void Update();

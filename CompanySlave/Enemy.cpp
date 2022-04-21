@@ -74,7 +74,7 @@ void Enemy::StageInit(int stageNum)
 		Filepath = (char*)"Resources/map/stage01spawnMap.csv";
 		break;
 	case 2:
-		Filepath = (char*)"Resources/map/stage01spawnMap.csv";
+		Filepath = (char*)"Resources/map/stage02spawnMap.csv";
 		break;
 	default:
 		break;
@@ -104,7 +104,10 @@ void Enemy::StageInit(int stageNum)
 					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r, eData[num]->position.z + eData[num]->r, 1);
 				eData[num]->type = Oni;
 				break;
-			case ONIBOW:
+			case ONIBOWLEFT:
+			case ONIBOWRIGHT:
+			case ONIBOWUP:
+			case ONIBOWDOWN:
 				eData.push_back(new EnemyData);
 				num = eData.size() - 1;
 				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
@@ -116,7 +119,6 @@ void Enemy::StageInit(int stageNum)
 				eData[num]->eBox.maxPosition = XMVectorSet(
 					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r,
 					eData[num]->position.z + eData[num]->r, 1);
-				eData[num]->direction = Left;
 				eData[num]->type = OniBow;
 				break;
 			default:
@@ -127,16 +129,16 @@ void Enemy::StageInit(int stageNum)
 				switch (spawnMap[j][i] % 10)
 				{
 				case Up:
-					eData[num]->direction = Left;
+					eData[num]->direction = Up;
+					break;
+				case Down:
+					eData[num]->direction = Down;
 					break;
 				case Left:
 					eData[num]->direction = Left;
 					break;
 				case Right:
-					eData[num]->direction = Left;
-					break;
-				case Down:
-					eData[num]->direction = Left;
+					eData[num]->direction = Right;
 					break;
 				}
 			}
