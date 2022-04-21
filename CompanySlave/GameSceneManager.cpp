@@ -29,10 +29,6 @@ void GameSceneManager::Initialize(_DirectX *directX)
 	Sprite::Instance()->Init();
 	//デバックテキスト初期化
 	debugText.Initialize();
-	//FBX初期化
-	FBXObject3d::SetDevice(directX->GetDevice());
-	FBXObject3d::SetCmdList(directX->GetCmandList());
-	FBXObject3d::CreateGraphicsPipeline();
 	//図形モデル初期化
 	Shape::Init(directX->GetDevice());
 	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList());

@@ -2,7 +2,6 @@
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
-#include"FbxLoader.h"
 #include"Shape.h"
 
 PlayScene::PlayScene()
@@ -15,8 +14,6 @@ PlayScene::~PlayScene()
 	safe_delete(particleMan4);
 	safe_delete(particleMan5);
 	safe_delete(lightGroup);
-	safe_delete(fbxObject1);
-	safe_delete(model1);
 	safe_delete(mapStage);
 	safe_delete(player);
 	safe_delete(enemy);
@@ -33,8 +30,6 @@ void PlayScene::Initialize()
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//FBX初期化
-	FBXObject3d::SetCamera(camera);
 	//パーティクル初期化
 	ParticleManager::SetCamera(camera);
 	//ライトグループクラス作成
@@ -65,28 +60,13 @@ void PlayScene::Init()
 	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 
 	//スプライト画像読み込み
-	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
-
-	//3Dobjファイル読み込み。
-
-	//Shapeクラスに決まった形のオブジェクトを作成	
-
-	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
-
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
 
 	//パーティクルクラス作成
-
 	particleMan = ParticleManager::Create(L"Resources/Eblood/BloodCircle.png", 0);
 	particleMan2 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile1.png", 0);
 	particleMan3 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile3.png", 0);
@@ -162,17 +142,12 @@ void PlayScene::Update()
 
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, enemy, mapStage, stageFlag);
-
-
-	fbxObject1->Update();
 	//
 	camera->FollowCamera(player->GetPosition(), Vec3{ 0,80,-10 }, 0.0f, -15.0f);
 
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
 	{
-
-
 		if (mapStage->GetfloorNum() == 0) {
 			particleMan2->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
@@ -187,19 +162,8 @@ void PlayScene::Update()
 		}
 
 	}
-	/*	else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 2 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 3)
-		{
-			particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		}
-		else if (mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 8 || mapStage->GetMap(player->GetPosition().z, player->GetPosition().x) == 9)
-		{
-			particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		}*/
-
-
-
-		//パーティクル追加
+	//パーティクル追加
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
 
@@ -284,7 +248,6 @@ void PlayScene::Draw()
 	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
 
 	//オブジェクト
-	//Object::Instance()->Draw(BossPolygon, pPos1, Vec3{ 1.0f,1.0f,1.0f }, angle, Vec4{ 1.0f,1.0f,1.0f ,1.0f });
 
 	//マップチップの描画
 	mapStage->Draw(player->GetPosition());
@@ -296,8 +259,6 @@ void PlayScene::Draw()
 	player->Draw();
 
 	enemy->Draw();
-
-
 
 	particleMan->Draw();
 	particleMan2->Draw();

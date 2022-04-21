@@ -5,7 +5,6 @@
 #include"ParticleManager.h"
 #include"Collision.h"
 #include"Audio.h"
-#include"FBXObject3d.h"
 #include"Singleton.h"
 #include"Sprite.h"
 #include "Object.h"
@@ -47,7 +46,6 @@ private://定義
 	SoundData sound2;
 
 	//スプライトデータ
-	SpriteData spriteGraph;
 	SpriteData BGGraph;
 	SpriteData Parent;
 	SpriteData controlGraph;
@@ -55,7 +53,6 @@ private://定義
 	//オブジェクトデータ
 
 	//オブジェクト画像
-	int graph1;
 	int graph2;
 	int graph3;
 
@@ -83,9 +80,7 @@ private://定義
 	ParticleManager *particleMan3 = nullptr;
 	ParticleManager *particleMan4 = nullptr;
 	ParticleManager* particleMan5 = nullptr;
-	//FBX
-	Model *model1 = nullptr;
-	FBXObject3d *fbxObject1 = nullptr;
+	
 
 	int stageNum = 1;
 

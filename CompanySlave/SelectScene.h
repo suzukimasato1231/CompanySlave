@@ -48,7 +48,6 @@ private://定義
 	SpriteData LoadUIGraph;
 
 	//オブジェクト画像
-	int graph1;
 	int graph2;
 	int graph3;
 

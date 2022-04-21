@@ -6,7 +6,6 @@
 #include"GameSceneManager.h"
 #include"Sprite.h"
 #include"DebugText.h"
-#include"FbxLoader.h"
 const int window_width = 1280;//横幅
 const int window_height = 720;
 
@@ -23,8 +22,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	directX->Initilize();
 	//入力の初期化
 	Input::Instance()->Initialize();	
-	//FBX初期化
-	FbxLoader::GetInstance()->Initialize(directX->GetDevice());
 	//ライト静的初期化
 	LightGroup::StaticInitialize(directX->GetDevice());
 	//スプライト静的初期化
@@ -52,7 +49,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 #pragma region	//データ解放
 	safe_delete(directX);
-	FbxLoader::GetInstance()->Finalize();
 	//ゲームウィンドウの破棄
 	_Window::Instance()->TerminateGameWindow();
 

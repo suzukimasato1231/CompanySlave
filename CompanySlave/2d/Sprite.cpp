@@ -159,7 +159,7 @@ int Sprite::SpriteCommonLoadTexture(const wchar_t *filename)
 
 
 	//テクスチャバッファにデータ転送
-	result = spriteCommon.texBuff[texnumber]->WriteToSubresource(
+ 	result = spriteCommon.texBuff[texnumber]->WriteToSubresource(
 		0,
 		nullptr,//全領域へコピー
 		img->pixels,//元データアドレス

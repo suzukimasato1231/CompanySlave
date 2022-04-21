@@ -6,7 +6,6 @@
 #include"ParticleManager.h"
 #include"Collision.h"
 #include"Audio.h"
-#include"FBXObject3d.h"
 #include"Singleton.h"
 #include"Sprite.h"
 #include "Object.h"
@@ -55,7 +54,6 @@ private://定義
 	//スプライトデータ
 	SpriteData spriteGraph;
 	SpriteData BGGraph;
-	SpriteData Parent;
 
 	//オブジェクトデータ
 	Object::ObjectData Polygon;
@@ -63,7 +61,6 @@ private://定義
 	Object::ObjectData BossPolygon;
 
 	//オブジェクト画像
-	int graph1;
 	int graph2;
 	int graph3;
 
@@ -85,10 +82,6 @@ private://定義
 
 	//エネミー
 	Enemy* enemy = nullptr;
-
-	//FBX
-	Model* model1 = nullptr;
-	FBXObject3d* fbxObject1 = nullptr;
 
 	//フェード
 	float fade = 1;

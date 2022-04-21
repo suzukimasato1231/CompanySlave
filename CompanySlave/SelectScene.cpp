@@ -2,7 +2,6 @@
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
-#include"FbxLoader.h"
 #include"Shape.h"
 
 SelectScene::SelectScene()
@@ -70,7 +69,6 @@ void SelectScene::Init()
 
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
 	//3Dobjファイル読み込み。
 	//パーティクルクラス作成
 	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);

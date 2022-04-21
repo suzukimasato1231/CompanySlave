@@ -117,15 +117,6 @@
     <ClInclude Include="2d\DebugText.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
-    <ClInclude Include="3d\Model.h">
-      <Filter>Library\3d\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="3d\FBXObject3d.h">
-      <Filter>Library\3d\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="3d\FbxLoader.h">
-      <Filter>Library\3d\FBX</Filter>
-    </ClInclude>
     <ClInclude Include="3d\SpotLight.h">
       <Filter>Library\3d\Light</Filter>
     </ClInclude>
@@ -295,15 +286,6 @@
     </ClCompile>
     <ClCompile Include="Helper\Easing.cpp">
       <Filter>Library\Helper</Filter>
-    </ClCompile>
-    <ClCompile Include="3d\FbxLoader.cpp">
-      <Filter>Library\3d\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="3d\Model.cpp">
-      <Filter>Library\3d\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="3d\FBXObject3d.cpp">
-      <Filter>Library\3d\FBX</Filter>
     </ClCompile>
     <ClCompile Include="3d\Camera.cpp">
       <Filter>Library\3d\Camera</Filter>

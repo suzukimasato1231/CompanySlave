@@ -2,7 +2,6 @@
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
-#include"FbxLoader.h"
 #include"Shape.h"
 
 
@@ -11,8 +10,6 @@ Score::Score()
 Score::~Score()
 {
 	safe_delete(lightGroup);
-	safe_delete(fbxObject1);
-	safe_delete(model1);
 	safe_delete(mapStage);
 	safe_delete(player);
 	safe_delete(enemy);
@@ -33,11 +30,6 @@ void Score::Initialize(_DirectX* directX)
 	camera = Camera::Create();
 	//スプライトクラス作成
 	Sprite::Instance()->Init();
-	//FBX初期化
-	FBXObject3d::SetDevice(directX->GetDevice());
-	FBXObject3d::SetCmdList(directX->GetCmandList());
-	FBXObject3d::SetCamera(camera);
-	FBXObject3d::CreateGraphicsPipeline();
 	//図形モデル初期化
 	Shape::Init(directX->GetDevice());
 	//パーティクル初期化
@@ -79,11 +71,9 @@ void Score::Init()
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/Score.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
-	Parent = Sprite::Instance()->SpriteCreate(L"Resources/text2.jpg");
 
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	graph1 = Object::Instance()->LoadTexture(L"Resources/texture2.jpg");
 
 	//3Dobjファイル読み込み。
 	//Polygon = Object::Instance()->CreateOBJ("Boss");
@@ -91,14 +81,6 @@ void Score::Init()
 
 	//Shapeクラスに決まった形のオブジェクトを作成	
 	Polygon = Shape::CreateSquare(20.0f, 20.0f, 20.0f);
-
-	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
-
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
 
 	//パーティクルクラス作成
 	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
@@ -121,8 +103,6 @@ void Score::Init()
 void Score::Update()
 {
 
-	fbxObject1->Update();
-
 	//パーティクル更新
 	//particleMan->Update();
 	//particleMan2->Update();
@@ -142,11 +122,8 @@ void Score::Draw()
 	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
 	Sprite::Instance()->Draw(spriteGraph, Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 
-
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "Score");
-
-
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

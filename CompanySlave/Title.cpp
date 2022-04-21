@@ -2,7 +2,6 @@
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
-#include"FbxLoader.h"
 #include"Shape.h"
 
 Title::Title()
@@ -24,8 +23,6 @@ void Title::Initialize(_DirectX* directX)
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//FBXカメラ設定
-	FBXObject3d::SetCamera(camera);
 	//パーティクル初期化
 	ParticleManager::SetCamera(camera);
 	//ライトグループクラス作成

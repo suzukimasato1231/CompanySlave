@@ -6,7 +6,6 @@
 #include"ParticleManager.h"
 #include"Collision.h"
 #include"Audio.h"
-#include"FBXObject3d.h"
 #include"Singleton.h"
 #include"Sprite.h"
 #include "Object.h"
