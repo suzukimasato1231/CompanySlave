@@ -245,9 +245,12 @@ void PlayScene::Update()
 	else if (sceneChangeFlag == false) {
 		ChangeGraphPosition = { -1600.0f, 0.0f };
 	}
+	//0‚ª–³‰¹
 	audio->SetVolume(volume);
 	if (Input::Instance()->KeybordTrigger(DIK_Q)) {
-		volume-=0.1;
+		if (volume > 0) {
+			volume -= 0.1;
+		}
 	}
 
 	if (Input::Instance()->KeybordTrigger(DIK_E)) {
