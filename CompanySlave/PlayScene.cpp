@@ -99,7 +99,7 @@ void PlayScene::StageInit()
 		switch (stageNum)
 		{
 		case 1:
-			audio->SoundBGMPlayLoopWave(sound1, audio->BGM);
+			//audio->SoundBGMPlayLoopWave(sound1, audio->BGM);
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);

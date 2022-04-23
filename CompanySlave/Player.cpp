@@ -381,8 +381,16 @@ void Player::NormalAttack(Enemy* enemy)
 	if (normalAttackTime > 0)
 	{
 		normalAttackTime--;
-		position.x += attackMoveSpeed * sinRad * slowValue;
-		position.z += attackMoveSpeed * cosRad * slowValue;
+		if (normalAttackFlag[0] == false && normalAttackFlag[1] == false && normalAttackFlag[2] == false && normalAttackCount == 3)
+		{
+			position.x += attackMoveHighSpeed * sinRad * slowValue;
+			position.z += attackMoveHighSpeed * cosRad * slowValue;
+		}
+		else
+		{
+			position.x += attackMoveSpeed * sinRad * slowValue;
+			position.z += attackMoveSpeed * cosRad * slowValue;
+		}
 	}
 
 	for (int j = 0; j < 3; j++)

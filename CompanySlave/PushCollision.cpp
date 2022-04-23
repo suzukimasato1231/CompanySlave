@@ -68,11 +68,11 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 	//“G
 	for (int n = 0; n < enemy->GetEnemySize(); n++)
 	{
-		X = player->GetPosition().x / mapStage->GetSize();
-		Z = player->GetPosition().z / (-mapStage->GetSize());
-		for (int j = (X - 2); j < (X + 2); j++)
+		X = enemy->GetPosition(n).x / mapStage->GetSize();
+		Z = enemy->GetPosition(n).z / (-mapStage->GetSize());
+		for (int j = (Z - 2); j < (Z + 2); j++)
 		{
-			for (int i = (Z - 2); i < (Z + 2); i++)
+			for (int i = (X - 2); i < (X + 2); i++)
 			{
 				if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
 				{
