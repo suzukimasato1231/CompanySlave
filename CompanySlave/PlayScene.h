@@ -46,13 +46,16 @@ private://定義
 	SoundData sound2;
 
 	//スプライトデータ
+	SpriteData spriteGraph;
 	SpriteData BGGraph;
 	SpriteData Parent;
 	SpriteData controlGraph;
 	SpriteData GameOverGraph;
+	SpriteData SChangeGraph;
 	//オブジェクトデータ
 
 	//オブジェクト画像
+	int graph1;
 	int graph2;
 	int graph3;
 
@@ -64,27 +67,33 @@ private://定義
 	float timeRate = 0;//ラープ
 
 	//マップチップ
-	MapStage *mapStage = nullptr;
+	MapStage* mapStage = nullptr;
 
 	//プレイヤー
-	Player *player = nullptr;
+	Player* player = nullptr;
 
 	//エネミー
-	Enemy *enemy = nullptr;
+	Enemy* enemy = nullptr;
 
 	//パーティクル
 	//敵死んだ時のパーティクル
 	ParticleManager* particleMan = nullptr;
 	//歩行パーティクル	
-	ParticleManager *particleMan2 = nullptr;
-	ParticleManager *particleMan3 = nullptr;
-	ParticleManager *particleMan4 = nullptr;
+	ParticleManager* particleMan2 = nullptr;
+	ParticleManager* particleMan3 = nullptr;
+	ParticleManager* particleMan4 = nullptr;
 	ParticleManager* particleMan5 = nullptr;
-	
+
 
 	int stageNum = 1;
-
+	float fade = 1.0f;
 	bool stageFlag = true;
 
 	bool sceneFlag = false;
+	bool sceneChangeFlag = false;
+	Vec2 ChangeGraphPosition = { -1600.0f, 0.0f };
+	//int sceneChangeTime = 60;
+
+	float volume = 1.0f;
+
 };

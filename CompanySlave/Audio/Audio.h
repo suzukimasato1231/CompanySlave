@@ -54,9 +54,9 @@ public:
 	void Audio::SoundSEPlayWave( const SoundData &soundData);
 	//ÉãÅ[Évçƒê∂
 	void Audio::SoundBGMPlayLoopWave( const SoundData &soundData, IXAudio2SourceVoice *pSourceVoice);
-
+	
 	void Audio::SoundStop( const SoundData &soundData, IXAudio2SourceVoice *pSourceVoice);
-
+	void Audio::SetVolume(float volume);
 	IXAudio2SourceVoice *BGM = nullptr;
 };
 

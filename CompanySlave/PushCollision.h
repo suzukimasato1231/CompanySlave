@@ -13,7 +13,7 @@ public:
 	/// </summary>
 	/// <param name="player">プレイヤークラス</param>
 	/// <param name="mapStage">マップチップクラス</param>
-	static void Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage, bool &stageFlag);
+	static void Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage, bool &changeFlag);
 
 	/// <summary>
 	/// 押し戻し処理

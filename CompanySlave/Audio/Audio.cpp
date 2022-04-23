@@ -116,6 +116,7 @@ void Audio::SoundSEPlayWave( const SoundData &soundData)
 	result = pSourceVoice->SubmitSourceBuffer(&buf);
 
 
+
 	result = pSourceVoice->Start();
 }
 
@@ -135,6 +136,7 @@ void Audio::SoundBGMPlayLoopWave(const SoundData &soundData, IXAudio2SourceVoice
 	// 波形データの再生
 	result = pSourceVoice->SubmitSourceBuffer(&buf);
 
+	
 
 	result = pSourceVoice->Start();
 }
@@ -153,4 +155,9 @@ void Audio::SoundStop( const SoundData &soundData,IXAudio2SourceVoice *pSourceVo
 	result = pSourceVoice->Stop(0);
 
 
+}
+
+void Audio::SetVolume(float volume)
+{
+	masterVoice->SetVolume(volume);
 }

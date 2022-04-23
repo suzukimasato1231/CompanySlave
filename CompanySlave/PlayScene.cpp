@@ -63,6 +63,8 @@ void PlayScene::Init()
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
+	SChangeGraph = Sprite::Instance()->SpriteCreate(L"Resources/SceneChange.png");
+
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
@@ -97,6 +99,7 @@ void PlayScene::StageInit()
 		switch (stageNum)
 		{
 		case 1:
+			audio->SoundBGMPlayLoopWave(sound1, audio->BGM);
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
@@ -121,6 +124,7 @@ void PlayScene::StageInit()
 		}
 		stageNum++;
 		stageFlag = false;
+		sceneChangeFlag = false;
 	}
 }
 
@@ -135,13 +139,18 @@ void PlayScene::Update()
 	//プレイヤーの更新
 	mapStage->Update(enemy);
 
-	player->Update(enemy);
+	if (sceneChangeFlag == false) {
+		player->Update(enemy);
 
-	enemy->Update(player);
+		enemy->Update(player);
+	}
+
 
 
 	//マップチップとプレイヤーの押し戻し処理
-	PushCollision::Player2Mapchip(player, enemy, mapStage, stageFlag);
+	PushCollision::Player2Mapchip(player, enemy, mapStage, sceneChangeFlag);
+
+
 	//
 	camera->FollowCamera(player->GetPosition(), Vec3{ 0,80,-10 }, 0.0f, -15.0f);
 
@@ -224,7 +233,26 @@ void PlayScene::Update()
 		sceneFlag = true;
 	}
 
+	if (sceneChangeFlag == true) {
+		if (ChangeGraphPosition.x < 0) {
+			ChangeGraphPosition.x += 20;
+		}
+		if (ChangeGraphPosition.x >= 0) {
+		
+			stageFlag = true;
+		}
+	}
+	else if (sceneChangeFlag == false) {
+		ChangeGraphPosition = { -1600.0f, 0.0f };
+	}
+	audio->SetVolume(volume);
+	if (Input::Instance()->KeybordTrigger(DIK_Q)) {
+		volume--;
+	}
 
+	if (Input::Instance()->KeybordTrigger(DIK_E)) {
+		volume++;
+	}
 	particleMan->Update();
 	particleMan2->Update();
 	particleMan3->Update();
@@ -270,6 +298,10 @@ void PlayScene::Draw()
 	player->UIDraw();
 	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 
+	if (sceneChangeFlag == true) {
+		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
+	}
+
 #if _DEBUG
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "E:button");
@@ -278,7 +310,7 @@ void PlayScene::Draw()
 
 	debugText.Print(10, 120, 2, "F:kamikaihi");
 
-	debugText.Print(10, 180, 2, "%d,%d", (int)player->GetPosition().x, (int)player->GetPosition().x);
+	debugText.Print(10, 180, 2, "%f", volume);
 
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 

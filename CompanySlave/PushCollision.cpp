@@ -1,6 +1,6 @@
 #include"PushCollision.h"
 
-void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage, bool &stageFlag)
+void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage, bool &changeFlag)
 {
 
 	if (player == nullptr || mapStage == nullptr) { return; }
@@ -32,7 +32,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 			{
 				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
 				{
-					stageFlag = true;
+					changeFlag = true;
 				}
 			}
 			if (mapStage->GetMap(i, j) == FLOOR_TILE1|| mapStage->GetMap(i, j) == FLOOR_TILE2)
