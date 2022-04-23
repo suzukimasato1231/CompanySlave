@@ -104,9 +104,9 @@ void MapStage::Draw(Vec3 pPos)
 {
 	int X = pPos.x / mapSize;
 	int Z = pPos.z / (-mapSize);
-	for (int j = (Z - 8); j < (Z + 7); j++)
+	for (int j = (Z - 7); j < (Z + 6); j++)
 	{
-		for (int i = (X - 14); i < (X + 16); i++)
+		for (int i = (X - 11); i < (X + 13); i++)
 		{
 			if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
 			{
@@ -200,14 +200,14 @@ void MapStage::Draw(Vec3 pPos)
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,90.0f,0.0f }, color);
-				break;		
+				break;
 			case WALL_RD:
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, floor_Tile9);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{0.0f,180.0f,0.0f}, color);
+					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,180.0f,0.0f }, color);
 				break;
 			case WALL_LD:
 				Object::Instance()->Draw(block,
@@ -229,7 +229,6 @@ void MapStage::Draw(Vec3 pPos)
 				Object::Instance()->Draw(block,
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, floor_Tile1);
-				particleMan->Draw();
 				break;
 			case NextStageBlock:
 				Object::Instance()->Draw(block,
@@ -242,6 +241,24 @@ void MapStage::Draw(Vec3 pPos)
 		}
 	}
 }
+
+void MapStage::DrawParticle(Vec3 pPos)
+{
+	int X = pPos.x / mapSize;
+	int Z = pPos.z / (-mapSize);
+	for (int j = (Z - 7); j < (Z + 6); j++)
+	{
+		for (int i = (X - 11); i < (X + 13); i++)
+		{
+			if (map[j][i] == SMOKEWALL)
+			{
+				particleMan->Draw();
+			}
+		}
+	}
+}
+
+
 
 Box MapStage::GetPositionBlock(int i, int j)
 {

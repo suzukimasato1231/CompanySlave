@@ -24,7 +24,6 @@ bool ParticleManager::StaticInitialize(ID3D12Device* device, ID3D12GraphicsComma
 {
 	// nullptrチェック
 	assert(device);
-	assert(camera);
 	ParticleManager::device = device;
 
 	ParticleManager::cmdList = cmdList;

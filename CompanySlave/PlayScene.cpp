@@ -39,26 +39,9 @@ void PlayScene::Initialize()
 	//3Dオブジェクト初期化
 	Object::Instance()->SetCamera(camera);
 	Object::Instance()->SetLight(lightGroup);
-}
 
-void PlayScene::Init()
-{
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/i.wav");
-
-	// 3Dオブエクトにライトをセット
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
-	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightDir(1, XMVECTOR{ 0,-1,0,0 });
-
-	lightGroup->SetPointLightActive(0, false);
-	lightGroup->SetSpotLightActive(0, false);
-	lightGroup->SetCircleShadowActive(0, false);
-
-	//カメラ位置をセット
-	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-
 	//スプライト画像読み込み
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
@@ -74,6 +57,8 @@ void PlayScene::Init()
 	particleMan3 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile3.png", 0);
 	particleMan4 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile7.png", 0);
 	particleMan5 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile9.png", 0);
+
+
 	//マップチップの初期化
 	mapStage = new MapStage;
 	mapStage->Init();
@@ -83,12 +68,40 @@ void PlayScene::Init()
 	//敵
 	enemy = new Enemy;
 	enemy->Init();
+}
+
+void PlayScene::Init()
+{
+	// 3Dオブエクトにライトをセット
+	lightGroup->SetDirLightActive(0, true);
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
+	lightGroup->SetDirLightActive(1, true);
+	lightGroup->SetDirLightDir(1, XMVECTOR{ 0,-1,0,0 });
+
+	lightGroup->SetPointLightActive(0, false);
+	lightGroup->SetSpotLightActive(0, false);
+	lightGroup->SetCircleShadowActive(0, false);
+
+	//カメラ位置をセット
+	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 
 	//ステージ初期化
 	stageFlag = true;
 	stageNum = 1;
-	StageInit();
+	//ループ処理での初期化
+	player->LoopInit();
 
+	deadGraphPos = { 0.0f,-800.0f };
+	nowTime = 0;//ラープ
+	endTime = 5;//ラープ
+	timeRate = 0;//ラープ
+
+	fade = 1.0f;
+	stageFlag = true;
+
+	sceneFlag = false;
+	sceneChangeFlag = false;
+	ChangeGraphPosition = { -1600.0f, 0.0f };
 
 }
 
@@ -238,7 +251,7 @@ void PlayScene::Update()
 			ChangeGraphPosition.x += 20;
 		}
 		if (ChangeGraphPosition.x >= 0) {
-		
+
 			stageFlag = true;
 		}
 	}
@@ -254,7 +267,7 @@ void PlayScene::Update()
 	}
 
 	if (Input::Instance()->KeybordTrigger(DIK_E)) {
-		volume+=0.1;
+		volume += 0.1;
 	}
 	particleMan->Update();
 	particleMan2->Update();
@@ -290,6 +303,9 @@ void PlayScene::Draw()
 	player->Draw();
 
 	enemy->Draw();
+
+	//パーティクル描画
+	mapStage->DrawParticle(player->GetPosition());
 
 	particleMan->Draw();
 	particleMan2->Draw();

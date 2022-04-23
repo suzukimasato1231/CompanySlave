@@ -54,4 +54,9 @@ private://定義
 	int LoadCount2 = 0;
 	//シーンごとの初期化
 	bool initFlag = true;
+
+
+	//デバック用
+	int stageDebug = 1;
+
 };

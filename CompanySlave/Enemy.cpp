@@ -45,11 +45,6 @@ void Enemy::Init()
 	//‹|
 	oniBow.Init();
 
-	for (int i = 0; i < eNumMax; i++) {
-
-		BloodTime[i] = bloodTimeMax;
-		delayCount[i] = 0;
-	}
 }
 
 void Enemy::StageInit(int stageNum)
@@ -93,12 +88,8 @@ void Enemy::StageInit(int stageNum)
 		for (size_t i = 0; i < MAP_WIDTH; i++)
 		{
 			num = 0;
-			switch (spawnMap[j][i])
+			if (spawnMap[j][i] > 1)
 			{
-			case ONILEFT:
-			case ONIUP:
-			case ONIDOWN:
-			case ONIRIGHT:
 				eData.push_back(new EnemyData);
 				num = eData.size() - 1;
 				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
@@ -108,30 +99,26 @@ void Enemy::StageInit(int stageNum)
 					eData[num]->position.x - eData[num]->r, eData[num]->position.y - eData[num]->r, eData[num]->position.z - eData[num]->r, 1);
 				eData[num]->eBox.maxPosition = XMVectorSet(
 					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r, eData[num]->position.z + eData[num]->r, 1);
-				eData[num]->type = Oni;
-				break;
-			case ONIBOWLEFT:
-			case ONIBOWRIGHT:
-			case ONIBOWUP:
-			case ONIBOWDOWN:
-				eData.push_back(new EnemyData);
-				num = eData.size() - 1;
-				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
-				eData[num]->oldPosition = eData[eData.size() - 1]->position;
-				//À•W‚ğ‡‚í‚¹‚é
-				eData[num]->eBox.minPosition = XMVectorSet(
-					eData[num]->position.x - eData[num]->r, eData[num]->position.y - eData[num]->r,
-					eData[num]->position.z - eData[num]->r, 1);
-				eData[num]->eBox.maxPosition = XMVectorSet(
-					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r,
-					eData[num]->position.z + eData[num]->r, 1);
-				eData[num]->type = OniBow;
-				break;
-			default:
-				break;
-			}
-			if (num > 0)
-			{//“G‚ÌŒü‚«‚ğİ’è‚P‚ÌŒ…
+				//“G‚Ìí—Ş‚ğİ’è
+				switch (spawnMap[j][i])
+				{//‹ßÚ‹S
+				case ONILEFT:
+				case ONIUP:
+				case ONIDOWN:
+				case ONIRIGHT:
+					eData[num]->type = Oni;
+					break;
+					//‰“‹——£‹S
+				case ONIBOWLEFT:
+				case ONIBOWRIGHT:
+				case ONIBOWUP:
+				case ONIBOWDOWN:
+					eData[num]->type = OniBow;
+					break;
+				default:
+					break;
+				}
+				//“G‚ÌŒü‚«‚ğİ’è
 				switch (spawnMap[j][i] % 10)
 				{
 				case Up:
@@ -150,6 +137,13 @@ void Enemy::StageInit(int stageNum)
 			}
 		}
 	}
+
+	for (int i = 0; i < eNumMax; i++) {
+
+		BloodTime[i] = bloodTimeMax;
+		delayCount[i] = 0;
+	}
+
 }
 
 void Enemy::Update(Player* player)
@@ -253,7 +247,7 @@ void Enemy::Draw()
 		if (eData[i]->HP <= 0)
 		{
 			if (BloodTime[i] > 20) {
-			
+
 				Object::Instance()->Draw(BloodBack, Vec3(eData[i]->position.x, eData[i]->position.y + 5.0f, eData[i]->position.z),
 					Vec3(1, 1, 1), Vec3(60.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), Blood2GraphBack[0]);
 				Object::Instance()->Draw(BloodFrount, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f, eData[i]->position.z),

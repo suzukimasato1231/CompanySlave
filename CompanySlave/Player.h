@@ -21,6 +21,8 @@ public:
 
 	void Init();//初期化
 
+	void LoopInit();//ループでの初期化
+
 	void StageInit(int stageNum);//ステージごとの初期化
 
 	void Update(class Enemy* enemy);//更新
@@ -173,7 +175,7 @@ private:
 	std::array<bool,7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
 	std::array<int,7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間
 	std::array<bool,7> haveSword = { true,true,true,true,true,true,true };//持ってる剣
-	bool isEnemySting[7][4];//敵に刺さってるか
+	bool isEnemySting[7][20];//敵に刺さってるか
 	std::array < Box, 7> swordAttackBox;	//剣の当たり判定
 	int shotNo = 0;//どの剣か
 	bool returnFlag = false;//剣が戻る時のフラグ

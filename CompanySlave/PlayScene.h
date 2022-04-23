@@ -22,7 +22,7 @@ private:
 public:
 	PlayScene();
 	~PlayScene();
-
+	//１回だけ
 	void Initialize();
 
 	void Init();
@@ -34,11 +34,13 @@ public:
 	void Draw();
 
 	bool GetSceneFlag();
+
+	void SetStageDebug(int debugNum) { this->stageNum = debugNum; }
 private:
-	Camera *camera = nullptr;
-	LightGroup *lightGroup = nullptr;
+	Camera* camera = nullptr;
+	LightGroup* lightGroup = nullptr;
 	DebugText debugText;
-	Audio *audio = nullptr;
+	Audio* audio = nullptr;
 private://定義
 
 	//音データ

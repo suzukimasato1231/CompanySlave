@@ -54,10 +54,7 @@ void Player::Init()
 #if _DEBUG
 	attackField = Shape::CreateRect(10.0f, 20.0f);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
-
 	normalFieldOBJ = Shape::CreateRect(normalLength, normalLength);
-	//normalGraph = Object::Instance()->LoadTexture(L"Resources/kengeki.png");
-
 #endif
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
@@ -69,13 +66,12 @@ void Player::Init()
 	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect7.png");
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
-	for (int i = 0; i < 7; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			isEnemySting[i][j] = false;
-		}
-	}
+
+}
+
+void Player::LoopInit()
+{
+	HP = HPMAX;
 }
 
 void Player::StageInit(int stageNum)
@@ -120,7 +116,7 @@ void Player::StageInit(int stageNum)
 	switch (stageNum)
 	{
 	case 1:
-		position = memoryPos;	//座標
+		position = memoryPos;				//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -129,7 +125,7 @@ void Player::StageInit(int stageNum)
 		direction = Right;					//プレイヤーの向き
 		break;
 	case 2:
-		position = memoryPos;	//座標
+		position = memoryPos;				//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
 		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -175,7 +171,14 @@ void Player::StageInit(int stageNum)
 	nowTime = 0;//剣が戻る時のラープ
 	timeRate = 0;//剣が戻る時のラープ
 	srand(time(NULL));
-
+	for (int i = 0; i < 7; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			isEnemySting[i][j] = false;
+		}
+	}
+	
 	//エフェクト関係
 	AttackEffect = false;
 	effectTime = 10;
@@ -204,11 +207,6 @@ void Player::Update(Enemy* enemy)
 	SwordAttack(enemy);
 	//回避
 	Avoidance();
-
-	if (damageTime > 0)
-	{
-		damageTime--;
-	}
 
 	//座標を合わせる
 	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
@@ -461,10 +459,7 @@ void Player::NormalAttack(Enemy* enemy)
 //剣撃つ
 void Player::SwordAttack(Enemy* enemy)
 {
-	if (Input::Instance()->KeybordPush(DIK_U))
-	{
 
-	}
 	//撃つ
 	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag)
 	{
@@ -644,7 +639,6 @@ void Player::SwordAttack(Enemy* enemy)
 
 					}
 				}
-
 			}
 
 			//角度で進めてる

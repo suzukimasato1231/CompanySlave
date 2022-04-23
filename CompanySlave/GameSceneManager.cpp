@@ -12,18 +12,13 @@ GameSceneManager::~GameSceneManager()
 	safe_delete(title);
 	safe_delete(play);
 	safe_delete(select);
+	safe_delete(play);
 }
 
-void GameSceneManager::Initialize(_DirectX *directX)
+void GameSceneManager::Initialize(_DirectX* directX)
 {
 	assert(directX);
 	this->directX = directX;
-	title = new Title();
-	title->Initialize(directX);
-	select = new SelectScene();
-	select->Initialize(directX);
-	//play = new PlayScene();
-	//play->Initialize(directX);
 	ParticleManager::StaticInitialize(directX->GetDevice(), directX->GetCmandList(), window_width, window_height);
 	//スプライトクラス作成
 	Sprite::Instance()->Init();
@@ -32,12 +27,18 @@ void GameSceneManager::Initialize(_DirectX *directX)
 	//図形モデル初期化
 	Shape::Init(directX->GetDevice());
 	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList());
+
+	title = new Title();
+	title->Initialize(directX);
+	select = new SelectScene();
+	select->Initialize(directX);
+	play = new PlayScene();
+	play->Initialize();
 }
 
 void GameSceneManager::Init()
 {
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
-
 	LoadUIGraph[0] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load1.png");
 	LoadUIGraph[1] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load2.png");
 	LoadUIGraph[2] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load3.png");
@@ -48,14 +49,12 @@ void GameSceneManager::Init()
 
 	title->Init();
 	select->Init();
-	//play->Init();
 	scene = titleScene;
 }
 
 void GameSceneManager::Update()
 {
 	//タイトル
-
 	if (scene == titleScene) {
 		if (initFlag == true)
 		{
@@ -97,10 +96,7 @@ void GameSceneManager::Update()
 		{
 			//プレイ開始
 			if (select->GetStage() == 1) {
-				play = new PlayScene();
-				play->Initialize();
 				play->Init();
-
 				sFadeFlag = true;
 			}
 		}
@@ -124,7 +120,6 @@ void GameSceneManager::Update()
 		{
 			scene = titleScene;
 			initFlag = true;
-			safe_delete(play);
 		}
 	}
 	//ロード画面
@@ -145,6 +140,33 @@ void GameSceneManager::Update()
 			LoadFlag = false;
 		}
 	}
+
+
+	//デバック用リセットボタン
+	if (Input::Instance()->KeybordTrigger(DIK_R))
+	{
+		play->Init();
+
+		play->SetStageDebug(stageDebug);
+	}
+
+	if (Input::Instance()->KeybordTrigger(DIK_1))
+	{
+		stageDebug = 1;
+	}
+	if (Input::Instance()->KeybordTrigger(DIK_2))
+	{
+		stageDebug = 2;
+	}
+	if (Input::Instance()->KeybordTrigger(DIK_3))
+	{
+		stageDebug = 3;
+	}
+	if (Input::Instance()->KeybordTrigger(DIK_4))
+	{
+		stageDebug = 4;
+	}
+
 }
 
 void GameSceneManager::Draw()
@@ -169,7 +191,7 @@ void GameSceneManager::Draw()
 		debugText.Print(10, 380, 2, "%d", LoadTime);
 	}
 
-
+	debugText.Print(10, 300, 2, "DebugStageNum %d", stageDebug);
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

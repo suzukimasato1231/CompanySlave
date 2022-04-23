@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include"LoadCSV.h"
 #include"Object.h"
 #include <string>
@@ -55,6 +56,8 @@ public:
 	void Update(Enemy *enemy);
 	//描画
 	void Draw(Vec3 pPos);
+	//パーティクル描画
+	void DrawParticle(Vec3 pPos);
 
 	Box GetPositionBlock(int i, int j);
 
