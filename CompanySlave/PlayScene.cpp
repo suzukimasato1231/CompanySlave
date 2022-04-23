@@ -247,11 +247,11 @@ void PlayScene::Update()
 	}
 	audio->SetVolume(volume);
 	if (Input::Instance()->KeybordTrigger(DIK_Q)) {
-		volume--;
+		volume-=0.1;
 	}
 
 	if (Input::Instance()->KeybordTrigger(DIK_E)) {
-		volume++;
+		volume+=0.1;
 	}
 	particleMan->Update();
 	particleMan2->Update();
