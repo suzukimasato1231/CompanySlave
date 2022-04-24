@@ -43,6 +43,9 @@ private:
 
 	const float player2EnemyDislikeLength = 40.0f;	//敵がプレイヤーと距離を置く距離
 
+	const float moveSpeed = 0.3f;					//敵のスピード
+
+
 
 	const float bowSpeed = 2.0f;					//矢が飛んでいくスピード
 	const int bowTimeMax = 100;						//矢が存在している時間

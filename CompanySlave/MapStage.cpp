@@ -250,6 +250,10 @@ void MapStage::DrawParticle(Vec3 pPos)
 	{
 		for (int i = (X - 11); i < (X + 13); i++)
 		{
+			if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
+			{
+				continue;
+			}
 			if (map[j][i] == SMOKEWALL)
 			{
 				particleMan->Draw();

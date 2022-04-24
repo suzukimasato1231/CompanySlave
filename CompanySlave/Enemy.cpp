@@ -44,7 +44,8 @@ void Enemy::Init()
 	oniType.Init();
 	//‹|
 	oniBow.Init();
-
+	//˜T
+	wolf.Init();
 }
 
 void Enemy::StageInit(int stageNum)
@@ -115,6 +116,13 @@ void Enemy::StageInit(int stageNum)
 				case ONIBOWDOWN:
 					eData[num]->type = OniBow;
 					break;
+					//˜T
+				case WOLFLEFT:
+				case WOLFRIGHT:
+				case WOLFUP:
+				case WOLFDOWN:
+					eData[num]->type = WolfType;
+					break;
 				default:
 					break;
 				}
@@ -159,6 +167,9 @@ void Enemy::Update(Player* player)
 				break;
 			case OniBow:
 				UpdateBow(i, player);
+				break;
+			case WolfType:
+				UpdateWolf(i, player);
 				break;
 			}
 			NockBack(i);
@@ -226,6 +237,9 @@ void Enemy::Draw()
 				break;
 			case OniBow:
 				oniBow.Draw(eData[i]);
+				break;
+			case WolfType:
+				wolf.Draw(eData[i]);
 				break;
 			}
 			//HPƒQ[ƒW
@@ -501,6 +515,25 @@ void Enemy::UpdateBow(int i, Player* player)
 	case ATTACK:
 		eData[i]->direction = Direction(i, player);
 		oniBow.Attack(eData[i], player);
+		break;
+	}
+}
+
+void Enemy::UpdateWolf(int i, Player* player)
+{
+	switch (eData[i]->Status)
+	{
+	case NORMAL:
+		wolf.SearchPlayer(eData[i], player);
+		break;
+	case MOVE:
+		eData[i]->direction = Direction(i, player);
+		//ˆÚ“®
+		wolf.Move(eData[i], player);
+		break;
+	case ATTACK:
+		eData[i]->direction = Direction(i, player);
+		wolf.Attack(eData[i], player);
 		break;
 	}
 }

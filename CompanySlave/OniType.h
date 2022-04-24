@@ -50,6 +50,9 @@ private:
 
 	const float player2EnemyLength = 15.0f;			//プレイヤーと敵の距離
 
+	const float moveSpeed = 0.3f;					//敵のスピード
+
+
 	//デバック用
 	Object::ObjectData debugField;	//索敵
 	Object::ObjectData debugField2;//攻撃範囲

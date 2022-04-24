@@ -178,7 +178,7 @@ void Player::StageInit(int stageNum)
 			isEnemySting[i][j] = false;
 		}
 	}
-	
+
 	//エフェクト関係
 	AttackEffect = false;
 	effectTime = 10;
@@ -196,6 +196,8 @@ void Player::Update(Enemy* enemy)
 	Angle();
 
 	SwordAngle();
+	//無敵時間の更新
+	InvincivleUpdate();
 
 	//移動
 	Move();
@@ -216,9 +218,6 @@ void Player::Update(Enemy* enemy)
 
 void Player::Draw()
 {
-#if _DEBUG
-	DebugDraw();
-#endif
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
@@ -882,6 +881,8 @@ void Player::Damage()
 	//ダメージを食らう
 	damageTime = damageTimeMax;
 	HP--;
+
+	invincivleTime = invincibleTimeMax;
 }
 
 void Player::UIDraw()
@@ -899,13 +900,6 @@ void Player::UIDraw()
 	//Sprite::Instance()->Draw(swordGargeMain, Vec2(), 100.0f, 100.0f);
 	Sprite::Instance()->Draw(swordGraph, Vec2(), 100.0f, 100.0f);
 
-}
-
-void Player::DebugDraw()
-{
-#if _DEBUG
-
-#endif
 }
 
 void Player::EffectDraw()
@@ -1014,5 +1008,17 @@ void Player::NormalFieldDirection()
 		normalAttackBox.maxPosition = XMVectorSet(position.x, position.y, position.z, 1);
 		normalAttackBox.minPosition = XMVectorSet(position.x - normalLength, position.y, position.z - normalLength, 1);
 		break;
+	}
+}
+
+void Player::InvincivleUpdate()
+{
+	if (invincivleTime > 0)
+	{
+		invincivleTime--;
+		if (invincivleTime < 0)
+		{
+			invincivleTime = 0;
+		}
 	}
 }

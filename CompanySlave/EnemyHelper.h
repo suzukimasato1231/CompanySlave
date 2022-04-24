@@ -7,7 +7,7 @@ enum EnemyType
 {
 	Oni = 1,//近接鬼
 	OniBow,//弓鬼
-	Wolf//狼,
+	WolfType//狼,
 };
 
 enum spawnNo
@@ -20,7 +20,10 @@ enum spawnNo
 	ONIBOWDOWN,
 	ONIBOWLEFT,
 	ONIBOWRIGHT,
-	WOLFLEFT = 30,
+	WOLFUP = 30,
+	WOLFDOWN,
+	WOLFRIGHT,
+	WOLFLEFT
 };
 
 //敵の状態
@@ -39,7 +42,6 @@ struct EnemyData
 	Sphere eSphere;						//敵球
 	Vec3 position{ 50.0f,0.0f,0.0f };	//座標
 	Vec3 oldPosition{};					//1個前の座標
-	float speed = 0.3f;					//敵スピード
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
 	float HPMax = 15;					//最大HP
@@ -51,7 +53,7 @@ struct EnemyData
 	int attackDirection = Down;			//攻撃の向き
 	int damegeTime = 0;					//点滅時間
 	bool DamegeFlag = false;			//ダメージを受けたか
-
+	Vec3 pDirection = {};				//プレイヤーのいる方向
 	int type = 0;						//敵の種類
 	//ノックバック数値
 	int nockbackTime = 0;				//ノックバック時間

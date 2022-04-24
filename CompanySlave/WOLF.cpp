@@ -134,6 +134,10 @@ void Wolf::Move(EnemyData* oniData, Player* player)
 
 	if (length < player2EnemyLength)
 	{
+		//プレイヤーとエネミーの位置の差
+		Vec3 memoryPosition = player->GetPosition() - oniData->position;
+		//プレイヤーの向き
+		oniData->pDirection = memoryPosition.normalize();
 		oniData->Status = ATTACK;
 		oniData->attackDirection = oniData->direction;
 		oniData->StatusTime = attackMotionTime;
@@ -142,7 +146,7 @@ void Wolf::Move(EnemyData* oniData, Player* player)
 	{
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
-		oniData->position += direction * oniData->speed * slowValue;
+		oniData->position += direction * moveSpeed * slowValue;
 	}
 }
 
@@ -162,6 +166,10 @@ void Wolf::SearchPlayer(EnemyData* oniData, Player* player)
 		}
 		else
 		{//プレイヤーが攻撃距離にいたら
+			//プレイヤーとエネミーの位置の差
+			Vec3 memoryPosition = player->GetPosition() - oniData->position;
+			//プレイヤーの向き
+			oniData->pDirection = memoryPosition.normalize();
 			oniData->Status = ATTACK;
 			oniData->attackDirection = oniData->direction;
 			oniData->StatusTime = attackMotionTime;
@@ -175,19 +183,28 @@ void Wolf::Attack(EnemyData* oniData, Player* player)
 	{
 		return;
 	}
+	//攻撃を構える時間
+	if (oniData->StatusTime >= attackMotionTime - attackHoldTime)
+	{
 
-	Box attackBox = AttackField(oniData);
-	//攻撃モーション中のダメージを与えるタイミング
-	if (oniData->StatusTime == attackMotionDamege)
+	}
+	//攻撃時間中
+	else if (oniData->StatusTime >= attackMotionTime - attackHoldTime - attackMoveTime)
 	{
 		//攻撃範囲内にいたらプレイヤーにダメージ
-		if (Collision::CheckBox2Box(attackBox, player->GetBox()))
+		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 		{
 			//エフェクトのフラグTRUE
 			AttackEffect = true;
 			player->Damage();
 		}
+		//移動攻撃
+		oniData->oldPosition = oniData->position;
+		slowValue = player->GetSlow();
+		oniData->position += oniData->pDirection * attackMoveSpeed * slowValue;
 	}
+
+
 	//エフェクト関係
 	if (AttackEffect == true) {
 
@@ -249,7 +266,6 @@ void Wolf::EffectDraw(EnemyData* oniData)
 		case DownLeft:
 			AttackAngle.y = 300.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
-
 			break;
 		}
 	}
@@ -306,30 +322,3 @@ Vec3 Wolf::DirectionAngle(int direction)
 	return angle;
 }
 
-Box Wolf::AttackField(EnemyData* oniData)
-{
-	Box attackBox;
-	switch (oniData->attackDirection)
-	{
-	case Up:
-		attackBox.maxPosition = XMVectorSet(oniData->position.x + attackField.x / 2, oniData->position.y, oniData->position.z + attackField.y, 1);
-		attackBox.minPosition = XMVectorSet(oniData->position.x - attackField.x / 2, oniData->position.y, oniData->position.z, 1);
-		break;
-	case Left:
-		attackBox.maxPosition = XMVectorSet(oniData->position.x, oniData->position.y, oniData->position.z + attackField.x / 2, 1);
-		attackBox.minPosition = XMVectorSet(oniData->position.x - attackField.y, oniData->position.y, oniData->position.z - attackField.x / 2, 1);
-		break;
-	case Right:
-		attackBox.maxPosition = XMVectorSet(oniData->position.x + attackField.y, oniData->position.y, oniData->position.z + attackField.x / 2, 1);
-		attackBox.minPosition = XMVectorSet(oniData->position.x, oniData->position.y, oniData->position.z - attackField.x / 2, 1);
-		break;
-	case Down:
-		attackBox.maxPosition = XMVectorSet(oniData->position.x + attackField.x / 2, oniData->position.y, oniData->position.z, 1);
-		attackBox.minPosition = XMVectorSet(oniData->position.x - attackField.x / 2, oniData->position.y, oniData->position.z - attackField.y, 1);
-		break;
-	default:
-		attackBox.maxPosition = {};
-		attackBox.minPosition = {};
-	}
-	return attackBox;
-}

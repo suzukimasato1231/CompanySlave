@@ -74,8 +74,8 @@ private:
 	/// </summary>
 	void NormalFieldDirection();
 
-	//デバック描画
-	void DebugDraw();
+	//無敵時間の更新
+	void InvincivleUpdate();
 
 	//エフェクト描画
 	void EffectDraw();
@@ -104,6 +104,8 @@ public://取得系
 	float GetSlow() { return slowValue; }
 	float GetenemyDamegeTime(int i) { return enemyDamegeTime[i]; }
 	int GetDirection() { return direction; }
+
+	int GetInvincivleTime() { return invincivleTime; }
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
 	Object::ObjectData playerAttackObject[9];	//プレイヤー攻撃
@@ -144,8 +146,10 @@ private:
 	const int avoiCoolTimeMax = 20;	//回避クールタイム
 	int avoiCoolTime = 0;			//今回避クールタイム
 	float radDir = 0.0f;
-	bool invincibleFlag = false;	//無敵中か
 
+	//ダメージ後の無敵
+	const int invincibleTimeMax = 40;
+	int invincivleTime = 0;
 
 	//通常攻撃
 	std::array <bool, 3> normalAttackFlag = { false,false,false };	//通常攻撃可能か
@@ -167,14 +171,14 @@ private:
 	int cursorGraph;	//カーソル
 	Object::ObjectData cursorObject;//カーソル
 
-	std::array <Vec3,7> swordPosition = { Vec3{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
+	std::array <Vec3, 7> swordPosition = { Vec3{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
 	Object::ObjectData swordEffectObject;//剣
-	std::array<Vec3,7> swordAngle = { Vec3{ 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
+	std::array<Vec3, 7> swordAngle = { Vec3{ 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
 	float swordSpeed = 7;//スピード
-	std::array<float,7> swordAngleVec = { 0,0,0,0,0,0,0 };//飛ばす方向
-	std::array<bool,7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
-	std::array<int,7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間
-	std::array<bool,7> haveSword = { true,true,true,true,true,true,true };//持ってる剣
+	std::array<float, 7> swordAngleVec = { 0,0,0,0,0,0,0 };//飛ばす方向
+	std::array<bool, 7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
+	std::array<int, 7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間
+	std::array<bool, 7> haveSword = { true,true,true,true,true,true,true };//持ってる剣
 	bool isEnemySting[7][20];//敵に刺さってるか
 	std::array < Box, 7> swordAttackBox;	//剣の当たり判定
 	int shotNo = 0;//どの剣か
@@ -184,10 +188,10 @@ private:
 	float timeRate = 0;//剣が戻る時のラープ
 	std::array<float, 7> reverseValue = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
 	std::array<int, 7>  reverseAngle = { 0,0,0,0,0,0,0 };
-	std::array<bool,7>  swordStop = { false,false,false,false,false,false,false };
-	std::array<bool,7>  holdingFlag = { true,true,true,true,true,true,true };
-	std::array<bool,7>  explosion = { false,false,false,false,false,false,false };
-	std::array<int,7> explosionCount = { 0,0,0,0,0,0,0 };
+	std::array<bool, 7>  swordStop = { false,false,false,false,false,false,false };
+	std::array<bool, 7>  holdingFlag = { true,true,true,true,true,true,true };
+	std::array<bool, 7>  explosion = { false,false,false,false,false,false,false };
+	std::array<int, 7> explosionCount = { 0,0,0,0,0,0,0 };
 	std::array<float, 7> explosionAngle = { 0,0,0,0,0,0,0 };
 	Vec3 havePosition = { 10.0f, 0.0f, 0.0f };
 	Box haveBox;
@@ -207,7 +211,6 @@ private:
 
 	std::array<float, 20 >enemyDamegeTime = { 60,60,60,60,60,60,60,60,60,60 };
 
-
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };
 
@@ -221,14 +224,7 @@ private:
 	SpriteData swordGargeSub;
 	SpriteData swordGargeMain;
 
-	//Object::ObjectData comboPolygon;
-	//Object::ObjectData  comboNumberObj;//１桁目
-	//Object::ObjectData black;
-	/*int comboGraph;
-	int comboNumberGraph[10];*/
 	int yellowColor;
-
-
 
 #if _DEBUG
 	Object::ObjectData attackField;//攻撃範囲可視化

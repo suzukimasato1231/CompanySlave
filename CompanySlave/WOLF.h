@@ -28,9 +28,6 @@ private:
 	Box SearchField(EnemyData* oniData);
 	//向きによって敵の描画角度を取得
 	Vec3 DirectionAngle(int direction);
-
-	//向きによって攻撃範囲の決定
-	Box AttackField(EnemyData* oniData);
 private:
 
 	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
@@ -45,10 +42,15 @@ private:
 
 	const int moveTime = 40;						//移動時間
 
-	const int attackMotionTime = 100;				//攻撃モーションの時間
+	const int attackMotionTime = 150;				//攻撃モーションの時間
+	const int attackHoldTime = 20;					//攻撃を構える時間
+	const int attackMoveTime = 30;					//攻撃の移動時間
 	const int attackMotionDamege = 10;				//攻撃モーション中のどの時間でダメージを与えるか
 
-	const float player2EnemyLength = 15.0f;			//プレイヤーと敵の距離
+	const float player2EnemyLength = 25.0f;			//プレイヤーと敵の距離
+
+	const float moveSpeed = 0.8f;					//敵のスピード
+	const float attackMoveSpeed = 1.2f;				//攻撃を行うときのスピード
 
 	//デバック用
 	Object::ObjectData debugField;	//索敵

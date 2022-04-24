@@ -144,7 +144,7 @@ void OniType::Move(EnemyData *oniData, Player *player)
 	{
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
-		oniData->position += direction * oniData->speed * slowValue;
+		oniData->position += direction * moveSpeed * slowValue;
 	}
 }
 
@@ -180,7 +180,7 @@ void OniType::Attack(EnemyData *oniData, Player *player)
 
 	Box attackBox = AttackField(oniData);
 	//攻撃モーション中のダメージを与えるタイミング
-	if (oniData->StatusTime == attackMotionDamege)
+	if (oniData->StatusTime == attackMotionDamege&& player->GetInvincivleTime() == 0)
 	{
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(attackBox, player->GetBox()))

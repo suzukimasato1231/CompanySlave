@@ -100,7 +100,7 @@ void OniBow::Move(EnemyData* oniData, Player* player)
 	{
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
-		oniData->position -= direction * oniData->speed * slowValue;
+		oniData->position -= direction * moveSpeed * slowValue;
 		if (oniData->StatusTime <= 0)
 		{
 			oniData->Status = ATTACK;
@@ -120,7 +120,7 @@ void OniBow::Move(EnemyData* oniData, Player* player)
 	{
 		//プレイヤーの向き
 		Vec3 direction = memoryPosition.normalize();
-		oniData->position += direction * oniData->speed * slowValue;
+		oniData->position += direction * moveSpeed * slowValue;
 	}
 
 	oniData->StatusTime--;
@@ -193,7 +193,7 @@ void OniBow::BowUpdate(EnemyData* oniData, Player* player)
 		oniData->bowPos.z += sinf(oniData->bowAngle) * bowSpeed;
 
 		//攻撃範囲内にいたらプレイヤーにダメージ
-		if (OBBCollision::ColOBBs(playerOBB, bowOBB) && oniData->bowFlag == true)
+		if (OBBCollision::ColOBBs(playerOBB, bowOBB) && oniData->bowFlag == true && player->GetInvincivleTime() == 0)
 		{
 			player->Damage();
 			oniData->bowFlag = false;

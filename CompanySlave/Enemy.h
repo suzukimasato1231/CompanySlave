@@ -5,7 +5,7 @@
 #include"EnemyHelper.h"
 #include"OniType.h"
 #include"OniBow.h"
-
+#include"WOLF.h"
 
 class Enemy
 {
@@ -13,7 +13,7 @@ private:
 	//敵最大数
 	static const int eNumMax = 20;
 	//敵配列
-	std::vector<EnemyData *>eData;
+	std::vector<EnemyData*>eData;
 
 public:
 	Enemy();//コンストラクタ
@@ -25,7 +25,7 @@ public:
 	//ステージごとの初期化
 	void StageInit(int stageNum);
 
-	void Update(class Player *player);//更新
+	void Update(class Player* player);//更新
 
 	void Draw();//描画
 	//血痕描画
@@ -55,7 +55,7 @@ private:
 	//削除
 	void Delete();
 	//敵が向いている方向
-	int Direction(int i, class Player *player);
+	int Direction(int i, class Player* player);
 	//向きによって敵の描画角度を取得
 	Vec3 DirectionAngle(int direction);
 	//ノックバック処理
@@ -78,7 +78,7 @@ public://取得系
 
 	float GetEnemyR(int i) { return eData[i]->r; }
 
-	int GetTime(int i){ return BloodTime[i]; }
+	int GetTime(int i) { return BloodTime[i]; }
 
 	bool GetDamegeFlag(int i) { return eData[i]->DamegeFlag; }
 	bool SetDamegeFlag(int i, bool DamegeFlag);
@@ -94,14 +94,21 @@ public://取得系
 	const float mapSize = 10.0f;
 
 	Vec3 basePosition = { 0,0,0 };//マップチップの初期位置
-private://エネミー１
+private:
+	//エネミー１
 	class OniType oniType;
 
-	void UpdateOni(int i, class Player *player);
+	void UpdateOni(int i, class Player* player);
 	//エネミー弓
 	class OniBow oniBow;
 
-	void UpdateBow(int i, class Player *player);
+	void UpdateBow(int i, class Player* player);
+
+	//狼
+	class Wolf wolf;
+
+	void UpdateWolf(int i, class Player* player);
+
 private:
 	//ノックバックステータス
 	const float nockPower = 0.8f;
