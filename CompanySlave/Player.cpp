@@ -203,6 +203,7 @@ void Player::StageInit(int stageNum)
 	effectTime = 10;
 	effectCount = 0;
 
+	eslowTime = 120;
 }
 
 void Player::Update(Enemy* enemy)
@@ -471,6 +472,30 @@ void Player::NormalAttack(Enemy* enemy)
 			effectCount = 0;
 			AttackEffect = false;
 		}
+	}
+	eslowFlag = true;
+	for (int e = 0; e < enemy->GetEnemySize(); e++)
+	{
+		if (enemy->GetHP(e) > 0)
+		{
+			eslowFlag = false;
+		}
+
+	}
+	if (eslowFlag == true) {
+
+
+		if (eslowTime > 0) {
+			eslowTime--;
+			slowValue = 0.15;
+		}
+		else if (eslowTime <= 0) {
+			slowValue = 1;
+			eslowFlag = false;
+		}
+	}
+	else if (eslowFlag == false) {
+		slowValue = 1;
 	}
 }
 
@@ -782,7 +807,30 @@ void Player::SwordAttack(Enemy* enemy)
 			swordNotTime = 0;
 		}
 	}
+	eslowFlag = true;
+	for (int e = 0; e < enemy->GetEnemySize(); e++)
+	{
+		if (enemy->GetHP(e) > 0)
+		{
+			eslowFlag = false;
+		}
 
+	}
+	if (eslowFlag == true) {
+
+
+		if (eslowTime > 0) {
+			eslowTime--;
+			slowValue = 0.15;
+		}
+		else if (eslowTime <= 0) {
+			slowValue = 1;
+			eslowFlag = false;
+		}
+	}
+	else if (eslowFlag == false) {
+		slowValue = 1;
+	}
 }
 
 

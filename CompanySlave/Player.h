@@ -206,6 +206,8 @@ private:
 	int slowCount = 0;
 	bool slowFlag = false;
 
+	bool eslowFlag = false;
+	int eslowTime = 120;
 	//剣回収クールタイム
 	SpriteData swordUI[10];			//クールタイムの時間
 	SpriteData skillUI[2];			//クールタイムゲージ

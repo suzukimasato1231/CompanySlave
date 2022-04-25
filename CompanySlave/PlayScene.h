@@ -54,6 +54,10 @@ private://定義
 	SpriteData controlGraph;
 	SpriteData GameOverGraph;
 	SpriteData SChangeGraph;
+
+	static const int rainMax = 100;
+	SpriteData rainGraph[rainMax];
+;
 	//オブジェクトデータ
 
 	//オブジェクト画像
@@ -77,6 +81,8 @@ private://定義
 	//エネミー
 	Enemy* enemy = nullptr;
 
+
+
 	//パーティクル
 	//敵死んだ時のパーティクル
 	ParticleManager* particleMan = nullptr;
@@ -97,5 +103,7 @@ private://定義
 	//int sceneChangeTime = 60;
 
 	float volume = 1.0f;
+
+	Vec2 position = { 500,500 };
 
 };

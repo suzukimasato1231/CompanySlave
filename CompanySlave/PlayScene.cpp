@@ -47,7 +47,9 @@ void PlayScene::Initialize()
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
 	SChangeGraph = Sprite::Instance()->SpriteCreate(L"Resources/SceneChange.png");
-
+	for (int i = 0; i < rainMax; i++) {
+	rainGraph[i] = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
+	}
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
@@ -57,6 +59,7 @@ void PlayScene::Initialize()
 	particleMan3 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile3.png", 0);
 	particleMan4 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile7.png", 0);
 	particleMan5 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile9.png", 0);
+
 
 
 	//マップチップの初期化
@@ -275,7 +278,7 @@ void PlayScene::Update()
 	particleMan4->Update();
 	particleMan5->Update();
 
-
+	//rain->Update();
 
 	//ライト更新
 	lightGroup->Update();
@@ -319,6 +322,10 @@ void PlayScene::Draw()
 
 	if (sceneChangeFlag == true) {
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
+	}
+
+	for (int i = 0; i < rainMax; i++) {
+	Sprite::Instance()->Draw(rainGraph[i], position, 10, 10);
 	}
 
 #if _DEBUG
