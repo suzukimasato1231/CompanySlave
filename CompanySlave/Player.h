@@ -6,6 +6,7 @@
 #include"Sprite.h"
 #include"Direction.h"
 #include <array>
+#include<time.h>
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -82,6 +83,10 @@ private:
 
 	//プレイヤーに一番近い敵を求める
 	int  EnemyNeedNumber(Enemy* enemy);
+
+	//剣を全部もってるかどうか
+	bool IsSwordALLHave();
+
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -200,6 +205,19 @@ private:
 	float slowValue = 1;
 	int slowCount = 0;
 	bool slowFlag = false;
+
+	//剣回収クールタイム
+	SpriteData swordUI[10];			//クールタイムの時間
+	SpriteData skillUI[2];			//クールタイムゲージ
+	SpriteData swordNot;			//剣回収不発時
+	SpriteData swordRotationGraph;	//回収ゲージが溜まった時の演出
+	time_t start_time, end_time;	//時間計測
+	const float swordCoolTimeMax = 15.0f;
+	float swordCoolTime = swordCoolTimeMax;
+	bool swordCoolTimeFlag = false;
+
+	const float swordNotTimeMax = 20;//回収時不発時間
+	float swordNotTime = 0;
 
 	//エフェクト関係
 	bool AttackEffect = false;

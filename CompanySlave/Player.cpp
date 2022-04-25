@@ -67,6 +67,24 @@ void Player::Init()
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
 
+
+	swordUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/0White.png");
+	swordUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/1White.png");
+	swordUI[2] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/2White.png");
+	swordUI[3] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/3White.png");
+	swordUI[4] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/4White.png");
+	swordUI[5] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/5White.png");
+	swordUI[6] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/6White.png");
+	swordUI[7] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/7White.png");
+	swordUI[8] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/8White.png");
+	swordUI[9] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/9White.png");
+
+	skillUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/swordSkill1.png");
+	skillUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/swordSkill2.png");
+
+	swordNot = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordNot.png");
+
+	swordRotationGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordRotion.png");
 }
 
 void Player::LoopInit()
@@ -178,7 +196,8 @@ void Player::StageInit(int stageNum)
 			isEnemySting[i][j] = false;
 		}
 	}
-
+	swordCoolTimeFlag = false;
+	swordCoolTime = swordCoolTimeMax;
 	//エフェクト関係
 	AttackEffect = false;
 	effectTime = 10;
@@ -481,22 +500,31 @@ void Player::SwordAttack(Enemy* enemy)
 	}
 
 	//剣戻ってくるやつ発動
-	if (Input::Instance()->ControllerDown(ButtonLB))
+	if (Input::Instance()->ControllerDown(ButtonLB) && swordCoolTimeFlag == false)
 	{
-		slowValue = 0.15;
-		slowFlag = true;
-		for (int i = 0; i < 7; i++)
-		{
-			reverseAngle[i] = 0;
-			reverseValue[i] = 0;
-			isSwordAttack[i] = false;
-			swordStop[i] = false;
-			stingCnt[i] = 0;
-			holdingFlag[i] = true;
-			swordAngle[i].z = 0;
+		if (IsSwordALLHave() == true)
+		{//剣を全部持っていた場合
+			swordCoolTimeFlag = true;
+			start_time = time(NULL);//クールタイム計測開始
+			slowValue = 0.15;
+			slowFlag = true;
+			for (int i = 0; i < 7; i++)
+			{
+				reverseAngle[i] = 0;
+				reverseValue[i] = 0;
+				isSwordAttack[i] = false;
+				swordStop[i] = false;
+				stingCnt[i] = 0;
+				holdingFlag[i] = true;
+				swordAngle[i].z = 0;
+			}
+			returnFlag = true;
+			tornadoScale = 0.5f;
 		}
-		returnFlag = true;
-		tornadoScale = 0.5f;
+		else
+		{//回収できない時の描写の時間設定
+			swordNotTime = swordNotTimeMax;
+		}
 	}
 	for (int i = 0; i < 7; i++)
 	{
@@ -733,6 +761,28 @@ void Player::SwordAttack(Enemy* enemy)
 			}
 		}
 	}
+
+	//剣の回収クールタイム
+	if (swordCoolTimeFlag == true)
+	{
+		end_time = time(NULL);
+		swordCoolTime = end_time - start_time;//時間計算
+		if (swordCoolTime >= swordCoolTimeMax)
+		{
+			swordCoolTime = swordCoolTimeMax;
+			swordCoolTimeFlag = false;
+		}
+	}
+	//回収不発時の演出
+	if (swordNotTime > 0)
+	{
+		swordNotTime--;
+		if (swordNotTime < 0)
+		{
+			swordNotTime = 0;
+		}
+	}
+
 }
 
 
@@ -890,15 +940,40 @@ void Player::UIDraw()
 	//HP
 	if (HP > 0)
 	{
-		Sprite::Instance()->Draw(HPGaugeSub, Vec2(50.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
-		Sprite::Instance()->Draw(HPGaugeMain, Vec2(50.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeSub, Vec2(70.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeMain, Vec2(70.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
 	}
-	Sprite::Instance()->Draw(HPGraph, Vec2(0.0f, 30.0f), 500.0f, 30.0f);
+	Sprite::Instance()->Draw(HPGraph, Vec2(20.0f, 30.0f), 500.0f, 30.0f);
 
 	//ソードゲージ
-	//Sprite::Instance()->Draw(swordGargeSub, Vec2(), 100.0f, 100.0f);
-	//Sprite::Instance()->Draw(swordGargeMain, Vec2(), 100.0f, 100.0f);
-	Sprite::Instance()->Draw(swordGraph, Vec2(), 100.0f, 100.0f);
+	//溜まった時の演出
+	if (swordCoolTimeFlag == false)
+	{
+		swordRotationGraph.rotation -= 2.0f;
+		if (swordRotationGraph.rotation < -360)
+		{
+			swordRotationGraph.rotation = 0.0f;
+		}
+		Sprite::Instance()->Draw(swordRotationGraph, Vec2(65.0f, 65.0f), 120.0f, 120.0f, Vec2(0.5f, 0.5f));
+	}
+	//番号
+	int number = (int)(swordCoolTimeMax - swordCoolTime) % 10;
+	int number2 = (int)(swordCoolTimeMax - swordCoolTime) / 10;
+	Sprite::Instance()->Draw(skillUI[1], Vec2(37.0f, 30.0f), 56.0f, 70.0f);
+	Sprite::Instance()->Draw(skillUI[0], Vec2(37.0f, 30.0f + 70.0f), 56.0f, -70.0f * (swordCoolTime / swordCoolTimeMax));
+	Sprite::Instance()->Draw(swordGraph, Vec2(5.0f, 5.0f), 120.0f, 120.0f);
+	if (swordCoolTime != swordCoolTimeMax)
+	{
+		//剣クールタイム数字
+		Sprite::Instance()->Draw(swordUI[number2], Vec2(20.0f, 36.0f), 45.0f, 45.0f);
+		Sprite::Instance()->Draw(swordUI[number], Vec2(65.0f, 36.0f), 45.0f, 45.0f);
+	}
+
+	//回収不発時
+	if (swordNotTime > 0)
+	{
+		Sprite::Instance()->Draw(swordNot, Vec2(5.0f, 5.0f), 120.0f, 120.0f);
+	}
 
 }
 
@@ -969,6 +1044,20 @@ int Player::EnemyNeedNumber(Enemy* enemy)
 		}
 	}
 	return number;
+}
+
+bool Player::IsSwordALLHave()
+{
+	bool Flag = false;
+	for (int i = 0; i < 7; i++)
+	{
+		if (haveSword[i] == false)
+		{
+			Flag = true;
+			break;
+		}
+	}
+	return Flag;
 }
 
 

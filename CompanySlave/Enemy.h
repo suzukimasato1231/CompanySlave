@@ -108,7 +108,6 @@ private:
 	class Wolf wolf;
 
 	void UpdateWolf(int i, class Player* player);
-
 private:
 	//ノックバックステータス
 	const float nockPower = 0.8f;

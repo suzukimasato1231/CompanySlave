@@ -315,6 +315,10 @@ void Enemy::DamegeNormal(int i, int pAttackDirection)
 	eData[i]->damegeTime = 10;
 	eData[i]->nockbackTime = nockBackTimeMax;
 	eData[i]->nockDirection = pAttackDirection;
+	if (eData[i]->Status == NORMAL)
+	{
+		eData[i]->Status = MOVE;
+	}
 }
 
 void Enemy::DamegeThrowSword(int i)
@@ -322,6 +326,10 @@ void Enemy::DamegeThrowSword(int i)
 	eData[i]->HP -= 2;
 	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
+	if (eData[i]->Status == NORMAL)
+	{
+		eData[i]->Status = MOVE;
+	}
 }
 
 void Enemy::DamegeSword(int i)
@@ -329,6 +337,10 @@ void Enemy::DamegeSword(int i)
 	eData[i]->HP -= 2;
 	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
+	if (eData[i]->Status == NORMAL)
+	{
+		eData[i]->Status = MOVE;
+	}
 }
 
 
