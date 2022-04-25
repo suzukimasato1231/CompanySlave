@@ -208,6 +208,8 @@ private:
 
 	bool eslowFlag = false;
 	int eslowTime = 120;
+
+	bool homingFlag = true;
 	//剣回収クールタイム
 	SpriteData swordUI[10];			//クールタイムの時間
 	SpriteData skillUI[2];			//クールタイムゲージ

@@ -509,6 +509,10 @@ void Player::SwordAttack(Enemy* enemy)
 		swordPosition[shotNo] = position;
 		swordAngle[shotNo].z = 0;
 		swordAngle[shotNo] = Rangle;
+		if (homingFlag)
+		{
+			swordAngle[shotNo] = Vec3{ 0,(XMConvertToDegrees(atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - position.x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - position.z)) + 270),0 };
+		}
 		isSwordAttack[shotNo] = true;
 		haveSword[shotNo] = false;
 		holdingFlag[shotNo] = false;
@@ -667,6 +671,10 @@ void Player::SwordAttack(Enemy* enemy)
 			reverseValue[i] = 0;
 			stingCnt[i] = 0;
 			swordAngleVec[i] = (Rangle.y * 3.14) / -180;
+			if (homingFlag)
+			{
+				swordAngleVec[i] = ((XMConvertToDegrees(atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - position.x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - position.z)) + 270) * 3.14) / -180;
+			}
 			swordStop[i] = false;
 			stingCnt[i] = 0;
 
@@ -700,6 +708,13 @@ void Player::SwordAttack(Enemy* enemy)
 				swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 1 * slowValue;      // z座標を更新
 
 			}
+
+			//for (int s = 0; s < swordSpeed; s++)
+			//{
+			//	swordPosition[i].x += cos((atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - swordPosition[i].x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - swordPosition[i].z) * 3.14) / -180) * 1 * slowValue;      // x座標を更新
+			//	swordPosition[i].z += sin((atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - swordPosition[i].x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - swordPosition[i].z) * 3.14) / -180) * 1 * slowValue;      // z座標を更新
+
+			//}
 		}
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
@@ -831,6 +846,13 @@ void Player::SwordAttack(Enemy* enemy)
 	else if (eslowFlag == false) {
 		slowValue = 1;
 	}
+
+	for (int s = 0; s < swordSpeed; s++)
+	{
+		
+	}
+	//swordPosition[0].x += cos(() * 3.14) / -180) * 1 * slowValue;      // x座標を更新
+	//swordPosition[0].z += sin((atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - swordPosition[0].x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - swordPosition[0].z) * 3.14) / -180) * 1 * slowValue;      // z座標を更新
 }
 
 
