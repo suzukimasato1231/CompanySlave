@@ -35,34 +35,34 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 					changeFlag = true;
 				}
 			}
-			/*if (mapStage->GetMap(i, j) == FLOOR_TILE1|| mapStage->GetMap(i, j) == FLOOR_TILE2)
+			if (mapStage->GetMapGround(i, j) == FLOOR_TILE1|| mapStage->GetMapGround(i, j) == FLOOR_TILE2)
 			{
 				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
 				{
 					mapStage->SetfloorNum(0);
 				}
 			}
-			if (mapStage->GetMap(i, j) == FLOOR_TILE3 || mapStage->GetMap(i, j) == FLOOR_TILE4)
+			if (mapStage->GetMapGround(i, j) == FLOOR_TILE3 || mapStage->GetMapGround(i, j) == FLOOR_TILE4)
 			{
 				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
 				{
 					mapStage->SetfloorNum(1);
 				}
 			}
-			if (mapStage->GetMap(i, j) == FLOOR_TILE7 || mapStage->GetMap(i, j) == FLOOR_TILE8)
+			if (mapStage->GetMapGround(i, j) == FLOOR_TILE7 || mapStage->GetMapGround(i, j) == FLOOR_TILE8)
 			{
 				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
 				{
 					mapStage->SetfloorNum(2);
 				}
 			}
-			if (mapStage->GetMap(i, j) == FLOOR_TILE9 || mapStage->GetMap(i, j) == FLOOR_TILE10)
+			if (mapStage->GetMapGround(i, j) == FLOOR_TILE9 || mapStage->GetMapGround(i, j) == FLOOR_TILE10)
 			{
 				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
 				{
 					mapStage->SetfloorNum(3);
 				}
-			}*/
+			}
 		}
 	}
 	//“G

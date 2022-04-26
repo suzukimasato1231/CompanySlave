@@ -93,6 +93,8 @@ public:
 
 	int GetMap(int i, int j);
 
+	int GetMapGround(int i, int j) { return map[j][i]; };
+
 	float GetSize();
 
 	//floorNum‚ÌGetter‚ÆSetter
