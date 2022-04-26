@@ -58,6 +58,19 @@ float Input::GetRightAngle()
 	return controller.GetRightAngle();
 }
 
+bool Input::ConRightInput()
+{
+	bool isHit = false;
+	if (ControllerPush(RButtonUp) == false&&
+		ControllerPush(RButtonDown) == false&&
+		ControllerPush(RButtonLeft) == false&&
+		ControllerPush(RButtonRight) == false)
+	{
+		isHit = true;
+	}
+	return isHit;
+}
+
 bool Input::MousePushLeft()
 {
 	return mouse.PushMouseLeft();

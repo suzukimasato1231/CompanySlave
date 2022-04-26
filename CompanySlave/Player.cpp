@@ -212,6 +212,8 @@ void Player::Update(Enemy* enemy)
 	{
 		return;
 	}
+	//右スティックに入力があるかどうか
+	homingFlag = Input::Instance()->ConRightInput();
 
 	Angle();
 
@@ -244,7 +246,11 @@ void Player::Draw()
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
-	Object::Instance()->Draw(cursorObject, { position.x,0,position.z, }, { 10,2,1 }, { 90,Rangle.y,0 }, color, cursorGraph);
+	if (homingFlag == false)
+	{
+		Object::Instance()->Draw(cursorObject, { position.x,0,position.z, }, { 10,2,1 }, { 90,Rangle.y,0 }, color, cursorGraph);
+	}
+	
 	for (int i = 0; i < 7; i++)
 	{
 		if (returnFlag == true && haveSword[i] == false)

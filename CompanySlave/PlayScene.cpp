@@ -325,7 +325,7 @@ void PlayScene::Draw()
 	}
 
 	for (int i = 0; i < rainMax; i++) {
-	Sprite::Instance()->Draw(rainGraph[i], position, 10, 10);
+	//Sprite::Instance()->Draw(rainGraph[i], position, 10, 10);
 	}
 
 #if _DEBUG
