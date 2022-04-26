@@ -16,7 +16,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 			{
 				continue;
 			}
-			if (!(mapStage->GetMap(i, j) <= NONE))//0以外当たり判定
+			if (!(mapStage->GetMap(i, j) == NONE))//0以外当たり判定
 			{
 				//プレイヤー
 				bool HitFlag = Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j));
@@ -35,7 +35,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 					changeFlag = true;
 				}
 			}
-			if (mapStage->GetMap(i, j) == FLOOR_TILE1|| mapStage->GetMap(i, j) == FLOOR_TILE2)
+			/*if (mapStage->GetMap(i, j) == FLOOR_TILE1|| mapStage->GetMap(i, j) == FLOOR_TILE2)
 			{
 				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
 				{
@@ -62,7 +62,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 				{
 					mapStage->SetfloorNum(3);
 				}
-			}
+			}*/
 		}
 	}
 	//敵
@@ -78,7 +78,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 				{
 					continue;
 				}
-				if (!(mapStage->GetMap(i, j) <= NONE))//0以外当たり判定
+				if (!(mapStage->GetMap(i, j) == NONE))//0以外当たり判定
 				{
 					bool HitFlag = Collision::CheckBox2Box(enemy->GetBox(n), mapStage->GetPositionBlock(i, j));
 					if (HitFlag)
@@ -107,7 +107,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 				{
 					continue;
 				}
-				if (!(mapStage->GetMap(i, j) <= NONE))//0以外当たり判定
+				if (!(mapStage->GetMap(i, j) == NONE))//0以外当たり判定
 				{
 					//プレイヤー
 					bool HitFlag = Collision::CheckBox2Box(player->GetSwordBox(n), mapStage->GetPositionBlock(i, j));
@@ -137,7 +137,7 @@ Vec3 PushCollision::PushBack(Vec3 pos, Vec3 oldPos, float size, Vec3 BPos, float
 	//左上
 	if (oldLeft >= BRight && oldUp <= BDown)
 	{
-		if (!(up <= NONE))
+		if (!(up == NONE))
 		{
 		}
 		//上にブロックがなかったら上優先
@@ -149,7 +149,7 @@ Vec3 PushCollision::PushBack(Vec3 pos, Vec3 oldPos, float size, Vec3 BPos, float
 	//左下
 	else if (oldLeft >= BRight && oldDown >= BUp)
 	{
-		if (!(down <= NONE))
+		if (!(down == NONE))
 		{
 		}
 		//下にブロックがなかったら下優先
@@ -161,7 +161,7 @@ Vec3 PushCollision::PushBack(Vec3 pos, Vec3 oldPos, float size, Vec3 BPos, float
 	//右上
 	else if (oldRight <= BLeft && oldUp <= BDown)
 	{
-		if (!(up <= NONE))
+		if (!(up == NONE))
 		{
 		}
 		//上にブロックがなかったら上優先
@@ -173,7 +173,7 @@ Vec3 PushCollision::PushBack(Vec3 pos, Vec3 oldPos, float size, Vec3 BPos, float
 	//右下
 	else if (oldRight <= BLeft && oldDown >= BUp)
 	{
-		if (!(down <= NONE))
+		if (!(down == NONE))
 		{
 		}
 		//下にブロックがなかったら下優先

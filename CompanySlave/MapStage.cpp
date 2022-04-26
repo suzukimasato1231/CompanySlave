@@ -62,24 +62,33 @@ void MapStage::Init()
 void MapStage::StageInit(int stageNum)
 {
 	char* Filepath = "";
+	char* FilepathOBJ = "";
 	switch (stageNum)
 	{
 	case 1:
 		Filepath = (char*)"Resources/map/Floor_Tile1.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile1.csv";
 		break;
 	case 2:
 		Filepath = (char*)"Resources/map/Floor_Tile2.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile2.csv";
 		break;
 	case 3:
 		Filepath = (char*)"Resources/map/Floor_Tile3.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile3.csv";
 		break;
 	case 4:
 		Filepath = (char*)"Resources/map/Floor_Tile4.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile4.csv";
 		break;
 	default:
 		break;
 	}
 	LoadCSV(map, Filepath);
+
+	LoadCSV(mapOBJ, FilepathOBJ);
+
+
 	nextFlag = false;
 }
 
@@ -101,14 +110,14 @@ void MapStage::Update(Enemy* enemy)
 			//次のマップへ進める
 			if (nextFlag == false && isFlag == true)
 			{
-				if (map[y][x] == SMOKEWALL)
+				if (mapOBJ[y][x] == SMOKEWALL)
 				{
 					// 初期化
-					map[y][x] = NONE;
+					mapOBJ[y][x] = NONE;
 				}
 			}
 			//もくもく煙
-			if (map[y][x] == SMOKEWALL)
+			if (mapOBJ[y][x] == SMOKEWALL)
 			{
 				particleMan->ParticleAdd2(Vec3{ 0 + (float)x * 10,2, 0 + (float)y * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
 				particleMan->ParticleAdd2(Vec3{ 0 + (float)x * 10,2, 0 + (float)y * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
@@ -283,82 +292,58 @@ void MapStage::Draw(Vec3 pPos)
 					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
 					scale, Vec3{}, color, floor_Tile[29]);
 				break;
+			}
+			switch (mapOBJ[j][i])
+			{
 			case NONE:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[1]);
 				break;
 			case WALLWIDTH:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
 				Object::Instance()->Draw(wallBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0,90,0 }, color);
 				break;
 			case WALLHIGHT:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
 				Object::Instance()->Draw(wallBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
 				break;
 			case WALL_LU:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,0.0f,0.0f }, color);
 				break;
 			case WALL_RU:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,90.0f,0.0f }, color);
 				break;
 			case WALL_RD:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,180.0f,0.0f }, color);
 				break;
 			case WALL_LD:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
 				Object::Instance()->Draw(cornerBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,270.0f,0.0f }, color);
 				break;
 			case OKE:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
 				Object::Instance()->Draw(okeBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
 					{ 3.0f, 3.0f, 3.0f }, Vec3{ 0.0f,45.0f,0.0f }, color);
 				break;
 			case SMOKEWALL:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[0]);
 				break;
 			case NextStageBlock:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[0]);
 				break;
 			default:
 				break;
+
 			}
 		}
 	}
+
+
 }
 
 void MapStage::DrawParticle(Vec3 pPos)
@@ -373,7 +358,7 @@ void MapStage::DrawParticle(Vec3 pPos)
 			{
 				continue;
 			}
-			if (map[j][i] == SMOKEWALL)
+			if (mapOBJ[j][i] == SMOKEWALL)
 			{
 				particleMan->Draw();
 			}
@@ -408,7 +393,7 @@ Vec3 MapStage::GetPosition(int i, int j)
 
 int MapStage::GetMap(int i, int j)
 {
-	return map[j][i];
+	return mapOBJ[j][i];
 }
 
 float MapStage::GetSize()

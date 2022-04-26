@@ -44,6 +44,10 @@ enum ObjectStatus
 	FLOOR_TILE28,
 	FLOOR_TILE29,
 	FLOOR_TILE30,
+};
+
+enum OBJPOSITION
+{
 	NONE,			//空
 	WALLWIDTH,      //壁の横
 	WALLHIGHT,		//壁の縦
@@ -55,6 +59,7 @@ enum ObjectStatus
 	SMOKEWALL,		//敵全部倒したら消える壁
 	NextStageBlock,//次のステージへ
 };
+
 /// <summary>
 /// マップ・ステージ
 /// </summary>
@@ -108,6 +113,8 @@ private:
 	int smokeGraph = 0;//仮
 
 	int	map[MAP_HEIGHT][MAP_WIDTH];//マップチップ
+
+	int mapOBJ[MAP_HEIGHT][MAP_WIDTH];//マップチップOBJ
 	
 	int FloorNum = 0;//パーティクル用の変数
 
