@@ -86,7 +86,6 @@ private:
 
 	//剣を全部もってるかどうか
 	bool IsSwordALLHave();
-
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -248,6 +247,8 @@ private:
 
 	int yellowColor;
 
+	//右スティックを入力したか
+	bool inputStickFlag = false;
 #if _DEBUG
 	Object::ObjectData attackField;//攻撃範囲可視化
 	int redColor;

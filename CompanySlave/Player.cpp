@@ -849,7 +849,7 @@ void Player::SwordAttack(Enemy* enemy)
 
 	for (int s = 0; s < swordSpeed; s++)
 	{
-		
+
 	}
 	//swordPosition[0].x += cos(() * 3.14) / -180) * 1 * slowValue;      // x座標を更新
 	//swordPosition[0].z += sin((atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - swordPosition[0].x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - swordPosition[0].z) * 3.14) / -180) * 1 * slowValue;      // z座標を更新
@@ -1105,12 +1105,15 @@ int Player::EnemyNeedNumber(Enemy* enemy)
 	int number = 0;
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
-		//プレイヤーと敵との距離
-		float length = Vec3(position - enemy->GetPosition(i)).length();
-		if (pNeedLength > length)
+		if (enemy->GetHP(i) > 0)
 		{
-			pNeedLength = length;
-			number = i;
+			//プレイヤーと敵との距離
+			float length = Vec3(position - enemy->GetPosition(i)).length();
+			if (pNeedLength > length)
+			{
+				pNeedLength = length;
+				number = i;
+			}
 		}
 	}
 	return number;
@@ -1129,7 +1132,6 @@ bool Player::IsSwordALLHave()
 	}
 	return Flag;
 }
-
 
 void Player::NormalFieldDirection()
 {

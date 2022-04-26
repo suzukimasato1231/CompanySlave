@@ -9,6 +9,9 @@
 /// <summary>
 /// ブロックの種類
 /// </summary>
+/// <summary>
+/// ブロックの種類
+/// </summary>
 enum ObjectStatus
 {
 	FLOOR_TILE1,	//石タイル１
@@ -20,7 +23,27 @@ enum ObjectStatus
 	FLOOR_TILE7,
 	FLOOR_TILE8,
 	FLOOR_TILE9,
-	FLOOR_TILE10,	
+	FLOOR_TILE10,
+	FLOOR_TILE11,
+	FLOOR_TILE12,
+	FLOOR_TILE13,
+	FLOOR_TILE14,
+	FLOOR_TILE15,
+	FLOOR_TILE16,
+	FLOOR_TILE17,
+	FLOOR_TILE18,
+	FLOOR_TILE19,
+	FLOOR_TILE20,
+	FLOOR_TILE21,
+	FLOOR_TILE22,
+	FLOOR_TILE23,
+	FLOOR_TILE24,
+	FLOOR_TILE25,
+	FLOOR_TILE26,
+	FLOOR_TILE27,
+	FLOOR_TILE28,
+	FLOOR_TILE29,
+	FLOOR_TILE30,
 	NONE,			//空
 	WALLWIDTH,      //壁の横
 	WALLHIGHT,		//壁の縦
@@ -79,16 +102,7 @@ private:
 	Object::ObjectData okeBlock;//藁
 	ObjectStatus status;
 	//int blockGraph = 0;
-	int floor_Tile1 = 0;
-	int floor_Tile2 = 0;
-	int floor_Tile3 = 0;
-	int floor_Tile4 = 0;
-	int floor_Tile5 = 0;
-	int floor_Tile6 = 0;
-	int floor_Tile7 = 0;
-	int floor_Tile8 = 0;
-	int floor_Tile9 = 0;
-	int floor_Tile10 = 0;
+	int floor_Tile[30] = {};
 
 	int nextGraph = 0;//仮
 	int smokeGraph = 0;//仮
