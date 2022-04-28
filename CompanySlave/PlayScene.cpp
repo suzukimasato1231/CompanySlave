@@ -3,6 +3,7 @@
 #include<iomanip>
 #include "Input.h"
 #include"Shape.h"
+#include<time.h>
 
 PlayScene::PlayScene()
 {}
@@ -47,9 +48,12 @@ void PlayScene::Initialize()
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
 	SChangeGraph = Sprite::Instance()->SpriteCreate(L"Resources/SceneChange.png");
+
 	for (int i = 0; i < rainMax; i++) {
-	rainGraph[i] = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
+		RainOBJ[i] = Shape::CreateRect(1, 1);
 	}
+	rainGraph = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
+
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
@@ -105,7 +109,16 @@ void PlayScene::Init()
 	sceneFlag = false;
 	sceneChangeFlag = false;
 	ChangeGraphPosition = { -1600.0f, 0.0f };
+	srand(time(NULL));
 
+	for (int i = 0; i < rainMax; i++) {
+		//xとzはランダムな位置にしている
+		//サイズもランダムにしている
+		position[i].x = (float)rand() / 20;
+		position[i].z = (float)rand() / -100;
+		position[i].y = 100;
+		s[i] = (float)rand() / 1000;
+	}
 }
 
 void PlayScene::StageInit()
@@ -261,6 +274,7 @@ void PlayScene::Update()
 	else if (sceneChangeFlag == false) {
 		ChangeGraphPosition = { -1600.0f, 0.0f };
 	}
+
 	//0が無音
 	audio->SetVolume(volume);
 	if (Input::Instance()->KeybordTrigger(DIK_Q)) {
@@ -272,18 +286,35 @@ void PlayScene::Update()
 	if (Input::Instance()->KeybordTrigger(DIK_E)) {
 		volume += 0.1;
 	}
+	
+	rainSlow = player->GetSlow();
+	for (int i = 0; i < rainMax; i++) {
+	
+		if (position[i].y > 0) {
+			//雨が地面につくまで降る
+			position[i].y = position[i].y - g * rainSlow;
+		}
+		if (position[i].y <= 0) {
+			//地面についたらまた上に行く
+			//xとzはランダムな位置にしている
+			//サイズもランダムにしている
+			position[i].y = 100;
+			position[i].x = (float)rand() / 20;
+			position[i].z = (float)rand() / -100;
+			s[i] = (float)rand() / 1000;
+		}
+			
+	}
+
 	particleMan->Update();
 	particleMan2->Update();
 	particleMan3->Update();
 	particleMan4->Update();
 	particleMan5->Update();
 
-	//rain->Update();
-
 	//ライト更新
 	lightGroup->Update();
 }
-
 void PlayScene::Draw()
 {
 	//オブジェクト描画前処理
@@ -319,6 +350,9 @@ void PlayScene::Draw()
 	enemy->DrawBlood();
 
 	//前景描画
+	for (int i = 0; i < rainMax; i++) {
+		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 });
+	}
 	player->UIDraw();
 	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 

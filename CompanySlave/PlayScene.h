@@ -12,6 +12,7 @@
 #include"Player.h"
 #include"PushCollision.h"
 #include"Enemy.h"
+#include<array>
 
 extern const int window_width;
 extern const int window_height;
@@ -55,9 +56,7 @@ private://定義
 	SpriteData GameOverGraph;
 	SpriteData SChangeGraph;
 
-	static const int rainMax = 100;
-	SpriteData rainGraph[rainMax];
-;
+
 	//オブジェクトデータ
 
 	//オブジェクト画像
@@ -93,6 +92,7 @@ private://定義
 	ParticleManager* particleMan5 = nullptr;
 
 
+
 	int stageNum = 1;
 	float fade = 1.0f;
 	bool stageFlag = true;
@@ -103,7 +103,16 @@ private://定義
 	//int sceneChangeTime = 60;
 
 	float volume = 1.0f;
+	
+	//雨関係
+	static const int rainMax = 500;//OBJの個数
+	std::array<Object::ObjectData, rainMax > RainOBJ;
+	int rainGraph;//雨用のテクスチャ
+	std::array<Vec3, rainMax > position;//ポジション
+	std::array<float, rainMax > s;//サイズ
+	
 
-	Vec2 position = { 500,500 };
-
+	float v = 0;//速度
+	float g = 9.8f;//重力
+	float rainSlow = 1.0f;//雨のスロー
 };
