@@ -12,28 +12,25 @@
 /// </summary>
 class Player
 {
-private:
-
 public:
+	Player();						//コンストラクタ
 
-	Player();//コンストラクタ
+	~Player();						//ですコンストラクタ
 
-	~Player();//ですコンストラクタ
+	void Init();					//初期化
 
-	void Init();//初期化
+	void LoopInit();				//ループでの初期化
 
-	void LoopInit();//ループでの初期化
-
-	void StageInit(int stageNum);//ステージごとの初期化
+	void StageInit(int stageNum);	//ステージごとの初期化
 
 	void Update(class Enemy* enemy);//更新
 
-	void Draw();//描画
-
+	void Draw();					//描画
+	//プレイヤーの位置を設定
 	void SetPosition(Vec3 position) { this->position = position; }
-
+	//剣の位置を設定
 	void SetSwordAttack(int i) { this->isSwordAttack[i] = false; }
-
+	
 	void SetSwordReverse(float reverseValue, int i) { this->reverseValue[i] = reverseValue; }
 
 	void SetSwordAngle(Vec3 swordAngle, int i) { this->swordAngle[i] = swordAngle; }
@@ -244,8 +241,6 @@ private:
 	SpriteData swordGraph;
 	SpriteData swordGargeSub;
 	SpriteData swordGargeMain;
-
-	int yellowColor;
 
 	//右スティックを入力したか
 	bool inputStickFlag = false;

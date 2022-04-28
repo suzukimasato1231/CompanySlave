@@ -33,6 +33,17 @@ bool Input::KeybordTrigger(BYTE keyNumber)
 	return keybord.TriggerKey(keyNumber);
 }
 
+bool Input::KeybordInputArrow()
+{
+	bool Flag = false;
+	if (KeybordPush(DIK_UP) || KeybordPush(DIK_DOWN)
+		|| KeybordPush(DIK_LEFT) || KeybordPush(DIK_RIGHT))
+	{
+		Flag = true;
+	}
+	return Flag;
+}
+
 bool Input::ControllerPush(ButtonKind button)
 {
 	return controller.IsButtonPush(button);
@@ -61,10 +72,10 @@ float Input::GetRightAngle()
 bool Input::ConRightInput()
 {
 	bool isHit = false;
-	if (ControllerPush(RButtonUp) == false&&
-		ControllerPush(RButtonDown) == false&&
-		ControllerPush(RButtonLeft) == false&&
-		ControllerPush(RButtonRight) == false)
+	if (ControllerPush(RButtonUp) == true ||
+		ControllerPush(RButtonDown) == true ||
+		ControllerPush(RButtonLeft) == true ||
+		ControllerPush(RButtonRight) == true)
 	{
 		isHit = true;
 	}

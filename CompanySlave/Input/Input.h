@@ -30,6 +30,8 @@ public://キーボード
 	bool KeybordPush(BYTE keyNumber);
 	//押した瞬間
 	bool KeybordTrigger(BYTE keyNumber);
+	//矢印キーのいずれかを押したかどうか
+	bool KeybordInputArrow();
 public://ゲームパッド
 
 	//@brief ボタンが押されているかの判定関数

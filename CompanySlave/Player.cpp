@@ -40,9 +40,6 @@ void Player::Init()
 	pSphere.center = XMVectorSet(0, 2, 0, 1);
 	oldPosition = position;
 
-
-	yellowColor = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
-
 	//プレイヤーHP
 	HPGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/HPGauge.png");
 	HPGaugeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
@@ -165,10 +162,8 @@ void Player::StageInit(int stageNum)
 	avoidanceTime = 0;					//今回避時間
 	avoiCoolTime = 0;					//今回避クールタイム
 	//通常攻撃
-	for (int i = 0; i < 3; i++)
-	{
-		normalAttackFlag[i] = false;				//通常攻撃可能か
-	}
+	normalAttackFlag.fill(false);//通常攻撃可能か
+
 	normalAttackTime = 0;							//攻撃と攻撃の間
 	normalDirection = 0;							//攻撃の向き
 	normalAttackCount = 0;							//通常攻撃の何回目か
@@ -212,8 +207,14 @@ void Player::Update(Enemy* enemy)
 	{
 		return;
 	}
+
 	//右スティックに入力があるかどうか
-	homingFlag = Input::Instance()->ConRightInput();
+	if (!Input::Instance()->ConRightInput()) {
+		homingFlag = true;
+	}
+	else {
+		homingFlag = false;
+	}
 
 	Angle();
 
@@ -262,7 +263,7 @@ void Player::Draw()
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
 	}
 	if (homingFlag == false)
-	{
+	{//剣の飛ぶ方向の描画
 		Object::Instance()->Draw(cursorObject, { position.x,0,position.z, }, { 10,2,1 }, { 90,Rangle.y,0 }, color, cursorGraph);
 	}
 
@@ -309,8 +310,7 @@ void Player::Move()
 		walkNo = 0;
 	}
 	//移動
-	if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->KeybordPush(DIK_LEFT)
-		|| Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->KeybordPush(DIK_DOWN)
+	if (Input::Instance()->KeybordInputArrow()
 		|| Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft)
 		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
@@ -391,7 +391,6 @@ void Player::NormalAttack(Enemy* enemy)
 	if (normalAttackFlag[1] && attackNo >= 6) { attackNo = 5; }
 	if (normalAttackFlag[0] && attackNo >= 3) { attackNo = 2; }
 
-
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
 	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0)
 	{
@@ -440,9 +439,7 @@ void Player::NormalAttack(Enemy* enemy)
 					if (Collision::CheckSphere2Box(enemy->GetSphere(i), normalAttackBox))
 					{
 						enemy->DamegeNormal(i, direction);
-
 						enemy->SetDamegeFlag(i, true);
-
 					}
 				}
 			}
@@ -498,11 +495,8 @@ void Player::NormalAttack(Enemy* enemy)
 		{
 			eslowFlag = false;
 		}
-
 	}
 	if (eslowFlag == true) {
-
-
 		if (eslowTime > 0) {
 			eslowTime--;
 			slowValue = 0.15;
@@ -692,8 +686,6 @@ void Player::SwordAttack(Enemy* enemy)
 			}
 			swordStop[i] = false;
 			stingCnt[i] = 0;
-
-			//swordPosition[i] = position;
 		}
 
 		//攻撃(飛んでから止まるまで)
@@ -702,34 +694,22 @@ void Player::SwordAttack(Enemy* enemy)
 			//敵との当たり判定
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				if (enemy->GetHP(j) > 0) {
-					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0)
-					{
-						isSwordAttack[i] = false;
-						isEnemySting[i][j] = true;
-						enemy->DamegeThrowSword(j);
-						if (enemyDamegeTime[j] > 0) {
-							enemy->SetDamegeFlag(j, true);
-						}
-
+				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0)
+				{
+					isSwordAttack[i] = false;
+					isEnemySting[i][j] = true;
+					enemy->DamegeThrowSword(j);
+					if (enemyDamegeTime[j] > 0) {
+						enemy->SetDamegeFlag(j, true);
 					}
 				}
 			}
-
 			//角度で進めてる
 			for (int s = 0; s < swordSpeed; s++)
 			{
 				swordPosition[i].x += cos(swordAngleVec[i] + reverseValue[i]) * 1 * slowValue;      // x座標を更新
 				swordPosition[i].z += sin(swordAngleVec[i] + reverseValue[i]) * 1 * slowValue;      // z座標を更新
-
 			}
-
-			//for (int s = 0; s < swordSpeed; s++)
-			//{
-			//	swordPosition[i].x += cos((atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - swordPosition[i].x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - swordPosition[i].z) * 3.14) / -180) * 1 * slowValue;      // x座標を更新
-			//	swordPosition[i].z += sin((atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - swordPosition[i].x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - swordPosition[i].z) * 3.14) / -180) * 1 * slowValue;      // z座標を更新
-
-			//}
 		}
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
@@ -739,13 +719,11 @@ void Player::SwordAttack(Enemy* enemy)
 			if (enemy->GetDamegeFlag(j) == false) {
 				enemyDamegeTime[j] = 60.0f;
 			}
-
 			if (enemyDamegeTime[j] <= 0) {
 				enemy->SetDamegeFlag(j, false);
 			}
 		}
 		//当たって取るときの当たり判定たち
-
 		if (isSwordAttack[i] == false && !returnFlag)
 		{
 			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
@@ -765,7 +743,6 @@ void Player::SwordAttack(Enemy* enemy)
 
 		if (swordStop[i] == true)
 		{
-			//reverseValue[i] = 180;
 			stingCnt[i]++;//刺さるカウント	
 			reverseAngle[i] = 180;
 		}
@@ -815,7 +792,6 @@ void Player::SwordAttack(Enemy* enemy)
 			}
 		}
 	}
-
 	//剣の回収クールタイム
 	if (swordCoolTimeFlag == true)
 	{
@@ -843,82 +819,59 @@ void Player::SwordAttack(Enemy* enemy)
 		{
 			eslowFlag = false;
 		}
-
 	}
-	if (eslowFlag == true) {
-
-
-		if (eslowTime > 0) {
+	if (eslowFlag == true)
+	{
+		if (eslowTime > 0)
+		{
 			eslowTime--;
 			slowValue = 0.15;
 		}
-		else if (eslowTime <= 0) {
+		else if (eslowTime <= 0)
+		{
 			slowValue = 1;
 			eslowFlag = false;
 		}
 	}
-	else if (eslowFlag == false) {
+	else if (eslowFlag == false)
+	{
 		slowValue = 1;
 	}
-
-	for (int s = 0; s < swordSpeed; s++)
-	{
-
-	}
-	//swordPosition[0].x += cos(() * 3.14) / -180) * 1 * slowValue;      // x座標を更新
-	//swordPosition[0].z += sin((atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - swordPosition[0].x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - swordPosition[0].z) * 3.14) / -180) * 1 * slowValue;      // z座標を更新
 }
-
-
 
 void   Player::Angle()
 {
 	float rad = 0.0f;
-	//右上
-	if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
-		rad = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
-	}//右下
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
-		rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
-	}//左下
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
-		rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
-	}//左上
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
-		rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
-	}//上
-	else if (Input::Instance()->KeybordPush(DIK_UP)) {
-		rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
-
-	}//右
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
-		rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
-
-	}//下
-	else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
-		rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
-
-	}//左
-	else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
-		rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
+	if (Input::Instance()->KeybordInputArrow())
+	{
+		//右上
+		if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
+			rad = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
+		}//右下
+		else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
+			rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
+		}//左下
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
+			rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
+		}//左上
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
+			rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
+		}//上
+		else if (Input::Instance()->KeybordPush(DIK_UP)) {
+			rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
+		}//右
+		else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
+			rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
+		}//下
+		else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
+			rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
+		}//左
+		else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
+			rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
+		}
 		sinRad = sinf(rad);
 		cosRad = cosf(rad);
 	}
-
 	if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
 		Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
 	{
@@ -931,17 +884,14 @@ void   Player::Angle()
 void Player::SwordAngle()
 {
 	//右コントローラ
-	if (Input::Instance()->ControllerPush(RButtonRight) || Input::Instance()->ControllerPush(RButtonLeft) ||
-		Input::Instance()->ControllerPush(RButtonUp) || Input::Instance()->ControllerPush(RButtonDown))
+	if (Input::Instance()->ConRightInput())
 	{
-		float rad = 0.0f;
-		rad = Input::Instance()->GetRightAngle();
+		float rad = Input::Instance()->GetRightAngle();
 		RsinRad = sinf(-rad);
 		RcosRad = cosf(rad);
 		Rangle.y = XMConvertToDegrees(atan2(RsinRad, RcosRad)) - 90;
 	}
 }
-
 
 void Player::Avoidance()
 {
@@ -954,7 +904,6 @@ void Player::Avoidance()
 			avoidanceFlag = false;
 		}
 	}
-
 	//回避開始
 	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonA))
 		&& avoidanceFlag == false && normalAttackTime <= 0)
@@ -975,7 +924,6 @@ void Player::Avoidance()
 		position.z += avoiSpeed * cosRad * slowValue;
 	}
 }
-
 
 void Player::PDirection()
 {
@@ -1058,7 +1006,6 @@ void Player::UIDraw()
 	{
 		Sprite::Instance()->Draw(swordNot, Vec2(5.0f, 5.0f), 120.0f, 120.0f);
 	}
-
 }
 
 void Player::EffectDraw()
@@ -1067,21 +1014,17 @@ void Player::EffectDraw()
 	{
 		switch (direction)
 		{
-
 		case Up:
 			AttackAngle.y = 90.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
-
 			break;
 		case Down:
 			AttackAngle.y = 270.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
-
 			break;
 		case Left:
 			AttackAngle.y = 0.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
-
 			break;
 		case Right:
 			AttackAngle.y = 180.0f;
@@ -1090,26 +1033,21 @@ void Player::EffectDraw()
 		case UpRight:
 			AttackAngle.y = 120.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
-
 			break;
 		case UpLeft:
 			AttackAngle.y = 60.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
-
 			break;
 		case DownRight:
 			AttackAngle.y = 240.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
-
 			break;
 		case DownLeft:
 			AttackAngle.y = 300.0f;
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
-
 			break;
 		}
 	}
-	//AttackEffect = true;
 }
 
 int Player::EnemyNeedNumber(Enemy* enemy)
