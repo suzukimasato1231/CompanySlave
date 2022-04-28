@@ -231,7 +231,22 @@ void Player::Update(Enemy* enemy)
 	SwordAttack(enemy);
 	//回避
 	Avoidance();
-
+	if (position.x < 0)
+	{
+		position.x = 0;
+	}
+	if (position.x > 990)
+	{
+		position.x = 990;
+	}
+	if (position.z > 0)
+	{
+		position.z = 0;
+	}
+	if (position.z < -390)
+	{
+		position.z = -390;
+	}
 	//座標を合わせる
 	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
@@ -250,7 +265,7 @@ void Player::Draw()
 	{
 		Object::Instance()->Draw(cursorObject, { position.x,0,position.z, }, { 10,2,1 }, { 90,Rangle.y,0 }, color, cursorGraph);
 	}
-	
+
 	for (int i = 0; i < 7; i++)
 	{
 		if (returnFlag == true && haveSword[i] == false)
@@ -358,9 +373,6 @@ void Player::Move()
 			position.x += speed.x * sinRad * slowValue;
 			position.z += speed.z * cosRad * slowValue;
 		}
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	}
 }
 
@@ -515,7 +527,7 @@ void Player::SwordAttack(Enemy* enemy)
 		swordPosition[shotNo] = position;
 		swordAngle[shotNo].z = 0;
 		swordAngle[shotNo] = Rangle;
-		if (homingFlag)
+		if (homingFlag && enemy->GetEnemySize() > 0)
 		{
 			swordAngle[shotNo] = Vec3{ 0,(XMConvertToDegrees(atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - position.x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - position.z)) + 270),0 };
 		}
@@ -624,10 +636,6 @@ void Player::SwordAttack(Enemy* enemy)
 					enemy->SetDamegeFlag(j, false);
 				}
 
-				/*if (Collision::CheckBox2Box(pBox, swordAttackBox[i]))
-				{
-					haveSword[i] = true;
-				}*/
 				swordPosition[i].x += cos((swordAngle[i].y * 3.14) / -180) * swordSpeed * slowValue;      // x座標を更新
 				swordPosition[i].z += sin((swordAngle[i].y * 3.14) / -180) * swordSpeed * slowValue;      // z座標を更新
 
@@ -643,10 +651,11 @@ void Player::SwordAttack(Enemy* enemy)
 							}
 						}
 					}
-					if (Collision::CheckBox2Box(haveBox, swordAttackBox[i]) && holdingFlag[i])
-					{
-						haveSword[i] = true;
-					}
+				}
+				//剣がプレイヤーに戻ってくる当たり判定
+				if (Collision::CheckBox2Box(haveBox, swordAttackBox[i]) && holdingFlag[i])
+				{
+					haveSword[i] = true;
 				}
 			}
 		}
@@ -677,7 +686,7 @@ void Player::SwordAttack(Enemy* enemy)
 			reverseValue[i] = 0;
 			stingCnt[i] = 0;
 			swordAngleVec[i] = (Rangle.y * 3.14) / -180;
-			if (homingFlag)
+			if (homingFlag && enemy->GetEnemySize() > 0)
 			{
 				swordAngleVec[i] = ((XMConvertToDegrees(atan2(enemy->GetPosition(EnemyNeedNumber(enemy)).x - position.x, enemy->GetPosition(EnemyNeedNumber(enemy)).z - position.z)) + 270) * 3.14) / -180;
 			}
@@ -736,16 +745,15 @@ void Player::SwordAttack(Enemy* enemy)
 			}
 		}
 		//当たって取るときの当たり判定たち
-		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+
+		if (isSwordAttack[i] == false && !returnFlag)
 		{
-			if (isSwordAttack[i] == false && !returnFlag)
+			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
 			{
-				if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
-				{
-					haveSword[i] = true;
-				}
+				haveSword[i] = true;
 			}
 		}
+
 		//刺さった敵に剣が追っかける
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{

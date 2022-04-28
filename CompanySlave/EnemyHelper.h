@@ -44,8 +44,8 @@ struct EnemyData
 	Vec3 oldPosition{};					//1ŒÂ‘O‚ÌÀ•W
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//‘å‚«‚³
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//F
-	float HPMax = 15;					//Å‘åHP
-	float HP = 15;						//HP
+	float HPMax = 7;					//Å‘åHP
+	float HP = 7;						//HP
 	float r = 5;						//‘å‚«‚³
 	int Status = NORMAL;				//ó‘Ô
 	int StatusTime = 0;					//ó‘ÔŠÔ

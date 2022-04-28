@@ -53,6 +53,8 @@ void MapStage::Init()
 	cornerBlock = Object::Instance()->CreateOBJ("wall2");
 
 	okeBlock = Object::Instance()->CreateOBJ("oke");
+
+	sakuBlock = Object::Instance()->CreateOBJ("saku");
 	//‰¼
 	smokeGraph = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 
@@ -328,9 +330,12 @@ void MapStage::Draw(Vec3 pPos)
 					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,270.0f,0.0f }, color);
 				break;
 			case OKE:
-				Object::Instance()->Draw(okeBlock,
+				/*Object::Instance()->Draw(okeBlock,
 					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 3.0f, 3.0f, 3.0f }, Vec3{ 0.0f,45.0f,0.0f }, color);
+					{ 3.0f, 3.0f, 3.0f }, Vec3{ 0.0f,45.0f,0.0f }, color);*/
+				Object::Instance()->Draw(sakuBlock,
+					Vec3{ basePosition.x + i * mapSize - 3.0f,0,basePosition.y + j * (-mapSize) },
+					{ 1.1f, 1.0f, 1.0f }, Vec3{ 0.0f,0.0f,0.0f }, color);
 				break;
 			case SMOKEWALL:
 				break;

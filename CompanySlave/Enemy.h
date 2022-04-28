@@ -51,6 +51,8 @@ public:
 	/// </summary>
 	/// <param name="i"></param>
 	void DamegeSword(int i);
+
+	void DrawBlood();
 private:
 	//íœ
 	void Delete();

@@ -251,7 +251,7 @@ void PlayScene::Update()
 
 	if (sceneChangeFlag == true) {
 		if (ChangeGraphPosition.x < 0) {
-			ChangeGraphPosition.x += 20;
+			ChangeGraphPosition.x += 22;
 		}
 		if (ChangeGraphPosition.x >= 0) {
 
@@ -316,6 +316,8 @@ void PlayScene::Draw()
 	particleMan4->Draw();
 	particleMan5->Draw();
 
+	enemy->DrawBlood();
+
 	//前景描画
 	player->UIDraw();
 	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
@@ -329,13 +331,6 @@ void PlayScene::Draw()
 	}
 
 #if _DEBUG
-	//デバックテキスト%dと%f対応
-	debugText.Print(10, 40, 2, "E:button");
-
-	debugText.Print(10, 80, 2, "D:Attack");
-
-	debugText.Print(10, 120, 2, "F:kamikaihi");
-
 	debugText.Print(10, 180, 2, "%f", volume);
 
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);

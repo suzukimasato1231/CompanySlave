@@ -106,6 +106,7 @@ private:
 	Object::ObjectData block;//マップのブロック
 	Object::ObjectData wallBlock;//マップの壁ブロック
 	Object::ObjectData cornerBlock;//マップの壁ブロック
+	Object::ObjectData sakuBlock;	//柵のOBJ
 	Object::ObjectData okeBlock;//藁
 	ObjectStatus status;
 	//int blockGraph = 0;
