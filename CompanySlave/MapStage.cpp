@@ -94,9 +94,11 @@ void MapStage::StageInit(int stageNum)
 	nextFlag = false;
 }
 
-void MapStage::Update(Enemy* enemy)
+void MapStage::Update(Vec3 pPos, Enemy* enemy)
 {
 	bool isFlag = true;
+	int X = pPos.x / mapSize;
+	int Z = pPos.z / (-mapSize);
 	//敵が全員倒していたら
 	for (int e = 0; e < enemy->GetEnemySize(); e++)
 	{
@@ -105,10 +107,14 @@ void MapStage::Update(Enemy* enemy)
 			isFlag = false;
 		}
 	}
-	for (size_t y = 0; y < MAP_HEIGHT; y++)
+	for (int y = (Z - 7); y < (Z + 6); y++)
 	{
-		for (size_t x = 0; x < MAP_WIDTH; x++)
+		for (int x = (X - 11); x < (X + 13); x++)
 		{
+			if (y < 0 || x < 0 || y >= MAP_HEIGHT || x >= MAP_WIDTH)
+			{
+				continue;
+			}
 			//次のマップへ進める
 			if (nextFlag == false && isFlag == true)
 			{

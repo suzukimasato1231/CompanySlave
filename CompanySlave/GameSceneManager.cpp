@@ -190,7 +190,7 @@ void GameSceneManager::Draw()
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
 		debugText.Print(10, 380, 2, "%d", LoadTime);
 	}
-
+	debugText.Print(10, 260, 2, "R:reset");
 	debugText.Print(10, 300, 2, "DebugStageNum %d", stageDebug);
 
 	//デバックテキスト描画ここは変わらない

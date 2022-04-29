@@ -175,7 +175,7 @@ private:
 	std::array <Vec3, 7> swordPosition = { Vec3{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
 	Object::ObjectData swordEffectObject;//剣
 	std::array<Vec3, 7> swordAngle = { Vec3{ 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f } };		//角度
-	float swordSpeed = 7;//スピード
+	float swordSpeed = 6;//スピード
 	std::array<float, 7> swordAngleVec = { 0,0,0,0,0,0,0 };//飛ばす方向
 	std::array<bool, 7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
 	std::array<int, 7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間

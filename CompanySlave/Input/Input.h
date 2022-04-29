@@ -52,6 +52,9 @@ public://ゲームパッド
 	float GetRightAngle();
 	//右スティック入力してるか
 	bool ConRightInput();
+
+	//左スティックを入力してるか
+	bool ConLeftInput();
 public://マウス
 	bool MousePushLeft();
 

@@ -121,7 +121,7 @@ void Player::StageInit(int stageNum)
 		{
 			if (spawnMap[j][i] == 1)
 			{
-				memoryPos = { i * mapSize, 0, j * (-mapSize) };
+				memoryPos = { i * mapSize, 5, j * (-mapSize) };
 				break;
 			}
 		}
@@ -310,9 +310,7 @@ void Player::Move()
 		walkNo = 0;
 	}
 	//移動
-	if (Input::Instance()->KeybordInputArrow()
-		|| Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft)
-		|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+	if (Input::Instance()->KeybordInputArrow()||Input::Instance()->ConLeftInput())
 	{
 		//向き変更
 		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
@@ -334,8 +332,7 @@ void Player::Move()
 			angle.y = 135;
 		}
 
-		if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft)
-			|| Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+		if (Input::Instance()->ConLeftInput())
 		{
 			angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
 		}
@@ -367,8 +364,7 @@ void Player::Move()
 			position.z -= speed.z * slowValue;
 		}
 		//コントローラー
-		if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
-			Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+		if (Input::Instance()->ConLeftInput())
 		{
 			position.x += speed.x * sinRad * slowValue;
 			position.z += speed.z * cosRad * slowValue;
@@ -505,9 +501,6 @@ void Player::NormalAttack(Enemy* enemy)
 			slowValue = 1;
 			eslowFlag = false;
 		}
-	}
-	else if (eslowFlag == false) {
-		slowValue = 1;
 	}
 }
 
@@ -670,8 +663,8 @@ void Player::SwordAttack(Enemy* enemy)
 	for (int i = 0; i < 7; i++)
 	{
 		//当たり判定のボックスの位置変
-		swordAttackBox[i].maxPosition = XMVectorSet(swordPosition[i].x + 1.5f, swordPosition[i].y, swordPosition[i].z + 1.5f, 1);
-		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 1.5f, swordPosition[i].y, swordPosition[i].z - 1.5f, 1);
+		swordAttackBox[i].maxPosition = XMVectorSet(swordPosition[i].x + 2.0f, swordPosition[i].y, swordPosition[i].z + 2.0f, 1);
+		swordAttackBox[i].minPosition = XMVectorSet(swordPosition[i].x - 2.0f, swordPosition[i].y, swordPosition[i].z - 2.0f, 1);
 
 		//剣の飛ぶ方向と向き替え
 		if (haveSword[i] && holdingFlag[i])
@@ -833,10 +826,10 @@ void Player::SwordAttack(Enemy* enemy)
 			eslowFlag = false;
 		}
 	}
-	else if (eslowFlag == false)
+	/*else if (eslowFlag == false)
 	{
 		slowValue = 1;
-	}
+	}*/
 }
 
 void   Player::Angle()
@@ -872,8 +865,7 @@ void   Player::Angle()
 		sinRad = sinf(rad);
 		cosRad = cosf(rad);
 	}
-	if (Input::Instance()->ControllerPush(LButtonRight) || Input::Instance()->ControllerPush(LButtonLeft) ||
-		Input::Instance()->ControllerPush(LButtonUp) || Input::Instance()->ControllerPush(LButtonDown))
+	if (Input::Instance()->ConLeftInput())
 	{
 		rad = Input::Instance()->GetLeftAngle();
 		sinRad = sinf(-rad);

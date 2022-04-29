@@ -93,7 +93,7 @@ void Enemy::StageInit(int stageNum)
 			{
 				eData.push_back(new EnemyData);
 				num = eData.size() - 1;
-				eData[num]->position = { basePosition.x + i * mapSize, 0, basePosition.y + j * (-mapSize) };
+				eData[num]->position = { basePosition.x + i * mapSize, 5, basePosition.y + j * (-mapSize) };
 				eData[num]->oldPosition = eData[eData.size() - 1]->position;
 				//À•W‚ð‡‚í‚¹‚é
 				eData[num]->eBox.minPosition = XMVectorSet(

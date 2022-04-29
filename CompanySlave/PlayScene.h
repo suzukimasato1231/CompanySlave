@@ -105,7 +105,7 @@ private://定義
 	float volume = 1.0f;
 	
 	//雨関係
-	static const int rainMax = 500;//OBJの個数
+	static const int rainMax = 80;//OBJの個数
 	std::array<Object::ObjectData, rainMax > RainOBJ;
 	int rainGraph;//雨用のテクスチャ
 	std::array<Vec3, rainMax > position;//ポジション

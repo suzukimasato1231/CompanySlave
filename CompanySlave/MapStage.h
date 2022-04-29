@@ -81,7 +81,7 @@ public:
 	//ステージが変わるときの初期化
 	void StageInit(int stageNum);
 	//更新
-	void Update(Enemy *enemy);
+	void Update(Vec3 pPos, Enemy *enemy);
 	//描画
 	void Draw(Vec3 pPos);
 	//パーティクル描画

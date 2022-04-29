@@ -166,7 +166,7 @@ void PlayScene::Update()
 
 
 	//プレイヤーの更新
-	mapStage->Update(enemy);
+	mapStage->Update(player->GetPosition(), enemy);
 
 	if (sceneChangeFlag == false) {
 		player->Update(enemy);
@@ -211,38 +211,35 @@ void PlayScene::Update()
 				particleMan->SetParticleDirection(0);
 				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-			if (player->GetDirection() == Left) {
+			else if (player->GetDirection() == Left) {
 				particleMan->SetParticleDirection(1);
 				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-			if (player->GetDirection() == Up) {
+			else if (player->GetDirection() == Up) {
 				particleMan->SetParticleDirection(2);
 				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-			if (player->GetDirection() == Down) {
+			else if (player->GetDirection() == Down) {
 				particleMan->SetParticleDirection(3);
 				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-			if (player->GetDirection() == UpRight) {
+			else if (player->GetDirection() == UpRight) {
 				particleMan->SetParticleDirection(4);
 				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-			if (player->GetDirection() == UpLeft) {
+			else if (player->GetDirection() == UpLeft) {
 				particleMan->SetParticleDirection(5);
 				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, 1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-			if (player->GetDirection() == DownRight) {
+			else if (player->GetDirection() == DownRight) {
 				particleMan->SetParticleDirection(6);
 				particleMan->ParticleAdd(enemy->GetPosition(i), 1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-			if (player->GetDirection() == DownLeft) {
+			else if (player->GetDirection() == DownLeft) {
 				particleMan->SetParticleDirection(7);
 				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
-
 		}
-
-
 	}
 
 	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
@@ -286,10 +283,10 @@ void PlayScene::Update()
 	if (Input::Instance()->KeybordTrigger(DIK_E)) {
 		volume += 0.1;
 	}
-	
+
 	rainSlow = player->GetSlow();
 	for (int i = 0; i < rainMax; i++) {
-	
+
 		if (position[i].y > 0) {
 			//雨が地面につくまで降る
 			position[i].y = position[i].y - g * rainSlow;
@@ -299,13 +296,13 @@ void PlayScene::Update()
 			//xとzはランダムな位置にしている
 			//サイズもランダムにしている
 			position[i].y = 100;
-			position[i].x = (float)rand() / 20;
-			position[i].z = (float)rand() / -100;
+			position[i].x = rand() % 200 - 100;
+			position[i].z = rand() % 220 - 110;
+			position[i].x += player->GetPosition().x;
+			position[i].z += player->GetPosition().z;
 			s[i] = (float)rand() / 1000;
 		}
-			
 	}
-
 	particleMan->Update();
 	particleMan2->Update();
 	particleMan3->Update();
@@ -349,19 +346,16 @@ void PlayScene::Draw()
 
 	enemy->DrawBlood();
 
-	//前景描画
+
 	for (int i = 0; i < rainMax; i++) {
 		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 });
 	}
+	//前景描画
 	player->UIDraw();
 	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 
 	if (sceneChangeFlag == true) {
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
-	}
-
-	for (int i = 0; i < rainMax; i++) {
-	//Sprite::Instance()->Draw(rainGraph[i], position, 10, 10);
 	}
 
 #if _DEBUG
