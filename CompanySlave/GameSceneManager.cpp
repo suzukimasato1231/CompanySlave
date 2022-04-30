@@ -29,7 +29,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList());
 
 	title = new Title();
-	title->Initialize(directX);
+	title->Initialize();
 	select = new SelectScene();
 	select->Initialize(directX);
 	play = new PlayScene();
@@ -50,6 +50,7 @@ void GameSceneManager::Init()
 	title->Init();
 	select->Init();
 	scene = titleScene;
+
 }
 
 void GameSceneManager::Update()
@@ -62,21 +63,16 @@ void GameSceneManager::Update()
 			tFadeFlag = false;
 			tFade = 1;
 		}
-		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
-		{
-			tFadeFlag = true;
-			//scene = selectScene;
+		if (title->GetBottanFlag() == true) {
+
+			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+			{
+
+				scene = selectScene;
+			}
 		}
-		//フェード
-		if (tFadeFlag == true) {
-			tFade -= 0.2f;
-		}
-		if (tFade < 0) {
-			scene = selectScene;
-			initFlag = true;
-			tFadeFlag = false;
-		}
-		title->SetFade(tFade);
+
+
 
 
 		title->Update();

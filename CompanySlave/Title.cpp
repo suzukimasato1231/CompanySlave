@@ -15,10 +15,8 @@ Title::~Title()
 	Audio::SoundUnload(&sound1);
 	safe_delete(audio);
 }
-void Title::Initialize(_DirectX* directX)
+void Title::Initialize()
 {
-	assert(directX);
-	this->directX = directX;
 	//Audioクラス作成
 	audio = Audio::Create();
 	//カメラクラス作成
@@ -32,6 +30,19 @@ void Title::Initialize(_DirectX* directX)
 	//3Dオブジェクト初期化
 	Object::Instance()->SetCamera(camera);
 	Object::Instance()->SetLight(lightGroup);
+
+	//音データ読み込み
+	sound1 = Audio::SoundLoadWave("Resources/i.wav");
+	//スプライト画像読み込み
+	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
+	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
+	for (int i = 0; i < rainMax; i++) {
+		rain[i] = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
+	}
+	titleGraph = Sprite::Instance()->SpriteCreate(L"Resources/TitleText.png");
+	startGraph = Sprite::Instance()->SpriteCreate(L"Resources/Start.png");
+	swordObject = Object::Instance()->CreateOBJ("sword");
+
 }
 
 void Title::Init()
@@ -48,23 +59,76 @@ void Title::Init()
 
 	//カメラ位置をセット
 	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-
-	//スプライト画像読み込み
-	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
-	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
-
-	//パーティクルクラス作成
-	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
-
-	//particleMan2 = ParticleManager::Create(L"Resources/particle2.png", 1);
+	srand(time(NULL));
+	fade = 0;
+	fade2 = 0;
+	bottanFlag = false;
+	for (int i = 0; i < rainMax; i++) {
+		//xはランダムな位置にしている
+		//サイズもランダムにしている
+		pos[i].y = rand()%-100;
+		pos[i].x = rand()%1300;
+		s[i] = rand() % 500-400;
+	}
 }
 
 void Title::Update()
 {
+	//
+	if (rainFlag == false) {
+		if (rainTime < 30) {
+			rainTime++;
+		}
+		if (rainTime >= 30)
+		{
+			rainFlag = true;
+			rainTime = 0;
+		}
+	}
+
+	if (rainFlag == true) {
+		for (int i = 0; i < rainMax; i++) {
+
+			if (pos[i].y < 720) {
+				//雨が地面につくまで降る
+				pos[i].y = pos[i].y + v;
+				v = g + v;
+			}
+			if (pos[i].y >= 720) {
+				//地面についたらまた上に行く
+				pos[i].y = rand() % -100;
+				pos[i].x = rand() % 1300;
+				v = 0;
+				g = 9.8f;
+				s[i] = rand() % 500 - 400;
+			}
+		}
+		if (titleTextFlag == false) {
+			if (titleTime < 60) {
+				titleTime++;
+			}
+			if (titleTime >= 60)
+			{
+				titleTextFlag = true;
+				titleTime = 0;
+			}
+		}
+	}
+		if (titleTextFlag == true) {
+			if (fade < 1) {
+				fade+=0.01f;
+			}
+			if (fade >= 1) {
+				fade2 += 0.01f;
+			}
+		}
+		if (fade2 >= 1) {
+			bottanFlag = true;
+		}
 	//パーティクル更新
 	//particleMan->Update();
 	//particleMan2->Update();
-
+	
 	//ライト更新
 	lightGroup->Update();
 }
@@ -77,12 +141,23 @@ void Title::Draw()
 
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
-	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
-	Sprite::Instance()->Draw(spriteGraph, Vec2(0,0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	Sprite::Instance()->Draw(BGGraph, {0,0}, window_width, window_height);
+	Sprite::Instance()->Draw(spriteGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,1});
+	for (int i = 0; i < rainMax; i++) {
+		if (rainFlag == true) {
+			Sprite::Instance()->Draw(rain[i], pos[i], 1, s[i], { 0.0f, 0.0f }, { 1, 1, 1 ,1 });
+		}
+	}
+	if (titleTextFlag == true) {
+		Sprite::Instance()->Draw(titleGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,fade });
+	}
 
+		Sprite::Instance()->Draw(startGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,fade2 });
 	
+	Object::Instance()->Draw(swordObject, position, Vec3{0.2,0.2,0.1 }, Vec3{ 0,90,-90 }, Vec4{1,1,1,1});
+
 	//デバックテキスト%dと%f対応
-	debugText.Print(10, 40, 2, "title");
+	debugText.Print(10, 40, 2, "%f",fade);
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

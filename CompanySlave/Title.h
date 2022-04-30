@@ -9,6 +9,8 @@
 #include"Singleton.h"
 #include"Sprite.h"
 #include "Object.h"
+#include<array>
+#include<time.h>
 
 extern const int window_width;
 extern const int window_height;
@@ -16,21 +18,21 @@ class Title :public Singleton<Title>
 {
 private:
 	friend Singleton<Title>;
-	_DirectX *directX = nullptr;
+
 public:
 	Title();
 	~Title();
 
-	void Initialize(_DirectX *directX);
+	void Initialize();
 
 	void Init();
 
 	void Update();
 
 	void Draw();
+	
+	bool GetBottanFlag() { return bottanFlag; }
 
-	float GetFade() { return fade; };
-	float SetFade(float fade) { return this->fade = fade; }
 private:
 	Camera *camera = nullptr;
 	LightGroup *lightGroup = nullptr;
@@ -42,17 +44,38 @@ private://定義
 	SoundData sound1;
 	SoundData sound2;
 
+	static const int rainMax = 30;
+
 	//スプライトデータ
 	SpriteData spriteGraph;
 	SpriteData BGGraph;
 	SpriteData Parent;
-
+	SpriteData titleGraph;
+	SpriteData startGraph; 
+	SpriteData rain[rainMax];
 	//オブジェクトデータ
-	Vec2 pos = { 0.0f,0.0f };
+	Object::ObjectData swordObject;
+	Vec3 position{ 0.5f,0.0f,0.5f };
+	
+	std::array<Vec2, rainMax > pos;//ポジション
+	std::array<float, rainMax > s;//サイズ
+
+
+	float v = 0;//速度
+	float g = 9.8f;//重力
+
+	int titleTime = 0;
+	int rainTime = 0;
+
+	bool rainFlag = false;
+	bool titleTextFlag = false;
 
 
 	int scene = 0;
-	float fade = 1;
+	float fade = 0;
+	float fade2 = 0;
+
+	bool bottanFlag = false;
 };
 
 
