@@ -62,6 +62,8 @@ void Title::Init()
 	srand(time(NULL));
 	fade = 0;
 	fade2 = 0;
+	titleTextFlag = false;
+	rainFlag = false;
 	bottanFlag = false;
 	for (int i = 0; i < rainMax; i++) {
 		//x‚Íƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚É‚µ‚Ä‚¢‚é

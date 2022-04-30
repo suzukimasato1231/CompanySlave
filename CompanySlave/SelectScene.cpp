@@ -31,6 +31,33 @@ void SelectScene::Initialize(_DirectX *directX)
 	//3Dオブジェクト初期化
 	Object::Instance()->SetCamera(camera);
 	Object::Instance()->SetLight(lightGroup);
+
+	//スプライト画像読み込み
+	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
+	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
+	Bottan = Sprite::Instance()->SpriteCreate(L"Resources/bottan.png");
+
+	Number[0] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/0.png");
+	Number[1] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/1.png");
+	Number[2] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/2.png");
+	Number[3] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/3.png");
+	Number[4] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/4.png");
+	Number[5] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/5.png");
+	Number[6] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/6.png");
+	Number[7] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/7.png");
+	Number[8] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/8.png");
+	Number[9] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/9.png");
+
+	LoadUIGraph = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
+
+	//3Dオブジェクト画像読み込み
+	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
+	//3Dobjファイル読み込み。
+	//パーティクルクラス作成
+	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
+
+	//particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
+
 }
 
 void SelectScene::Init()
@@ -49,31 +76,14 @@ void SelectScene::Init()
 	//カメラ位置をセット
 	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 
-	//スプライト画像読み込み
-	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
-	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
-	Bottan = Sprite::Instance()->SpriteCreate(L"Resources/bottan.png");
+	stage = 1;
+	//一の位
+	nCount = 1;
+	//十の位
+	nCount2 = 0;
+	//フェード
+	fade = 1;
 
-	Number[0] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/0.png");
-	Number[1] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/1.png");
-	Number[2] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/2.png");
-	Number[3] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/3.png");
-	Number[4] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/4.png");
-	Number[5] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/5.png");
-	Number[6] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/6.png");
-	Number[7] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/7.png");
-	Number[8] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/8.png");
-	Number[9] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/9.png");
-
-	LoadUIGraph= Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
-
-	//3Dオブジェクト画像読み込み
-	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	//3Dobjファイル読み込み。
-	//パーティクルクラス作成
-	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
-
-	//particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
 }
 
 void SelectScene::Update()

@@ -35,7 +35,7 @@ public:
 	void Draw();
 
 	bool GetSceneFlag();
-
+	bool SetSceneFlag(bool sceneFlag) { return this->sceneFlag = sceneFlag; }
 	void SetStageDebug(int debugNum) { this->stageNum = debugNum; }
 private:
 	Camera* camera = nullptr;

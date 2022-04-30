@@ -67,16 +67,12 @@ void GameSceneManager::Update()
 
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 			{
-
+				initFlag = true;
+				select->Init();
 				scene = selectScene;
 			}
 		}
-
-
-
-
 		title->Update();
-
 	}
 	//ステージ選択
 	else if (scene == selectScene) {
@@ -91,6 +87,7 @@ void GameSceneManager::Update()
 		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
 			//プレイ開始
+		
 			if (select->GetStage() == 1) {
 				play->Init();
 				sFadeFlag = true;
@@ -114,6 +111,7 @@ void GameSceneManager::Update()
 		play->Update();
 		if (play->GetSceneFlag() == true)
 		{
+			title->Init();
 			scene = titleScene;
 			initFlag = true;
 		}
