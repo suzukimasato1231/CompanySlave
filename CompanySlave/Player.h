@@ -2,11 +2,11 @@
 #include"Object.h"
 #include"CollisionPrimitive.h"
 #include"Easing.h"
-#include"Enemy.h"
 #include"Sprite.h"
 #include"Direction.h"
 #include <array>
 #include<time.h>
+class Enemy;
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -41,7 +41,7 @@ public:
 	/// <summary>
 	/// ダメージ
 	/// </summary>
-	void Damage();
+	void Damage(int damegeNum);
 	//プレイヤーUI描画
 	void UIDraw();
 private:
@@ -130,8 +130,8 @@ private:
 	float RsinRad = 0;
 	float RcosRad = 0;
 	Vec3 Rangle = { 0.0f ,0.0f,0.0f };
-	const float HPMAX = 10;
-	float HP = 10;						//プレイヤーHP
+	const float HPMAX = 12;
+	float HP = 12;						//プレイヤーHP
 	const int damageTimeMax = 20;
 	int damageTime = 0;					//ダメージ食らったかの見た目用
 
@@ -180,7 +180,7 @@ private:
 	std::array<bool, 7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
 	std::array<int, 7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間
 	std::array<bool, 7> haveSword = { true,true,true,true,true,true,true };//持ってる剣
-	bool isEnemySting[7][20];//敵に刺さってるか
+	bool isEnemySting[7][50];//敵に刺さってるか
 	std::array < Box, 7> swordAttackBox;	//剣の当たり判定
 	int shotNo = 0;//どの剣か
 	bool returnFlag = false;//剣が戻る時のフラグ
@@ -227,7 +227,7 @@ private:
 	int effectTime = 10;
 	int effectCount = 0;
 
-	std::array<float, 20 >enemyDamegeTime = { 60,60,60,60,60,60,60,60,60,60 };
+	std::array<float, 50 >enemyDamegeTime = { 60,60,60,60,60,60,60,60,60,60 };
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };

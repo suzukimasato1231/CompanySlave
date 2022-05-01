@@ -195,7 +195,7 @@ void OniBow::BowUpdate(EnemyData* oniData, Player* player)
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (OBBCollision::ColOBBs(playerOBB, bowOBB) && oniData->bowFlag == true && player->GetInvincivleTime() == 0)
 		{
-			player->Damage();
+			player->Damage(1);
 			oniData->bowFlag = false;
 		}
 		oniData->bowTime--;

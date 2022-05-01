@@ -148,6 +148,26 @@ void PlayScene::StageInit()
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
 			break;
+		case 5:
+			player->StageInit(stageNum);
+			enemy->StageInit(stageNum);
+			mapStage->StageInit(stageNum);
+			break;
+		case 6:
+			player->StageInit(stageNum);
+			enemy->StageInit(stageNum);
+			mapStage->StageInit(stageNum);
+			break;
+		case 7:
+			player->StageInit(stageNum);
+			enemy->StageInit(stageNum);
+			mapStage->StageInit(stageNum);
+			break;
+		case 8:
+			player->StageInit(stageNum);
+			enemy->StageInit(stageNum);
+			mapStage->StageInit(stageNum);
+			break;
 		default:
 			break;
 		}

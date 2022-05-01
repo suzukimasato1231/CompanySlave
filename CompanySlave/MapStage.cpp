@@ -83,6 +83,22 @@ void MapStage::StageInit(int stageNum)
 		Filepath = (char*)"Resources/map/Floor_Tile4.csv";
 		FilepathOBJ = (char*)"Resources/map/Obj_Tile4.csv";
 		break;
+	case 5:
+		Filepath = (char*)"Resources/map/Floor_Tile5.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile5.csv";
+		break;
+	case 6:
+		Filepath = (char*)"Resources/map/Floor_Tile6.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile6.csv";
+		break;
+	case 7:
+		Filepath = (char*)"Resources/map/Floor_Tile7.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile7.csv";
+		break;
+	case 8:
+		Filepath = (char*)"Resources/map/Floor_Tile8.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile8.csv";
+		break;
 	default:
 		break;
 	}

@@ -20,6 +20,8 @@ public:
 	void SearchPlayer(EnemyData* oniData, class Player* player);
 	//攻撃
 	void Attack(EnemyData* oniData, class Player* player);
+
+	EnemyData WolfData() { return wolfData; }
 private:
 	//敵の攻撃エフェクト
 	void EffectDraw(EnemyData* oniData);
@@ -29,6 +31,7 @@ private:
 	//向きによって敵の描画角度を取得
 	Vec3 DirectionAngle(int direction);
 private:
+	EnemyData wolfData;
 
 	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
 

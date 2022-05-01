@@ -6,12 +6,12 @@
 #include"OniType.h"
 #include"OniBow.h"
 #include"WOLF.h"
-
+#include"BigOniBoss.h"
 class Enemy
 {
 private:
 	//敵最大数
-	static const int eNumMax = 20;
+	static const int eNumMax = 50;
 	//敵配列
 	std::vector<EnemyData*>eData;
 
@@ -30,9 +30,6 @@ public:
 	void Draw();//描画
 	//血痕描画
 	void BloodDraw();
-
-	//TRUEにする
-	void WasAttack(int i);
 	//敵の位置を設定
 	void SetPosition(int i, Vec3 position);
 
@@ -62,6 +59,8 @@ private:
 	Vec3 DirectionAngle(int direction);
 	//ノックバック処理
 	void NockBack(int i);
+
+	void SetFirstPosition(Vec3 pos, float r, int eNum);
 public://取得系
 	// 座標取得
 	Vec3 GetPosition(int i) { return eData[i]->position; }
@@ -110,10 +109,12 @@ private:
 	class Wolf wolf;
 
 	void UpdateWolf(int i, class Player* player);
+	//ボス鬼
+	class BigOniBoss bigOniBoss;
+
+	void UpdateBigOniBoss(int i, class Player*player);
 private:
-	//ノックバックステータス
 	const float nockPower = 0.8f;
-	const int nockBackTimeMax = 5;
 	//HPUI
 	Object::ObjectData hpOBJ;
 	Object::ObjectData hpGaugeOBJ;

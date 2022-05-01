@@ -33,6 +33,9 @@ void Wolf::Init()
 	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect7.png");
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
+
+	wolfData.HP = 4;
+	wolfData.HPMax = 4;
 }
 
 void Wolf::Draw(EnemyData* oniData)
@@ -196,7 +199,7 @@ void Wolf::Attack(EnemyData* oniData, Player* player)
 		{
 			//エフェクトのフラグTRUE
 			AttackEffect = true;
-			player->Damage();
+			player->Damage(1);
 		}
 		//移動攻撃
 		oniData->oldPosition = oniData->position;

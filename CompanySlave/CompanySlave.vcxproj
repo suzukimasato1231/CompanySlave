@@ -239,6 +239,7 @@
     <ClInclude Include="base\Singleton.h" />
     <ClInclude Include="base\_DirectX.h" />
     <ClInclude Include="base\_Window.h" />
+    <ClInclude Include="BigOniBoss.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionPrimitive.h" />
     <ClInclude Include="Direction.h" />
@@ -275,6 +276,7 @@
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="base\_DirectX.cpp" />
     <ClCompile Include="base\_Window.cpp" />
+    <ClCompile Include="BigOniBoss.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameSceneManager.cpp" />

@@ -107,6 +107,15 @@ void Player::StageInit(int stageNum)
 	case 4:
 		Filepath = (char*)"Resources/map/Enemy_Tile4.csv";
 		break;
+	case 5:
+		Filepath = (char*)"Resources/map/Enemy_Tile5.csv";
+		break;
+	case 6:
+		Filepath = (char*)"Resources/map/Enemy_Tile6.csv";
+		break;
+	case 7:
+		Filepath = (char*)"Resources/map/Enemy_Tile7.csv";
+		break;
 	default:
 		break;
 	}
@@ -140,6 +149,51 @@ void Player::StageInit(int stageNum)
 		direction = Right;					//プレイヤーの向き
 		break;
 	case 2:
+		position = memoryPos;				//座標
+		oldPosition = position;				//1つ前の座標
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		direction = Right;
+		break;
+	case 3:
+		position = memoryPos;				//座標
+		oldPosition = position;				//1つ前の座標
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		direction = Right;
+		break;
+	case 4:
+		position = memoryPos;				//座標
+		oldPosition = position;				//1つ前の座標
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		direction = Right;
+		break;
+	case 5:
+		position = memoryPos;				//座標
+		oldPosition = position;				//1つ前の座標
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		direction = Right;
+		break;
+	case 6:
+		position = memoryPos;				//座標
+		oldPosition = position;				//1つ前の座標
+		//座標を合わせる
+		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		direction = Right;
+		break;
+	case 7:
 		position = memoryPos;				//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
@@ -310,7 +364,7 @@ void Player::Move()
 		walkNo = 0;
 	}
 	//移動
-	if (Input::Instance()->KeybordInputArrow()||Input::Instance()->ConLeftInput())
+	if (Input::Instance()->KeybordInputArrow() || Input::Instance()->ConLeftInput())
 	{
 		//向き変更
 		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
@@ -432,7 +486,7 @@ void Player::NormalAttack(Enemy* enemy)
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
 				if (enemy->GetHP(i) > 0) {
-					if (Collision::CheckSphere2Box(enemy->GetSphere(i), normalAttackBox))
+					if (Collision::CheckBox2Box(enemy->GetBox(i), normalAttackBox))
 					{
 						enemy->DamegeNormal(i, direction);
 						enemy->SetDamegeFlag(i, true);
@@ -950,11 +1004,11 @@ void Player::PDirection()
 	}
 }
 
-void Player::Damage()
+void Player::Damage(int damegeNum)
 {
 	//ダメージを食らう
 	damageTime = damageTimeMax;
-	HP--;
+	HP -= damegeNum;
 
 	invincivleTime = invincibleTimeMax;
 }
