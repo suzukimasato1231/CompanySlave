@@ -240,7 +240,7 @@ void Player::StageInit(int stageNum)
 	srand(time(NULL));
 	for (int i = 0; i < 7; i++)
 	{
-		for (int j = 0; j < 20; j++)
+		for (int j = 0; j < 50; j++)
 		{
 			isEnemySting[i][j] = false;
 		}

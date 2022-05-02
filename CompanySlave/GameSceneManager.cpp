@@ -205,6 +205,18 @@ void GameSceneManager::Update()
 	{
 		stageDebug = 4;
 	}
+	if (Input::Instance()->KeybordTrigger(DIK_5))
+	{
+		stageDebug = 5;
+	}
+	if (Input::Instance()->KeybordTrigger(DIK_6))
+	{
+		stageDebug = 6;
+	}
+	if (Input::Instance()->KeybordTrigger(DIK_7))
+	{
+		stageDebug = 7;
+	}
 
 }
 
