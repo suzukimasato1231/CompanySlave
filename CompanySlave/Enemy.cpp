@@ -37,6 +37,8 @@ void Enemy::Init()
 	Blood2GraphBack[1] = Object::Instance()->LoadTexture(L"Resources/Eblood/Bloodback1.png");
 	Blood2GraphBack[2] = Object::Instance()->LoadTexture(L"Resources/Eblood/Bloodback2.png");
 
+	bossSprite = Sprite::Instance()->SpriteCreate(L"Resources/EnemyUI/Boss_HP.png");
+	bossHPSprite = Sprite::Instance()->SpriteCreate(L"Resources/EnemyUI/HP.png");
 
 	explosionOBJ = Shape::CreateRect(10, 10);
 	explosionGraph = Object::Instance()->LoadTexture(L"Resources/Point.png");
@@ -280,6 +282,19 @@ void Enemy::Draw()
 				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f + eData[i]->r, eData[i]->position.z),
 					Vec3(0.5f, 0.5f, 0.5f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
 			}
+		}
+	}
+}
+
+void Enemy::DrawUI()
+{
+	for (size_t i = 0; i < eData.size(); i++)
+	{
+		if (eData[i]->HP > 0 && eData[i]->bossFlag == true && eData[i]->Status != NORMAL)
+		{
+			float ratio = eData[i]->HP / eData[i]->HPMax;
+			Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 80.0f);
+			Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 80.0f);
 		}
 	}
 }

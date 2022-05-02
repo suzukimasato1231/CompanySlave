@@ -112,8 +112,6 @@ void Clear::Update()
 void Clear ::Draw()
 {
 	//オブジェクト描画前処理
-	Object::Instance()->PreDraw();
-	Sprite::Instance()->PreDraw();
 
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ

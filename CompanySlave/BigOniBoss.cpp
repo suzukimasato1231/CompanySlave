@@ -34,8 +34,8 @@ void BigOniBoss::Init()
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
 	//É{ÉXÇÃêîíl
-	bossData.HP = 28.0f;
-	bossData.HPMax = 28.0f;
+	bossData.HP = 84.0f;
+	bossData.HPMax = 84.0f;
 	bossData.scale = { 4.0f,4.0f,4.0f };
 	bossData.r = 15;
 	bossData.bossFlag = true;

@@ -30,7 +30,10 @@ private:
 
 	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
 
-	Object::ObjectData attackOBJ[2];				//エネミーアタック
+	Object::ObjectData attackOBJ[5];				//エネミーアタック
+
+	Object::ObjectData enemyWalk[3];				//エネミー歩き
+
 
 	const Vec2 attackEnemies{ 100.0f,80.0f };		//索敵範囲:width,height
 

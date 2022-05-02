@@ -84,4 +84,8 @@ struct EnemyData
 	bool explosionFlag = false;
 	int explosionCount = 2;
 	bool explosionDelay = 0;
+
+	//•`‰æŠÖŒW
+	int walkNum = 0;					//•à‚«
+	int walkTime = 0;
 };

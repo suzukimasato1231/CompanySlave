@@ -43,11 +43,6 @@ void SelectScene::Initialize()
 	
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	//3Dobjファイル読み込み。
-	//パーティクルクラス作成
-	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
-
-	//particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
 	
 }
 
@@ -158,10 +153,6 @@ void SelectScene::Direction()
 }
 void SelectScene::Draw()
 {
-	//オブジェクト描画前処理
-	Object::Instance()->PreDraw();
-	Sprite::Instance()->PreDraw();
-
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
 	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);

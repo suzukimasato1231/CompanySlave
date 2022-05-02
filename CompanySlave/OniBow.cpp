@@ -19,8 +19,16 @@ void OniBow::Init()
 	//“G‚Ì“Ç‚Ýž‚Ý
 	enemyObject = Object::Instance()->CreateOBJ("OniKari");
 	//“G‚ÌUŒ‚ó‘Ô‚Ì“Ç‚Ýž‚Ý
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("Oniyumi2-0");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("Oniyumi2-1");
+	attackOBJ[2] = Object::Instance()->CreateOBJ("Oniyumi2-2");
+	attackOBJ[3] = Object::Instance()->CreateOBJ("Oniyumi2-3");
+	attackOBJ[4] = Object::Instance()->CreateOBJ("Oniyumi2-4");
+
+	//“G‹|•à‚«
+	enemyWalk[0] = Object::Instance()->CreateOBJ("Oniyumi1-0");
+	enemyWalk[1] = Object::Instance()->CreateOBJ("Oniyumi1-1");
+	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2");
 
 	//–î‚Ìobj“Çž
 	bowOBJ = Shape::CreateSquare(bowSize.x, bowSize.y, bowSize.z);
@@ -59,16 +67,28 @@ void OniBow::Draw(EnemyData* oniData)
 		}
 		break;
 	case MOVE:
-		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyWalk[oniData->walkNum], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		break;
 	case ATTACK:
-		if (oniData->StatusTime >= attackMotionDamege)
+		if (oniData->StatusTime >= attackMotionTime - 25)
 		{//•ŠíU‚èã‚°
-			Object::Instance()->Draw(attackOBJ[0], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[0], oniData->position, oniData->scale, Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 30.0f, 0.0f), oniData->color);
+		}
+		else if (oniData->StatusTime >= attackMotionTime - 50)
+		{
+			Object::Instance()->Draw(attackOBJ[1], oniData->position, oniData->scale, Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 30.0f, 0.0f), oniData->color);
+		}
+		else if (oniData->StatusTime >= attackMotionTime - 75)
+		{
+			Object::Instance()->Draw(attackOBJ[2], oniData->position, oniData->scale, Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 30.0f, 0.0f), oniData->color);
+		}
+		else if (oniData->StatusTime >= attackMotionTime - 100)
+		{
+			Object::Instance()->Draw(attackOBJ[3], oniData->position, oniData->scale, Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 30.0f, 0.0f), oniData->color);
 		}
 		else
 		{//•ŠíU‚è‰º‚ë‚µ
-			Object::Instance()->Draw(attackOBJ[1], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[4], oniData->position, oniData->scale, Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 30.0f, 0.0f), oniData->color);
 		}
 		break;
 	}
@@ -82,7 +102,7 @@ void OniBow::Draw(EnemyData* oniData)
 	//–î‚ÌŽËü•ûŒü‚Ì•`‰æ
 	if (oniData->StatusTime >= attackMotionDamege)
 	{
-		Object::Instance()->Draw(bowRaysOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f));
+		//Object::Instance()->Draw(bowRaysOBJ, Vec3(oniData->position.x, 0.0f, oniData->position.z), Vec3(2.0f, 2.0f, 2.0f), Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f));
 	}
 }
 
@@ -122,7 +142,17 @@ void OniBow::Move(EnemyData* oniData, Player* player)
 		Vec3 direction = memoryPosition.normalize();
 		oniData->position += direction * moveSpeed * slowValue;
 	}
-
+	//•à‚«•`‰æ‚Ì”Žš
+	if (oniData->walkTime % 10 == 0)
+	{
+		oniData->walkNum++;
+		if (oniData->walkNum >= 3)
+		{
+			oniData->walkNum = 0;
+			oniData->walkTime = 0;
+		}
+	}
+	oniData->walkTime++;
 	oniData->StatusTime--;
 }
 
@@ -241,16 +271,16 @@ Vec3 OniBow::DirectionAngle(int direction)
 	switch (direction)
 	{
 	case Up:
-		angle = { 0.0f,90.0f,0.0f };
+		angle = { 0.0f,270.0f,0.0f };
 		break;
 	case Left:
-		angle = { 0.0f,0.0f,0.0f };
-		break;
-	case Right:
 		angle = { 0.0f,180.0f,0.0f };
 		break;
+	case Right:
+		angle = { 0.0f,0.0f,0.0f };
+		break;
 	case Down:
-		angle = { 0.0f,270.0f,0.0f };
+		angle = { 0.0f,90.0f,0.0f };
 		break;
 	default:
 		angle = { 0.0f,0.0f,0.0f };

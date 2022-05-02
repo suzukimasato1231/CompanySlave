@@ -21,15 +21,11 @@ void Title::Initialize()
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	// 	//パーティクル初期化
-	//ParticleManager::SetCamera(camera);
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 	//デバックテキスト初期化
 	debugText.Initialize();
 	////3Dオブジェクト初期化
-	//Object::Instance()->SetCamera(camera);
-	//Object::Instance()->SetLight(lightGroup);
 
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/i.wav");
@@ -149,10 +145,6 @@ void Title::Update()
 
 void Title::Draw()
 {
-	//オブジェクト描画前処理
-	Object::Instance()->PreDraw();
-	Sprite::Instance()->PreDraw();
-
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
 	Sprite::Instance()->Draw(BGGraph, {0,0}, window_width, window_height);

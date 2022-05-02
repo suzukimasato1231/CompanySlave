@@ -27,7 +27,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	//図形モデル初期化
 	Shape::Init(directX->GetDevice());
 	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList());
-
+	Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 	title = new Title();
 	title->Initialize();
 
@@ -210,7 +210,9 @@ void GameSceneManager::Update()
 
 void GameSceneManager::Draw()
 {
-
+	//オブジェクト描画前処理
+	Object::Instance()->PreDraw();
+	Sprite::Instance()->PreDraw();
 	if (scene == titleScene)
 	{
 		title->Draw();

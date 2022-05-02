@@ -28,6 +28,9 @@ public:
 	void Update(class Player* player);//XV
 
 	void Draw();//•`‰æ
+
+
+	void DrawUI();//UI•`‰æ
 	//ŒŒ­•`‰æ
 	void BloodDraw();
 	//“G‚ÌˆÊ’u‚ğİ’è
@@ -122,6 +125,11 @@ private:
 	int hpGaugeGraph;
 	int hpGraph;
 	int explosionGraph;
+
+
+	//ƒ{ƒXUI
+	SpriteData bossSprite;
+	SpriteData bossHPSprite;
 
 	int redColor;
 	//ŒŒŠÖŒW‚Ì•Ï”
