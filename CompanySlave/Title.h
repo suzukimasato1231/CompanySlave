@@ -32,6 +32,9 @@ public:
 	void Draw();
 	
 	bool GetBottanFlag() { return bottanFlag; }
+	float GetVolume() { return volume; }
+	float SetVolume(float volume) { return this->volume = volume; }
+	bool SetAudioFlag(bool audioFlag) { return this->audioFlag = audioFlag; }
 
 private:
 	Camera *camera = nullptr;
@@ -55,11 +58,12 @@ private://定義
 	SpriteData rain[rainMax];
 	//オブジェクトデータ
 	Object::ObjectData swordObject;
-	Vec3 position{ 0.5f,0.0f,0.5f };
+	Vec3 position{ 5.0f,0.0f,0.0f };
 	
 	std::array<Vec2, rainMax > pos;//ポジション
 	std::array<float, rainMax > s;//サイズ
 
+	float volume = 1.0f;
 
 	float v = 0;//速度
 	float g = 9.8f;//重力
@@ -76,6 +80,7 @@ private://定義
 	float fade2 = 0;
 
 	bool bottanFlag = false;
+	bool audioFlag = true;
 };
 
 

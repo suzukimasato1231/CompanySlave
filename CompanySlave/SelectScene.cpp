@@ -14,10 +14,9 @@ SelectScene::~SelectScene()
 	//音データ解放
 	safe_delete(audio);
 }
-void SelectScene::Initialize(_DirectX *directX)
+void SelectScene::Initialize()
 {
-	assert(directX);
-	this->directX = directX;
+
 	//Audioクラス作成
 	audio = Audio::Create();
 	//カメラクラス作成
@@ -28,28 +27,20 @@ void SelectScene::Initialize(_DirectX *directX)
 	lightGroup = LightGroup::Create();
 	//デバックテキスト初期化
 	debugText.Initialize();
-	//3Dオブジェクト初期化
-	Object::Instance()->SetCamera(camera);
-	Object::Instance()->SetLight(lightGroup);
+	//音データ読み込み
+	sound1 = Audio::SoundLoadWave("Resources/i.wav");
 
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
 	Bottan = Sprite::Instance()->SpriteCreate(L"Resources/bottan.png");
 
-	Number[0] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/0.png");
-	Number[1] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/1.png");
-	Number[2] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/2.png");
-	Number[3] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/3.png");
-	Number[4] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/4.png");
-	Number[5] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/5.png");
-	Number[6] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/6.png");
-	Number[7] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/7.png");
-	Number[8] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/8.png");
-	Number[9] = Sprite::Instance()->SpriteCreate(L"Resources/ComboUI/9.png");
+	VolumeUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeUI.png");
+	VolumeUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeUI2.png");
+	VolumeUI[2] = Sprite::Instance()->SpriteCreate(L"Resources/Volume.png");
 
 	LoadUIGraph = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
-
+	
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 	//3Dobjファイル読み込み。
@@ -57,7 +48,7 @@ void SelectScene::Initialize(_DirectX *directX)
 	//particleMan = ParticleManager::Create(L"Resources/particle.jpg", 0);
 
 	//particleMan2 = ParticleManager::Create(L"Resources/text2.jpg", 1);
-
+	
 }
 
 void SelectScene::Init()
@@ -74,77 +65,97 @@ void SelectScene::Init()
 	lightGroup->SetCircleShadowActive(0, false);
 
 	//カメラ位置をセット
-	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
+	camera->SetCamera(Vec3{ 0,0,-10 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 
-	stage = 1;
-	//一の位
-	nCount = 1;
-	//十の位
-	nCount2 = 0;
 	//フェード
 	fade = 1;
-
+	volumeFlag = false;
+	volume = 1;
+	volume2 = 1;
+	volumeB = 500;
+	
+	//audio->SoundBGMPlayLoopWave(sound1);
+	
 }
 
 void SelectScene::Update()
 {
-	//キー入力
-	//Inputクラスにマウスとコントローラもあるよ
-	//インスタンス化してるのでInput/Input.h"を持ってくればどのクラスでも使えるよ
-	if (Input::Instance()->KeybordTrigger(DIK_UP))
-	{
+	//3Dオブジェクト初期化
+	Object::Instance()->SetCamera(camera);
+	Object::Instance()->SetLight(lightGroup);
 
+
+	if(audioFlag==false) {
+		//audio->SoundStop();
 	}
-	if (Input::Instance()->KeybordTrigger(DIK_DOWN))
-	{
+	audio->SetVolume(volume);
 
-	}
-	//ステージ選択ボタン
-	if (Input::Instance()->KeybordTrigger(DIK_LEFT))
-	{
-		if (stage > 1) {
-			stage--;
-			if (nCount == 0) {
-				nCount = 10;
-				if (nCount2 > 1) {
-					nCount2--;
-				}
-			}
-			if (nCount > 0 && nCount2 != 0) {
-				nCount--;
-			}
-			if (nCount > 1 && nCount2 == 0) {
-				nCount--;
-			}
-		}
-		if (stage < 10) {
-			nCount2 = 0;
-		}
-	}
-	if (Input::Instance()->KeybordTrigger(DIK_RIGHT))
-	{
-		if (stage < 30) {
-			stage++;
+	Direction();
 
-			if (nCount < 9) {
-				nCount++;
+	//音量調節
+	//if (Input::Instance()->ConLeftInput())
+	//{
+	//	if (direction == Down) {
+	//		volumeFlag = true;
+	//	}
+	//	if (direction == Up) {
+	//		volumeFlag = false;
+	//	}
+	//	if (volumeFlag == true) {
+	//		if (direction == Right) {
+	//			if (volume < 1) {
+	//				volume += 0.1;
+	//				volume2 += 0.1;
+	//				volumeB += 50;
+	//			}
+	//		}
+	//		if (direction == Left) {
+	//			if (volume >= 0) {
+	//				volume -= 0.1;
+	//				volume2 -= 0.1;
+	//				volumeB -= 50;
+	//			}
+	//		}
+	//	}
+	//}
 
-			}
-			if (stage % 10 == 0) {
-				nCount2++;
-				nCount = 0;
-			}
-		}
-	}
 
-	//パーティクル更新
-	//particleMan->Update();
-	//particleMan2->Update();
 
 	//ライト更新
 	lightGroup->Update();
 }
-
+void SelectScene::Direction()
+{
+	//右上
+	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
+		|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
+		direction = UpRight;
+	}//右下
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
+		|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = DownRight;
+	}//左下
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
+		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = DownLeft;
+	}//左上
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
+		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
+		direction = UpLeft;
+	}//上
+	else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) {
+		direction = Up;
+	}//右
+	else if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) {
+		direction = Right;
+	}//下
+	else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) {
+		direction = Down;
+	}//左
+	else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) {
+		direction = Left;
+	}
+}
 void SelectScene::Draw()
 {
 	//オブジェクト描画前処理
@@ -158,19 +169,21 @@ void SelectScene::Draw()
 
 	Sprite::Instance()->Draw(spriteGraph, Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 
-	Sprite::Instance()->Draw(Bottan, Vec2(580, 280), 200, 200, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	
+	Sprite::Instance()->Draw(Bottan, Vec2(580, 180), 200, 200, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	//音量調節バーの描画
+	//	Sprite::Instance()->Draw(VolumeUI[2], Vec2(380, 480), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 
-	if (stage < 10) {
-		Sprite::Instance()->Draw(Number[nCount], Vec2(630, 320), 100, 100, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-	}
-	if (stage >= 10) {
-		Sprite::Instance()->Draw(Number[nCount2], Vec2(590, 320), 100, 100, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-		Sprite::Instance()->Draw(Number[nCount], Vec2(670, 320), 100, 100, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-	}
+	//if (volumeFlag == false) {
+	//	Sprite::Instance()->Draw(VolumeUI[0], Vec2(380, 480), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	//}
+	//else if (volumeFlag == true) {
+	//	Sprite::Instance()->Draw(VolumeUI[1], Vec2(380, 480), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	//}
 
 	//デバックテキスト%dと%f対応
-	debugText.Print(10, 40, 2, "LeftArrow");
-	debugText.Print(10, 80, 2, "RightArrow");
+	debugText.Print(10, 40, 2, "%f",volume);
+
 
 
 	//デバックテキスト描画ここは変わらない

@@ -36,7 +36,10 @@ public:
 
 	bool GetSceneFlag();
 	bool SetSceneFlag(bool sceneFlag) { return this->sceneFlag = sceneFlag; }
+	bool GetSceneChangeFlag() { return sceneChangeFlag; }
+	int GetStageNum() { return stageNum; }
 	void SetStageDebug(int debugNum) { this->stageNum = debugNum; }
+	float SetVolume(float volume) { return this->volume = volume; }
 private:
 	Camera* camera = nullptr;
 	LightGroup* lightGroup = nullptr;

@@ -12,7 +12,7 @@ GameSceneManager::~GameSceneManager()
 	safe_delete(title);
 	safe_delete(play);
 	safe_delete(select);
-	safe_delete(play);
+	safe_delete(clear);
 }
 
 void GameSceneManager::Initialize(_DirectX* directX)
@@ -30,10 +30,15 @@ void GameSceneManager::Initialize(_DirectX* directX)
 
 	title = new Title();
 	title->Initialize();
+
 	select = new SelectScene();
-	select->Initialize(directX);
+	select->Initialize();
+	
 	play = new PlayScene();
 	play->Initialize();
+	
+	clear = new Clear();
+	clear->Initialize();
 }
 
 void GameSceneManager::Init()
@@ -48,17 +53,21 @@ void GameSceneManager::Init()
 	LoadUIGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
 
 	title->Init();
-	select->Init();
+	//clear->Init();
+	//play->Init();
 	scene = titleScene;
-
 }
 
 void GameSceneManager::Update()
 {
+	
 	//タイトル
 	if (scene == titleScene) {
+	
+		
 		if (initFlag == true)
 		{
+		
 			initFlag = false;
 			tFadeFlag = false;
 			tFade = 1;
@@ -67,6 +76,9 @@ void GameSceneManager::Update()
 
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 			{
+				title->SetAudioFlag(false);
+				select->SetAudioFlag(true);
+				volume = 1;
 				initFlag = true;
 				select->Init();
 				scene = selectScene;
@@ -76,6 +88,9 @@ void GameSceneManager::Update()
 	}
 	//ステージ選択
 	else if (scene == selectScene) {
+		//play->SetVolume(0);
+		
+		volume = select->GetVolume();
 		if (initFlag == true)
 		{
 			sFadeFlag = false;
@@ -87,11 +102,14 @@ void GameSceneManager::Update()
 		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 		{
 			//プレイ開始
+			
+			select->SetAudioFlag(false);
+			play->SetVolume(volume);
+			title->SetVolume(volume);
+			play->Init();
 		
-			if (select->GetStage() == 1) {
-				play->Init();
 				sFadeFlag = true;
-			}
+			
 		}
 		//フェード
 		if (sFadeFlag == true) {
@@ -103,18 +121,44 @@ void GameSceneManager::Update()
 			LoadFlag = true;
 		}
 		select->SetFade(sFade);
-
 		select->Update();
 	}
+
 	//ステージ1
 	else if (scene == stage1) {
-		play->Update();
+	
+
 		if (play->GetSceneFlag() == true)
 		{
 			title->Init();
+			title->SetAudioFlag(true);
 			scene = titleScene;
 			initFlag = true;
 		}
+					//この数値を変えればクリアシーンに行けるステージを変えられる↓
+		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==10) {
+			clear->Init();
+			clear->SetAudioFlag(true);
+			scene = clearScene;
+			initFlag = true;
+		}
+		play->Update();
+	}
+	//クリアシーン
+	else if (scene == clearScene) {
+		
+		if (clear->GetBottanFlag() == true) {
+
+			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+			{
+				clear->SetAudioFlag(false);
+				title->SetAudioFlag(true);
+				initFlag = true;
+				title->Init();
+				scene = titleScene;
+			}
+		}
+		clear->Update();
 	}
 	//ロード画面
 	if (LoadFlag == true) {
@@ -134,6 +178,7 @@ void GameSceneManager::Update()
 			LoadFlag = false;
 		}
 	}
+	
 
 
 	//デバック用リセットボタン
@@ -178,7 +223,10 @@ void GameSceneManager::Draw()
 	{
 		play->Draw();
 	}
-
+	else if (scene == clearScene)
+	{
+		clear->Draw();
+	}
 	if (LoadFlag == true) {
 		Sprite::Instance()->Draw(BGGraph, Vec2(0, 0), window_width, window_height);
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
@@ -186,7 +234,7 @@ void GameSceneManager::Draw()
 	}
 	debugText.Print(10, 260, 2, "R:reset");
 	debugText.Print(10, 300, 2, "DebugStageNum %d", stageDebug);
-
+	debugText.Print(10, 360, 2, "%f", volume);
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
 }

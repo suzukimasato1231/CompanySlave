@@ -21,15 +21,15 @@ void Title::Initialize()
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//パーティクル初期化
-	ParticleManager::SetCamera(camera);
+	// 	//パーティクル初期化
+	//ParticleManager::SetCamera(camera);
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 	//デバックテキスト初期化
 	debugText.Initialize();
-	//3Dオブジェクト初期化
-	Object::Instance()->SetCamera(camera);
-	Object::Instance()->SetLight(lightGroup);
+	////3Dオブジェクト初期化
+	//Object::Instance()->SetCamera(camera);
+	//Object::Instance()->SetLight(lightGroup);
 
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/i.wav");
@@ -58,7 +58,7 @@ void Title::Init()
 	lightGroup->SetCircleShadowActive(0, false);
 
 	//カメラ位置をセット
-	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
+	camera->SetCamera(Vec3{ 0,0,-10 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	srand(time(NULL));
 	fade = 0;
 	fade2 = 0;
@@ -72,11 +72,23 @@ void Title::Init()
 		pos[i].x = rand()%1300;
 		s[i] = rand() % 500-400;
 	}
+	//audio->SoundBGMPlayLoopWave(sound1);
 }
 
 void Title::Update()
 {
 	//
+	// 	//パーティクル初期化
+	ParticleManager::SetCamera(camera);
+		//3Dオブジェクト初期化
+	Object::Instance()->SetCamera(camera);
+	Object::Instance()->SetLight(lightGroup);
+
+	if (audioFlag == false) {
+		//audio->SoundStop();
+	}
+	audio->SetVolume(volume);
+
 	if (rainFlag == false) {
 		if (rainTime < 30) {
 			rainTime++;
@@ -156,7 +168,7 @@ void Title::Draw()
 
 		Sprite::Instance()->Draw(startGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,fade2 });
 	
-	Object::Instance()->Draw(swordObject, position, Vec3{0.2,0.2,0.1 }, Vec3{ 0,90,-90 }, Vec4{1,1,1,1});
+	Object::Instance()->Draw(swordObject, position, Vec3{1,1,1 }, Vec3{ 0,-90,-90 }, Vec4{1,1,1,1});
 
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "%f",fade);

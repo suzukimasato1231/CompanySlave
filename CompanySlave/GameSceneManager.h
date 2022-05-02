@@ -2,7 +2,7 @@
 #include"Title.h"
 #include"PlayScene.h"
 #include"SelectScene.h"
-
+#include"Clear.h"
 extern const int window_width;
 extern const int window_height;
 class GameSceneManager :public Singleton<GameSceneManager>
@@ -24,11 +24,10 @@ public:
 
 private://定義
 	enum Scene {
-		titleSceneInit,
 		titleScene,
 		selectScene,
 		stage1,
-		scoreScene
+		clearScene
 	};
 	//最初のシーン
 	Scene scene = titleScene;
@@ -36,6 +35,7 @@ private://定義
 	Title* title = nullptr;
 	PlayScene* play = nullptr;
 	SelectScene* select = nullptr;
+	Clear* clear = nullptr;
 	DebugText debugText;
 	SpriteData BGGraph;
 	SpriteData LoadUIGraph[7];
@@ -58,5 +58,8 @@ private://定義
 
 	//デバック用
 	int stageDebug = 1;
+
+	//音量
+	float volume;
 
 };

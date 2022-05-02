@@ -31,18 +31,16 @@ void PlayScene::Initialize()
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//パーティクル初期化
-	ParticleManager::SetCamera(camera);
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 	//デバックテキスト初期化
 	debugText.Initialize();
-	//3Dオブジェクト初期化
-	Object::Instance()->SetCamera(camera);
-	Object::Instance()->SetLight(lightGroup);
 
 	//音データ読み込み
-	sound1 = Audio::SoundLoadWave("Resources/i.wav");
+	sound1 = Audio::SoundLoadWave("Resources/Music/rain.wav");
+	sound2= Audio::SoundLoadWave("Resources/Music/katana.wav");
+
+
 	//スプライト画像読み込み
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
@@ -125,10 +123,11 @@ void PlayScene::StageInit()
 {
 	if (stageFlag == true)
 	{
+		//audio->SoundBGMPlayLoopWave(sound1);
 		switch (stageNum)
 		{
 		case 1:
-			//audio->SoundBGMPlayLoopWave(sound1, audio->BGM);
+	
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
@@ -179,6 +178,12 @@ void PlayScene::StageInit()
 
 void PlayScene::Update()
 {
+	//パーティクル初期化
+	ParticleManager::SetCamera(camera);
+	//3Dオブジェクト初期化
+	Object::Instance()->SetCamera(camera);
+	Object::Instance()->SetLight(lightGroup);
+
 	//nextステージ
 
 	StageInit();
@@ -194,6 +199,13 @@ void PlayScene::Update()
 		enemy->Update(player);
 	}
 
+	if (Input::Instance()->ControllerDown(ButtonX))
+	{
+		audio->SoundSEPlayWave(sound2);
+	}
+
+	//0が無音
+	audio->SetVolume(volume);
 
 
 	//マップチップとプレイヤーの押し戻し処理
@@ -264,6 +276,8 @@ void PlayScene::Update()
 
 	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
 	{
+		//audio->SoundStop();
+
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
@@ -272,6 +286,7 @@ void PlayScene::Update()
 	//プレイシーンを抜ける
 	if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
 	{
+	
 		deadGraphPos.y = -800;
 		nowTime = 0;
 		endTime = 5;
@@ -280,6 +295,7 @@ void PlayScene::Update()
 	}
 
 	if (sceneChangeFlag == true) {
+		//audio->SoundStop();
 		if (ChangeGraphPosition.x < 0) {
 			ChangeGraphPosition.x += 22;
 		}
@@ -292,17 +308,8 @@ void PlayScene::Update()
 		ChangeGraphPosition = { -1600.0f, 0.0f };
 	}
 
-	//0が無音
-	audio->SetVolume(volume);
-	if (Input::Instance()->KeybordTrigger(DIK_Q)) {
-		if (volume > 0) {
-			volume -= 0.1;
-		}
-	}
 
-	if (Input::Instance()->KeybordTrigger(DIK_E)) {
-		volume += 0.1;
-	}
+
 
 	rainSlow = player->GetSlow();
 	for (int i = 0; i < rainMax; i++) {
@@ -368,7 +375,7 @@ void PlayScene::Draw()
 
 
 	for (int i = 0; i < rainMax; i++) {
-		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 });
+		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 },rainGraph);
 	}
 	//前景描画
 	player->UIDraw();
@@ -379,7 +386,7 @@ void PlayScene::Draw()
 	}
 
 #if _DEBUG
-	debugText.Print(10, 180, 2, "%f", volume);
+	debugText.Print(10, 180, 2, "%d", stageNum);
 
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 
