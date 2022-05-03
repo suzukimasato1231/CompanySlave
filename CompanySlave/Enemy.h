@@ -68,6 +68,18 @@ public://Žæ“¾Œn
 	// À•WŽæ“¾
 	Vec3 GetPosition(int i) { return eData[i]->position; }
 
+	Vec3 GetBowPosition(int i) { return eData[i]->bowPos; }
+
+	Vec3 GetBowOldPos(int i) { return eData[i]->bowOldPos; }
+
+	Vec3 SetBowPos(int i, Vec3 pos) { return eData[i]->bowPos = pos; }
+
+	void SetBowFlag(int i) { eData[i]->bowFlag = false, eData[i]->bowMove = false; }
+
+	int GetStatus(int i) { return eData[i]->Status; }
+
+	int GetBowAngle(int i) { return eData[i]->bowAngle; }
+
 	float GetHP(int i) { return eData[i]->HP; }
 
 	Vec3 GetOldPosition(int i) { return eData[i]->oldPosition; }
@@ -115,7 +127,7 @@ private:
 	//ƒ{ƒX‹S
 	class BigOniBoss bigOniBoss;
 
-	void UpdateBigOniBoss(int i, class Player*player);
+	void UpdateBigOniBoss(int i, class Player* player);
 private:
 	const float nockPower = 0.8f;
 	//HPUI

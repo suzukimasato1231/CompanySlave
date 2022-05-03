@@ -77,7 +77,9 @@ struct EnemyData
 	//遠距離用数値
 	float bowAngle = 0.0f;				//狙う角度
 	Vec3 bowPos = {};					//矢の座標
+	Vec3 bowOldPos = {};
 	bool bowFlag = false;				//弓を撃ったか
+	bool bowMove = false;
 	int bowTime = 0;					//矢が飛んでいく時間
 
 	//破のやつ

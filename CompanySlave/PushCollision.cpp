@@ -1,6 +1,6 @@
 #include"PushCollision.h"
 
-void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, class MapStage *mapStage, bool &changeFlag)
+void PushCollision::Player2Mapchip(class Player* player, class Enemy* enemy, class MapStage* mapStage, bool& changeFlag)
 {
 
 	if (player == nullptr || mapStage == nullptr) { return; }
@@ -35,7 +35,7 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 					changeFlag = true;
 				}
 			}
-			if (mapStage->GetMapGround(i, j) == FLOOR_TILE1|| mapStage->GetMapGround(i, j) == FLOOR_TILE2)
+			if (mapStage->GetMapGround(i, j) == FLOOR_TILE1 || mapStage->GetMapGround(i, j) == FLOOR_TILE2)
 			{
 				if (Collision::CheckBox2Box(player->GetBox(), mapStage->GetPositionBlock(i, j)))
 				{
@@ -86,6 +86,34 @@ void PushCollision::Player2Mapchip(class Player *player, class Enemy *enemy, cla
 						enemy->SetPosition(n, PushBack(enemy->GetPosition(n), enemy->GetOldPosition(n), enemy->GetEnemyR(n),
 							mapStage->GetPosition(i, j), mapStage->GetSize() / 2,
 							mapStage->GetMap(i, (j + 1) % MAP_HEIGHT), mapStage->GetMap(i, (j - 1) % MAP_HEIGHT)));
+					}
+				}
+			}
+		}
+		//–î‚Ì“–‚½‚è”»’è
+		if (enemy->GetStatus(n) == OniBow)
+		{
+			X = enemy->GetBowPosition(n).x / mapStage->GetSize();
+			Z = enemy->GetBowPosition(n).z / (-mapStage->GetSize());
+			for (int j = (Z - 2); j < (Z + 2); j++)
+			{
+				for (int i = (X - 2); i < (X + 2); i++)
+				{
+					if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
+					{
+						continue;
+					}
+					if (!(mapStage->GetMap(i, j) == NONE))//0ˆÈŠO“–‚½‚è”»’è
+					{
+						OBB mapOBB;
+						mapOBB.Initilize(mapStage->GetPosition(i, j), Vec3(), Vec3(mapStage->GetSize(), mapStage->GetSize(), mapStage->GetSize()));
+						OBB bowOBB;
+						bowOBB.Initilize(enemy->GetBowPosition(n), Vec3(0.0f, 0.0f, enemy->GetBowAngle(n)), Vec3(10.0f, 10.0f, 10.0f));
+						bool HitFlag = OBBCollision::ColOBBs(bowOBB, mapOBB);
+						if (HitFlag)
+						{
+							enemy->SetBowFlag(n);
+						}
 					}
 				}
 			}

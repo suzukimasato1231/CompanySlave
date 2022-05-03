@@ -196,6 +196,7 @@ void OniBow::Attack(EnemyData* oniData, Player* player)
 	else if (oniData->StatusTime == attackMotionDamege && oniData->bowTime <= 0)
 	{
 		oniData->bowFlag = true;
+		oniData->bowMove = true;
 		oniData->bowPos = oniData->position;
 		oniData->bowTime = bowTimeMax;
 	}
@@ -218,9 +219,12 @@ void OniBow::BowUpdate(EnemyData* oniData, Player* player)
 		playerOBB.Initilize(player->GetPosition(), player->GetAngle(), Vec3(player->GetPSize(), player->GetPSize(), player->GetPSize()));
 		OBB bowOBB;
 		bowOBB.Initilize(oniData->bowPos, Vec3(0.0f, 0.0f, oniData->bowAngle), bowSize);
-
-		oniData->bowPos.x += cosf(oniData->bowAngle) * bowSpeed;
-		oniData->bowPos.z += sinf(oniData->bowAngle) * bowSpeed;
+		oniData->bowOldPos = oniData->bowPos;
+		if (oniData->bowMove == true)
+		{
+			oniData->bowPos.x += cosf(oniData->bowAngle) * bowSpeed;
+			oniData->bowPos.z += sinf(oniData->bowAngle) * bowSpeed;
+		}
 
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (OBBCollision::ColOBBs(playerOBB, bowOBB) && oniData->bowFlag == true && player->GetInvincivleTime() == 0)
@@ -233,7 +237,6 @@ void OniBow::BowUpdate(EnemyData* oniData, Player* player)
 		{
 			oniData->bowFlag = false;
 		}
-		//壁にあったら消える処理
 	}
 }
 
