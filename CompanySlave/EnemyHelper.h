@@ -9,6 +9,7 @@ enum EnemyType
 	OniBow,		//‹|‹S
 	WolfType,	//˜T,
 	BossBigOni,	//‹‘å‹S
+	BossWolfFlock,//˜TŒQ‚ê
 };
 
 enum spawnNo
@@ -26,6 +27,7 @@ enum spawnNo
 	WOLFRIGHT,
 	WOLFLEFT,
 	BossOni = 40,
+	WOLFFLOCK = 50
 };
 
 //“G‚Ìó‘Ô
@@ -90,4 +92,6 @@ struct EnemyData
 	//•`‰æŠÖŒW
 	int walkNum = 0;					//•à‚«
 	int walkTime = 0;
+
+
 };

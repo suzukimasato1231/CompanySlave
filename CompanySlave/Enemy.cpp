@@ -50,6 +50,8 @@ void Enemy::Init()
 	wolf.Init();
 	//É{ÉXãS
 	bigOniBoss.Init();
+	//òTÇÃåQÇÍ
+	wolfFlock.Init();
 }
 
 void Enemy::StageInit(int stageNum)
@@ -133,6 +135,12 @@ void Enemy::StageInit(int stageNum)
 				case BossOni:
 					*eData[num] = bigOniBoss.GetBossData();
 					eData[num]->type = BossBigOni;
+					break;
+				case WOLFFLOCK:
+					*eData[num] = wolfFlock.GetBossData();
+					eData[num]->type = BossWolfFlock;
+					wolfFlock.LoopInit();
+					break;
 				default:
 					break;
 				}
@@ -191,6 +199,9 @@ void Enemy::Update(Player* player)
 				break;
 			case BossBigOni:
 				UpdateBigOniBoss(i, player);
+				break;
+			case BossWolfFlock:
+				UpdateWolfFlock(i, player);
 				break;
 			}
 			NockBack(i);
@@ -265,6 +276,9 @@ void Enemy::Draw()
 			case BossBigOni:
 				bigOniBoss.Draw(eData[i]);
 				break;
+			case BossWolfFlock:
+				wolfFlock.Draw(eData[i]);
+				break;
 			}
 
 			//HPÉQÅ[ÉW
@@ -305,7 +319,7 @@ void Enemy::BloodDraw()
 	for (size_t i = 0; i < eData.size(); i++)
 	{//ååç≠ÇÃï`âÊ
 		size += 0.01;
-		if (BloodFlag[i] == true) {
+		if (BloodFlag[i] == true && eData[i]->type != BossWolfFlock) {
 			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, 0.0f - 0.9f + size, BloodPosition[i].z),
 				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
 		}
@@ -663,6 +677,71 @@ void Enemy::UpdateBigOniBoss(int i, Player* player)
 		}
 
 		bigOniBoss.AttackSummon(eData[i], player, eNum);
+		break;
+	}
+}
+
+void Enemy::UpdateWolfFlock(int i, Player* player)
+{
+	int num = 0;
+	switch (eData[i]->Status)
+	{
+	case NORMAL:
+		wolfFlock.SearchPlayer(eData[i], player);
+		break;
+	case SUMMON:
+		wolfFlock.AttackSummon(eData[i]);
+		if (wolfFlock.GetFlockFlag() == true)
+		{
+			eData.push_back(new EnemyData);
+			num = eData.size() - 1;
+			*eData[num] = wolf.WolfData();
+			eData[num]->type = WolfType;
+			eData[num]->Status = MOVE;
+			SetFirstPosition(Vec3(45 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+
+			eData.push_back(new EnemyData);
+			num = eData.size() - 1;
+			*eData[num] = wolf.WolfData();
+			eData[num]->type = WolfType;
+			eData[num]->Status = MOVE;
+			SetFirstPosition(Vec3(50 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+
+			eData.push_back(new EnemyData);
+			num = eData.size() - 1;
+			*eData[num] = wolf.WolfData();
+			eData[num]->type = WolfType;
+			eData[num]->Status = MOVE;
+			SetFirstPosition(Vec3(55 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+
+			eData.push_back(new EnemyData);
+			num = eData.size() - 1;
+			*eData[num] = wolf.WolfData();
+			eData[num]->type = WolfType;
+			eData[num]->Status = MOVE;
+			SetFirstPosition(Vec3(60 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+
+			eData.push_back(new EnemyData);
+			num = eData.size() - 1;
+			*eData[num] = wolf.WolfData();
+			eData[num]->type = WolfType;
+			eData[num]->Status = MOVE;
+			SetFirstPosition(Vec3(60 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+		}
+		int damegeNum = 0;
+		for (int j = 0; j < eData.size(); j++)
+		{
+			if (eData[j]->HP <= 0)
+			{
+				damegeNum++;
+			}
+		}
+		//É_ÉÅÅ[ÉWÇêHÇÁÇ§
+		eData[i]->HP -= damegeNum;
+		if (eData[i]->HP <= 0)
+		{
+			eData[i]->HP = 0;
+		}
 		break;
 	}
 }

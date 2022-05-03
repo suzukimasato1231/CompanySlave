@@ -218,6 +218,8 @@ void Player::StageInit(int stageNum)
 	//’ÊíUŒ‚
 	normalAttackFlag.fill(false);//’ÊíUŒ‚‰Â”\‚©
 
+	enemyDamegeTime.fill(60.0f);
+
 	normalAttackTime = 0;							//UŒ‚‚ÆUŒ‚‚ÌŠÔ
 	normalDirection = 0;							//UŒ‚‚ÌŒü‚«
 	normalAttackCount = 0;							//’ÊíUŒ‚‚Ì‰½‰ñ–Ú‚©
@@ -240,7 +242,7 @@ void Player::StageInit(int stageNum)
 	srand(time(NULL));
 	for (int i = 0; i < 7; i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < eNumMax; j++)
 		{
 			isEnemySting[i][j] = false;
 		}
@@ -315,6 +317,10 @@ void Player::Draw()
 	{
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
+		if (attackNo == 0 && attackMode == true)
+		{
+			int n = 0;
+		}
 	}
 	if (homingFlag == false)
 	{//Œ•‚Ì”ò‚Ô•ûŒü‚Ì•`‰æ
@@ -485,7 +491,7 @@ void Player::NormalAttack(Enemy* enemy)
 			NormalFieldDirection();
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
-				if (enemy->GetHP(i) > 0) {
+				if (enemy->GetHP(i) > 0 && enemy->GetType(i) != BossWolfFlock) {
 					if (Collision::CheckBox2Box(enemy->GetBox(i), normalAttackBox))
 					{
 						enemy->DamegeNormal(i, direction);
@@ -683,7 +689,7 @@ void Player::SwordAttack(Enemy* enemy)
 				//–ß‚Á‚Ä‚é‚Æ‚«‚Ì“–‚½‚è”»’è
 				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 				{
-					if (enemy->GetHP(j) > 0) {
+					if (enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) {
 						if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
 						{
 							enemy->DamegeSword(j);
@@ -741,7 +747,7 @@ void Player::SwordAttack(Enemy* enemy)
 			//“G‚Æ‚Ì“–‚½‚è”»’è
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0)
+				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock)
 				{
 					isSwordAttack[i] = false;
 					isEnemySting[i][j] = true;
@@ -1103,7 +1109,7 @@ int Player::EnemyNeedNumber(Enemy* enemy)
 	int number = 0;
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
-		if (enemy->GetHP(i) > 0)
+		if (enemy->GetHP(i) > 0 && enemy->GetType(i) != BossWolfFlock)
 		{
 			//ƒvƒŒƒCƒ„[‚Æ“G‚Æ‚Ì‹——£
 			float length = Vec3(position - enemy->GetPosition(i)).length();
@@ -1129,6 +1135,30 @@ bool Player::IsSwordALLHave()
 		}
 	}
 	return Flag;
+}
+
+Vec3 Player::GetCameraPos()
+{
+	Vec3 cameraPos = position;
+	if (position.x < 110.0f)
+	{
+		cameraPos.x = 110.0f;
+
+	}
+	else if (position.x > 890.0f)
+	{
+		cameraPos.x = 890.0f;
+	}
+	if (position.z > -65.0f)
+	{
+		cameraPos.z = -65.0f;
+
+	}
+	else if (position.z < -350.0f)
+	{
+		cameraPos.z = -350.0f;
+	}
+	return cameraPos;
 }
 
 void Player::NormalFieldDirection()

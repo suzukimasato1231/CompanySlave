@@ -125,7 +125,7 @@ void MapStage::Update(Vec3 pPos, Enemy* enemy)
 	}
 	for (int y = (Z - 7); y < (Z + 6); y++)
 	{
-		for (int x = (X - 11); x < (X + 13); x++)
+		for (int x = (X - 13); x < (X + 13); x++)
 		{
 			if (y < 0 || x < 0 || y >= MAP_HEIGHT || x >= MAP_WIDTH)
 			{
@@ -157,9 +157,9 @@ void MapStage::Draw(Vec3 pPos)
 {
 	int X = pPos.x / mapSize;
 	int Z = pPos.z / (-mapSize);
-	for (int j = (Z - 7); j < (Z + 6); j++)
+	for (int j = (Z - 10); j < (Z + 6); j++)
 	{
-		for (int i = (X - 11); i < (X + 13); i++)
+		for (int i = (X - 13); i < (X + 13); i++)
 		{
 			if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
 			{
@@ -377,7 +377,7 @@ void MapStage::DrawParticle(Vec3 pPos)
 {
 	int X = pPos.x / mapSize;
 	int Z = pPos.z / (-mapSize);
-	for (int j = (Z - 7); j < (Z + 6); j++)
+	for (int j = (Z - 10); j < (Z + 6); j++)
 	{
 		for (int i = (X - 11); i < (X + 13); i++)
 		{

@@ -7,11 +7,12 @@
 #include"OniBow.h"
 #include"WOLF.h"
 #include"BigOniBoss.h"
+#include"WolfFlock.h"
 class Enemy
 {
 private:
 	//“GÅ‘å”
-	static const int eNumMax = 50;
+	static const int eNumMax = 100;
 	//“G”z—ñ
 	std::vector<EnemyData*>eData;
 
@@ -78,6 +79,8 @@ public://æ“¾Œn
 
 	int GetStatus(int i) { return eData[i]->Status; }
 
+	int GetType(int i) { return eData[i]->type; }
+
 	int GetBowAngle(int i) { return eData[i]->bowAngle; }
 
 	float GetHP(int i) { return eData[i]->HP; }
@@ -128,6 +131,11 @@ private:
 	class BigOniBoss bigOniBoss;
 
 	void UpdateBigOniBoss(int i, class Player* player);
+
+	//˜T‚ÌŒQ‚ê
+	class WolfFlock wolfFlock;
+
+	void UpdateWolfFlock(int i, class Player* player);
 private:
 	const float nockPower = 0.8f;
 	//HPUI

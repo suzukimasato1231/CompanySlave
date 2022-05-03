@@ -13,6 +13,7 @@ class Enemy;
 class Player
 {
 public:
+	static const int eNumMax = 100;
 	Player();						//コンストラクタ
 
 	~Player();						//ですコンストラクタ
@@ -107,24 +108,26 @@ public://取得系
 	int GetDirection() { return direction; }
 
 	int GetInvincivleTime() { return invincivleTime; }
+	//カメラの座標を求める
+	Vec3 GetCameraPos();
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
-	Object::ObjectData playerAttackObject[9];	//プレイヤー攻撃
-	int walkCount = 0;	//描画用カウント
-	int walkNo = 0;	//描画するNO
-	int attackCount = 0;	//描画用カウント
-	int attackNo = 0;	//描画するNO
+	Object::ObjectData playerAttackObject[9];		//プレイヤー攻撃
+	int walkCount = 0;								//描画用カウント
+	int walkNo = 0;									//描画するNO
+	int attackCount = 0;							//描画用カウント
+	int attackNo = 0;								//描画するNO
 	bool attackMode = false;
-	Box pBox;							//プレイヤーの長方形
-	Sphere pSphere;						//プレイヤーの球
-	Vec3 position{ 10.0f,0.0f,-10.0f };	//座標
-	Vec3 oldPosition{};					//1つ前の座標
-	Vec3 speed{ 1.5f,1.5f,1.5f };		//プレイヤースピード
-	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
-	Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
-	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
-	float r = 3;						//プレイヤーの半径
-	int  direction = 0;					//プレイヤーの向き
+	Box pBox;										//プレイヤーの長方形
+	Sphere pSphere;									//プレイヤーの球
+	Vec3 position{ 10.0f,0.0f,-10.0f };				//座標
+	Vec3 oldPosition{};								//1つ前の座標
+	Vec3 speed{ 1.5f,1.5f,1.5f };					//プレイヤースピード
+	Vec3 scale{ 1.0f,1.0f,1.0f };					//大きさ
+	Vec3 angle{ 0.0f,0.0f,0.0f };					//角度
+	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };				//色
+	float r = 3;									//プレイヤーの半径
+	int  direction = 0;								//プレイヤーの向き
 	float sinRad = 0;
 	float cosRad = 0;
 	float RsinRad = 0;
@@ -180,7 +183,7 @@ private:
 	std::array<bool, 7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
 	std::array<int, 7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間
 	std::array<bool, 7> haveSword = { true,true,true,true,true,true,true };//持ってる剣
-	bool isEnemySting[7][50];//敵に刺さってるか
+	bool isEnemySting[7][eNumMax];//敵に刺さってるか
 	std::array < Box, 7> swordAttackBox;	//剣の当たり判定
 	int shotNo = 0;//どの剣か
 	bool returnFlag = false;//剣が戻る時のフラグ
@@ -227,7 +230,7 @@ private:
 	int effectTime = 10;
 	int effectCount = 0;
 
-	std::array<float, 50 >enemyDamegeTime = { 60,60,60,60,60,60,60,60,60,60 };
+	std::array<float, eNumMax >enemyDamegeTime = {};
 
 	//UI
 	Vec3 UIAngle{ 90.0f,0.0f,0.0f };

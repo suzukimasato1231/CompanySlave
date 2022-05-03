@@ -38,7 +38,7 @@ void PlayScene::Initialize()
 
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/Music/rain.wav");
-	sound2= Audio::SoundLoadWave("Resources/Music/katana.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/katana.wav");
 
 
 	//スプライト画像読み込み
@@ -127,7 +127,7 @@ void PlayScene::StageInit()
 		switch (stageNum)
 		{
 		case 1:
-	
+
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
@@ -213,7 +213,10 @@ void PlayScene::Update()
 
 
 	//
-	camera->FollowCamera(player->GetPosition(), Vec3{ 0,80,-10 }, 0.0f, -15.0f);
+	//カメラ調整
+	camera->FollowCamera(player->GetCameraPos(), Vec3{0,80,-10}, 0.0f, -15.0f);
+
+
 
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
@@ -286,7 +289,7 @@ void PlayScene::Update()
 	//プレイシーンを抜ける
 	if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
 	{
-	
+
 		deadGraphPos.y = -800;
 		nowTime = 0;
 		endTime = 5;
@@ -348,7 +351,7 @@ void PlayScene::Draw()
 	//オブジェクト
 
 	//マップチップの描画
-	mapStage->Draw(player->GetPosition());
+	mapStage->Draw(camera->GetEye());
 
 	//敵の血痕
 	enemy->BloodDraw();
@@ -359,7 +362,7 @@ void PlayScene::Draw()
 	enemy->Draw();
 
 	//パーティクル描画
-	mapStage->DrawParticle(player->GetPosition());
+	mapStage->DrawParticle(camera->GetEye());
 
 	particleMan->Draw();
 	particleMan2->Draw();
@@ -371,7 +374,7 @@ void PlayScene::Draw()
 
 
 	for (int i = 0; i < rainMax; i++) {
-		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 },rainGraph);
+		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 }, rainGraph);
 	}
 	//前景描画
 	player->UIDraw();
