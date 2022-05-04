@@ -9,10 +9,24 @@ Player::Player()
 {}
 
 Player::~Player()
-{}
+{
+	//XAudio2解放
+	audio->xAudio2.Reset();
+	//音データ解放
+	Audio::SoundUnload(&sound1);
+	Audio::SoundUnload(&sound2);
+	Audio::SoundUnload(&sound3);
+	safe_delete(audio);
+}
 
 void Player::Init()
 {
+	//Audioクラス作成
+	audio = Audio::Create();
+	sound1 = Audio::SoundLoadWave("Resources/Music/katana.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/hiken.wav");
+	sound3 = Audio::SoundLoadWave("Resources/Music/return.wav");
+
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2");
 	playerSwordWalkObject[2] = Object::Instance()->CreateOBJ("playerKari2-1");
@@ -309,6 +323,9 @@ void Player::Update(Enemy* enemy)
 	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
 	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+
+
+	audio->SetVolume(volume);
 }
 
 void Player::Draw()
@@ -477,6 +494,7 @@ void Player::NormalAttack(Enemy* enemy)
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
 	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0)
 	{
+		audio->SoundSEPlayWave(sound1);
 		attackMode = true;
 		//連続攻撃を数える
 		if (normalAttackCount < 3)
@@ -598,6 +616,7 @@ void Player::SwordAttack(Enemy* enemy)
 	//撃つ
 	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag)
 	{
+		audio->SoundSEPlayWave(sound2);
 		swordPosition[shotNo] = position;
 		swordAngle[shotNo].z = 0;
 		swordAngle[shotNo] = Rangle;
@@ -623,6 +642,7 @@ void Player::SwordAttack(Enemy* enemy)
 	//剣戻ってくるやつ発動
 	if (Input::Instance()->ControllerDown(ButtonLB) && swordCoolTimeFlag == false)
 	{
+
 		if (IsSwordALLHave() == true)
 		{//剣を全部持っていた場合
 			swordCoolTimeFlag = true;
@@ -641,11 +661,13 @@ void Player::SwordAttack(Enemy* enemy)
 			}
 			returnFlag = true;
 			tornadoScale = 0.5f;
+			audio->SoundSEPlayWave(sound3);
 		}
 		else
 		{//回収できない時の描写の時間設定
 			swordNotTime = swordNotTimeMax;
 		}
+	
 	}
 	for (int i = 0; i < 7; i++)
 	{
@@ -683,6 +705,7 @@ void Player::SwordAttack(Enemy* enemy)
 	//剣戻ってくるやつ処理
 	if (returnFlag)
 	{
+
 		tornadoScale -= 0.01 * slowValue;
 		tornadoAngle += 24 * slowValue;
 		if (slowFlag)

@@ -14,10 +14,21 @@ Enemy::~Enemy()
 		delete eData[i];
 		eData.erase(eData.begin() + i);
 	}
+	//XAudio2‰ð•ú
+	audio->xAudio2.Reset();
+	//‰¹ƒf[ƒ^‰ð•ú
+	Audio::SoundUnload(&sound1);
+	Audio::SoundUnload(&sound2);
+	safe_delete(audio);
 }
 
 void Enemy::Init()
 {
+	audio = Audio::Create();
+	sound1 = Audio::SoundLoadWave("Resources/Music/club.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/Arrow.wav");
+
+
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
 	//“GHP
@@ -251,9 +262,16 @@ void Enemy::Update(Player* player)
 		{
 			explosionFlag[i] = false;
 		}
+		if (eData[i]->attakFlag == true) {
+			audio->SoundSEPlayWave(sound1);
+		}
+		if (eData[i]->bowAFlag ==true) {
+			audio->SoundSEPlayWave(sound2);
+		}
 	}
 	//íœ
 	Delete();
+	audio->SetVolume(volume);
 }
 
 void Enemy::Draw()
@@ -602,6 +620,7 @@ void Enemy::UpdateBow(int i, Player* player)
 		oniBow.Attack(eData[i], player);
 		break;
 	}
+
 }
 
 void Enemy::UpdateWolf(int i, Player* player)

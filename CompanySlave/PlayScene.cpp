@@ -199,12 +199,14 @@ void PlayScene::Update()
 		enemy->Update(player);
 	}
 
-	if (Input::Instance()->ControllerDown(ButtonX))
-	{
-		audio->SoundSEPlayWave(sound2);
-	}
+	//if (Input::Instance()->ControllerDown(ButtonX))
+	//{
+	//	audio->SoundSEPlayWave(sound2);
+	//}
 
 	//0‚ª–³‰¹
+	enemy->SetVolume(volume);
+	player->SetVolume(volume);
 	audio->SetVolume(volume);
 
 

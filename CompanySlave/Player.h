@@ -7,6 +7,8 @@
 #include <array>
 #include<time.h>
 #include"Vec.h"
+#include "Safe_delete.h"
+#include "Audio.h"
 class Enemy;
 /// <summary>
 /// プレイヤークラス
@@ -111,6 +113,9 @@ public://取得系
 	int GetInvincivleTime() { return invincivleTime; }
 	//カメラの座標を求める
 	Vec3 GetCameraPos();
+
+	float SetVolume(float volume) { return this->volume = volume; };
+
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
 	Object::ObjectData playerAttackObject[9];		//プレイヤー攻撃
@@ -248,6 +253,15 @@ private:
 
 	//右スティックを入力したか
 	bool inputStickFlag = false;
+
+	//音
+	Audio* audio = nullptr;
+	//音データ
+	SoundData sound1;
+	SoundData sound2;
+	SoundData sound3;
+	float volume = 1.0f;
+
 #if _DEBUG
 	Object::ObjectData attackField;//攻撃範囲可視化
 	int redColor;

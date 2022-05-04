@@ -64,13 +64,13 @@ private://定義
 
 
 	float volume = 1.0f;
+	//色関係
+	int colorTimer = 60;//フラグがONになるまでの時間
+	bool colorFlag = false;//色変更フラグ
+	float color = 1;//色
 
-	int colorTimer = 60;
-
-	bool colorFlag = false;
-	float color = 1;
-	bool TextFlag = false;
-	bool bottanFlag = false;
+	bool TextFlag = false;//完の文字のフラグ
+	bool bottanFlag = false;//ボタンが押せるかのフラグ
 	bool audioFlag = true;
 };
 

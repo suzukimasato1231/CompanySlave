@@ -69,6 +69,7 @@ struct EnemyData
 	int attackDirection = Down;			//攻撃の向き
 	int damegeTime = 0;					//点滅時間
 	bool DamegeFlag = false;			//ダメージを受けたか
+	bool attakFlag = false;				//アタック時の音用フラグ
 	Vec3 pDirection = {};				//プレイヤーのいる方向
 	int type = 0;						//敵の種類
 	bool bossFlag = false;				//ボスかどうか
@@ -83,7 +84,7 @@ struct EnemyData
 	bool bowFlag = false;				//弓を撃ったか
 	bool bowMove = false;
 	int bowTime = 0;					//矢が飛んでいく時間
-
+	bool bowAFlag = false;				//弓の音用フラグ
 	//破のやつ
 	bool explosionFlag = false;
 	int explosionCount = 2;

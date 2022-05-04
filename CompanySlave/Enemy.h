@@ -8,6 +8,7 @@
 #include"WOLF.h"
 #include"BigOniBoss.h"
 #include"WolfFlock.h"
+#include "Audio.h"
 class Enemy
 {
 private:
@@ -108,6 +109,8 @@ public://取得系
 	bool GetExplosionCount(int i) { return eData[i]->explosionCount; }
 	bool SetExplosionCount(int i);
 
+	float SetVolume(float volume) { return this->volume = volume; };
+
 	int	spawnMap[MAP_HEIGHT][MAP_WIDTH];//沸き地のマップ
 
 	const float mapSize = 10.0f;
@@ -174,4 +177,12 @@ private:
 	int explosionGraphCnt[eNumMax];
 	bool explosionFlag[eNumMax] = { false };
 	Vec3 explosionPosition[eNumMax] = { Vec3(0,0,0) };
+
+	//音
+	Audio* audio = nullptr;
+	//音データ
+	SoundData sound1;//こん棒
+	SoundData sound2;//弓
+
+	float volume = 1.0f;
 };

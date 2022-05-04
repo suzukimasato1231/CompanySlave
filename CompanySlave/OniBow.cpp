@@ -209,6 +209,13 @@ void OniBow::Attack(EnemyData* oniData, Player* player)
 		oniData->StatusTime = moveTime;
 		oniData->bowPos = { 0.0f,0.0f,0.0f };
 	}
+	if (oniData->bowTime == bowTimeMax)
+	{
+		oniData->bowAFlag = true;
+	}
+	else {
+		oniData->bowAFlag = false;
+	}
 }
 
 void OniBow::BowUpdate(EnemyData* oniData, Player* player)

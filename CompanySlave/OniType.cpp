@@ -199,7 +199,11 @@ void OniType::Attack(EnemyData *oniData, Player *player)
 		else if (effectCount == 8) {
 			effectCount = 0;
 			AttackEffect = false;
+			oniData->attakFlag = true;
 		}
+	}
+	else {
+		oniData->attakFlag = false;
 	}
 	//ŽžŠÔ‚ªI‚í‚Á‚½‚çõ“G‚É‚à‚Ç‚é
 	oniData->StatusTime--;
