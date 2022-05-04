@@ -252,6 +252,7 @@ private:
 	int redColor;
 
 	Object::ObjectData normalFieldOBJ;//’ÊíUŒ‚
+	Object::ObjectData normalFieldOBJ2;//’ÊíUŒ‚
 	//int normalGraph;
 
 #endif

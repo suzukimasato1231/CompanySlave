@@ -49,9 +49,10 @@ void Player::Init()
 	swordGargeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
 	swordGargeSub = Sprite::Instance()->SpriteCreate(L"Resources/color/blue.png");
 #if _DEBUG
-	attackField = Shape::CreateRect(10.0f, 20.0f);
+	attackField = Shape::CreateRect(10.0, 20.0f);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
-	normalFieldOBJ = Shape::CreateRect(normalLength, normalLength);
+	normalFieldOBJ = Shape::CreateRect(normalLength, normalLengthSub);
+	normalFieldOBJ2 = Shape::CreateRect(normalLength, normalLength);
 #endif
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
@@ -316,11 +317,37 @@ void Player::Draw()
 	if (damageTime % 2 == 0)
 	{
 		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
-		if (attackMode == true) { Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color); }
-		if (attackNo == 0 && attackMode == true)
+		if (attackMode == true)
 		{
-			int n = 0;
+			Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color);
+#if _DEBUG
+			if (direction == Up) {
+				Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z + normalLength / 2), scale, Vec3(90.0f, 90.0f, 0.0f), color, redColor);
+			}
+			else if (direction == Down) {
+				Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x, position.y, position.z - normalLength / 2), scale, Vec3(90.0f, 90.0f, 0.0f), color, redColor);
+			}
+			else if (direction == Left) {
+				Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x - normalLength / 2, position.y, position.z), scale, Vec3(90.0f, 0.0f, 0.0f), color, redColor);
+			}
+			else if (direction == Right) {
+				Object::Instance()->Draw(normalFieldOBJ, Vec3(position.x + normalLength / 2, position.y, position.z), scale, Vec3(90.0f, 0.0f, 0.0f), color, redColor);
+			}
+			else if (direction == UpLeft) {
+				Object::Instance()->Draw(normalFieldOBJ2, Vec3(position.x - normalLength / 2, position.y, position.z + normalLength / 2), scale, Vec3(90.0f, 90.0f, 0.0f), color, redColor);
+			}
+			else if (direction == UpRight) {
+				Object::Instance()->Draw(normalFieldOBJ2, Vec3(position.x + normalLength / 2, position.y, position.z + normalLength / 2), scale, Vec3(90.0f, 90.0f, 0.0f), color, redColor);
+			}
+			else if (direction == DownLeft)
+			{
+				Object::Instance()->Draw(normalFieldOBJ2, Vec3(position.x - normalLength / 2, position.y, position.z - normalLength / 2), scale, Vec3(90.0f, 90.0f, 0.0f), color, redColor);
+			}
+			else if (direction == DownRight) {
+				Object::Instance()->Draw(normalFieldOBJ2, Vec3(position.x + normalLength / 2, position.y, position.z - normalLength / 2), scale, Vec3(90.0f, 90.0f, 0.0f), color, redColor);
+			}
 		}
+#endif
 	}
 	if (homingFlag == false)
 	{//剣の飛ぶ方向の描画
@@ -837,7 +864,7 @@ void Player::SwordAttack(Enemy* enemy)
 			swordPosition[i].x += cos(XMConvertToRadians(explosionAngle[i])) * 5 * slowValue;      // x座標を更新
 			swordPosition[i].z += sin(XMConvertToRadians(explosionAngle[i])) * 5 * slowValue;      // z座標を更新
 			holdingFlag[i] = true;
-		
+
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
 				if (explosionCount[i] >= 3 && isEnemySting[i][j] == false)

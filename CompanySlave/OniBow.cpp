@@ -31,7 +31,7 @@ void OniBow::Init()
 	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2");
 
 	//–î‚Ìobj“Çž
-	bowOBJ = Shape::CreateSquare(bowSize.x, bowSize.y, bowSize.z);
+	bowOBJ = Object::Instance()->CreateOBJ("enemyArrow");
 
 	bowRaysOBJ = Shape::CreateRect(2.0f, 10.0f);
 }

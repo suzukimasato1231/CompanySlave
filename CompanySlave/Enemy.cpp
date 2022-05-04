@@ -698,35 +698,35 @@ void Enemy::UpdateWolfFlock(int i, Player* player)
 			*eData[num] = wolf.WolfData();
 			eData[num]->type = WolfType;
 			eData[num]->Status = MOVE;
-			SetFirstPosition(Vec3(45 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+			SetFirstPosition(Vec3(20 * mapSize, eData[num]->position.y, 9 * (-mapSize)), eData[num]->r, num);
 
 			eData.push_back(new EnemyData);
 			num = eData.size() - 1;
 			*eData[num] = wolf.WolfData();
 			eData[num]->type = WolfType;
 			eData[num]->Status = MOVE;
-			SetFirstPosition(Vec3(50 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+			SetFirstPosition(Vec3(20 * mapSize, eData[num]->position.y, 31 * (-mapSize)), eData[num]->r, num);
 
 			eData.push_back(new EnemyData);
 			num = eData.size() - 1;
 			*eData[num] = wolf.WolfData();
 			eData[num]->type = WolfType;
 			eData[num]->Status = MOVE;
-			SetFirstPosition(Vec3(55 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+			SetFirstPosition(Vec3(80 * mapSize, eData[num]->position.y, 9 * (-mapSize)), eData[num]->r, num);
 
 			eData.push_back(new EnemyData);
 			num = eData.size() - 1;
 			*eData[num] = wolf.WolfData();
 			eData[num]->type = WolfType;
 			eData[num]->Status = MOVE;
-			SetFirstPosition(Vec3(60 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+			SetFirstPosition(Vec3(80 * mapSize, eData[num]->position.y, 31 * (-mapSize)), eData[num]->r, num);
 
 			eData.push_back(new EnemyData);
 			num = eData.size() - 1;
 			*eData[num] = wolf.WolfData();
 			eData[num]->type = WolfType;
 			eData[num]->Status = MOVE;
-			SetFirstPosition(Vec3(60 * mapSize, eData[num]->position.y, 25 * (-mapSize)), eData[num]->r, num);
+			SetFirstPosition(Vec3(50 * mapSize, eData[num]->position.y, 6 * (-mapSize)), eData[num]->r, num);
 		}
 		int damegeNum = 0;
 		for (int j = 0; j < eData.size(); j++)
