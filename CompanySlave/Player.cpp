@@ -346,8 +346,8 @@ void Player::Draw()
 			else if (direction == DownRight) {
 				Object::Instance()->Draw(normalFieldOBJ2, Vec3(position.x + normalLength / 2, position.y, position.z - normalLength / 2), scale, Vec3(90.0f, 90.0f, 0.0f), color, redColor);
 			}
-		}
 #endif
+		}
 	}
 	if (homingFlag == false)
 	{//Œ•‚Ì”ò‚Ô•ûŒü‚Ì•`‰æ

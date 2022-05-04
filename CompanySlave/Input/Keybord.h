@@ -12,7 +12,7 @@ class Keybord
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 private://メンバ変数
 	//全キーの入力状態を取得
-	BYTE key[256];
+	BYTE key[256]={};
 	//1つ前の入力状態を取得
 	BYTE oldkey[256];
 	//キーボード入力

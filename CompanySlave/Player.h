@@ -6,6 +6,7 @@
 #include"Direction.h"
 #include <array>
 #include<time.h>
+#include"Vec.h"
 class Enemy;
 /// <summary>
 /// プレイヤークラス
@@ -31,7 +32,7 @@ public:
 	void SetPosition(Vec3 position) { this->position = position; }
 	//剣の位置を設定
 	void SetSwordAttack(int i) { this->isSwordAttack[i] = false; }
-	
+
 	void SetSwordReverse(float reverseValue, int i) { this->reverseValue[i] = reverseValue; }
 
 	void SetSwordAngle(Vec3 swordAngle, int i) { this->swordAngle[i] = swordAngle; }
