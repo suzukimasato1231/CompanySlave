@@ -834,10 +834,37 @@ void Player::SwordAttack(Enemy* enemy)
 			explosionCount[i]++;
 			swordAngle[i].z = 0;
 			swordAngle[i].y = -explosionAngle[i] - 180;
-			swordPosition[i].x += cos(XMConvertToRadians(explosionAngle[i])) * 2 * slowValue;      // x座標を更新
-			swordPosition[i].z += sin(XMConvertToRadians(explosionAngle[i])) * 2 * slowValue;      // z座標を更新
+			swordPosition[i].x += cos(XMConvertToRadians(explosionAngle[i])) * 5 * slowValue;      // x座標を更新
+			swordPosition[i].z += sin(XMConvertToRadians(explosionAngle[i])) * 5 * slowValue;      // z座標を更新
 			holdingFlag[i] = true;
-			if (explosionCount[i] >= 20)
+		
+			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+			{
+				if (explosionCount[i] >= 3 && isEnemySting[i][j] == false)
+				{
+					//敵との当たり判定
+
+					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock)
+					{
+						isSwordAttack[i] = false;
+						isEnemySting[i][j] = true;
+						enemy->DamegeThrowSword(j);
+						if (enemyDamegeTime[j] > 0) {
+							enemy->SetDamegeFlag(j, true);
+						}
+					}
+					if (enemy->GetDamegeFlag(j) == true) {
+						enemyDamegeTime[j] -= 0.1f;
+					}
+					if (enemy->GetDamegeFlag(j) == false) {
+						enemyDamegeTime[j] = 60.0f;
+					}
+					if (enemyDamegeTime[j] <= 0) {
+						enemy->SetDamegeFlag(j, false);
+					}
+				}
+			}
+			if (explosionCount[i] >= 6)
 			{
 				swordAngle[i].z = -90;
 				explosionCount[i] = 0;
