@@ -99,5 +99,9 @@ private:
 	//エフェクト関係
 
 	float slowValue = 1;
+
+	//音関係
+	bool attakAFlag = false;
+	int attakCount = 0;
 };
 

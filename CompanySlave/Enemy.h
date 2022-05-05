@@ -183,6 +183,7 @@ private:
 	//‰¹ƒf[ƒ^
 	SoundData sound1;//‚±‚ñ–_
 	SoundData sound2;//‹|
+	SoundData sound3;//˜T
 
 	float volume = 1.0f;
 };

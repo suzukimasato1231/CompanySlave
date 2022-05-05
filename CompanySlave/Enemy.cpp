@@ -19,6 +19,7 @@ Enemy::~Enemy()
 	//‰¹ƒf[ƒ^‰ð•ú
 	Audio::SoundUnload(&sound1);
 	Audio::SoundUnload(&sound2);
+	Audio::SoundUnload(&sound3);
 	safe_delete(audio);
 }
 
@@ -27,6 +28,7 @@ void Enemy::Init()
 	audio = Audio::Create();
 	sound1 = Audio::SoundLoadWave("Resources/Music/club.wav");
 	sound2 = Audio::SoundLoadWave("Resources/Music/Arrow.wav");
+	sound3 = Audio::SoundLoadWave("Resources/Music/wolf.wav");
 
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
@@ -264,6 +266,9 @@ void Enemy::Update(Player* player)
 		}
 		if (eData[i]->attakFlag == true) {
 			audio->SoundSEPlayWave(sound1);
+		}
+		if (eData[i]->attakWFlag == true) {
+			audio->SoundSEPlayWave(sound3);
 		}
 		if (eData[i]->bowAFlag ==true) {
 			audio->SoundSEPlayWave(sound2);

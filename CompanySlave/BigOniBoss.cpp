@@ -225,6 +225,7 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 			if (Collision::CheckBox2Box(attackBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 			{
 				player->Damage(2);
+				attakAFlag = true;
 			}
 		}
 		attackSmallTime--;
@@ -264,6 +265,17 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 			}
 		}
 	}
+	if (attakAFlag == true) {
+		attakCount++;
+		if (attakCount == 8) {
+			attakCount = 0;
+			oniData->attakFlag = true;
+			attakAFlag = false;
+		}
+	}
+	else {
+		oniData->attakFlag = false;
+	}
 }
 
 void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
@@ -289,7 +301,10 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 		if (Collision::CheckBox2Box(player->GetBox(), AttackBIG(oniData)))
 		{
 			player->Damage(4);
+			attakAFlag = true;
+			
 		}
+	
 		start_time = time(NULL);//Œv‘ªŠJŽn
 		attackBigStatus = BIGAFTER;
 	}
@@ -303,6 +318,17 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 			oniData->nockPossibleFlag = true;
 			oniData->Status = BOSSATTACK;
 		}
+	}
+	if (attakAFlag==true) {
+		attakCount++;
+		if (attakCount == 8) {
+			attakCount = 0;
+			oniData->attakFlag = true;
+			attakAFlag = false;
+		}
+	}
+	else {
+		oniData->attakFlag = false;
 	}
 }
 
@@ -354,6 +380,7 @@ void BigOniBoss::AttackSummon(EnemyData* oniData, Player* player, int eNum)
 			if (Collision::CheckBox2Box(attackBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 			{
 				player->Damage(2);
+				attakAFlag = true;
 			}
 		}
 		attackSmallTime--;
@@ -363,6 +390,17 @@ void BigOniBoss::AttackSummon(EnemyData* oniData, Player* player, int eNum)
 	if (eNum <= 1 && attackSmallTime <= 0)
 	{
 		oniData->Status = BOSSATTACK;
+	}
+	if (attakAFlag == true) {
+		attakCount++;
+		if (attakCount == 8) {
+			attakCount = 0;
+			oniData->attakFlag = true;
+			attakAFlag = false;
+		}
+	}
+	else {
+		oniData->attakFlag = false;
 	}
 }
 

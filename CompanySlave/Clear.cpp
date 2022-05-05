@@ -42,7 +42,7 @@ void Clear::Initialize()
 	title = Sprite::Instance()->SpriteCreate(L"Resources/clearTitle.png");
 
 	
-	PlayerObject = Object::Instance()->CreateOBJ("playerKari1");
+	PlayerObject = Object::Instance()->CreateOBJ("playerKari2-1");
 
 }
 
