@@ -1,31 +1,26 @@
-#include "WOLF.h"
+#include "Boar.h"
 #include"Player.h"
 #include"Shape.h"
-Wolf::Wolf()
+Boar::Boar()
 {}
 
-Wolf::~Wolf()
+Boar::~Boar()
 {}
 
-void Wolf::Init()
+void Boar::Init()
 {
 	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
 	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//’Êíó‘Ô
-	enemyObject[0] = Object::Instance()->CreateOBJ("wolf1-0");
-	enemyObject[1] = Object::Instance()->CreateOBJ("wolf1-1");
-	enemyObject[2] = Object::Instance()->CreateOBJ("wolf1-2");
-	enemyObject[3] = Object::Instance()->CreateOBJ("wolf1-3");
-	enemyObject[4] = Object::Instance()->CreateOBJ("wolf1-4");
+	enemyObject = Object::Instance()->CreateOBJ("OniKari");
 	//UŒ‚ƒ‚[ƒVƒ‡ƒ“
-	attackOBJ[0] = Object::Instance()->CreateOBJ("wolf2-1");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("wolf2-2");
-	attackOBJ[2] = Object::Instance()->CreateOBJ("wolf2-3");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
 	//ƒmƒbƒNƒoƒbƒN
-	nockBackOBJ[0] = Object::Instance()->CreateOBJ("wolf1-0");
-	nockBackOBJ[1] = Object::Instance()->CreateOBJ("wolf1-0");
+	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
+	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
 
 	//UŒ‚ƒGƒtƒFƒNƒg
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
@@ -39,12 +34,12 @@ void Wolf::Init()
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
 
-	wolfData.HP = 4;
-	wolfData.HPMax = 4;
-	wolfData.scale = { 0.5f,0.5f,0.5f };
+	boarData.HP = 8;
+	boarData.HPMax = 8;
+	boarData.nockPossibleFlag = false;
 }
 
-void Wolf::Draw(EnemyData* oniData)
+void Boar::Draw(EnemyData* oniData)
 {
 	if (oniData == nullptr)
 	{
@@ -53,51 +48,40 @@ void Wolf::Draw(EnemyData* oniData)
 	switch (oniData->Status)
 	{
 	case NORMAL:
-		Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
-#if _DEBUG
+		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		switch (oniData->direction)
 		{
 		case Up:
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, oniData->position.y, oniData->position.z + attackEnemies.y / 2),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+				oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			break;
 		case Down:
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, oniData->position.y, oniData->position.z - attackEnemies.y / 2),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+				oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			break;
 		case Left:
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x - attackEnemies.y / 2, oniData->position.y, oniData->position.z),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+				oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			break;
 		case Right:
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x + attackEnemies.y / 2, oniData->position.y, oniData->position.z),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+				oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			break;
 		}
-#endif
 		break;
 	case MOVE:
-		Object::Instance()->Draw(enemyObject[oniData->walkNum], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		break;
 	case ATTACK:
 		if (oniData->StatusTime >= attackMotionTime - attackHoldTime)
-		{//”ò‚Ñ‚Â‚«\‚¦
+		{//•ŠíU‚èã‚°
 			Object::Instance()->Draw(attackOBJ[0], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
-		else if (oniData->StatusTime >= attackMotionTime - attackHoldTime - attackMoveTime / 2)
-		{//”ò‚Ñ‚Â‚«
+		else
+		{//•ŠíU‚è‰º‚ë‚µ
 			Object::Instance()->Draw(attackOBJ[1], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
-		else if (oniData->StatusTime >= oniData->StatusTime >= attackMotionTime - attackHoldTime - attackMoveTime)
-		{///”ò‚Ñ‚Â‚«’…’n
-			Object::Instance()->Draw(attackOBJ[2], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
-		}
-		else
-		{//UŒ‚Œã‚Ìd’¼
-			Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
-		}
 		EffectDraw(oniData);
-
 		break;
 	case NOCKBACK:
 		if (oniData->nockbackTime >= 3)
@@ -112,7 +96,7 @@ void Wolf::Draw(EnemyData* oniData)
 	}
 }
 
-void Wolf::Move(EnemyData* oniData, Player* player)
+void Boar::Move(EnemyData* oniData, Player* player)
 {
 	oniData->oldPosition = oniData->position;
 	slowValue = player->GetSlow();
@@ -137,20 +121,9 @@ void Wolf::Move(EnemyData* oniData, Player* player)
 		Vec3 direction = memoryPosition.normalize();
 		oniData->position += direction * moveSpeed * slowValue;
 	}
-	//•à‚«•`‰æ‚Ì”Žš
-	if (oniData->walkTime % 10 == 0)
-	{
-		oniData->walkNum++;
-		if (oniData->walkNum >= 5)
-		{
-			oniData->walkNum = 0;
-			oniData->walkTime = 0;
-		}
-	}
-	oniData->walkTime++;
 }
 
-void Wolf::SearchPlayer(EnemyData* oniData, Player* player)
+void Boar::SearchPlayer(EnemyData* oniData, Player* player)
 {
 	Box enemiesBox = SearchField(oniData);
 	//õ“G”ÍˆÍ“à‚ÉƒvƒŒƒCƒ„[‚ª‚¢‚½‚ç
@@ -177,7 +150,7 @@ void Wolf::SearchPlayer(EnemyData* oniData, Player* player)
 	}
 }
 
-void Wolf::Attack(EnemyData* oniData, Player* player)
+void Boar::Attack(EnemyData* oniData, Player* player)
 {
 	if (oniData == nullptr)
 	{
@@ -189,7 +162,7 @@ void Wolf::Attack(EnemyData* oniData, Player* player)
 
 	}
 	//UŒ‚ŽžŠÔ’†
-	else if (oniData->StatusTime >= attackMotionTime - attackHoldTime - attackMoveTime)
+	else 
 	{
 		//UŒ‚”ÍˆÍ“à‚É‚¢‚½‚çƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
@@ -214,11 +187,7 @@ void Wolf::Attack(EnemyData* oniData, Player* player)
 		else if (effectCount == 8) {
 			effectCount = 0;
 			AttackEffect = false;
-			oniData->attakWFlag = true;
 		}
-	}
-	else {
-		oniData->attakWFlag = false;
 	}
 	//ŽžŠÔ‚ªI‚í‚Á‚½‚çõ“G‚É‚à‚Ç‚é
 	oniData->StatusTime--;
@@ -228,7 +197,7 @@ void Wolf::Attack(EnemyData* oniData, Player* player)
 	}
 }
 
-void Wolf::EffectDraw(EnemyData* oniData)
+void Boar::EffectDraw(EnemyData* oniData)
 {
 	if (AttackEffect == true)
 	{
@@ -275,7 +244,7 @@ void Wolf::EffectDraw(EnemyData* oniData)
 	}
 }
 
-Box Wolf::SearchField(EnemyData* oniData)
+Box Boar::SearchField(EnemyData* oniData)
 {
 	Box enemiesBox;
 	switch (oniData->direction)
@@ -303,7 +272,7 @@ Box Wolf::SearchField(EnemyData* oniData)
 	return enemiesBox;
 }
 
-Vec3 Wolf::DirectionAngle(int direction)
+Vec3 Boar::DirectionAngle(int direction)
 {
 	Vec3 angle = {};
 	switch (direction)

@@ -61,6 +61,8 @@ void Enemy::Init()
 	oniBow.Init();
 	//˜T
 	wolf.Init();
+	//ƒCƒmƒVƒV
+	boar.Init();
 	//ƒ{ƒX‹S
 	bigOniBoss.Init();
 	//˜T‚ÌŒQ‚ê
@@ -145,6 +147,14 @@ void Enemy::StageInit(int stageNum)
 					*eData[num] = wolf.WolfData();
 					eData[num]->type = WolfType;
 					break;
+					//ƒCƒmƒVƒV
+				case BOARLEFT:
+				case BOARRIGHT:
+				case BOARUP:
+				case BOARDOWN:
+					*eData[num] = boar.BoarData();
+					eData[num]->type = BoarType;
+					break;
 				case BossOni:
 					*eData[num] = bigOniBoss.GetBossData();
 					eData[num]->type = BossBigOni;
@@ -164,7 +174,7 @@ void Enemy::StageInit(int stageNum)
 					eData[num]->position.x - eData[num]->r, eData[num]->position.y - eData[num]->r, eData[num]->position.z - eData[num]->r, 1);
 				eData[num]->eBox.maxPosition = XMVectorSet(
 					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r, eData[num]->position.z + eData[num]->r, 1);
-				eData[num]->eSphere.radius = eData[num]->r;
+				eData[num]->eSphere.radius = 5.0f;
 				//“G‚ÌŒü‚«‚ðÝ’è
 				switch (spawnMap[j][i] % 10)
 				{
@@ -209,6 +219,9 @@ void Enemy::Update(Player* player)
 				break;
 			case WolfType:
 				UpdateWolf(i, player);
+				break;
+			case BoarType:
+				UpdateBoar(i, player);
 				break;
 			case BossBigOni:
 				UpdateBigOniBoss(i, player);
@@ -295,6 +308,9 @@ void Enemy::Draw()
 				break;
 			case WolfType:
 				wolf.Draw(eData[i]);
+				break;
+			case BoarType:
+				boar.Draw(eData[i]);
 				break;
 			case BossBigOni:
 				bigOniBoss.Draw(eData[i]);
@@ -586,7 +602,7 @@ void Enemy::SetFirstPosition(Vec3 pos, float r, int eNum)
 		eData[eNum]->position.x - eData[eNum]->r, eData[eNum]->position.y - eData[eNum]->r, eData[eNum]->position.z - eData[eNum]->r, 1);
 	eData[eNum]->eBox.maxPosition = XMVectorSet(
 		eData[eNum]->position.x + eData[eNum]->r, eData[eNum]->position.y + eData[eNum]->r, eData[eNum]->position.z + eData[eNum]->r, 1);
-	eData[eNum]->eSphere.radius = eData[eNum]->r;
+	eData[eNum]->eSphere.radius = 5.0f;
 }
 
 void Enemy::UpdateOni(int i, Player* player)
@@ -770,4 +786,23 @@ void Enemy::UpdateWolfFlock(int i, Player* player)
 	}
 }
 
+
+void Enemy::UpdateBoar(int i, Player* player)
+{
+	switch (eData[i]->Status)
+	{
+	case NORMAL:
+		boar.SearchPlayer(eData[i], player);
+		break;
+	case MOVE:
+		eData[i]->direction = Direction(i, player);
+		//ˆÚ“®
+		boar.Move(eData[i], player);
+		break;
+	case ATTACK:
+		eData[i]->direction = Direction(i, player);
+		boar.Attack(eData[i], player);
+		break;
+	}
+}
 

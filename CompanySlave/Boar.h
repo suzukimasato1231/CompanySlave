@@ -5,11 +5,11 @@ class Player;
 /// <summary>
 /// 狼
 /// </summary>
-class Wolf
+class Boar
 {
 public:
-	Wolf();
-	~Wolf();
+	Boar();
+	~Boar();
 
 	void Init();
 
@@ -21,7 +21,7 @@ public:
 	//攻撃
 	void Attack(EnemyData* oniData, class Player* player);
 
-	EnemyData WolfData() { return wolfData; }
+	EnemyData BoarData() { return boarData; }
 private:
 	//敵の攻撃エフェクト
 	void EffectDraw(EnemyData* oniData);
@@ -31,11 +31,11 @@ private:
 	//向きによって敵の描画角度を取得
 	Vec3 DirectionAngle(int direction);
 private:
-	EnemyData wolfData;
+	EnemyData boarData;
 
-	Object::ObjectData enemyObject[5];				//プレイヤーオブジェクト
+	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
 
-	Object::ObjectData attackOBJ[3];				//エネミーアタック
+	Object::ObjectData attackOBJ[2];				//エネミーアタック
 
 	Object::ObjectData nockBackOBJ[2];				//ノックバックオブジェクト
 
@@ -45,15 +45,15 @@ private:
 
 	const int moveTime = 40;						//移動時間
 
-	const int attackMotionTime = 150;				//攻撃モーションの時間
-	const int attackHoldTime = 20;					//攻撃を構える時間
-	const int attackMoveTime = 30;					//攻撃の移動時間
-	const int attackMotionDamege = 10;				//攻撃モーション中のどの時間でダメージを与えるか
+	const int attackMotionTime = 100;				//攻撃モーションの時間
+	const int attackHoldTime = 50;					//攻撃を構える時間
+	//const int attackMoveTime = 40;					//攻撃の移動時間
+	//const int attackMotionDamege = 10;				//攻撃モーション中のどの時間でダメージを与えるか
 
-	const float player2EnemyLength = 25.0f;			//プレイヤーと敵の距離
+	const float player2EnemyLength = 50.0f;			//プレイヤーと敵の距離
 
 	const float moveSpeed = 0.8f;					//敵のスピード
-	const float attackMoveSpeed = 1.2f;				//攻撃を行うときのスピード
+	const float attackMoveSpeed = 1.5f;				//攻撃を行うときのスピード
 
 	//デバック用
 	Object::ObjectData debugField;	//索敵

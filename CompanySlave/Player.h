@@ -144,6 +144,10 @@ private:
 	const int damageTimeMax = 20;
 	int damageTime = 0;					//ダメージ食らったかの見た目用
 
+	//回復アイテム
+	const int portionMax = 2;//最大個数
+	int portion = 0;
+
 	//動いているかどうか
 	bool moveFlag = false;
 

@@ -8,6 +8,7 @@
 #include"WOLF.h"
 #include"BigOniBoss.h"
 #include"WolfFlock.h"
+#include"Boar.h"
 #include "Audio.h"
 class Enemy
 {
@@ -139,6 +140,11 @@ private:
 	class WolfFlock wolfFlock;
 
 	void UpdateWolfFlock(int i, class Player* player);
+
+	//ÉCÉmÉVÉV
+	class Boar boar;
+
+	void UpdateBoar(int i, class Player* player);
 private:
 	const float nockPower = 0.8f;
 	//HPUI

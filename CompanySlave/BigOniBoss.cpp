@@ -34,8 +34,8 @@ void BigOniBoss::Init()
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
 	//ƒ{ƒX‚Ì”’l
-	bossData.HP = 84.0f;
-	bossData.HPMax = 84.0f;
+	bossData.HP = 168.0f;
+	bossData.HPMax = 168.0f;
 	bossData.scale = { 4.0f,4.0f,4.0f };
 	bossData.r = 15;
 	bossData.bossFlag = true;
@@ -145,14 +145,6 @@ void BigOniBoss::Draw(EnemyData* oniData)
 	}
 }
 
-void BigOniBoss::DrawHP(EnemyData* oniData)
-{
-
-
-
-}
-
-
 void BigOniBoss::SearchPlayer(EnemyData* oniData, Player* player)
 {
 	if (oniData == nullptr)
@@ -238,6 +230,7 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 		if (oniData->explosionFlag == true)
 		{
 			oniData->nockbackTime = EnemySupport::nockBackTimeMax;
+			oniData->memoryStatus = oniData->Status;
 		}
 	}
 
@@ -286,7 +279,7 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 	}
 
 	if (attackBigStatus == PREOPERATION)
-	{
+	{//‘åUŒ‚‚ðs‚¤‚Ü‚Å‚Ì—­‚ß‚ÌŽžŠÔ
 		big_end = time(NULL);
 		int bigTime = big_end - big_start;
 		//‚V•bŒo‚Á‚½‚çUŒ‚
@@ -296,7 +289,7 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 		}
 	}
 	else if (attackBigStatus == BIGATTACK)
-	{
+	{//ƒ_ƒ[ƒW”»’è‚ª‚ ‚éŽž
 		//“–‚½‚è”»’è
 		if (Collision::CheckBox2Box(player->GetBox(), AttackBIG(oniData)))
 		{
@@ -314,7 +307,7 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 		end_time = time(NULL);
 		int nextTime = end_time - start_time;
 		if (nextTime >= 3)
-		{
+		{//‚R•b‚¾‚Á‚½‚çŽŸ‚ÌUŒ‚‚Ö
 			oniData->nockPossibleFlag = true;
 			oniData->Status = BOSSATTACK;
 		}

@@ -23,8 +23,6 @@ public:
 	void Init();
 
 	void Draw(EnemyData* oniData);
-	//ƒ{ƒXHP‚Ì•`‰æ
-	void DrawHP(EnemyData* oniData);
 	//õ“G
 	void SearchPlayer(EnemyData* oniData, class Player* player);
 	//‘ÅŒ‚¬

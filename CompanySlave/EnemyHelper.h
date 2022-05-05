@@ -8,6 +8,7 @@ enum EnemyType
 	Oni = 1,	//‹ßÚ‹S
 	OniBow,		//‹|‹S
 	WolfType,	//˜T,
+	BoarType,	//ƒCƒmƒVƒV
 	BossBigOni,	//‹‘å‹S
 	BossWolfFlock,//˜TŒQ‚ê
 };
@@ -26,8 +27,12 @@ enum spawnNo
 	WOLFDOWN,
 	WOLFRIGHT,
 	WOLFLEFT,
-	BossOni = 40,
-	WOLFFLOCK = 50
+	BOARUP = 40,
+	BOARDOWN,
+	BOARLEFT,
+	BOARRIGHT,
+	BossOni = 50,
+	WOLFFLOCK = 60
 };
 
 //“G‚Ìó‘Ô
