@@ -76,14 +76,15 @@ void GameSceneManager::Update()
 
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 			{
-				title->SetAudioFlag(false);
-				select->SetAudioFlag(true);
+
+
 				volume = 1;
 				initFlag = true;
 				select->Init();
 				scene = selectScene;
 			}
 		}
+		title->AudioUpdate();
 		title->Update();
 	}
 	//ステージ選択
@@ -103,7 +104,7 @@ void GameSceneManager::Update()
 		{
 			//プレイ開始
 			
-			select->SetAudioFlag(false);
+			title->SetAudioFlag(false);
 			play->SetVolume(volume);
 			title->SetVolume(volume);
 			play->Init();
@@ -121,6 +122,7 @@ void GameSceneManager::Update()
 			LoadFlag = true;
 		}
 		select->SetFade(sFade);
+		title->AudioUpdate();
 		select->Update();
 	}
 

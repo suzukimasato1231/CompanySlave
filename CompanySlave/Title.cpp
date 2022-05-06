@@ -80,11 +80,6 @@ void Title::Update()
 	Object::Instance()->SetCamera(camera);
 	Object::Instance()->SetLight(lightGroup);
 
-	if (audioFlag == false) {
-		//audio->SoundStop();
-	}
-	audio->SetVolume(volume);
-
 	if (rainFlag == false) {
 		if (rainTime < 30) {
 			rainTime++;
@@ -141,6 +136,16 @@ void Title::Update()
 	
 	//ライト更新
 	lightGroup->Update();
+}
+
+void Title::AudioUpdate()
+{
+
+	if (audioFlag == false) {
+		audio->SoundStop();
+	}
+	audio->SetVolume(volume);
+
 }
 
 void Title::Draw()
