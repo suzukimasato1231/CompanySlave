@@ -33,7 +33,7 @@ void Clear::Initialize()
 
 
 	//音データ読み込み
-	sound1 = Audio::SoundLoadWave("Resources/i.wav");
+	sound1 = Audio::SoundLoadWave("Resources/Music/BGM/Samurai_Moon_2.wav");
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
@@ -66,7 +66,7 @@ void Clear::Init()
 	TextFlag = false;
 	bottanFlag = false;
 
-	//audio->SoundBGMPlayLoopWave(sound1);
+	audio->SoundBGMPlayLoopWave(sound1);
 }
 
 void Clear::Update()
@@ -79,7 +79,7 @@ void Clear::Update()
 	Object::Instance()->SetLight(lightGroup);
 
 	if (audioFlag == false) {
-		//audio->SoundStop();
+		audio->SoundStop();
 	}
 	audio->SetVolume(volume);
 

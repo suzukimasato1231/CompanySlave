@@ -59,7 +59,7 @@ private://定義
 
 	//オブジェクトデータ
 	Object::ObjectData PlayerObject;
-	Vec3 position{ 0,0,0 };
+	Vec3 position{ 0,-0.5,0 };
 
 
 

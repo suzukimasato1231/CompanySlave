@@ -141,7 +141,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
-			//audio->SoundBGMPlayLoopWave(sound2);
+			audio->SoundBGMPlayLoopWave(sound2);
 			break;
 		case 4:
 			player->StageInit(stageNum);
@@ -157,7 +157,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
-		//	audio->SoundBGMPlayLoopWave(sound2);
+			audio->SoundBGMPlayLoopWave(sound2);
 			break;
 		case 7:
 			player->StageInit(stageNum);
@@ -283,7 +283,7 @@ void PlayScene::Update()
 
 	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
 	{
-		//audio->SoundStop();
+		audio->SoundStop();
 
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
@@ -302,7 +302,7 @@ void PlayScene::Update()
 	}
 
 	if (sceneChangeFlag == true) {
-		//audio->SoundStop();
+		audio->SoundStop();
 		if (ChangeGraphPosition.x < 0) {
 			ChangeGraphPosition.x += 22;
 		}
