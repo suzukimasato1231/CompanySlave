@@ -97,11 +97,16 @@ void Player::Init()
 	swordNot = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordNot.png");
 
 	swordRotationGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordRotion.png");
+
+	portionSprite[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/Recovery.png");
+	portionSprite[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/Recovery.png");
 }
 
 void Player::LoopInit()
 {
 	HP = HPMAX;
+	//ポーション
+	portion = portionMax;
 }
 
 void Player::StageInit(int stageNum)
@@ -182,6 +187,8 @@ void Player::StageInit(int stageNum)
 		direction = Right;
 		break;
 	case 4:
+		//ポーション
+		portion = portionMax;
 		position = memoryPos;				//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
@@ -209,6 +216,8 @@ void Player::StageInit(int stageNum)
 		direction = Right;
 		break;
 	case 7:
+		//ポーション
+		portion = portionMax;
 		position = memoryPos;				//座標
 		oldPosition = position;				//1つ前の座標
 		//座標を合わせる
@@ -270,6 +279,10 @@ void Player::StageInit(int stageNum)
 	effectCount = 0;
 
 	eslowTime = 120;
+
+	//ポーション
+	portionFlag = false;
+	portionTime = 0;
 }
 
 void Player::Update(Enemy* enemy)
@@ -301,6 +314,8 @@ void Player::Update(Enemy* enemy)
 	NormalAttack(enemy);
 	//剣攻撃
 	SwordAttack(enemy);
+	//回復
+	LifePortion();
 	//回避
 	Avoidance();
 	if (position.x < 0)
@@ -414,7 +429,7 @@ void Player::Move()
 		walkNo = 0;
 	}
 	//移動
-	if (Input::Instance()->KeybordInputArrow() || Input::Instance()->ConLeftInput())
+	if ((Input::Instance()->KeybordInputArrow() || Input::Instance()->ConLeftInput()) && portionFlag == false)
 	{
 		//向き変更
 		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
@@ -436,7 +451,7 @@ void Player::Move()
 			angle.y = 135;
 		}
 
-		if (Input::Instance()->ConLeftInput())
+		if (Input::Instance()->ConLeftInput() && portionFlag == false)
 		{
 			angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
 		}
@@ -447,7 +462,7 @@ void Player::Move()
 		walkNo = 0;
 		moveFlag = false;
 	}
-	if (avoidanceTime <= 0 && normalAttackTime <= 0)
+	if (avoidanceTime <= 0 && normalAttackTime <= 0 && portionFlag == false)
 	{
 		//移動
 		//キーボード
@@ -492,7 +507,7 @@ void Player::NormalAttack(Enemy* enemy)
 	if (normalAttackFlag[0] && attackNo >= 3) { attackNo = 2; }
 
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
-	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0)
+	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0 && portionFlag == false)
 	{
 		audio->SoundSEPlayWave(sound1);
 		attackMode = true;
@@ -614,7 +629,7 @@ void Player::SwordAttack(Enemy* enemy)
 {
 
 	//撃つ
-	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag)
+	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag && portionFlag == false)
 	{
 		audio->SoundSEPlayWave(sound2);
 		swordPosition[shotNo] = position;
@@ -640,7 +655,7 @@ void Player::SwordAttack(Enemy* enemy)
 	}
 
 	//剣戻ってくるやつ発動
-	if (Input::Instance()->ControllerDown(ButtonLB) && swordCoolTimeFlag == false)
+	if (Input::Instance()->ControllerDown(ButtonLB) && swordCoolTimeFlag == false &&portionFlag == false)
 	{
 
 		if (IsSwordALLHave() == true)
@@ -968,7 +983,32 @@ void Player::SwordAttack(Enemy* enemy)
 		slowValue = 1;
 	}*/
 }
-
+void Player::LifePortion()
+{
+	//HPが減っていて且つポーションを持っていた場合
+	if ((Input::Instance()->KeybordTrigger(DIK_Q) || Input::Instance()->ControllerDown(ButtonY))
+		&& portion > 0 && HP < HPMAX && portionFlag == false && avoidanceTime <= 0 && normalAttackTime <= 0)
+	{
+		portion--;
+		HP += 4;
+		if (HP > HPMAX)
+		{
+			HP = HPMAX;
+		}
+		//回復時の膠着時間
+		portionTime = portionTimeMax;
+		portionFlag = true;
+	}
+	//膠着時間減少
+	if (portionFlag == true)
+	{
+		portionTime--;
+		if (portionTime <= 0)
+		{
+			portionFlag = false;
+		}
+	}
+}
 void   Player::Angle()
 {
 	float rad = 0.0f;
@@ -1105,6 +1145,16 @@ void Player::UIDraw()
 		Sprite::Instance()->Draw(HPGaugeMain, Vec2(70.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
 	}
 	Sprite::Instance()->Draw(HPGraph, Vec2(20.0f, 30.0f), 500.0f, 30.0f);
+
+	//ポーション
+	if (portion >= 2)
+	{
+		Sprite::Instance()->Draw(portionSprite[0], Vec2(160.0f, 70.0f), 40.0f, 40.0f);
+	}
+	if (portion >= 1)
+	{
+		Sprite::Instance()->Draw(portionSprite[1], Vec2(120.0f, 70.0f), 40.0f, 40.0f);
+	}
 
 	//ソードゲージ
 	//溜まった時の演出

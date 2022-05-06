@@ -352,8 +352,8 @@ void Enemy::DrawUI()
 		if (eData[i]->HP > 0 && eData[i]->bossFlag == true && eData[i]->Status != NORMAL)
 		{
 			float ratio = eData[i]->HP / eData[i]->HPMax;
-			Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 80.0f);
-			Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 80.0f);
+			Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 50.0f);
+			Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 50.0f);
 		}
 	}
 }

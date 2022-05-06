@@ -60,6 +60,8 @@ private:
 	//剣攻撃
 	void SwordAttack(class Enemy* enemy);
 
+	//体力回復
+	void LifePortion();
 	//攻撃角度決定
 	void Angle();
 	//剣の向きを決める
@@ -145,8 +147,12 @@ private:
 	int damageTime = 0;					//ダメージ食らったかの見た目用
 
 	//回復アイテム
+	SpriteData portionSprite[2];
 	const int portionMax = 2;//最大個数
 	int portion = 0;
+	bool portionFlag = false;
+	const int portionTimeMax = 50;//回復時間
+	int portionTime = 0;
 
 	//動いているかどうか
 	bool moveFlag = false;
