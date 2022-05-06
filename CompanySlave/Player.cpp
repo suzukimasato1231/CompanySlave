@@ -23,9 +23,9 @@ void Player::Init()
 {
 	//AudioƒNƒ‰ƒXì¬
 	audio = Audio::Create();
-	sound1 = Audio::SoundLoadWave("Resources/Music/katana.wav");
-	sound2 = Audio::SoundLoadWave("Resources/Music/hiken.wav");
-	sound3 = Audio::SoundLoadWave("Resources/Music/return.wav");
+	sound1 = Audio::SoundLoadWave("Resources/Music/SE/katana.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/SE/hiken.wav");
+	sound3 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2");

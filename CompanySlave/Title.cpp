@@ -28,7 +28,7 @@ void Title::Initialize()
 	////3Dオブジェクト初期化
 
 	//音データ読み込み
-	sound1 = Audio::SoundLoadWave("Resources/Music/heiannoyoi.wav");
+	sound1 = Audio::SoundLoadWave("Resources/Music/Title/heiannoyoi.wav");
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");

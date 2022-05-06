@@ -27,10 +27,10 @@ Enemy::~Enemy()
 void Enemy::Init()
 {
 	audio = Audio::Create();
-	sound1 = Audio::SoundLoadWave("Resources/Music/club.wav");
-	sound2 = Audio::SoundLoadWave("Resources/Music/Arrow.wav");
-	sound3 = Audio::SoundLoadWave("Resources/Music/wolf.wav");
-	sound4 = Audio::SoundLoadWave("Resources/Music/boar.wav");
+	sound1 = Audio::SoundLoadWave("Resources/Music/SE/club.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/SE/Arrow.wav");
+	sound3 = Audio::SoundLoadWave("Resources/Music/SE/wolf.wav");
+	sound4 = Audio::SoundLoadWave("Resources/Music/SE/boar.wav");
 
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");

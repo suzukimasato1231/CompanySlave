@@ -37,8 +37,8 @@ void PlayScene::Initialize()
 	debugText.Initialize();
 
 	//音データ読み込み
-	sound1 = Audio::SoundLoadWave("Resources/Music/rain.wav");
-	sound2 = Audio::SoundLoadWave("Resources/Music/katana.wav");
+	sound1 = Audio::SoundLoadWave("Resources/Music/BGM/rain.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/BGM/battle.wav");
 
 
 	//スプライト画像読み込み
