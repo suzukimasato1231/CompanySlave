@@ -38,7 +38,7 @@ void PlayScene::Initialize()
 
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/Music/BGM/rain.wav");
-	sound2 = Audio::SoundLoadWave("Resources/Music/BGM/battle.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/BGM/Rambu.wav");
 
 
 	//スプライト画像読み込み
@@ -123,7 +123,7 @@ void PlayScene::StageInit()
 {
 	if (stageFlag == true)
 	{
-		//audio->SoundBGMPlayLoopWave(sound1);
+		audio->SoundBGMPlayLoopWave(sound1);
 		switch (stageNum)
 		{
 		case 1:
@@ -141,6 +141,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
+			//audio->SoundBGMPlayLoopWave(sound2);
 			break;
 		case 4:
 			player->StageInit(stageNum);
@@ -156,6 +157,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
+		//	audio->SoundBGMPlayLoopWave(sound2);
 			break;
 		case 7:
 			player->StageInit(stageNum);
