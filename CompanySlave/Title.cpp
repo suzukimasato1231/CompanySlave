@@ -28,7 +28,7 @@ void Title::Initialize()
 	////3Dオブジェクト初期化
 
 	//音データ読み込み
-	sound1 = Audio::SoundLoadWave("Resources/i.wav");
+	sound1 = Audio::SoundLoadWave("Resources/Music/heiannoyoi.wav");
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
@@ -68,7 +68,7 @@ void Title::Init()
 		pos[i].x = rand()%1300;
 		s[i] = rand() % 500-400;
 	}
-	//audio->SoundBGMPlayLoopWave(sound1);
+	audio->SoundBGMPlayLoopWave(sound1);
 }
 
 void Title::Update()

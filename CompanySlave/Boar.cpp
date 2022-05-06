@@ -187,7 +187,11 @@ void Boar::Attack(EnemyData* oniData, Player* player)
 		else if (effectCount == 8) {
 			effectCount = 0;
 			AttackEffect = false;
+			oniData->attakBFlag = true;
 		}
+	}
+	else {
+		oniData->attakBFlag = false;
 	}
 	//ŽžŠÔ‚ªI‚í‚Á‚½‚çõ“G‚É‚à‚Ç‚é
 	oniData->StatusTime--;

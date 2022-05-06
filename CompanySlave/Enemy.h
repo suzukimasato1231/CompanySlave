@@ -190,6 +190,7 @@ private:
 	SoundData sound1;//‚±‚ñ–_
 	SoundData sound2;//‹|
 	SoundData sound3;//˜T
+	SoundData sound4;//’–
 
 	float volume = 1.0f;
 };
