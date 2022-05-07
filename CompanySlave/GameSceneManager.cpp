@@ -141,7 +141,7 @@ void GameSceneManager::Update()
 			initFlag = true;
 		}
 					//この数値を変えればクリアシーンに行けるステージを変えられる↓
-		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==2) {
+		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==10) {
 			clear->Init();
 			clear->SetAudioFlag(true);
 			scene = clearScene;
