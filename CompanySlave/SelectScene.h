@@ -39,6 +39,7 @@ public:
 	float SetVolume(float volume) { return this->volume = volume; }
 
 	bool SetAudioFlag(bool audioFlag) { return this->audioFlag = audioFlag; }
+	int GetVolumeFlag() { return volumeFlag; }
 
 
 private:
@@ -51,10 +52,10 @@ private://定義
 	//スプライトデータ
 	SpriteData spriteGraph;
 	SpriteData BGGraph;
-	SpriteData Bottan;
+	SpriteData Bottan[2];
 	SpriteData Number[10];
 	SpriteData LoadUIGraph;
-	SpriteData VolumeUI[3];
+	SpriteData VolumeUI[2];
 
 	//オブジェクト画像
 	int graph2;
@@ -70,9 +71,10 @@ private://定義
 
 	float volume = 1.0f;
 	float volume2 = 1.0f;//他のシーン用ボリューム
-	bool volumeFlag = false;
+	int volumeFlag = 0;
 
 	int volumeB = 500;
 
 	bool audioFlag = true;
+
 };

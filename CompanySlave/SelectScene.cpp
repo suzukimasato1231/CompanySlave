@@ -33,11 +33,11 @@ void SelectScene::Initialize()
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
-	Bottan = Sprite::Instance()->SpriteCreate(L"Resources/bottan.png");
+	Bottan[0] = Sprite::Instance()->SpriteCreate(L"Resources/SelectB.png");
+	Bottan[1] = Sprite::Instance()->SpriteCreate(L"Resources/SelectB2.png");
 
 	VolumeUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeUI.png");
-	VolumeUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeUI2.png");
-	VolumeUI[2] = Sprite::Instance()->SpriteCreate(L"Resources/Volume.png");
+	VolumeUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/Volume.png");
 
 	LoadUIGraph = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
 	
@@ -64,7 +64,7 @@ void SelectScene::Init()
 
 	//フェード
 	fade = 1;
-	volumeFlag = false;
+	volumeFlag = 0;
 	volume = 1;
 	volume2 = 1;
 	volumeB = 500;
@@ -81,38 +81,39 @@ void SelectScene::Update()
 
 
 	if(audioFlag==false) {
-		//audio->SoundStop();
+		audio->SoundStop();
 	}
 	audio->SetVolume(volume);
 
 	Direction();
 
 	//音量調節
-	//if (Input::Instance()->ConLeftInput())
-	//{
-	//	if (direction == Down) {
-	//		volumeFlag = true;
-	//	}
-	//	if (direction == Up) {
-	//		volumeFlag = false;
-	//	}
-	//	if (volumeFlag == true) {
-	//		if (direction == Right) {
-	//			if (volume < 1) {
-	//				volume += 0.1;
-	//				volume2 += 0.1;
-	//				volumeB += 50;
-	//			}
-	//		}
-	//		if (direction == Left) {
-	//			if (volume >= 0) {
-	//				volume -= 0.1;
-	//				volume2 -= 0.1;
-	//				volumeB -= 50;
-	//			}
-	//		}
-	//	}
-	//}
+	if (Input::Instance()->ControllerDown(ButtonB)) {
+		volumeFlag++;
+	}
+	if (volumeFlag == 2) {
+		volumeFlag = 0;
+	}
+	if (Input::Instance()->ConLeftInput())
+	{
+	
+		if (volumeFlag == 1) {
+			if (direction == Right) {
+				if (volume < 1) {
+					volume += 0.1;
+					volume2 += 0.1;
+					volumeB += 50;
+				}
+			}
+			if (direction == Left) {
+				if (volume >= 0) {
+					volume -= 0.1;
+					volume2 -= 0.1;
+					volumeB -= 50;
+				}
+			}
+		}
+	}
 
 
 
@@ -160,17 +161,16 @@ void SelectScene::Draw()
 
 	Sprite::Instance()->Draw(spriteGraph, Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 
-	
-	Sprite::Instance()->Draw(Bottan, Vec2(580, 180), 200, 200, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	if (volumeFlag == false) {
+		Sprite::Instance()->Draw(Bottan[0], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	}
 	//音量調節バーの描画
-	//	Sprite::Instance()->Draw(VolumeUI[2], Vec2(380, 480), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+	if (volumeFlag == 1) {
+		Sprite::Instance()->Draw(VolumeUI[1], Vec2(420, 340), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+		Sprite::Instance()->Draw(VolumeUI[0], Vec2(420, 340), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+		Sprite::Instance()->Draw(Bottan[1], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 
-	//if (volumeFlag == false) {
-	//	Sprite::Instance()->Draw(VolumeUI[0], Vec2(380, 480), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-	//}
-	//else if (volumeFlag == true) {
-	//	Sprite::Instance()->Draw(VolumeUI[1], Vec2(380, 480), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
-	//}
+	}
 
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "%f",volume);

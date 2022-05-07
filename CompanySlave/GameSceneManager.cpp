@@ -67,7 +67,6 @@ void GameSceneManager::Update()
 		
 		if (initFlag == true)
 		{
-		
 			initFlag = false;
 			tFadeFlag = false;
 			tFade = 1;
@@ -99,18 +98,19 @@ void GameSceneManager::Update()
 			LoadCount2 = 0;
 			LoadTime = 70;
 			initFlag = false;
+
 		}
-		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
-		{
-			//プレイ開始
-			
-			title->SetAudioFlag(false);
-			play->SetVolume(volume);
-			title->SetVolume(volume);
-			play->Init();
-		
+		if (select->GetVolumeFlag() == 0) {
+			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+			{
+				//プレイ開始
+
+				title->SetAudioFlag(false);
+
+				play->Init();
 				sFadeFlag = true;
-			
+
+			}
 		}
 		//フェード
 		if (sFadeFlag == true) {
@@ -121,6 +121,9 @@ void GameSceneManager::Update()
 			sFadeFlag = false;
 			LoadFlag = true;
 		}
+		title->SetVolume(volume);
+		play->SetVolume(volume);
+		clear->SetVolume(volume);
 		select->SetFade(sFade);
 		title->AudioUpdate();
 		select->Update();
@@ -138,7 +141,7 @@ void GameSceneManager::Update()
 			initFlag = true;
 		}
 					//この数値を変えればクリアシーンに行けるステージを変えられる↓
-		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==10) {
+		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==2) {
 			clear->Init();
 			clear->SetAudioFlag(true);
 			scene = clearScene;
