@@ -14,7 +14,7 @@ MapStage::~MapStage()
 
 void MapStage::Init()
 {
-	block = Object::Instance()->CreateOBJ("Ground");
+	block = Object::Instance()->CreateOBJ("Ground","mapOBJ/");
 
 	floor_Tile[0] = Object::Instance()->LoadTexture(L"Resources/map/MapGraph/Floor_Tile1.png");
 	floor_Tile[1] = Object::Instance()->LoadTexture(L"Resources/map/MapGraph/Floor_Tile2.png");
@@ -48,13 +48,13 @@ void MapStage::Init()
 	floor_Tile[29] = Object::Instance()->LoadTexture(L"Resources/map/MapGraph/Floor_Tile27.png");
 
 
-	wallBlock = Object::Instance()->CreateOBJ("wall");
+	wallBlock = Object::Instance()->CreateOBJ("wall", "mapOBJ/");
 
-	cornerBlock = Object::Instance()->CreateOBJ("wall2");
+	cornerBlock = Object::Instance()->CreateOBJ("wall2", "mapOBJ/");
 
-	okeBlock = Object::Instance()->CreateOBJ("oke");
+	okeBlock = Object::Instance()->CreateOBJ("oke", "mapOBJ/");
 
-	sakuBlock = Object::Instance()->CreateOBJ("saku");
+	sakuBlock = Object::Instance()->CreateOBJ("saku", "mapOBJ/");
 	//‰¼
 	smokeGraph = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 

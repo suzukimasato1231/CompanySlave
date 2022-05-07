@@ -14,10 +14,12 @@ void BigOniBoss::Init()
 	attackBigOBJ = Shape::CreateRect(attackBigField.x, attackBigField.y);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
-	enemyObject = Object::Instance()->CreateOBJ("OniKari");
+	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/");
+	enemyObject[1] = Object::Instance()->CreateOBJ("OniKari1-1", "OniOBJ/");
+	enemyObject[2] = Object::Instance()->CreateOBJ("OniKari1-2", "OniOBJ/");
 	//攻撃モーション
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
 	//ノックバック
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
@@ -39,6 +41,7 @@ void BigOniBoss::Init()
 	bossData.scale = { 4.0f,4.0f,4.0f };
 	bossData.r = 15;
 	bossData.bossFlag = true;
+
 }
 
 void BigOniBoss::Draw(EnemyData* oniData)
@@ -50,7 +53,7 @@ void BigOniBoss::Draw(EnemyData* oniData)
 	switch (oniData->Status)
 	{
 	case NORMAL:
-		Object::Instance()->Draw(enemyObject, Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 #if _DEBUG
 		if (oniData->direction == Up) {
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z + attackEnemies.y / 2),
@@ -80,7 +83,7 @@ void BigOniBoss::Draw(EnemyData* oniData)
 		}
 		else
 		{//移動中
-			Object::Instance()->Draw(enemyObject, Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		}
 #if _DEBUG
 		if (attackSmallTime >= attackMotionDamege)
@@ -129,7 +132,7 @@ void BigOniBoss::Draw(EnemyData* oniData)
 		}
 		else
 		{//移動中
-			Object::Instance()->Draw(enemyObject, Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		}
 		break;
 	case NOCKBACK:
@@ -196,6 +199,17 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 			//プレイヤーの向き
 			Vec3 direction = memoryPosition.normalize();
 			oniData->position += direction * moveSpeed * slowValue;
+			//歩き描画の数字
+			if (oniData->walkTime % 10 == 0)
+			{
+				oniData->walkNum++;
+				if (oniData->walkNum >= 3)
+				{
+					oniData->walkNum = 0;
+					oniData->walkTime = 0;
+				}
+			}
+			oniData->walkTime++;
 		}
 		else
 		{
@@ -353,6 +367,17 @@ void BigOniBoss::AttackSummon(EnemyData* oniData, Player* player, int eNum)
 			//プレイヤーの向き
 			Vec3 direction = memoryPosition.normalize();
 			oniData->position += direction * moveSpeed * slowValue;
+			//歩き描画の数字
+			if (oniData->walkTime % 10 == 0)
+			{
+				oniData->walkNum++;
+				if (oniData->walkNum >= 3)
+				{
+					oniData->walkNum = 0;
+					oniData->walkTime = 0;
+				}
+			}
+			oniData->walkTime++;
 		}
 		else
 		{

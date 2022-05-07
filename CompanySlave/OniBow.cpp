@@ -17,21 +17,21 @@ void OniBow::Init()
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
 	//“G‚Ì“Ç‚Ýž‚Ý
-	enemyObject = Object::Instance()->CreateOBJ("OniKari");
+	//enemyObject = Object::Instance()->CreateOBJ("OniKari");
 	//“G‚ÌUŒ‚ó‘Ô‚Ì“Ç‚Ýž‚Ý
-	attackOBJ[0] = Object::Instance()->CreateOBJ("Oniyumi2-0");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("Oniyumi2-1");
-	attackOBJ[2] = Object::Instance()->CreateOBJ("Oniyumi2-2");
-	attackOBJ[3] = Object::Instance()->CreateOBJ("Oniyumi2-3");
-	attackOBJ[4] = Object::Instance()->CreateOBJ("Oniyumi2-4");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("Oniyumi2-0","OniyumiOBJ/");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("Oniyumi2-1", "OniyumiOBJ/");
+	attackOBJ[2] = Object::Instance()->CreateOBJ("Oniyumi2-2", "OniyumiOBJ/");
+	attackOBJ[3] = Object::Instance()->CreateOBJ("Oniyumi2-3", "OniyumiOBJ/");
+	attackOBJ[4] = Object::Instance()->CreateOBJ("Oniyumi2-4", "OniyumiOBJ/");
 
 	//“G‹|•à‚«
-	enemyWalk[0] = Object::Instance()->CreateOBJ("Oniyumi1-0");
-	enemyWalk[1] = Object::Instance()->CreateOBJ("Oniyumi1-1");
-	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2");
+	enemyWalk[0] = Object::Instance()->CreateOBJ("Oniyumi1-0", "OniyumiOBJ/");
+	enemyWalk[1] = Object::Instance()->CreateOBJ("Oniyumi1-1", "OniyumiOBJ/");
+	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2", "OniyumiOBJ/");
 
 	//–î‚Ìobj“Çž
-	bowOBJ = Object::Instance()->CreateOBJ("enemyArrow");
+	bowOBJ = Object::Instance()->CreateOBJ("enemyArrow","OniyumiOBJ/");
 
 	bowRaysOBJ = Shape::CreateRect(2.0f, 10.0f);
 }
@@ -45,7 +45,7 @@ void OniBow::Draw(EnemyData* oniData)
 	switch (oniData->Status)
 	{
 	case NORMAL:
-		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(attackOBJ[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		switch (oniData->direction)
 		{
 		case Up:

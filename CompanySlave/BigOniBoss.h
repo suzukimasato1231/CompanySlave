@@ -82,7 +82,7 @@ private:
 
 
 	//ボスOBJ
-	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
+	Object::ObjectData enemyObject[3];					//プレイヤーオブジェクト
 	Object::ObjectData attackOBJ[2];				//エネミーアタック
 	Object::ObjectData nockBackOBJ[2];				//ノックバックオブジェクト
 	//デバック用

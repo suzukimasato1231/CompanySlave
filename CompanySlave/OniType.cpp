@@ -16,10 +16,12 @@ void OniType::Init()
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
-	enemyObject = Object::Instance()->CreateOBJ("OniKari");
+	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/");
+	enemyObject[1] = Object::Instance()->CreateOBJ("OniKari1-1", "OniOBJ/");
+	enemyObject[2] = Object::Instance()->CreateOBJ("OniKari1-2", "OniOBJ/");
 	//攻撃モーション
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
 	//ノックバック
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
@@ -37,7 +39,7 @@ void OniType::Init()
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
 }
 
-void OniType::Draw(EnemyData *oniData)
+void OniType::Draw(EnemyData* oniData)
 {
 	if (oniData == nullptr)
 	{
@@ -46,7 +48,7 @@ void OniType::Draw(EnemyData *oniData)
 	switch (oniData->Status)
 	{
 	case NORMAL:
-		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		switch (oniData->direction)
 		{
 		case Up:
@@ -68,7 +70,7 @@ void OniType::Draw(EnemyData *oniData)
 		}
 		break;
 	case MOVE:
-		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyObject[oniData->walkNum], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		break;
 	case ATTACK:
 		if (oniData->StatusTime >= attackMotionDamege)
@@ -125,7 +127,7 @@ void OniType::Draw(EnemyData *oniData)
 	}
 }
 
-void OniType::Move(EnemyData *oniData, Player *player)
+void OniType::Move(EnemyData* oniData, Player* player)
 {
 	oniData->oldPosition = oniData->position;
 	slowValue = player->GetSlow();
@@ -146,9 +148,21 @@ void OniType::Move(EnemyData *oniData, Player *player)
 		Vec3 direction = memoryPosition.normalize();
 		oniData->position += direction * moveSpeed * slowValue;
 	}
+
+	//歩き描画の数字
+	if (oniData->walkTime % 10 == 0)
+	{
+		oniData->walkNum++;
+		if (oniData->walkNum >= 3)
+		{
+			oniData->walkNum = 0;
+			oniData->walkTime = 0;
+		}
+	}
+	oniData->walkTime++;
 }
 
-void OniType::SearchPlayer(EnemyData *oniData, Player *player)
+void OniType::SearchPlayer(EnemyData* oniData, Player* player)
 {
 	Box enemiesBox = SearchField(oniData);
 	//索敵範囲内にプレイヤーがいたら
@@ -171,7 +185,7 @@ void OniType::SearchPlayer(EnemyData *oniData, Player *player)
 	}
 }
 
-void OniType::Attack(EnemyData *oniData, Player *player)
+void OniType::Attack(EnemyData* oniData, Player* player)
 {
 	if (oniData == nullptr)
 	{
@@ -180,7 +194,7 @@ void OniType::Attack(EnemyData *oniData, Player *player)
 
 	Box attackBox = AttackField(oniData);
 	//攻撃モーション中のダメージを与えるタイミング
-	if (oniData->StatusTime == attackMotionDamege&& player->GetInvincivleTime() == 0)
+	if (oniData->StatusTime == attackMotionDamege && player->GetInvincivleTime() == 0)
 	{
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(attackBox, player->GetBox()))
@@ -213,7 +227,7 @@ void OniType::Attack(EnemyData *oniData, Player *player)
 	}
 }
 
-void OniType::EffectDraw(EnemyData *oniData)
+void OniType::EffectDraw(EnemyData* oniData)
 {
 	if (AttackEffect == true)
 	{
@@ -261,7 +275,7 @@ void OniType::EffectDraw(EnemyData *oniData)
 	}
 }
 
-Box OniType::SearchField(EnemyData *oniData)
+Box OniType::SearchField(EnemyData* oniData)
 {
 	Box enemiesBox;
 	switch (oniData->direction)
@@ -312,7 +326,7 @@ Vec3 OniType::DirectionAngle(int direction)
 	return angle;
 }
 
-Box OniType::AttackField(EnemyData *oniData)
+Box OniType::AttackField(EnemyData* oniData)
 {
 	Box attackBox;
 	switch (oniData->attackDirection)

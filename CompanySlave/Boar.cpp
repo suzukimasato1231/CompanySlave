@@ -14,10 +14,10 @@ void Boar::Init()
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
-	enemyObject = Object::Instance()->CreateOBJ("OniKari");
+	enemyObject = Object::Instance()->CreateOBJ("OniKari", "OniOBJ/");
 	//攻撃モーション
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
 	//ノックバック
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");

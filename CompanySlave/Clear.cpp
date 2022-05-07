@@ -41,8 +41,8 @@ void Clear::Initialize()
 	textGraph = Sprite::Instance()->SpriteCreate(L"Resources/Text.png");
 	title = Sprite::Instance()->SpriteCreate(L"Resources/clearTitle.png");
 
-	
-	PlayerObject = Object::Instance()->CreateOBJ("playerKari2-1");
+
+	PlayerObject = Object::Instance()->CreateOBJ("playerKari2-1","playerOBJ/");
 
 }
 
@@ -109,7 +109,7 @@ void Clear::Update()
 	lightGroup->Update();
 }
 
-void Clear ::Draw()
+void Clear::Draw()
 {
 	//オブジェクト描画前処理
 
@@ -120,7 +120,7 @@ void Clear ::Draw()
 
 
 	if (colorFlag == true) {
-		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,-90,40 }, Vec4{ 1,1,1,1});
+		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,-90,40 }, Vec4{ 1,1,1,1 });
 	}
 	if (TextFlag == true) {
 

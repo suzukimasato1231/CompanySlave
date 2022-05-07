@@ -27,20 +27,20 @@ void Player::Init()
 	sound2 = Audio::SoundLoadWave("Resources/Music/SE/hiken.wav");
 	sound3 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
 
-	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1");
-	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2");
-	playerSwordWalkObject[2] = Object::Instance()->CreateOBJ("playerKari2-1");
-	playerSwordWalkObject[3] = Object::Instance()->CreateOBJ("playerKari2-3");
+	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
+	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
+	playerSwordWalkObject[2] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
+	playerSwordWalkObject[3] = Object::Instance()->CreateOBJ("playerKari2-3", "playerOBJ/");
 
-	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerAttack1-1");
-	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerAttack1-2");
-	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerAttack1-3");
-	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerAttack2-1");
-	playerAttackObject[4] = Object::Instance()->CreateOBJ("playerAttack2-2");
-	playerAttackObject[5] = Object::Instance()->CreateOBJ("playerAttack2-3");
-	playerAttackObject[6] = Object::Instance()->CreateOBJ("playerAttack3-1");
-	playerAttackObject[7] = Object::Instance()->CreateOBJ("playerAttack3-2");
-	playerAttackObject[8] = Object::Instance()->CreateOBJ("playerAttack3-3");
+	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerAttack1-1", "playerOBJ/");
+	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerAttack1-2", "playerOBJ/");
+	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerAttack1-3","playerOBJ/");
+	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerAttack2-1","playerOBJ/");
+	playerAttackObject[4] = Object::Instance()->CreateOBJ("playerAttack2-2","playerOBJ/");
+	playerAttackObject[5] = Object::Instance()->CreateOBJ("playerAttack2-3","playerOBJ/");
+	playerAttackObject[6] = Object::Instance()->CreateOBJ("playerAttack3-1","playerOBJ/");
+	playerAttackObject[7] = Object::Instance()->CreateOBJ("playerAttack3-2","playerOBJ/");
+	playerAttackObject[8] = Object::Instance()->CreateOBJ("playerAttack3-3","playerOBJ/");
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
 	tornadoObject = Object::Instance()->CreateOBJ("tornado");

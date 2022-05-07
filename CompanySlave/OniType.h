@@ -33,7 +33,7 @@ private:
 	Box AttackField(EnemyData *oniData);
 private:
 
-	Object::ObjectData enemyObject;					//プレイヤーオブジェクト
+	Object::ObjectData enemyObject[3];					//プレイヤーオブジェクト
 
 	Object::ObjectData attackOBJ[2];				//エネミーアタック
 

@@ -8,10 +8,10 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;
 
-ID3D12Device *Object::dev = nullptr;
-ID3D12GraphicsCommandList *Object::cmdList = nullptr;
-Camera *Object::camera = nullptr;
-LightGroup *Object::lightGroup = nullptr;
+ID3D12Device* Object::dev = nullptr;
+ID3D12GraphicsCommandList* Object::cmdList = nullptr;
+Camera* Object::camera = nullptr;
+LightGroup* Object::lightGroup = nullptr;
 Object::~Object()
 {
 	//OBJデータ削除
@@ -29,7 +29,7 @@ Object::~Object()
 
 }
 
-void  Object::Init(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList)
+void  Object::Init(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 {
 	Object::dev = dev;
 
@@ -39,10 +39,10 @@ void  Object::Init(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList)
 	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev);
 }
 
-Object *Object::Create()
+Object* Object::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Object *object = new Object();
+	Object* object = new Object();
 	if (object == nullptr) {
 		return nullptr;
 	}
@@ -51,18 +51,18 @@ Object *Object::Create()
 	return object;
 }
 
-void Object::AddSmoothData(ObjectData &polygon, unsigned short indexPosition, unsigned short indexVertex)
+void Object::AddSmoothData(ObjectData& polygon, unsigned short indexPosition, unsigned short indexVertex)
 {
 	polygon.smoothData[indexPosition].emplace_back(indexVertex);
 }
 
-void Object::CalculateSmoothedVertexNormals(ObjectData &polygon)
+void Object::CalculateSmoothedVertexNormals(ObjectData& polygon)
 {
 	auto itr = polygon.smoothData.begin();
 	for (; itr != polygon.smoothData.end(); ++itr)
 	{
 		//各面用の共通頂点コレクション
-		std::vector<unsigned short> &v = itr->second;
+		std::vector<unsigned short>& v = itr->second;
 		//全頂点の法線を平均する
 		XMVECTOR normal = {};
 		for (unsigned short index : v)
@@ -78,12 +78,12 @@ void Object::CalculateSmoothedVertexNormals(ObjectData &polygon)
 	}
 }
 
-inline size_t Object::GetVertexCount(ObjectData &polygon)
+inline size_t Object::GetVertexCount(ObjectData& polygon)
 {
 	return polygon.vertices.size();
 }
 
-int  Object::LoadTexture(const wchar_t *filename)
+int  Object::LoadTexture(const wchar_t* filename)
 {
 	HRESULT result = S_FALSE;
 
@@ -109,7 +109,7 @@ int  Object::LoadTexture(const wchar_t *filename)
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
-	const Image *img = scratchImg.GetImage(0, 0, 0);//生データ抽出
+	const Image* img = scratchImg.GetImage(0, 0, 0);//生データ抽出
 
 	//リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -164,7 +164,7 @@ int  Object::LoadTexture(const wchar_t *filename)
 	return (int)texNum - 1;
 }
 
-void Object::NormalizeUV(Object::ObjectData objectData,int texNum)
+void Object::NormalizeUV(Object::ObjectData objectData, int texNum)
 {
 	// テクスチャデータ取得
 	D3D12_RESOURCE_DESC resDesc = textureData[texNum]->texbuff->GetDesc();
@@ -211,12 +211,12 @@ void Object::NormalizeUV(Object::ObjectData objectData,int texNum)
 
 }
 
-void Object::MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color)
+void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color)
 {
 	HRESULT result;
 	if (polygon.psc.position.x != position.x || polygon.psc.position.y != position.y || polygon.psc.position.z != position.z
 		|| polygon.psc.scale.x != scale.x || polygon.psc.scale.y != scale.y || polygon.psc.scale.z != scale.z
-		||polygon.psc.angle.x !=rotation.x || polygon.psc.angle.y != rotation.y || polygon.psc.angle.z != rotation.z
+		|| polygon.psc.angle.x != rotation.x || polygon.psc.angle.y != rotation.y || polygon.psc.angle.z != rotation.z
 		|| polygon.psc.color.x != color.x || polygon.psc.color.y != color.y || polygon.psc.color.z != color.z || polygon.psc.color.w != color.w)
 	{
 		//ワールド変換：//スケーリング//回転行列XMMATRIX//平行移動行列
@@ -240,11 +240,11 @@ void Object::MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotati
 	}
 
 
-	const XMMATRIX &matViewProjection = camera->GetMatView() * camera->GetProjection();
-	const Vec3 &cameraPos = camera->GetEye();
+	const XMMATRIX& matViewProjection = camera->GetMatView() * camera->GetProjection();
+	const Vec3& cameraPos = camera->GetEye();
 	//GPU上のバッファに対応した仮想メモリを取得
-	ConstBufferDataB0 *constMap = nullptr;
-	result = Object::OBJdata[OBJNum]->constBuffB0->Map(0, nullptr, (void **)&constMap);
+	ConstBufferDataB0* constMap = nullptr;
+	result = Object::OBJdata[OBJNum]->constBuffB0->Map(0, nullptr, (void**)&constMap);
 	//行列の合成   ワールド変換行列 ＊ ビュー変換行列 ＊ 射影変換行列
 	constMap->viewproj = matViewProjection;
 	if (polygon.parent == nullptr)
@@ -261,8 +261,8 @@ void Object::MatWord(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotati
 
 
 	//定数バッファへデータ転送
-	ConstBufferDataB1 *constMap1 = nullptr;
-	result = Object::OBJdata[OBJNum]->constBuffB1->Map(0, nullptr, (void **)&constMap1);
+	ConstBufferDataB1* constMap1 = nullptr;
+	result = Object::OBJdata[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
 	constMap1->ambient = polygon.material.ambient;
 	constMap1->diffuse = polygon.material.diffuse;
 	constMap1->specular = polygon.material.specular;
@@ -300,13 +300,13 @@ void Object::OBJConstantBuffer()
 }
 
 
-void Object::Draw(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph)
+void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph)
 {
 	//プリミティブ形状の設定コマンド（三角形リスト）
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//デスクリプタヒープをセット
-	ID3D12DescriptorHeap *ppHeaps[] = { descHeap.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	if (OBJNum >= Object::OBJdata.size())
 	{
@@ -346,7 +346,7 @@ void Object::Draw(ObjectData &polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 }
 
 
-int Object::LoadMaterial(const std::string &directoryPath, const std::string &filename, ObjectData &polygon)
+int Object::LoadMaterial(const std::string& directoryPath, const std::string& filename, ObjectData& polygon)
 {
 	int texNumber = 0;
 	//ファイルストリーム
@@ -413,7 +413,7 @@ int Object::LoadMaterial(const std::string &directoryPath, const std::string &fi
 	return  0;
 }
 
-void Object::OBJCreateModel(ObjectData &polygon)
+void Object::OBJCreateModel(ObjectData& polygon)
 {
 	HRESULT result;
 	//頂点データ全体のサイズ＝頂点データ一つ分のサイズ＊頂点データの要素数
@@ -441,9 +441,9 @@ void Object::OBJCreateModel(ObjectData &polygon)
 		nullptr,
 		IID_PPV_ARGS(&polygon.indexBuff));
 
-	Vertex *vertMap = nullptr;
+	Vertex* vertMap = nullptr;
 	//GPU上のバッファに対応した仮想メモリを取得
-	result = polygon.vertBuff->Map(0, nullptr, (void **)&vertMap);
+	result = polygon.vertBuff->Map(0, nullptr, (void**)&vertMap);
 
 	//全頂点に対して
 	for (size_t i = 0; i < polygon.vertices.size(); i++)
@@ -455,8 +455,8 @@ void Object::OBJCreateModel(ObjectData &polygon)
 	polygon.vertBuff->Unmap(0, nullptr);
 
 	//GPU上のバッファに対応した仮想メモリを取得
-	unsigned short *indexMap = nullptr;
-	result = polygon.indexBuff->Map(0, nullptr, (void **)&indexMap);
+	unsigned short* indexMap = nullptr;
+	result = polygon.indexBuff->Map(0, nullptr, (void**)&indexMap);
 
 	//全インデックスに対して
 	for (size_t i = 0; i < polygon.indices.size(); i++)
@@ -478,7 +478,7 @@ void Object::OBJCreateModel(ObjectData &polygon)
 	polygon.ibView.SizeInBytes = sizeIB;
 }
 
-int Object::OBJLoadTexture(const std::string &directoryPath, const std::string &filename)
+int Object::OBJLoadTexture(const std::string& directoryPath, const std::string& filename)
 {
 	HRESULT result = S_FALSE;
 	textureData.push_back(new Object::TextureData);
@@ -510,7 +510,7 @@ int Object::OBJLoadTexture(const std::string &directoryPath, const std::string &
 	if (FAILED(result)) {
 		return result;
 	}
-	const Image *img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
+	const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
 
 	// リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -567,7 +567,7 @@ int Object::OBJLoadTexture(const std::string &directoryPath, const std::string &
 }
 
 
-Object::ObjectData Object::CreateOBJ(const std::string filename, bool smoothing)
+Object::ObjectData Object::CreateOBJ(const std::string filename, const std::string path, bool smoothing)
 {
 	Object::ObjectData polygon;
 
@@ -575,7 +575,7 @@ Object::ObjectData Object::CreateOBJ(const std::string filename, bool smoothing)
 	//ファイルストリーム
 	std::ifstream file;
 	//.objファイルを開く
-	std::string directoryPath = "Resources/" + filename + "/";
+	std::string directoryPath = "Resources/" + path  + filename + "/";
 	file.open(directoryPath + filename + ".obj");
 	//ファイルオープン失敗をチェック
 	if (file.fail())

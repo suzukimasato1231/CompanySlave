@@ -159,7 +159,7 @@ public://図形モデル作成
 	/// <param name="filename">filename</param>
 	/// <param name="smoothing"></param>
 	/// <returns></returns>
-	ObjectData CreateOBJ(const std::string filename, bool smoothing = false);
+	ObjectData CreateOBJ(const std::string filename, const std::string path = "", bool smoothing = false);
 public://オブジェクト関連
 	// テクスチャ読み込み
 	int LoadTexture(const wchar_t* filename);
