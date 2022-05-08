@@ -38,8 +38,8 @@ void Title::Initialize()
 	titleGraph = Sprite::Instance()->SpriteCreate(L"Resources/TitleText.png");
 	startGraph = Sprite::Instance()->SpriteCreate(L"Resources/Start.png");
 	
-	Bottan[0] = Sprite::Instance()->SpriteCreate(L"Resources/SelectB.png");
-	Bottan[1] = Sprite::Instance()->SpriteCreate(L"Resources/SelectB2.png");
+	Button[0] = Sprite::Instance()->SpriteCreate(L"Resources/SelectB.png");
+	Button[1] = Sprite::Instance()->SpriteCreate(L"Resources/SelectB2.png");
 
 	VolumeUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeUI.png");
 	VolumeUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/Volume.png");
@@ -68,7 +68,7 @@ void Title::Init()
 	fade2 = 0;
 	titleTextFlag = false;
 	rainFlag = false;
-	bottanFlag = false;
+	ButtonFlag = false;
 	sceneChangeFlag = false;
 	//フェード
 	//fade = 1;
@@ -152,9 +152,9 @@ void Title::Update()
 				}
 			}
 			if (fade2 >= 1) {
-				bottanFlag = true;
+				ButtonFlag = true;
 			}
-			if (bottanFlag == true) {
+			if (ButtonFlag == true) {
 				if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 				{
 					volume2 = 1;
@@ -268,13 +268,13 @@ void Title::Draw()
 	
 	else if (scene == 1) {
 		if (volumeFlag == false) {
-			Sprite::Instance()->Draw(Bottan[0], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+			Sprite::Instance()->Draw(Button[0], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
 		}
 		//音量調節バーの描画
 		if (volumeFlag == 1) {
 			Sprite::Instance()->Draw(VolumeUI[1], Vec2(420, 340), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
 			Sprite::Instance()->Draw(VolumeUI[0], Vec2(420, 340), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
-			Sprite::Instance()->Draw(Bottan[1], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
+			Sprite::Instance()->Draw(Button[1], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
 
 		}
 	}

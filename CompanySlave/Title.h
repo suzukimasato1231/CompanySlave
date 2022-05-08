@@ -36,7 +36,7 @@ public:
 
 	void Draw();
 	
-	bool GetBottanFlag() { return bottanFlag; }
+	bool GetButtonFlag() { return ButtonFlag; }
 	float GetFade() { return fade; };
 	float SetFade(float fade) { return this->fade = fade; }
 
@@ -69,7 +69,7 @@ private://’è‹`
 	SpriteData titleGraph;
 	SpriteData startGraph; 
 	SpriteData rain[rainMax];
-	SpriteData Bottan[2];
+	SpriteData Button[2];
 	SpriteData Number[10];
 	SpriteData VolumeUI[2];
 
@@ -95,7 +95,7 @@ private://’è‹`
 	int scene = 0;
 
 
-	bool bottanFlag = false;
+	bool ButtonFlag = false;
 	bool audioFlag = true;
 	Vec2 pos2 = { 0.0f,0.0f };
 

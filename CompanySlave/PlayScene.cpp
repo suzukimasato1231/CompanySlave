@@ -52,6 +52,16 @@ void PlayScene::Initialize()
 	}
 	rainGraph = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
+	AButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/A1.png");
+	AButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/A2.png");
+	XButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/X1.png");
+	XButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/X2.png");
+	RBButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/RB1.png");
+	RBButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/RB2.png");
+	LBButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/LB1.png");
+	LBButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/LB2.png");
+
+
 	//3Dオブジェクト画像読み込み
 	graph3 = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
@@ -107,6 +117,24 @@ void PlayScene::Init()
 	sceneFlag = false;
 	sceneChangeFlag = false;
 	ChangeGraphPosition = { -1600.0f, 0.0f };
+
+	tutorialAFlag = false;
+	AButtonTimer = 30;
+	AButtonCount = 0;
+
+	tutorialXFlag = false;
+	XButtonTimer = 30;
+	XButtonCount = 0;
+
+	tutorialRBFlag = false;
+	RBButtonTimer = 30;
+	RBButtonCount = 0;
+	
+	tutorialLBFlag = false;
+	LBButtonTimer = 30;
+	LBButtonCount = 0;
+
+
 	srand(time(NULL));
 
 	for (int i = 0; i < rainMax; i++) {
@@ -337,6 +365,99 @@ void PlayScene::Update()
 			s[i] = (float)rand() / 1000;
 		}
 	}
+#pragma region チュートリアルUI
+	if (stageNum == 2) {
+		if (player->GetPosition().x > 125 && player->GetPosition().x < 255&&
+			player->GetPosition().z > -206 && player->GetPosition().z < -108) {
+			tutorialXFlag = true;
+			if (tutorialXFlag = true) {
+				if (XButtonTimer > 0) {
+					XButtonTimer--;
+				}
+				else if (XButtonTimer <= 0) {
+					XButtonTimer = 30;
+					if (XButtonCount < 1) {
+						XButtonCount++;
+					}
+					else if (XButtonCount == 1) {
+						XButtonCount = 0;
+					}
+				}
+			}
+		}
+		else {
+			tutorialXFlag = false;
+		}
+		if (player->GetPosition().x > 548 && player->GetPosition().x < 662 &&
+			player->GetPosition().z > -212&& player->GetPosition().z < -58) {
+			tutorialAFlag = true;
+			if (tutorialAFlag = true) {
+				if (AButtonTimer > 0) {
+					AButtonTimer--;
+				}
+				else if (AButtonTimer <= 0) {
+					AButtonTimer = 30;
+					if (AButtonCount < 1) {
+						AButtonCount++;
+					}
+					else if (AButtonCount == 1) {
+						AButtonCount = 0;
+					}
+				}
+			}
+		}
+		else {
+			tutorialAFlag = false;
+		}
+		
+	}
+	if (stageNum == 3) {
+		if (player->GetPosition().x > 187 && player->GetPosition().x < 285 &&
+			player->GetPosition().z > -180 && player->GetPosition().z < -91) {
+			tutorialRBFlag = true;
+			if (tutorialRBFlag = true) {
+				if (RBButtonTimer > 0) {
+					RBButtonTimer--;
+				}
+				else if (RBButtonTimer <= 0) {
+					RBButtonTimer = 30;
+					if (RBButtonCount < 1) {
+						RBButtonCount++;
+					}
+					else if (RBButtonCount == 1) {
+						RBButtonCount = 0;
+					}
+				}
+			}
+		}
+		else {
+			tutorialRBFlag = false;
+		}
+		if (player->GetPosition().x > 732 && player->GetPosition().x < 840 &&
+			player->GetPosition().z > -289 && player->GetPosition().z < -188) {
+			tutorialLBFlag = true;
+			if (tutorialLBFlag = true) {
+				if (LBButtonTimer > 0) {
+					LBButtonTimer--;
+				}
+				else if (LBButtonTimer <= 0) {
+					LBButtonTimer = 30;
+					if (LBButtonCount < 1) {
+						LBButtonCount++;
+					}
+					else if (LBButtonCount == 1) {
+						LBButtonCount = 0;
+					}
+				}
+			}
+		}
+		else {
+			tutorialLBFlag = false;
+		}
+
+	}
+
+#pragma endregion
 	particleMan->Update();
 	particleMan2->Update();
 	particleMan3->Update();
@@ -388,10 +509,21 @@ void PlayScene::Draw()
 	if (sceneChangeFlag == true) {
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
 	}
-
+	if (tutorialAFlag == true) {
+		Sprite::Instance()->Draw(AButton[AButtonCount], Vec2(600, 0), 100, 100);
+	}
+	if (tutorialXFlag == true) {
+		Sprite::Instance()->Draw(XButton[XButtonCount], Vec2(600, 0), 100, 100);
+	}
+	if (tutorialRBFlag == true) {
+		Sprite::Instance()->Draw(RBButton[RBButtonCount], Vec2(600, 0), 100, 100);
+	}
+	if (tutorialLBFlag == true) {
+		Sprite::Instance()->Draw(LBButton[LBButtonCount], Vec2(600, 0), 100, 100);
+	}
 #if _DEBUG
 	debugText.Print(10, 180, 2, "%d", stageNum);
-
+	debugText.Print(10, 500, 2, "%f,%f", player->GetPosition().x, player->GetPosition().z);
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 
 	//デバックテキスト描画ここは変わらない
