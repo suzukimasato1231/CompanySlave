@@ -43,6 +43,8 @@ void Title::Initialize()
 
 	VolumeUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeUI.png");
 	VolumeUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/Volume.png");
+	VolumeUI[2] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeArrow1.png");
+	VolumeUI[3] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeArrow2.png");
 
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
@@ -73,6 +75,7 @@ void Title::Init()
 	//フェード
 	//fade = 1;
 	volumeFlag = 0;
+	volumeArrowFlag = false;
 	volume = 1;
 	volume2 = 1;
 	volumeB = 500;
@@ -94,75 +97,75 @@ void Title::Update()
 	//
 	// 	//パーティクル初期化
 	ParticleManager::SetCamera(camera);
-		//3Dオブジェクト初期化
+	//3Dオブジェクト初期化
 	Object::Instance()->SetCamera(camera);
 	Object::Instance()->SetLight(lightGroup);
 	Direction();
 
 
 
-		if (rainFlag == false) {
-			if (rainTime < 30) {
-				rainTime++;
-			}
-			if (rainTime >= 30)
-			{
-				rainFlag = true;
-				rainTime = 0;
-			}
+	if (rainFlag == false) {
+		if (rainTime < 30) {
+			rainTime++;
 		}
+		if (rainTime >= 30)
+		{
+			rainFlag = true;
+			rainTime = 0;
+		}
+	}
 
-		if (rainFlag == true) {
-			for (int i = 0; i < rainMax; i++) {
+	if (rainFlag == true) {
+		for (int i = 0; i < rainMax; i++) {
 
-				if (pos[i].y < 720) {
-					//雨が地面につくまで降る
-					pos[i].y = pos[i].y + v;
-					v = g + v;
-				}
-				if (pos[i].y >= 720) {
-					//地面についたらまた上に行く
-					pos[i].y = rand() % -100;
-					pos[i].x = rand() % 1300;
-					v = 0;
-					g = 9.8f;
-					s[i] = rand() % 500 - 400;
-				}
+			if (pos[i].y < 720) {
+				//雨が地面につくまで降る
+				pos[i].y = pos[i].y + v;
+				v = g + v;
 			}
-			if (scene == 0) {
-				if (titleTextFlag == false) {
-					if (titleTime < 60) {
-						titleTime++;
-					}
-					if (titleTime >= 60)
-					{
-						titleTextFlag = true;
-						titleTime = 0;
-					}
-				}
+			if (pos[i].y >= 720) {
+				//地面についたらまた上に行く
+				pos[i].y = rand() % -100;
+				pos[i].x = rand() % 1300;
+				v = 0;
+				g = 9.8f;
+				s[i] = rand() % 500 - 400;
 			}
 		}
 		if (scene == 0) {
-			if (titleTextFlag == true) {
-				if (fade < 1) {
-					fade += 0.01f;
+			if (titleTextFlag == false) {
+				if (titleTime < 60) {
+					titleTime++;
 				}
-				if (fade >= 1) {
-					fade2 += 0.01f;
-				}
-			}
-			if (fade2 >= 1) {
-				ButtonFlag = true;
-			}
-			if (ButtonFlag == true) {
-				if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+				if (titleTime >= 60)
 				{
-					volume2 = 1;
-					scene = 1;
-					sceneChangeFlag = true;
+					titleTextFlag = true;
+					titleTime = 0;
 				}
 			}
 		}
+	}
+	if (scene == 0) {
+		if (titleTextFlag == true) {
+			if (fade < 1) {
+				fade += 0.01f;
+			}
+			if (fade >= 1) {
+				fade2 += 0.01f;
+			}
+		}
+		if (fade2 >= 1) {
+			ButtonFlag = true;
+		}
+		if (ButtonFlag == true) {
+			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+			{
+				volume2 = 1;
+				scene = 1;
+				sceneChangeFlag = true;
+			}
+		}
+	}
 
 	else if (scene == 1) {
 		//音量調節
@@ -175,15 +178,29 @@ void Title::Update()
 		if (Input::Instance()->ConLeftInput())
 		{
 
-			if (volumeFlag == 1) {
-				if (direction == Right) {
+
+			if (direction == Right) {
+				volumeArrowFlag = true;
+			}
+			else if (direction == Left) {
+				volumeArrowFlag = false;
+			}
+		}
+		if (volumeFlag == 1) {
+			if (volumeArrowFlag == true) {
+				if (Input::Instance()->ControllerDown(ButtonA)) {
+
 					if (volume < 1) {
 						volume += 0.1;
 						volume2 += 0.1;
 						volumeB += 50;
 					}
 				}
-				if (direction == Left) {
+			}
+
+			if (volumeArrowFlag == false) {
+				if (Input::Instance()->ControllerDown(ButtonA)) {
+
 					if (volume >= 0) {
 						volume -= 0.1;
 						volume2 -= 0.1;
@@ -193,6 +210,10 @@ void Title::Update()
 			}
 		}
 	}
+		
+	
+
+	
 
 	//パーティクル更新
 	//particleMan->Update();
@@ -274,13 +295,20 @@ void Title::Draw()
 		if (volumeFlag == 1) {
 			Sprite::Instance()->Draw(VolumeUI[1], Vec2(420, 340), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
 			Sprite::Instance()->Draw(VolumeUI[0], Vec2(420, 340), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
+			if (volumeArrowFlag == false) {
+				Sprite::Instance()->Draw(VolumeUI[2], Vec2(370, 340), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
+			}
+			if (volumeArrowFlag == true) {
+				Sprite::Instance()->Draw(VolumeUI[3], Vec2(370, 340), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
+			}
 			Sprite::Instance()->Draw(Button[1], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
 
 		}
 	}
 
 	//デバックテキスト%dと%f対応
-	debugText.Print(10, 40, 2, "%f",fade);
+	debugText.Print(10, 40, 2, "%d",volumeArrowFlag);
+	debugText.Print(10, 80, 2, "%d", volumeFlag);
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
