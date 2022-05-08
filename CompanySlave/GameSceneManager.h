@@ -1,7 +1,6 @@
 #pragma once
 #include"Title.h"
 #include"PlayScene.h"
-#include"SelectScene.h"
 #include"Clear.h"
 extern const int window_width;
 extern const int window_height;
@@ -25,7 +24,6 @@ public:
 private://’è‹`
 	enum Scene {
 		titleScene,
-		selectScene,
 		stage1,
 		clearScene
 	};
@@ -34,7 +32,6 @@ private://’è‹`
 
 	Title* title = nullptr;
 	PlayScene* play = nullptr;
-	SelectScene* select = nullptr;
 	Clear* clear = nullptr;
 	DebugText debugText;
 	SpriteData BGGraph;

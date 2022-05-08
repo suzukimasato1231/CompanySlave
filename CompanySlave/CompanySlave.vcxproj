@@ -262,7 +262,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="PushCollision.h" />
-    <ClInclude Include="SelectScene.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="WOLF.h" />
     <ClInclude Include="WolfFlock.h" />
@@ -299,7 +298,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="PushCollision.cpp" />
-    <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="WOLF.cpp" />
     <ClCompile Include="WolfFlock.cpp" />

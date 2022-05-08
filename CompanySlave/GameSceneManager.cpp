@@ -11,7 +11,6 @@ GameSceneManager::~GameSceneManager()
 {
 	safe_delete(title);
 	safe_delete(play);
-	safe_delete(select);
 	safe_delete(clear);
 }
 
@@ -31,9 +30,6 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	title = new Title();
 	title->Initialize();
 
-	select = new SelectScene();
-	select->Initialize();
-	
 	play = new PlayScene();
 	play->Initialize();
 	
@@ -70,64 +66,34 @@ void GameSceneManager::Update()
 			initFlag = false;
 			tFadeFlag = false;
 			tFade = 1;
-		}
-		if (title->GetBottanFlag() == true) {
-
-			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
-			{
-
-
-				volume = 1;
-				initFlag = true;
-				select->Init();
-				scene = selectScene;
-			}
-		}
-		title->AudioUpdate();
-		title->Update();
-	}
-	//ステージ選択
-	else if (scene == selectScene) {
-		//play->SetVolume(0);
-		
-		volume = select->GetVolume();
-		if (initFlag == true)
-		{
-			sFadeFlag = false;
-			sFade = 1;
 			LoadCount2 = 0;
 			LoadTime = 70;
-			initFlag = false;
-
 		}
-		if (select->GetVolumeFlag() == 0) {
-			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
-			{
-				//プレイ開始
+		volume = title->GetVolume();
+			if (title->GetVolumeFlag() == 0&&title->GetSceneChangeFlag()==true) {
 
-				title->SetAudioFlag(false);
+				if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+				{
 
-				play->Init();
-				sFadeFlag = true;
 
+					
+					initFlag = true;
+					title->SetAudioFlag(false);
+
+					scene = stage1;
+					play->Init();
+					LoadFlag = true;
+				}
 			}
-		}
-		//フェード
-		if (sFadeFlag == true) {
-			sFade -= 0.2f;
-		}
-		if (sFade < 0) {
-			scene = stage1;
-			sFadeFlag = false;
-			LoadFlag = true;
-		}
-		title->SetVolume(volume);
-		play->SetVolume(volume);
-		clear->SetVolume(volume);
-		select->SetFade(sFade);
-		title->AudioUpdate();
-		select->Update();
+		
+			//title->SetVolume(volume);
+			play->SetVolume(volume);
+			clear->SetVolume(volume);
+			
+			title->AudioUpdate();
+			title->Update();
 	}
+
 
 	//ステージ1
 	else if (scene == stage1) {
@@ -141,7 +107,7 @@ void GameSceneManager::Update()
 			initFlag = true;
 		}
 					//この数値を変えればクリアシーンに行けるステージを変えられる↓
-		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==10) {
+		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==2) {
 			clear->Init();
 			clear->SetAudioFlag(true);
 			scene = clearScene;
@@ -180,6 +146,7 @@ void GameSceneManager::Update()
 		}
 		if (LoadTime <= 0) {
 			LoadCount = 0;
+
 			LoadFlag = false;
 		}
 	}
@@ -233,10 +200,6 @@ void GameSceneManager::Draw()
 	if (scene == titleScene)
 	{
 		title->Draw();
-	}
-	else if (scene == selectScene)
-	{
-		select->Draw();
 	}
 	else if (scene == stage1)
 	{
