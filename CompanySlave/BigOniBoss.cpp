@@ -25,7 +25,7 @@ void BigOniBoss::Init()
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
 
 	//攻撃エフェクト
-	//AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
+	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
 	AttackEffectGraph[1] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect2.png");
 	AttackEffectGraph[2] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect3.png");
@@ -35,6 +35,15 @@ void BigOniBoss::Init()
 	AttackEffectGraph[6] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect7.png");
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect9.png");
+
+	//召喚エフェクト
+	SummonEffectOBJ = Shape::CreateRect(SummonEffectSize, SummonEffectSize);
+	SummonEffectGraph = Object::Instance()->LoadTexture(L"Resources/Effect/callLing.png");
+
+	//BIGエフェクト
+	BigEffectOBJ = Shape::CreateRect(BigEffectSize, BigEffectSize);
+	BigEffectGraph = Object::Instance()->LoadTexture(L"Resources/Effect/ling.png");
+
 	//ボスの数値
 	bossData.HP = 168.0f;
 	bossData.HPMax = 168.0f;
@@ -146,6 +155,7 @@ void BigOniBoss::Draw(EnemyData* oniData)
 		}
 		break;
 	}
+	EffectDraw(oniData);
 }
 
 void BigOniBoss::SearchPlayer(EnemyData* oniData, Player* player)
@@ -217,7 +227,6 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 			attackSmallNum++;
 			attackSmallTime = attackSmallTimeMax;
 			oniData->attackDirection = oniData->direction;
-
 		}
 	}
 	//攻撃中
@@ -248,6 +257,14 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 		}
 	}
 
+	if (attackSmallTime >= attackMotionDamege)
+	{//武器振り上げ
+		
+	}
+	else if (attackSmallTime > 40 )
+	{//武器振り下ろし
+		AttackEffect = true;
+	}
 	//3回小攻撃を終えたら次の攻撃へ移る
 	if (attackSmallNum == 3 && attackSmallTime <= 0)//攻撃時間が０になったら
 	{
@@ -267,6 +284,7 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 			else
 			{//召喚攻撃へ
 				oniData->Status = SUMMON;
+				SummonEffect = true;
 				firstSummonFlag = true;
 				attackTypeFlag = true;
 			}
@@ -291,7 +309,13 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 	{
 		assert(oniData);
 	}
-
+	if (attackBigStatus == PREOPERATION)
+	{//武器振り上げ
+	}
+	else
+	{//武器振り下ろし
+		BigEffect = true;
+	}
 	if (attackBigStatus == PREOPERATION)
 	{//大攻撃を行うまでの溜めの時間
 		big_end = time(NULL);
@@ -429,27 +453,86 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 	{
 		assert(oniData);
 	}
-	/*if (AttackEffect == true)
+
+	if (AttackEffect == true) 
+	{
+
+		if (effectCount < 8) {
+			effectCount++;
+		}
+		else if (effectCount == 8) {
+			effectCount = 0;
+		AttackEffect = false;
+		}
+	}
+
+	if (SummonEffect == true)
+	{
+		if (SummonScale.x > 0)
+		{
+			SummonScale.x -= 0.1;
+			SummonScale.y -= 0.1;
+		}
+		else if (SummonCount == 2)
+		{
+			SummonCount = 0;
+			SummonEffect = false;
+		}
+		else
+		{
+
+			SummonScale.x = 5;
+			SummonScale.y = 5;
+			SummonCount++;
+		}
+	}
+
+	if (BigEffect == true)
+	{
+		if (BigScale.x < 5)
+		{
+			BigScale.x += 0.1;
+			BigScale.y += 0.1;
+		}
+		else
+		{
+			BigScale.x = 0;
+			BigScale.y = 0;
+			BigEffect = false;
+		}
+	}
+
+	if (SummonEffect == true)
+	{
+		Object::Instance()->Draw(SummonEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z), SummonScale, AttackAngle, oniData->color, SummonEffectGraph);
+	}
+
+	if (BigEffect == true)
+	{
+		Object::Instance()->Draw(BigEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z), BigScale, AttackAngle, oniData->color, BigEffectGraph);
+	}
+
+	if (AttackEffect == true)
 	{
 		switch (oniData->attackDirection)
 		{
 		case Up:
 			AttackAngle.y = 90.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z + oniData->r + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
 			break;
 		case Down:
 			AttackAngle.y = 270.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z - oniData->r - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
 
 			break;
 		case Left:
 			AttackAngle.y = 0.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - oniData->r - AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
 
 			break;
 		case Right:
 			AttackAngle.y = 180.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + oniData->r + AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x+ AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
 			break;
 		case UpRight:
 			AttackAngle.y = 120.0f;
@@ -471,7 +554,7 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
 			break;
 		}
-	}*/
+	}
 }
 
 Box BigOniBoss::SearchField(EnemyData* oniData)

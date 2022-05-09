@@ -72,13 +72,29 @@ private:
 	const int attackMotionDamege = 50;				//攻撃時間中にダメージを与える時間
 	int attackSmallNum = 0;							//小攻撃を何回行ったか
 	time_t small_start, small_end;
+	
 	//大攻撃
 	time_t big_start, big_end;						//予備動作時間
 	const Vec2 attackBigField{ 40.0f,40.0f };		//攻撃範囲
 	int attackBigStatus = 0;						//予備動作開始
+	Object::ObjectData BigEffectOBJ;
+	int BigEffectGraph;
+	bool BigEffect = false;
+	float BigEffectSize = 20.0f;
+	Vec3 BigScale{ 0.0f,0.0f,5.0f };
+	Vec3 BigAngle{ 90.0f,0.0f,0.0f };
+	int BigCount = 0;
+
+
 	//召喚
 	bool firstSummonFlag = false;
-
+	Object::ObjectData SummonEffectOBJ;
+	int SummonEffectGraph;
+	bool SummonEffect = false;
+	float SummonEffectSize = 20.0f;
+	Vec3 SummonScale{ 5.0f,5.0f,5.0f };
+	Vec3 SummonAngle{ 90.0f,0.0f,0.0f };
+	int SummonCount = 0;
 
 
 	//ボスOBJ
@@ -95,7 +111,12 @@ private:
 	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
 	int AttackEffectGraph[9];
 	//エフェクト関係
-
+	bool AttackEffect = false;
+	float AttackEffectSize = 20.0f;
+	Vec3 AttackScale{ 2.0f,1.0f,1.0f };
+	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
+	int effectTime = 10;
+	int effectCount = 0;
 	float slowValue = 1;
 
 	//音関係
