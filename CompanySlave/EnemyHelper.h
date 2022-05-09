@@ -11,6 +11,7 @@ enum EnemyType
 	BoarType,	//イノシシ
 	BossBigOni,	//巨大鬼
 	BossWolfFlock,//狼群れ
+	BossTwinBoar,
 };
 
 enum spawnNo
@@ -32,7 +33,8 @@ enum spawnNo
 	BOARLEFT,
 	BOARRIGHT,
 	BossOni = 50,
-	WOLFFLOCK = 60
+	WOLFFLOCK = 60,
+	TWINBOAR = 70,
 };
 
 //敵の状態
@@ -44,8 +46,9 @@ enum Status
 	ENEMIES,//敵を見つけたら
 	NOCKBACK,//ノックバック中
 	//ボスの動き
-	BOSSATTACK,		//ボス攻撃２
-	BOSSATTACK2,	//ボス攻撃１
+	BOSSATTACK,		//ボス攻撃１
+	BOSSATTACK2,	//ボス攻撃２
+	BOSSATTACK3,	//ボス攻撃３
 	SUMMON			//部下召喚
 };
 

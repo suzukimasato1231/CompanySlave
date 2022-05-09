@@ -99,6 +99,10 @@ void MapStage::StageInit(int stageNum)
 		Filepath = (char*)"Resources/map/Floor_Tile8.csv";
 		FilepathOBJ = (char*)"Resources/map/Obj_Tile8.csv";
 		break;
+	case 9:
+		Filepath = (char*)"Resources/map/Floor_Tile9.csv";
+		FilepathOBJ = (char*)"Resources/map/Obj_Tile9.csv";
+		break;
 	default:
 		break;
 	}

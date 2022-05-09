@@ -69,6 +69,8 @@ void Enemy::Init()
 	bigOniBoss.Init();
 	//狼の群れ
 	wolfFlock.Init();
+	//イノシシ２体ボス
+	twinBoar.Init();
 }
 
 void Enemy::StageInit(int stageNum)
@@ -109,6 +111,12 @@ void Enemy::StageInit(int stageNum)
 		break;
 	case 7:
 		Filepath = (char*)"Resources/map/Enemy_Tile7.csv";
+		break;
+	case 8:
+		Filepath = (char*)"Resources/map/Enemy_Tile8.csv";
+		break;
+	case 9:
+		Filepath = (char*)"Resources/map/Enemy_Tile9.csv";
 		break;
 	default:
 		break;
@@ -165,6 +173,11 @@ void Enemy::StageInit(int stageNum)
 					*eData[num] = wolfFlock.GetBossData();
 					eData[num]->type = BossWolfFlock;
 					wolfFlock.LoopInit();
+					break;
+				case TWINBOAR:
+					twinBoar.LoopInit();
+					*eData[num] = twinBoar.GetBossData();
+					eData[num]->type = BossTwinBoar;
 					break;
 				default:
 					break;
@@ -230,6 +243,9 @@ void Enemy::Update(Player* player)
 				break;
 			case BossWolfFlock:
 				UpdateWolfFlock(i, player);
+				break;
+			case BossTwinBoar:
+				UpdateTwinBoar(i, player);
 				break;
 			}
 			NockBack(i);
@@ -324,6 +340,9 @@ void Enemy::Draw()
 			case BossWolfFlock:
 				wolfFlock.Draw(eData[i]);
 				break;
+			case BossTwinBoar:
+				twinBoar.Draw(eData[i]);
+				break;
 			}
 
 			//HPゲージ
@@ -347,13 +366,29 @@ void Enemy::Draw()
 
 void Enemy::DrawUI()
 {
+	int boarNum = 0;
+	int boarTotalHP = 0;
+	int boarTotalHPMax = 0;
 	for (size_t i = 0; i < eData.size(); i++)
 	{
-		if (eData[i]->HP > 0 && eData[i]->bossFlag == true && eData[i]->Status != NORMAL)
+		if (eData[i]->HP > 0 && eData[i]->bossFlag == true && eData[i]->Status != NORMAL && eData[i]->type != BossTwinBoar)
 		{
 			float ratio = eData[i]->HP / eData[i]->HPMax;
 			Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 50.0f);
 			Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 50.0f);
+		}
+		//2体のイノシシボス用
+		if (eData[i]->type == BossTwinBoar && eData[i]->bossFlag == true && eData[i]->Status != NORMAL)
+		{
+			boarNum++;
+			boarTotalHP += eData[i]->HP;
+			boarTotalHPMax += eData[i]->HPMax;
+			if (boarTotalHP > 0 && boarNum == 1)
+			{
+				float ratio = boarTotalHPMax / boarTotalHPMax;
+				Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 50.0f);
+				Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 50.0f);
+			}
 		}
 	}
 }
@@ -812,3 +847,28 @@ void Enemy::UpdateBoar(int i, Player* player)
 	}
 }
 
+void Enemy::UpdateTwinBoar(int i, Player* player)
+{
+	switch (eData[i]->Status)
+	{
+	case NORMAL:
+		if (twinBoar.GetSerachEnemyFlag() == true)
+		{//片方が見つかったらもう片方も戦闘状態に移行する
+			eData[i]->Status = twinBoar.SearchStatus();
+		}
+		twinBoar.SearchPlayer(eData[i], player);
+		break;
+	case BOSSATTACK:
+		eData[i]->direction = Direction(i, player);
+		twinBoar.AttackShortRush(eData[i], player);
+		break;
+	case BOSSATTACK2:
+		eData[i]->direction = Direction(i, player);
+		twinBoar.AttackDoubleRush(eData[i], player);
+		break;
+	case BOSSATTACK3:
+		eData[i]->direction = Direction(i, player);
+		twinBoar.AttackRush(eData[i], player, i);
+		break;
+	}
+}

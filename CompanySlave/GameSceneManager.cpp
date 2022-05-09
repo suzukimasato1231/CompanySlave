@@ -189,7 +189,14 @@ void GameSceneManager::Update()
 	{
 		stageDebug = 7;
 	}
-
+	if (Input::Instance()->KeybordTrigger(DIK_8))
+	{
+		stageDebug = 8;
+	}
+	if (Input::Instance()->KeybordTrigger(DIK_9))
+	{
+		stageDebug = 9;
+	}
 }
 
 void GameSceneManager::Draw()

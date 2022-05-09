@@ -136,6 +136,12 @@ void Player::StageInit(int stageNum)
 	case 7:
 		Filepath = (char*)"Resources/map/Enemy_Tile7.csv";
 		break;
+	case 8:
+		Filepath = (char*)"Resources/map/Enemy_Tile8.csv";
+		break;
+	case 9:
+		Filepath = (char*)"Resources/map/Enemy_Tile9.csv";
+		break;
 	default:
 		break;
 	}
@@ -155,78 +161,14 @@ void Player::StageInit(int stageNum)
 			}
 		}
 	}
-
-	//ステージごと
-	switch (stageNum)
-	{
-	case 1:
-		position = memoryPos;				//座標
-		oldPosition = position;				//1つ前の座標
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-		direction = Right;					//プレイヤーの向き
-		break;
-	case 2:
-		position = memoryPos;				//座標
-		oldPosition = position;				//1つ前の座標
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-		direction = Right;
-		break;
-	case 3:
-		position = memoryPos;				//座標
-		oldPosition = position;				//1つ前の座標
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-		direction = Right;
-		break;
-	case 4:
-		//ポーション
-		portion = portionMax;
-		position = memoryPos;				//座標
-		oldPosition = position;				//1つ前の座標
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-		direction = Right;
-		break;
-	case 5:
-		position = memoryPos;				//座標
-		oldPosition = position;				//1つ前の座標
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-		direction = Right;
-		break;
-	case 6:
-		position = memoryPos;				//座標
-		oldPosition = position;				//1つ前の座標
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-		direction = Right;
-		break;
-	case 7:
-		//ポーション
-		portion = portionMax;
-		position = memoryPos;				//座標
-		oldPosition = position;				//1つ前の座標
-		//座標を合わせる
-		pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
-		pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-		direction = Right;
-		break;
-	}
+	position = memoryPos;				//座標
+	oldPosition = position;				//1つ前の座標
+	//座標を合わせる
+	pBox.minPosition = XMVectorSet(position.x - r, position.y - r, position.z - r, 1);
+	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
+	pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+	direction = Right;					//プレイヤーの向き
+	
 	//ステージ変わった時の初期化
 	walkCount = 0;						//描画用カウント
 	walkNo = 0;							//描画するNO

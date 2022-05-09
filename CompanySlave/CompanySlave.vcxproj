@@ -263,6 +263,7 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="PushCollision.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="TwinBoar.h" />
     <ClInclude Include="WOLF.h" />
     <ClInclude Include="WolfFlock.h" />
   </ItemGroup>
@@ -299,6 +300,7 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="PushCollision.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TwinBoar.cpp" />
     <ClCompile Include="WOLF.cpp" />
     <ClCompile Include="WolfFlock.cpp" />
   </ItemGroup>

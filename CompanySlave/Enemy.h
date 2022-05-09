@@ -10,6 +10,7 @@
 #include"WolfFlock.h"
 #include"Boar.h"
 #include "Audio.h"
+#include"TwinBoar.h"
 class Enemy
 {
 private:
@@ -145,6 +146,12 @@ private:
 	class Boar boar;
 
 	void UpdateBoar(int i, class Player* player);
+
+	//ダブルイノシシボス
+	class TwinBoar twinBoar;
+
+	void UpdateTwinBoar(int i, class Player* player);
+
 private:
 	const float nockPower = 0.8f;
 	//HPUI
