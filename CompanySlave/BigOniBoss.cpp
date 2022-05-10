@@ -172,7 +172,7 @@ void BigOniBoss::SearchPlayer(EnemyData* oniData, Player* player)
 		float Length = Vec3(player->GetPosition() - oniData->position).length();
 		if (Length < player2EnemyLength)
 		{//ƒvƒŒƒCƒ„[‚ªUŒ‚‹——£‚É‚¢‚½‚ç
-			oniData->Status = BOSSATTACK;//¬‘ÅŒ‚
+			oniData->Status = BOSSATTACK2;//¬‘ÅŒ‚
 			attackSmallNum = 0;			//¬UŒ‚‰ñ”ƒŠƒZƒbƒg
 			attackSmallTime = 0;
 
@@ -263,6 +263,7 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 	}
 	else if (attackSmallTime > 40 )
 	{//•ŠíU‚è‰º‚ë‚µ
+		BigCount = 0;
 		AttackEffect = true;
 	}
 	//3‰ñ¬UŒ‚‚ðI‚¦‚½‚çŽŸ‚ÌUŒ‚‚ÖˆÚ‚é
@@ -411,6 +412,15 @@ void BigOniBoss::AttackSummon(EnemyData* oniData, Player* player, int eNum)
 
 		}
 	}
+	if (attackSmallTime >= attackMotionDamege)
+	{//•ŠíU‚èã‚°
+
+	}
+	else if (attackSmallTime > 40)
+	{//•ŠíU‚è‰º‚ë‚µ
+		BigCount = 0;
+		AttackEffect = true;
+	}
 	//UŒ‚’†
 	if (attackSmallTime > 0)
 	{
@@ -487,17 +497,18 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 		}
 	}
 
-	if (BigEffect == true)
+	if (BigEffect == true && BigCount == 0)
 	{
-		if (BigScale.x < 5)
+		if (BigScale.x < 7)
 		{
-			BigScale.x += 0.1;
-			BigScale.y += 0.1;
+			BigScale.x += 0.05;
+			BigScale.y += 0.05;
 		}
 		else
 		{
 			BigScale.x = 0;
 			BigScale.y = 0;
+			BigCount = 1;
 			BigEffect = false;
 		}
 	}
