@@ -80,8 +80,13 @@ void Title::Init()
 	volume2 = 1;
 	volumeB = 500;
 
+	volumeFadeFlag = false;
+	volumeFade = 0;
 	scene = 0;
 
+	position = { 5.0f,0.0f,0.0f };
+	rotation = { 0,-90,-90 };
+	size = { 1,1,1 };
 	for (int i = 0; i < rainMax; i++) {
 		//xはランダムな位置にしている
 		//サイズもランダムにしている
@@ -171,6 +176,9 @@ void Title::Update()
 		//音量調節
 		if (Input::Instance()->ControllerDown(ButtonB)) {
 			volumeFlag++;
+			position = { -50.0f,0.0f,0.0f };
+			rotation = { 90,0,0 };
+			size = { 6,4,4 };
 		}
 		if (volumeFlag == 2) {
 			volumeFlag = 0;
@@ -186,25 +194,48 @@ void Title::Update()
 				volumeArrowFlag = false;
 			}
 		}
-		if (volumeFlag == 1) {
-			if (volumeArrowFlag == true) {
-				if (Input::Instance()->ControllerDown(ButtonA)) {
+		
+		if (volumeFlag == 0) {
+			position = { 5.0f,0.0f,0.0f };
+			rotation = { 0,-90,-90 };
+			size = { 1,1,1 };
+			volumeFade = 0;
+			volumeFadeFlag = false;
+			rainFlag = true;
+		}
 
-					if (volume < 1) {
-						volume += 0.1;
-						volume2 += 0.1;
-						volumeB += 50;
+		else if (volumeFlag == 1) {
+			rainFlag = false;
+
+			if (position.x < 4) {
+				position.x+=2;
+			}
+			else if (position.x >= 4) {
+				volumeFadeFlag = true;
+			}
+			if (volumeFadeFlag == true) {
+				volumeFade+=0.1;
+			}
+			if (volumeFade>=1) {
+				if (volumeArrowFlag == true) {
+					if (Input::Instance()->ControllerDown(ButtonA)) {
+
+						if (volume < 1) {
+							volume += 0.1;
+							volume2 += 0.1;
+							volumeB += 50;
+						}
 					}
 				}
-			}
 
-			if (volumeArrowFlag == false) {
-				if (Input::Instance()->ControllerDown(ButtonA)) {
+				if (volumeArrowFlag == false) {
+					if (Input::Instance()->ControllerDown(ButtonA)) {
 
-					if (volume >= 0) {
-						volume -= 0.1;
-						volume2 -= 0.1;
-						volumeB -= 50;
+						if (volume >= 0) {
+							volume -= 0.1;
+							volume2 -= 0.1;
+							volumeB -= 50;
+						}
 					}
 				}
 			}
@@ -277,7 +308,7 @@ void Title::Draw()
 			Sprite::Instance()->Draw(rain[i], pos[i], 1, s[i], { 0.0f, 0.0f }, { 1, 1, 1 ,1 });
 		}
 	}
-	Object::Instance()->Draw(swordObject, position, Vec3{ 1,1,1 }, Vec3{ 0,-90,-90 }, Vec4{ 1,1,1,1 });
+	Object::Instance()->Draw(swordObject, position, size, rotation, Vec4{ 1,1,1,1 });
 
 	if (scene == 0) {
 		if (titleTextFlag == true) {
@@ -288,18 +319,18 @@ void Title::Draw()
 	}
 	
 	else if (scene == 1) {
-		if (volumeFlag == false) {
-			Sprite::Instance()->Draw(Button[0], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, fade));
+		if (volumeFlag == 0) {
+			Sprite::Instance()->Draw(Button[0], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
 		}
 		//音量調節バーの描画
-		if (volumeFlag == 1) {
-			Sprite::Instance()->Draw(VolumeUI[1], Vec2(420, 340), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
-			Sprite::Instance()->Draw(VolumeUI[0], Vec2(420, 340), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
+		else if (volumeFlag == 1) {
+			Sprite::Instance()->Draw(VolumeUI[1], Vec2(420, 350), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
+			Sprite::Instance()->Draw(VolumeUI[0], Vec2(420, 350), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
 			if (volumeArrowFlag == false) {
-				Sprite::Instance()->Draw(VolumeUI[2], Vec2(370, 340), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
+				Sprite::Instance()->Draw(VolumeUI[2], Vec2(370, 350), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
 			}
 			if (volumeArrowFlag == true) {
-				Sprite::Instance()->Draw(VolumeUI[3], Vec2(370, 340), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
+				Sprite::Instance()->Draw(VolumeUI[3], Vec2(370, 350), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
 			}
 			Sprite::Instance()->Draw(Button[1], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
 

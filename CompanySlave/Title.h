@@ -75,8 +75,9 @@ private://定義
 
 	//オブジェクトデータ
 	Object::ObjectData swordObject;
-	Vec3 position{ 5.0f,0.0f,0.0f };
-	
+	Vec3 position = { 5.0f,0.0f,0.0f };
+	Vec3 rotation = { 0,-90,-90 };
+	Vec3 size = { 1,1,1 };
 	std::array<Vec2, rainMax > pos;//ポジション
 	std::array<float, rainMax > s;//サイズ
 
@@ -115,6 +116,9 @@ private://定義
 	float fade2 = 0;
 
 	bool sceneChangeFlag = false;
+
+	bool volumeFadeFlag = false;
+	float volumeFade = 0;
 
 };
 
