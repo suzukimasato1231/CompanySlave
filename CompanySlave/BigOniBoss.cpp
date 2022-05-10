@@ -172,7 +172,7 @@ void BigOniBoss::SearchPlayer(EnemyData* oniData, Player* player)
 		float Length = Vec3(player->GetPosition() - oniData->position).length();
 		if (Length < player2EnemyLength)
 		{//プレイヤーが攻撃距離にいたら
-			oniData->Status = BOSSATTACK2;//小打撃
+			oniData->Status = BOSSATTACK;//小打撃
 			attackSmallNum = 0;			//小攻撃回数リセット
 			attackSmallTime = 0;
 
