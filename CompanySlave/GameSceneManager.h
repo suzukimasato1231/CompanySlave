@@ -2,6 +2,7 @@
 #include"Title.h"
 #include"PlayScene.h"
 #include"Clear.h"
+#include "Object.h"
 extern const int window_width;
 extern const int window_height;
 class GameSceneManager :public Singleton<GameSceneManager>
@@ -22,6 +23,10 @@ public:
 	void Draw();
 
 private://定義
+
+	Camera* camera = nullptr;
+	LightGroup* lightGroup = nullptr;
+
 	enum Scene {
 		titleScene,
 		stage1,
@@ -36,6 +41,9 @@ private://定義
 	DebugText debugText;
 	SpriteData BGGraph;
 	SpriteData LoadUIGraph[7];
+
+	Object::ObjectData sword;
+	Vec3 position = { -20.0f,5.0f,-270.0f };
 
 	//フェードのフラグ(tがタイトルのやつでsがシーンチェンジのやつ)
 	bool tFadeFlag = false;

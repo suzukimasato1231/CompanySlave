@@ -25,8 +25,28 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	debugText.Initialize();
 	//図形モデル初期化
 	Shape::Init(directX->GetDevice());
+	
+	//カメラクラス作成
+	camera = Camera::Create();
+	//ライトグループクラス作成
+	lightGroup = LightGroup::Create();
+
+	
 	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList());
 	Object::Instance()->LoadTexture(L"Resources/white1x1.png");
+	
+	
+
+	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
+	LoadUIGraph[0] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load1.png");
+	LoadUIGraph[1] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load2.png");
+	LoadUIGraph[2] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load3.png");
+	LoadUIGraph[3] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load4.png");
+	LoadUIGraph[4] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load5.png");
+	LoadUIGraph[5] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load6.png");
+	LoadUIGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
+	sword = Object::Instance()->CreateOBJ("sword");
+
 	title = new Title();
 	title->Initialize();
 
@@ -39,14 +59,19 @@ void GameSceneManager::Initialize(_DirectX* directX)
 
 void GameSceneManager::Init()
 {
-	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
-	LoadUIGraph[0] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load1.png");
-	LoadUIGraph[1] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load2.png");
-	LoadUIGraph[2] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load3.png");
-	LoadUIGraph[3] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load4.png");
-	LoadUIGraph[4] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load5.png");
-	LoadUIGraph[5] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load6.png");
-	LoadUIGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
+	// 3Dオブエクトにライトをセット
+	lightGroup->SetDirLightActive(0, true);
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
+	lightGroup->SetDirLightActive(1, true);
+	lightGroup->SetDirLightDir(1, XMVECTOR{ 0,-1,0,0 });
+
+	lightGroup->SetPointLightActive(0, false);
+	lightGroup->SetSpotLightActive(0, false);
+	lightGroup->SetCircleShadowActive(0, false);
+
+
+	camera->SetCamera(Vec3{ 0,0,-10 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
+
 
 	title->Init();
 	//clear->Init();
@@ -56,6 +81,10 @@ void GameSceneManager::Init()
 
 void GameSceneManager::Update()
 {
+	//3Dオブジェクト初期化
+	Object::Instance()->SetCamera(camera);
+	Object::Instance()->SetLight(lightGroup);
+
 
 	//タイトル
 	if (scene == titleScene) {
@@ -66,6 +95,7 @@ void GameSceneManager::Update()
 			initFlag = false;
 			tFadeFlag = false;
 			tFade = 1;
+			position = { -20.0f,5.0f,-270.0f };
 			LoadCount2 = 0;
 			LoadTime = 70;
 		}
@@ -97,6 +127,7 @@ void GameSceneManager::Update()
 
 	//ステージ1
 	else if (scene == stage1) {
+		camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 
 
 		if (play->GetSceneFlag() == true)
@@ -133,6 +164,13 @@ void GameSceneManager::Update()
 	}
 	//ロード画面
 	if (LoadFlag == true) {
+		
+		if (position.x < 300) {
+			position.x += 5;
+	}
+	else if (position.x >= 300) {
+		position.x = -20;
+	}
 		LoadTime -= 1;
 		if (LoadTime > 0) {
 			LoadCount2++;
@@ -150,8 +188,6 @@ void GameSceneManager::Update()
 			LoadFlag = false;
 		}
 	}
-
-
 
 	//デバック用リセットボタン
 	if (Input::Instance()->KeybordTrigger(DIK_R))
@@ -216,12 +252,18 @@ void GameSceneManager::Draw()
 	{
 		clear->Draw();
 	}
+	
 	if (LoadFlag == true) {
 		Sprite::Instance()->Draw(BGGraph, Vec2(0, 0), window_width, window_height);
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
-		debugText.Print(10, 380, 2, "%d", LoadTime);
+		Object::Instance()->Draw(sword, position, Vec3{ 20,20,20 }, { 180,0,0 }, Vec4{ 1,1,1,1 });
+
 	}
+
+	
+
 #if _DEBUG
+	debugText.Print(10, 380, 2, "%d", LoadTime);
 	debugText.Print(10, 260, 2, "R:reset");
 	debugText.Print(10, 300, 2, "DebugStageNum %d", stageDebug);
 	debugText.Print(10, 360, 2, "%f", volume);
