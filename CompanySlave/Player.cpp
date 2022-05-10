@@ -451,11 +451,11 @@ void Player::NormalAttack(Enemy* enemy)
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
 	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0 && portionFlag == false)
 	{
-		audio->SoundSEPlayWave(sound1);
 		attackMode = true;
 		//連続攻撃を数える
 		if (normalAttackCount < 3)
 		{
+			audio->SoundSEPlayWave(sound1);
 			normalAttackFlag[normalAttackCount] = true;
 			normalAttackCount++;
 		}

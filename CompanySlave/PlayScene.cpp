@@ -229,8 +229,10 @@ void PlayScene::Update()
 	mapStage->Update(player->GetPosition(), enemy);
 
 	if (sceneChangeFlag == false) {
-		player->Update(enemy);
-
+		if (player->GetHP() >= 0)
+		{
+			player->Update(enemy);
+		}
 		enemy->Update(player);
 	}
 
