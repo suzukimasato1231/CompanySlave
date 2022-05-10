@@ -49,6 +49,7 @@ void OniType::Draw(EnemyData* oniData)
 	{
 	case NORMAL:
 		Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+#if _DEBUG
 		switch (oniData->direction)
 		{
 		case Up:
@@ -68,6 +69,7 @@ void OniType::Draw(EnemyData* oniData)
 				oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			break;
 		}
+#endif
 		break;
 	case MOVE:
 		Object::Instance()->Draw(enemyObject[oniData->walkNum], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
@@ -82,6 +84,7 @@ void OniType::Draw(EnemyData* oniData)
 			Object::Instance()->Draw(attackOBJ[1], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
 		EffectDraw(oniData);
+#if _DEBUG
 		switch (oniData->attackDirection)
 		{
 		case Up:
@@ -113,6 +116,7 @@ void OniType::Draw(EnemyData* oniData)
 			}
 			break;
 		}
+#endif
 		break;
 	case NOCKBACK:
 		if (oniData->nockbackTime >= 3)

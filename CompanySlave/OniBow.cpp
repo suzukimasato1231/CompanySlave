@@ -46,6 +46,7 @@ void OniBow::Draw(EnemyData* oniData)
 	{
 	case NORMAL:
 		Object::Instance()->Draw(attackOBJ[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+#if _DEBUG
 		switch (oniData->direction)
 		{
 		case Up:
@@ -65,6 +66,7 @@ void OniBow::Draw(EnemyData* oniData)
 				oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			break;
 		}
+#endif
 		break;
 	case MOVE:
 		Object::Instance()->Draw(enemyWalk[oniData->walkNum], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);

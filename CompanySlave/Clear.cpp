@@ -120,7 +120,7 @@ void Clear::Draw()
 
 
 	if (colorFlag == true) {
-		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,-90,40 }, Vec4{ 1,1,1,1 });
+		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,0,0 }, Vec4{ 1,1,1,1 });
 	}
 	if (TextFlag == true) {
 
@@ -129,8 +129,10 @@ void Clear::Draw()
 
 	}
 	//デバックテキスト%dと%f対応
+#if _DEBUG
 	debugText.Print(10, 40, 2, "%f", color);
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
+#endif
 }

@@ -322,7 +322,7 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 		big_end = time(NULL);
 		int bigTime = big_end - big_start;
 		//‚V•bŒo‚Á‚½‚çUŒ‚
-		if (bigTime >= 7)
+		if (bigTime >= 4)
 		{
 			attackBigStatus = BIGATTACK;
 		}

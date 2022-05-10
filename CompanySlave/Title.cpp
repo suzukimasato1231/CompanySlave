@@ -336,11 +336,12 @@ void Title::Draw()
 
 		}
 	}
-
+#if _DEBUG
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "%d",volumeArrowFlag);
 	debugText.Print(10, 80, 2, "%d", volumeFlag);
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
+#endif
 }

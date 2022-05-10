@@ -32,7 +32,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 
 	play = new PlayScene();
 	play->Initialize();
-	
+
 	clear = new Clear();
 	clear->Initialize();
 }
@@ -56,11 +56,11 @@ void GameSceneManager::Init()
 
 void GameSceneManager::Update()
 {
-	
+
 	//タイトル
 	if (scene == titleScene) {
-	
-		
+
+
 		if (initFlag == true)
 		{
 			initFlag = false;
@@ -70,34 +70,34 @@ void GameSceneManager::Update()
 			LoadTime = 70;
 		}
 		volume = title->GetVolume();
-			if (title->GetVolumeFlag() == 0&&title->GetSceneChangeFlag()==true) {
+		if (title->GetVolumeFlag() == 0 && title->GetSceneChangeFlag() == true) {
 
-				if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
-				{
+			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+			{
 
 
-					
-					initFlag = true;
-					title->SetAudioFlag(false);
 
-					scene = stage1;
-					play->Init();
-					LoadFlag = true;
-				}
+				initFlag = true;
+				title->SetAudioFlag(false);
+
+				scene = stage1;
+				play->Init();
+				LoadFlag = true;
 			}
-		
-			//title->SetVolume(volume);
-			play->SetVolume(volume);
-			clear->SetVolume(volume);
-			
-			title->AudioUpdate();
-			title->Update();
+		}
+
+		//title->SetVolume(volume);
+		play->SetVolume(volume);
+		clear->SetVolume(volume);
+
+		title->AudioUpdate();
+		title->Update();
 	}
 
 
 	//ステージ1
 	else if (scene == stage1) {
-	
+
 
 		if (play->GetSceneFlag() == true)
 		{
@@ -106,8 +106,8 @@ void GameSceneManager::Update()
 			scene = titleScene;
 			initFlag = true;
 		}
-					//この数値を変えればクリアシーンに行けるステージを変えられる↓
-		if (play->GetSceneChangeFlag() == true&&play->GetStageNum()==10) {
+		//この数値を変えればクリアシーンに行けるステージを変えられる↓
+		if (play->GetSceneChangeFlag() == true && play->GetStageNum() == 7) {
 			clear->Init();
 			clear->SetAudioFlag(true);
 			scene = clearScene;
@@ -117,7 +117,7 @@ void GameSceneManager::Update()
 	}
 	//クリアシーン
 	else if (scene == clearScene) {
-		
+
 		if (clear->GetBottanFlag() == true) {
 
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
@@ -150,7 +150,7 @@ void GameSceneManager::Update()
 			LoadFlag = false;
 		}
 	}
-	
+
 
 
 	//デバック用リセットボタン
@@ -221,9 +221,11 @@ void GameSceneManager::Draw()
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
 		debugText.Print(10, 380, 2, "%d", LoadTime);
 	}
+#if _DEBUG
 	debugText.Print(10, 260, 2, "R:reset");
 	debugText.Print(10, 300, 2, "DebugStageNum %d", stageDebug);
 	debugText.Print(10, 360, 2, "%f", volume);
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
+#endif
 }
