@@ -129,7 +129,7 @@ void PlayScene::Init()
 	tutorialRBFlag = false;
 	RBButtonTimer = 30;
 	RBButtonCount = 0;
-	
+
 	tutorialLBFlag = false;
 	LBButtonTimer = 30;
 	LBButtonCount = 0;
@@ -251,7 +251,7 @@ void PlayScene::Update()
 
 	//
 	//カメラ調整
-	camera->FollowCamera(player->GetCameraPos(), Vec3{0,80,-10}, 0.0f, -15.0f);
+	camera->FollowCamera(player->GetCameraPos(), Vec3{ 0,80,-10 }, 0.0f, -15.0f);
 
 
 
@@ -372,7 +372,7 @@ void PlayScene::Update()
 	}
 #pragma region チュートリアルUI
 	if (stageNum == 2) {
-		if (player->GetPosition().x > 125 && player->GetPosition().x < 255&&
+		if (player->GetPosition().x > 125 && player->GetPosition().x < 255 &&
 			player->GetPosition().z > -206 && player->GetPosition().z < -108) {
 			tutorialXFlag = true;
 			if (tutorialXFlag = true) {
@@ -394,7 +394,7 @@ void PlayScene::Update()
 			tutorialXFlag = false;
 		}
 		if (player->GetPosition().x > 548 && player->GetPosition().x < 662 &&
-			player->GetPosition().z > -212&& player->GetPosition().z < -58) {
+			player->GetPosition().z > -212 && player->GetPosition().z < -58) {
 			tutorialAFlag = true;
 			if (tutorialAFlag = true) {
 				if (AButtonTimer > 0) {
@@ -414,7 +414,7 @@ void PlayScene::Update()
 		else {
 			tutorialAFlag = false;
 		}
-		
+
 	}
 	if (stageNum == 3) {
 		if (player->GetPosition().x > 187 && player->GetPosition().x < 285 &&
@@ -529,8 +529,9 @@ void PlayScene::Draw()
 #if _DEBUG
 	debugText.Print(10, 180, 2, "%d", stageNum);
 	debugText.Print(10, 500, 2, "%f,%f", player->GetPosition().x, player->GetPosition().z);
+#endif
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
-
+#if _DEBUG
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
 #endif
