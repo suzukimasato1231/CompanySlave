@@ -25,17 +25,17 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	debugText.Initialize();
 	//図形モデル初期化
 	Shape::Init(directX->GetDevice());
-	
+
 	//カメラクラス作成
 	camera = Camera::Create();
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 
-	
+
 	Object::Instance()->Init(directX->GetDevice(), directX->GetCmandList());
 	Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	
-	
+
+
 
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/Loading.png");
 	LoadUIGraph[0] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load1.png");
@@ -88,8 +88,6 @@ void GameSceneManager::Update()
 
 	//タイトル
 	if (scene == titleScene) {
-
-
 		if (initFlag == true)
 		{
 			initFlag = false;
@@ -104,9 +102,6 @@ void GameSceneManager::Update()
 
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 			{
-
-
-
 				initFlag = true;
 				title->SetAudioFlag(false);
 
@@ -138,7 +133,7 @@ void GameSceneManager::Update()
 			initFlag = true;
 		}
 		//この数値を変えればクリアシーンに行けるステージを変えられる↓
-		if (play->GetSceneChangeFlag() == true && play->GetStageNum() == 7) {
+		if (play->GetSceneChangeFlag() == true && play->GetStageNum() == 10) {
 			clear->Init();
 			clear->SetAudioFlag(true);
 			scene = clearScene;
@@ -164,13 +159,13 @@ void GameSceneManager::Update()
 	}
 	//ロード画面
 	if (LoadFlag == true) {
-		
+
 		if (position.x < 300) {
 			position.x += 5;
-	}
-	else if (position.x >= 300) {
-		position.x = -20;
-	}
+		}
+		else if (position.x >= 300) {
+			position.x = -20;
+		}
 		LoadTime -= 1;
 		if (LoadTime > 0) {
 			LoadCount2++;
@@ -252,7 +247,7 @@ void GameSceneManager::Draw()
 	{
 		clear->Draw();
 	}
-	
+
 	if (LoadFlag == true) {
 		Sprite::Instance()->Draw(BGGraph, Vec2(0, 0), window_width, window_height);
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
@@ -260,7 +255,7 @@ void GameSceneManager::Draw()
 
 	}
 
-	
+
 
 #if _DEBUG
 	debugText.Print(10, 380, 2, "%d", LoadTime);

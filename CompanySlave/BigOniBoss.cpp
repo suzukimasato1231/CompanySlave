@@ -186,13 +186,6 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 	{
 		assert(oniData);
 	}
-
-	//”j‚É‚È‚Á‚½‚çUŒ‚‚ğ‚â‚ß‚é
-	if (oniData->explosionFlag == true)
-	{
-		attackSmallTime = 0;
-	}
-
 	//ƒvƒŒƒCƒ„[‚Æ“G‚Ì‹——£
 	float Length = Vec3(player->GetPosition() - oniData->position).length();
 	//UŒ‚’†ŠÔ‚¶‚á‚È‚©‚Á‚½‚ç‚±‚Ìˆ—‚ğs‚¤
@@ -249,19 +242,13 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 			start_time = time(NULL);//Œv‘ªŠJn
 		}
 
-		//UŒ‚‚ğ2‰ñ‚Ü‚½‚Í”j‚ª¬—§‚µ‚½‚Æ‚«UŒ‚‚ğ‚â‚ß‚é
-		if (oniData->explosionFlag == true)
-		{
-			oniData->nockbackTime = EnemySupport::nockBackTimeMax;
-			oniData->memoryStatus = oniData->Status;
-		}
 	}
 
 	if (attackSmallTime >= attackMotionDamege)
 	{//•ŠíU‚èã‚°
-		
+
 	}
-	else if (attackSmallTime > 40 )
+	else if (attackSmallTime > 40)
 	{//•ŠíU‚è‰º‚ë‚µ
 		BigCount = 0;
 		AttackEffect = true;
@@ -288,6 +275,7 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 				SummonEffect = true;
 				firstSummonFlag = true;
 				attackTypeFlag = true;
+				oniData->nockPossibleFlag = false;
 			}
 		}
 	}
@@ -334,9 +322,9 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 		{
 			player->Damage(4);
 			attakAFlag = true;
-			
+
 		}
-	
+
 		start_time = time(NULL);//Œv‘ªŠJn
 		attackBigStatus = BIGAFTER;
 	}
@@ -351,7 +339,7 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 			oniData->Status = BOSSATTACK;
 		}
 	}
-	if (attakAFlag==true) {
+	if (attakAFlag == true) {
 		attakCount++;
 		if (attakCount == 8) {
 			attakCount = 0;
@@ -441,6 +429,7 @@ void BigOniBoss::AttackSummon(EnemyData* oniData, Player* player, int eNum)
 	//q•ª‚ª‚¢‚È‚­‚È‚Á‚½‚çŸ‚ÌUŒ‚‚ÖˆÚ‚é
 	if (eNum <= 1 && attackSmallTime <= 0)
 	{
+		oniData->nockPossibleFlag = true;
 		oniData->Status = BOSSATTACK;
 	}
 	if (attakAFlag == true) {
@@ -464,7 +453,7 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 		assert(oniData);
 	}
 
-	if (AttackEffect == true) 
+	if (AttackEffect == true)
 	{
 
 		if (effectCount < 8) {
@@ -472,7 +461,7 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 		}
 		else if (effectCount == 8) {
 			effectCount = 0;
-		AttackEffect = false;
+			AttackEffect = false;
 		}
 	}
 
@@ -499,7 +488,7 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 
 	if (BigEffect == true && BigCount == 0)
 	{
-		if (BigScale.x < 7)
+		if (BigScale.x < 7 && oniData->Status ==BOSSATTACK2)
 		{
 			BigScale.x += 0.05;
 			BigScale.y += 0.05;
@@ -543,7 +532,7 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 			break;
 		case Right:
 			AttackAngle.y = 180.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x+ AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
 			break;
 		case UpRight:
 			AttackAngle.y = 120.0f;

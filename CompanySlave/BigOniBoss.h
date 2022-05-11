@@ -66,7 +66,7 @@ private:
 	//¬UŒ‚
 	const float attackSmallLength = 30.0f;			//UŒ‚”ÍˆÍ
 	const Vec2 attackField{ 30.0f,30.0f };			//UŒ‚”ÍˆÍ
-	const float moveSpeed = 0.30f;					//“G‚ÌƒXƒs[ƒh
+	const float moveSpeed = 0.40f;					//“G‚ÌƒXƒs[ƒh
 	const int attackSmallTimeMax = 200;				//UŒ‚ŠÔÅ‘å
 	int attackSmallTime = 0;						//UŒ‚ŠÔ
 	const int attackMotionDamege = 50;				//UŒ‚ŠÔ’†‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚éŠÔ
@@ -75,7 +75,7 @@ private:
 	
 	//‘åUŒ‚
 	time_t big_start, big_end;						//—\”õ“®ìŠÔ
-	const Vec2 attackBigField{ 40.0f,40.0f };		//UŒ‚”ÍˆÍ
+	const Vec2 attackBigField{ 50.0f,50.0f };		//UŒ‚”ÍˆÍ
 	int attackBigStatus = 0;						//—\”õ“®ìŠJn
 	Object::ObjectData BigEffectOBJ;
 	int BigEffectGraph;
