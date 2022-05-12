@@ -71,10 +71,7 @@ void Clear::Init()
 
 void Clear::Update()
 {
-	//
-	//// 	//パーティクル初期化
-	//ParticleManager::SetCamera(camera);
-	//////3Dオブジェクト初期化
+	//3Dオブジェクト初期化
 	Object::Instance()->SetCamera(camera);
 	Object::Instance()->SetLight(lightGroup);
 
@@ -101,37 +98,28 @@ void Clear::Update()
 
 	}
 
-	//パーティクル更新
-	//particleMan->Update();
-	//particleMan2->Update();
-
 	//ライト更新
 	lightGroup->Update();
 }
 
 void Clear::Draw()
 {
-	//オブジェクト描画前処理
-
 	//背景描画
-	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
 	Sprite::Instance()->Draw(BGGraph, { 0,0 }, window_width, window_height);
 	Sprite::Instance()->Draw(spriteGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { color, color,color ,1 });
 
 
-	if (colorFlag == true) {
+	if (colorFlag == true) 
+	{
 		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,0,0 }, Vec4{ 1,1,1,1 });
 	}
-	if (TextFlag == true) {
-
+	if (TextFlag == true)
+	{
 		Sprite::Instance()->Draw(textGraph, { 440,200 }, 400, 400, { 0.0f, 0.0f }, { 1, 1, 1 ,1 });
 		Sprite::Instance()->Draw(title, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,1 });
-
 	}
-	//デバックテキスト%dと%f対応
 #if _DEBUG
 	debugText.Print(10, 40, 2, "%f", color);
-
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
 #endif

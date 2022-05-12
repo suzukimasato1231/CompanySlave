@@ -155,7 +155,6 @@ void PlayScene::StageInit()
 		switch (stageNum)
 		{
 		case 1:
-
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
@@ -223,8 +222,6 @@ void PlayScene::Update()
 
 	StageInit();
 
-
-
 	//プレイヤーの更新
 	mapStage->Update(player->GetPosition(), enemy);
 
@@ -236,11 +233,6 @@ void PlayScene::Update()
 		enemy->Update(player);
 	}
 
-	//if (Input::Instance()->ControllerDown(ButtonX))
-	//{
-	//	audio->SoundSEPlayWave(sound2);
-	//}
-
 	//0が無音
 	enemy->SetVolume(volume);
 	player->SetVolume(volume);
@@ -250,8 +242,6 @@ void PlayScene::Update()
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, enemy, mapStage, sceneChangeFlag);
 
-
-	//
 	//カメラ調整
 	camera->FollowCamera(player->GetCameraPos(), Vec3{ 0,80,-10 }, 0.0f, -15.0f);
 
@@ -272,13 +262,11 @@ void PlayScene::Update()
 		if (mapStage->GetfloorNum() == 3) {
 			particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
-
 	}
 
 	//パーティクル追加
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
-
 		//ダメージを受けたら描画
 		if (enemy->GetDamegeFlag(i) == true) {
 			if (player->GetDirection() == Right) {
@@ -319,7 +307,6 @@ void PlayScene::Update()
 	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
 	{
 		audio->SoundStop();
-
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
@@ -328,7 +315,6 @@ void PlayScene::Update()
 	//プレイシーンを抜ける
 	if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
 	{
-
 		deadGraphPos.y = -800;
 		nowTime = 0;
 		endTime = 5;
@@ -336,31 +322,34 @@ void PlayScene::Update()
 		sceneFlag = true;
 	}
 
-	if (sceneChangeFlag == true) {
+	if (sceneChangeFlag == true)
+	{
 		audio->SoundStop();
-		if (ChangeGraphPosition.x < 0) {
+		if (ChangeGraphPosition.x < 0)
+		{
 			ChangeGraphPosition.x += 22;
 		}
-		if (ChangeGraphPosition.x >= 0) {
-
+		if (ChangeGraphPosition.x >= 0)
+		{
 			stageFlag = true;
 		}
 	}
-	else if (sceneChangeFlag == false) {
+	else if (sceneChangeFlag == false)
+	{
 		ChangeGraphPosition = { -1600.0f, 0.0f };
 	}
 
-
-
-
 	rainSlow = player->GetSlow();
-	for (int i = 0; i < rainMax; i++) {
+	for (int i = 0; i < rainMax; i++)
+	{
 
-		if (position[i].y > 0) {
+		if (position[i].y > 0)
+		{
 			//雨が地面につくまで降る
 			position[i].y = position[i].y - g * rainSlow;
 		}
-		if (position[i].y <= 0) {
+		if (position[i].y <= 0)
+		{
 			//地面についたらまた上に行く
 			//xとzはランダムな位置にしている
 			//サイズもランダムにしている
@@ -373,20 +362,27 @@ void PlayScene::Update()
 		}
 	}
 #pragma region チュートリアルUI
-	if (stageNum == 2) {
+	if (stageNum == 2)
+	{
 		if (player->GetPosition().x > 125 && player->GetPosition().x < 255 &&
-			player->GetPosition().z > -206 && player->GetPosition().z < -108) {
+			player->GetPosition().z > -206 && player->GetPosition().z < -108)
+		{
 			tutorialXFlag = true;
-			if (tutorialXFlag = true) {
-				if (XButtonTimer > 0) {
+			if (tutorialXFlag = true)
+			{
+				if (XButtonTimer > 0)
+				{
 					XButtonTimer--;
 				}
-				else if (XButtonTimer <= 0) {
+				else if (XButtonTimer <= 0)
+				{
 					XButtonTimer = 30;
-					if (XButtonCount < 1) {
+					if (XButtonCount < 1)
+					{
 						XButtonCount++;
 					}
-					else if (XButtonCount == 1) {
+					else if (XButtonCount == 1)
+					{
 						XButtonCount = 0;
 					}
 				}
@@ -418,47 +414,61 @@ void PlayScene::Update()
 		}
 
 	}
-	if (stageNum == 3) {
+	else if (stageNum == 3) {
 		if (player->GetPosition().x > 187 && player->GetPosition().x < 285 &&
-			player->GetPosition().z > -180 && player->GetPosition().z < -91) {
+			player->GetPosition().z > -180 && player->GetPosition().z < -91)
+		{
 			tutorialRBFlag = true;
-			if (tutorialRBFlag = true) {
-				if (RBButtonTimer > 0) {
+			if (tutorialRBFlag = true)
+			{
+				if (RBButtonTimer > 0)
+				{
 					RBButtonTimer--;
 				}
-				else if (RBButtonTimer <= 0) {
+				else if (RBButtonTimer <= 0)
+				{
 					RBButtonTimer = 30;
-					if (RBButtonCount < 1) {
+					if (RBButtonCount < 1)
+					{
 						RBButtonCount++;
 					}
-					else if (RBButtonCount == 1) {
+					else if (RBButtonCount == 1)
+					{
 						RBButtonCount = 0;
 					}
 				}
 			}
 		}
-		else {
+		else 
+		{
 			tutorialRBFlag = false;
 		}
 		if (player->GetPosition().x > 732 && player->GetPosition().x < 840 &&
-			player->GetPosition().z > -289 && player->GetPosition().z < -188) {
+			player->GetPosition().z > -289 && player->GetPosition().z < -188) 
+		{
 			tutorialLBFlag = true;
-			if (tutorialLBFlag = true) {
-				if (LBButtonTimer > 0) {
+			if (tutorialLBFlag = true) 
+			{
+				if (LBButtonTimer > 0) 
+				{
 					LBButtonTimer--;
 				}
-				else if (LBButtonTimer <= 0) {
+				else if (LBButtonTimer <= 0)
+				{
 					LBButtonTimer = 30;
-					if (LBButtonCount < 1) {
+					if (LBButtonCount < 1) 
+					{
 						LBButtonCount++;
 					}
-					else if (LBButtonCount == 1) {
+					else if (LBButtonCount == 1)
+					{
 						LBButtonCount = 0;
 					}
 				}
 			}
 		}
-		else {
+		else
+		{
 			tutorialLBFlag = false;
 		}
 

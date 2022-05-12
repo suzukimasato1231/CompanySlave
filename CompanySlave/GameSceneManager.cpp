@@ -252,11 +252,7 @@ void GameSceneManager::Draw()
 		Sprite::Instance()->Draw(BGGraph, Vec2(0, 0), window_width, window_height);
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
 		Object::Instance()->Draw(sword, position, Vec3{ 20,20,20 }, { 180,0,0 }, Vec4{ 1,1,1,1 });
-
 	}
-
-
-
 #if _DEBUG
 	debugText.Print(10, 380, 2, "%d", LoadTime);
 	debugText.Print(10, 260, 2, "R:reset");

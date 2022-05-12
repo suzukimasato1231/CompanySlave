@@ -149,7 +149,6 @@ void MapStage::Update(Vec3 pPos, Enemy* enemy)
 			{
 				particleMan->ParticleAdd2(Vec3{ 0 + (float)x * 10,2, 0 + (float)y * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
 				particleMan->ParticleAdd2(Vec3{ 0 + (float)x * 10,2, 0 + (float)y * (-10) }, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 0.8f, 1.0f, 1.0f));
-
 			}
 		}
 	}
@@ -369,12 +368,9 @@ void MapStage::Draw(Vec3 pPos)
 				break;
 			default:
 				break;
-
 			}
 		}
 	}
-
-
 }
 
 void MapStage::DrawParticle(Vec3 pPos)
@@ -419,8 +415,6 @@ Vec3 MapStage::GetPosition(int i, int j)
 {
 	return Vec3(basePosition.x + i * mapSize, 0, basePosition.z + j * (-mapSize));
 }
-
-
 
 int MapStage::GetMap(int i, int j)
 {
