@@ -9,9 +9,11 @@ BigOniBoss::~BigOniBoss()
 
 void BigOniBoss::Init()
 {
+#if _DEBUG
 	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
 	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
-	attackBigOBJ = Shape::CreateRect(attackBigField.x, attackBigField.y);
+#endif
+	attackBigOBJ = Shape::CreateCircle(attackBigField, 20.0f);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
 	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/");
@@ -241,7 +243,6 @@ void BigOniBoss::AttackSmall(EnemyData* oniData, Player* player)
 		{
 			start_time = time(NULL);//計測開始
 		}
-
 	}
 
 	if (attackSmallTime >= attackMotionDamege)
@@ -318,13 +319,11 @@ void BigOniBoss::AttackBig(EnemyData* oniData, Player* player)
 	else if (attackBigStatus == BIGATTACK)
 	{//ダメージ判定がある時
 		//当たり判定
-		if (Collision::CheckBox2Box(player->GetBox(), AttackBIG(oniData)))
+		if (Collision::CheckSphere2Box(AttackBIG(oniData), player->GetBox()))
 		{
 			player->Damage(4);
 			attakAFlag = true;
-
 		}
-
 		start_time = time(NULL);//計測開始
 		attackBigStatus = BIGAFTER;
 	}
@@ -488,7 +487,7 @@ void BigOniBoss::EffectDraw(EnemyData* oniData)
 
 	if (BigEffect == true && BigCount == 0)
 	{
-		if (BigScale.x < 7 && oniData->Status ==BOSSATTACK2)
+		if (BigScale.x < 7 && oniData->Status == BOSSATTACK2)
 		{
 			BigScale.x += 0.05;
 			BigScale.y += 0.05;
@@ -636,10 +635,11 @@ Box BigOniBoss::AttackField(EnemyData* oniData)
 	return attackBox;
 }
 
-Box BigOniBoss::AttackBIG(EnemyData* oniData)
+Sphere BigOniBoss::AttackBIG(EnemyData* oniData)
 {
-	Box attackBox;
-	attackBox.maxPosition = XMVectorSet(oniData->position.x + attackBigField.x / 2, oniData->position.y, oniData->position.z + attackBigField.y, 1);
-	attackBox.minPosition = XMVectorSet(oniData->position.x - attackBigField.x / 2, oniData->position.y, oniData->position.z - attackBigField.y, 1);
-	return attackBox;
+	Sphere attackSphere;
+	attackSphere.radius = attackBigField;
+	attackSphere.center = XMVectorSet(oniData->position.x, oniData->position.y, oniData->position.z, 1);
+	return attackSphere;
 }
+

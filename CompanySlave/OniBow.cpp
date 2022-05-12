@@ -12,14 +12,15 @@ OniBow::~OniBow()
 
 void OniBow::Init()
 {
+#if _DEBUG
 	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
-
+#endif
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
 	//“G‚Ì“Ç‚Ýž‚Ý
 	//enemyObject = Object::Instance()->CreateOBJ("OniKari");
 	//“G‚ÌUŒ‚ó‘Ô‚Ì“Ç‚Ýž‚Ý
-	attackOBJ[0] = Object::Instance()->CreateOBJ("Oniyumi2-0","OniyumiOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("Oniyumi2-0", "OniyumiOBJ/");
 	attackOBJ[1] = Object::Instance()->CreateOBJ("Oniyumi2-1", "OniyumiOBJ/");
 	attackOBJ[2] = Object::Instance()->CreateOBJ("Oniyumi2-2", "OniyumiOBJ/");
 	attackOBJ[3] = Object::Instance()->CreateOBJ("Oniyumi2-3", "OniyumiOBJ/");
@@ -31,7 +32,7 @@ void OniBow::Init()
 	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2", "OniyumiOBJ/");
 
 	//–î‚Ìobj“Çž
-	bowOBJ = Object::Instance()->CreateOBJ("enemyArrow","OniyumiOBJ/");
+	bowOBJ = Object::Instance()->CreateOBJ("enemyArrow", "OniyumiOBJ/");
 
 	bowRaysOBJ = Shape::CreateRect(2.0f, 10.0f);
 }

@@ -11,8 +11,10 @@ OniType::~OniType()
 
 void OniType::Init()
 {
+#if _DEBUG
 	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
 	debugField2 = Shape::CreateRect(attackField.x, attackField.y);
+#endif
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//’Êíó‘Ô

@@ -47,7 +47,7 @@ private:
 	//向きによって攻撃範囲の決定
 	Box AttackField(EnemyData* oniData);
 
-	Box AttackBIG(EnemyData* oniData);
+	Sphere AttackBIG(EnemyData* oniData);
 private:
 	//ボスステータス
 	EnemyData bossData;
@@ -66,7 +66,7 @@ private:
 	//小攻撃
 	const float attackSmallLength = 30.0f;			//攻撃範囲
 	const Vec2 attackField{ 30.0f,30.0f };			//攻撃範囲
-	const float moveSpeed = 0.40f;					//敵のスピード
+	const float moveSpeed = 0.60f;					//敵のスピード
 	const int attackSmallTimeMax = 200;				//攻撃時間最大
 	int attackSmallTime = 0;						//攻撃時間
 	const int attackMotionDamege = 50;				//攻撃時間中にダメージを与える時間
@@ -75,7 +75,7 @@ private:
 	
 	//大攻撃
 	time_t big_start, big_end;						//予備動作時間
-	const Vec2 attackBigField{ 50.0f,50.0f };		//攻撃範囲
+	float attackBigField = 50.0f;					//攻撃範囲
 	int attackBigStatus = 0;						//予備動作開始
 	Object::ObjectData BigEffectOBJ;
 	int BigEffectGraph;

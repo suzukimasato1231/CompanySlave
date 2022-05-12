@@ -367,8 +367,8 @@ void Enemy::Draw()
 void Enemy::DrawUI()
 {
 	int boarNum = 0;
-	int boarTotalHP = 0;
-	int boarTotalHPMax = 0;
+	float boarTotalHP = 0;
+	float boarTotalHPMax = 0;
 	for (size_t i = 0; i < eData.size(); i++)
 	{
 		if (eData[i]->HP > 0 && eData[i]->bossFlag == true && eData[i]->Status != NORMAL && eData[i]->type != BossTwinBoar)
@@ -385,7 +385,7 @@ void Enemy::DrawUI()
 			boarTotalHPMax += eData[i]->HPMax;
 			if (boarTotalHP > 0 && boarNum == 1)
 			{
-				float ratio = boarTotalHPMax / boarTotalHPMax;
+				float ratio = boarTotalHP / boarTotalHPMax;
 				Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 50.0f);
 				Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 50.0f);
 			}
