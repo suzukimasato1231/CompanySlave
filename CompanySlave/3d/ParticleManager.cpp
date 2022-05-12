@@ -196,7 +196,7 @@ void ParticleManager::ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color)
 	}
 
 }
-void ParticleManager::ParticleAdd3(Vec3 Pos, float md_vel, Vec4 start_color, Vec4 end_color)
+void ParticleManager::ParticleAdd3(Vec3 Pos, float md_vel, float size, Vec4 start_color, Vec4 end_color)
 {
 	for (int i = 0; i < 1; i++)
 	{
@@ -220,7 +220,7 @@ void ParticleManager::ParticleAdd3(Vec3 Pos, float md_vel, Vec4 start_color, Vec
 		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
 		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
 			//追加
-		Add(20, pos, vel, acc, 1.0f, 0.0f, start_color, end_color);
+		Add(20, pos, vel, acc, size,0.0f, start_color, end_color);
 	}
 }
 void ParticleManager::AddBlood(Vec3 Pos)

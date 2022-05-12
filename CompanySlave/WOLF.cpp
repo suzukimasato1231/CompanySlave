@@ -41,6 +41,7 @@ void Wolf::Init()
 
 	wolfData.HP = 4;
 	wolfData.HPMax = 4;
+	wolfData.RushFlag = false;
 	wolfData.scale = { 0.5f,0.5f,0.5f };
 }
 
@@ -128,6 +129,7 @@ void Wolf::Move(EnemyData* oniData, Player* player)
 		//プレイヤーの向き
 		oniData->pDirection = memoryPosition.normalize();
 		oniData->Status = ATTACK;
+		oniData->RushFlag = true;
 		oniData->attackDirection = oniData->direction;
 		oniData->StatusTime = attackMotionTime;
 	}
@@ -162,6 +164,7 @@ void Wolf::SearchPlayer(EnemyData* oniData, Player* player)
 		if (Length > player2EnemyLength)
 		{//プレイヤーが攻撃距離にいなかったら移動
 			oniData->Status = MOVE;
+			oniData->RushFlag = false;
 			oniData->StatusTime = moveTime;
 		}
 		else
@@ -171,6 +174,7 @@ void Wolf::SearchPlayer(EnemyData* oniData, Player* player)
 			//プレイヤーの向き
 			oniData->pDirection = memoryPosition.normalize();
 			oniData->Status = ATTACK;
+			oniData->RushFlag = true;
 			oniData->attackDirection = oniData->direction;
 			oniData->StatusTime = attackMotionTime;
 		}

@@ -110,6 +110,8 @@ public://Žæ“¾Œn
 
 	bool GetExplosionCount(int i) { return eData[i]->explosionCount; }
 	bool SetExplosionCount(int i);
+	
+	bool GetRushFlag(int i) { return eData[i]->RushFlag; }
 
 	float SetVolume(float volume) { return this->volume = volume; };
 

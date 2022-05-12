@@ -37,6 +37,7 @@ void Boar::Init()
 	boarData.HP = 8;
 	boarData.HPMax = 8;
 	boarData.nockPossibleFlag = false;
+	boarData.RushFlag = false;
 }
 
 void Boar::Draw(EnemyData* oniData)
@@ -112,6 +113,7 @@ void Boar::Move(EnemyData* oniData, Player* player)
 		//プレイヤーの向き
 		oniData->pDirection = memoryPosition.normalize();
 		oniData->Status = ATTACK;
+		oniData->RushFlag = true;
 		oniData->attackDirection = oniData->direction;
 		oniData->StatusTime = attackMotionTime;
 	}
@@ -135,6 +137,7 @@ void Boar::SearchPlayer(EnemyData* oniData, Player* player)
 		if (Length > player2EnemyLength)
 		{//プレイヤーが攻撃距離にいなかったら移動
 			oniData->Status = MOVE;
+			oniData->RushFlag = false;
 			oniData->StatusTime = moveTime;
 		}
 		else
@@ -144,6 +147,7 @@ void Boar::SearchPlayer(EnemyData* oniData, Player* player)
 			//プレイヤーの向き
 			oniData->pDirection = memoryPosition.normalize();
 			oniData->Status = ATTACK;
+			oniData->RushFlag = true;
 			oniData->attackDirection = oniData->direction;
 			oniData->StatusTime = attackMotionTime;
 		}

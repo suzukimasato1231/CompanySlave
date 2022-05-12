@@ -255,16 +255,16 @@ void PlayScene::Update()
 	if (player->GetMoveFlag() == true)
 	{
 		if (mapStage->GetfloorNum() == 0) {
-			particleMan2->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			particleMan2->ParticleAdd3(player->GetPosition(), 0.1f,1, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		if (mapStage->GetfloorNum() == 1) {
-			particleMan3->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			particleMan3->ParticleAdd3(player->GetPosition(), 0.1f,1, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		if (mapStage->GetfloorNum() == 2) {
-			particleMan4->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			particleMan4->ParticleAdd3(player->GetPosition(), 0.1f,1, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		if (mapStage->GetfloorNum() == 3) {
-			particleMan5->ParticleAdd3(player->GetPosition(), 0.1f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			particleMan5->ParticleAdd3(player->GetPosition(), 0.1f,1, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 
@@ -304,6 +304,42 @@ void PlayScene::Update()
 			else if (player->GetDirection() == DownLeft) {
 				particleMan->SetParticleDirection(7);
 				particleMan->ParticleAdd(enemy->GetPosition(i), -1.0f, -1.0f, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+		}
+	}
+	//狼の突進時のパーティクル
+	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+	{
+		if (enemy->GetRushFlag(i) == true && enemy->GetType(i) ==WolfType && enemy->GetHP(i) > 0) {
+			if (mapStage->GetfloorNum() == 0) {
+				particleMan2->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+			if (mapStage->GetfloorNum() == 1) {
+				particleMan3->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+			if (mapStage->GetfloorNum() == 2) {
+				particleMan4->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+			if (mapStage->GetfloorNum() == 3) {
+				particleMan5->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+		}
+	}
+	//猪の突進時のパーティクル
+	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
+	{
+		if (enemy->GetRushFlag(i) == true&& enemy->GetType(i) == BoarType&& enemy->GetHP(i) > 0) {
+			if (mapStage->GetfloorNum() == 0) {
+				particleMan2->ParticleAdd3(enemy->GetPosition(i), 0.1f,3, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+			if (mapStage->GetfloorNum() == 1) {
+				particleMan3->ParticleAdd3(enemy->GetPosition(i), 0.1f,3, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+			if (mapStage->GetfloorNum() == 2) {
+				particleMan4->ParticleAdd3(enemy->GetPosition(i), 0.1f,3, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+			if (mapStage->GetfloorNum() == 3) {
+				particleMan5->ParticleAdd3(enemy->GetPosition(i), 0.1f,3, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 		}
 	}

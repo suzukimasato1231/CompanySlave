@@ -95,8 +95,10 @@ struct EnemyData
 	bool bowAFlag = false;				//弓の音用フラグ
 	//狼
 	bool attakWFlag = false;			//アタック時の音用フラグ
+	bool RushWFlag = false;				//突進時のエフェクト用フラグ
 	//猪
 	bool attakBFlag = false;			//アタック時の音用フラグ
+	bool RushFlag = false;				//突進時のエフェクト用フラグ
 	//破のやつ
 	bool explosionFlag = false;
 	int explosionCount = 2;
