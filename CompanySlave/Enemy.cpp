@@ -305,7 +305,7 @@ void Enemy::Update(Player* player)
 		if (eData[i]->attakBFlag == true) {
 			audio->SoundSEPlayWave(sound4);//íñ
 		}
-		if (eData[i]->bowAFlag ==true) {
+		if (eData[i]->bowAFlag == true) {
 			audio->SoundSEPlayWave(sound2);//ã|
 		}
 	}
@@ -353,7 +353,7 @@ void Enemy::Draw()
 					Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGaugeGraph);
 				//HPòg
 				Object::Instance()->Draw(hpOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 5.1f + eData[i]->r, eData[i]->position.z + 5.0f),
-					eData[i]->scale, Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
+					Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
 			}
 			//ìGÅ@îjÅ@
 			if (explosionFlag[i] == true) {
