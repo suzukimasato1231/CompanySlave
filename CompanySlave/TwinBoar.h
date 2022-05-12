@@ -60,6 +60,8 @@ private:
 	const Vec2 attackEnemies{ 300.0f,110.0f };		//索敵範囲:width,height
 	const float player2EnemyLength = 500.0f;		//索敵距離
 	bool searchEnemyFlag = false;					//片方でも見つかったかどうか
+
+	const Vec2 attackField{ 15.0f,15.0f };
 	//小突進
 	const float sPlayer2EnemyLength = 50.0f;		//小突進を行う距離
 	const int sAttackMotionTime = 100;				//攻撃モーション全体

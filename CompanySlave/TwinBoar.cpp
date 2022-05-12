@@ -9,7 +9,9 @@ TwinBoar::~TwinBoar()
 
 void TwinBoar::Init()
 {
-	debugField = Shape::CreateRect(attackEnemies.y, attackEnemies.x);
+#if _DEBUG
+	debugField = Shape::CreateRect(attackField.y * 2, attackField.x * 2);
+#endif
 	//attackBigOBJ = Shape::CreateRect(attackBigField.x, attackBigField.y);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//’Êíó‘Ô
@@ -47,14 +49,26 @@ void TwinBoar::Draw(EnemyData* oniData)
 		if (oniData->StatusTime >= sAttackMotionTime)
 		{//•ŠíU‚èã‚°
 			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+#if _DEBUG
+			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
+				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#endif
 		}
 		else if (oniData->StatusTime >= sAttackHoldTime)
 		{//•ŠíU‚è‰º‚ë‚µ
 			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+#if _DEBUG
+			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
+				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#endif
 		}
 		else
 		{//ˆÚ“®’†
 			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+#if _DEBUG
+			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
+				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#endif
 		}
 		break;
 	case BOSSATTACK2://“¯Žž“Ëi
@@ -62,10 +76,18 @@ void TwinBoar::Draw(EnemyData* oniData)
 		{//•ŠíU‚èã‚°
 			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 			Object::Instance()->Draw(attackBigOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#if _DEBUG
+			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
+				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#endif
 		}
 		else
 		{//•ŠíU‚è‰º‚ë‚µ
 			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+#if _DEBUG
+			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
+				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#endif
 		}
 		break;
 	case BOSSATTACK3://ŒðŒÝ“Ëi
@@ -73,10 +95,18 @@ void TwinBoar::Draw(EnemyData* oniData)
 		{//•ŠíU‚èã‚°
 			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 			Object::Instance()->Draw(attackBigOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#if _DEBUG
+			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
+				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#endif
 		}
 		else
 		{//•ŠíU‚è‰º‚ë‚µ
 			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+#if _DEBUG
+			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
+				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+#endif
 		}
 		break;
 	case NOCKBACK:

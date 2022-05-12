@@ -247,6 +247,7 @@
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyHelper.h" />
+    <ClInclude Include="Fps.h" />
     <ClInclude Include="GameSceneManager.h" />
     <ClInclude Include="Helper\Easing.h" />
     <ClInclude Include="Helper\LoadCSV.h" />
@@ -283,6 +284,7 @@
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameSceneManager.cpp" />
     <ClCompile Include="Helper\Easing.cpp" />
     <ClCompile Include="Helper\LoadCSV.cpp" />

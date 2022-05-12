@@ -240,6 +240,9 @@
     <ClInclude Include="TwinBoar.h">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Fps.h">
+      <Filter>Library\DirectXCommon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -346,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="TwinBoar.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Fps.cpp">
+      <Filter>Library\DirectXCommon</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
