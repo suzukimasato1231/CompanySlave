@@ -1,6 +1,6 @@
 #include "_DirectX.h"
 #include <cassert>
-
+#include"../Fps.h"
 _DirectX::_DirectX()
 {
 
@@ -31,6 +31,8 @@ void _DirectX::Initilize()
 
 	//フェンスの生成
 	result = dev->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+
+	FPS::Get()->Start();
 }
 
 void _DirectX::Adapter()
@@ -263,6 +265,8 @@ void _DirectX::ResourceBarrier()
 		WaitForSingleObject(event, INFINITE);
 		CloseHandle(event);
 	}
+
+	FPS::Get()->run();
 
 	cmdAllocator->Reset();//キューをクリア
 	cmdList->Reset(cmdAllocator.Get(), nullptr);//再びコマンドリストを貯める準備

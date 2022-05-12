@@ -27,7 +27,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	LightGroup::StaticInitialize(directX->GetDevice());
 	//スプライト静的初期化
 	Sprite::StaticInit(directX->GetDevice(), directX->GetCmandList());
-	FPS::Get()->Start();
 	//ゲームシーン
 	GameSceneManager::Instance()->Initialize(directX);
 	GameSceneManager::Instance()->Init();
@@ -48,7 +47,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		directX->ResourceBarrier();
 		//描画コマンドはここまで
-		FPS::Get()->run();
+	
 	}
 #pragma region	//データ解放
 	safe_delete(directX);
