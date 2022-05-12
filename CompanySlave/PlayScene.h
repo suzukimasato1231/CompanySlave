@@ -40,6 +40,8 @@ public:
 	int GetStageNum() { return stageNum; }
 	void SetStageDebug(int debugNum) { this->stageNum = debugNum; }
 	float SetVolume(float volume) { return this->volume = volume; }
+	bool SetUpdateFlag(bool UpdateFlag) { return this->UpdateFlag = UpdateFlag; }
+
 private:
 	Camera* camera = nullptr;
 	LightGroup* lightGroup = nullptr;
@@ -110,6 +112,8 @@ private://’è‹`
 
 	float volume = 1.0f;
 	
+	bool UpdateFlag = false;
+
 	//‰JŠÖŒW
 	static const int rainMax = 80;//OBJ‚ÌŒÂ”
 	std::array<Object::ObjectData, rainMax > RainOBJ;

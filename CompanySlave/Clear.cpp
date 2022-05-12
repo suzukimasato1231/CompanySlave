@@ -42,7 +42,7 @@ void Clear::Initialize()
 	title = Sprite::Instance()->SpriteCreate(L"Resources/clearTitle.png");
 
 
-	PlayerObject = Object::Instance()->CreateOBJ("playerKari2-1","playerOBJ/");
+	PlayerObject = Object::Instance()->CreateOBJ("playerAttack2-1","playerOBJ/");
 
 }
 
@@ -111,7 +111,7 @@ void Clear::Draw()
 
 	if (colorFlag == true) 
 	{
-		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,0,0 }, Vec4{ 1,1,1,1 });
+		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,270,20 }, Vec4{ 1,1,1,1 });
 	}
 	if (TextFlag == true)
 	{

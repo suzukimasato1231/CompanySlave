@@ -64,7 +64,7 @@ private:
 	//エフェクト関係
 	bool AttackEffect = false;
 	float AttackEffectSize = 5.0f;
-	Vec3 AttackScale{ 2.0f,2.0f,2.0f };
+	Vec3 AttackScale{ 3.0f,3.0f,3.0f };
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;
 	int effectCount = 0;

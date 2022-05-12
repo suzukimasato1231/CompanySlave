@@ -88,6 +88,7 @@ void GameSceneManager::Update()
 
 	//タイトル
 	if (scene == titleScene) {
+
 		if (initFlag == true)
 		{
 			initFlag = false;
@@ -110,7 +111,6 @@ void GameSceneManager::Update()
 				LoadFlag = true;
 			}
 		}
-
 		//title->SetVolume(volume);
 		play->SetVolume(volume);
 		clear->SetVolume(volume);
@@ -119,11 +119,8 @@ void GameSceneManager::Update()
 		title->Update();
 	}
 
-
 	//ステージ1
 	else if (scene == stage1) {
-		camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-
 
 		if (play->GetSceneFlag() == true)
 		{
@@ -139,7 +136,11 @@ void GameSceneManager::Update()
 			scene = clearScene;
 			initFlag = true;
 		}
+
 		play->Update();
+		if (LoadFlag == false) {
+			play->SetUpdateFlag(false);
+		}
 	}
 	//クリアシーン
 	else if (scene == clearScene) {
@@ -159,7 +160,7 @@ void GameSceneManager::Update()
 	}
 	//ロード画面
 	if (LoadFlag == true) {
-
+		play->SetUpdateFlag(true);
 		if (position.x < 300) {
 			position.x += 5;
 		}
@@ -253,6 +254,7 @@ void GameSceneManager::Draw()
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
 		Object::Instance()->Draw(sword, position, Vec3{ 20,20,20 }, { 180,0,0 }, Vec4{ 1,1,1,1 });
 	}
+
 #if _DEBUG
 	debugText.Print(10, 380, 2, "%d", LoadTime);
 	debugText.Print(10, 260, 2, "R:reset");

@@ -118,6 +118,8 @@ void PlayScene::Init()
 	sceneChangeFlag = false;
 	ChangeGraphPosition = { -1600.0f, 0.0f };
 
+	UpdateFlag = false;
+
 	tutorialAFlag = false;
 	AButtonTimer = 30;
 	AButtonCount = 0;
@@ -225,12 +227,14 @@ void PlayScene::Update()
 	//プレイヤーの更新
 	mapStage->Update(player->GetPosition(), enemy);
 
-	if (sceneChangeFlag == false) {
-		if (player->GetHP() >= 0)
-		{
-			player->Update(enemy);
+	if (UpdateFlag == false) {
+		if (sceneChangeFlag == false) {
+			if (player->GetHP() >= 0)
+			{
+				player->Update(enemy);
+			}
+			enemy->Update(player);
 		}
-		enemy->Update(player);
 	}
 
 	//0が無音

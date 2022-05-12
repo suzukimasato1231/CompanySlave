@@ -211,10 +211,11 @@ void OniType::Attack(EnemyData* oniData, Player* player)
 	//エフェクト関係
 	if (AttackEffect == true) {
 
-		if (effectCount < 8) {
+		if (effectCount < 9) {
 			effectCount++;
+			oniData->attakFlag = false;
 		}
-		else if (effectCount == 8) {
+		else if (effectCount == 9) {
 			effectCount = 0;
 			AttackEffect = false;
 			oniData->attakFlag = true;
