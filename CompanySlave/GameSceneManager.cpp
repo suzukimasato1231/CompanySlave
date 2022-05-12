@@ -45,7 +45,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	LoadUIGraph[4] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load5.png");
 	LoadUIGraph[5] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load6.png");
 	LoadUIGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
-	sword = Object::Instance()->CreateOBJ("sword");
+	sword = Object::Instance()->CreateOBJ("Effect");
 
 	title = new Title();
 	title->Initialize();
@@ -252,7 +252,7 @@ void GameSceneManager::Draw()
 	if (LoadFlag == true) {
 		Sprite::Instance()->Draw(BGGraph, Vec2(0, 0), window_width, window_height);
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
-		Object::Instance()->Draw(sword, position, Vec3{ 20,20,20 }, { 180,0,0 }, Vec4{ 1,1,1,1 });
+		Object::Instance()->Draw(sword, position, Vec3{ 5,5,5 }, { 0,90,0 }, Vec4{ 1,1,1,1 });
 	}
 
 #if _DEBUG
