@@ -42,8 +42,7 @@ private://定義
 	SpriteData BGGraph;
 	SpriteData LoadUIGraph[7];
 
-	Object::ObjectData sword;
-	Vec3 position = { -20.0f,5.0f,-270.0f };
+
 
 	//フェードのフラグ(tがタイトルのやつでsがシーンチェンジのやつ)
 	bool tFadeFlag = false;

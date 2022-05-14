@@ -72,6 +72,7 @@ void PlayScene::Initialize()
 	particleMan4 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile7.png", 0);
 	particleMan5 = ParticleManager::Create(L"Resources/map/MapGraph/Floor_Tile9.png", 0);
 
+	sword = Object::Instance()->CreateOBJ("Effect");
 
 
 	//マップチップの初期化
@@ -310,18 +311,18 @@ void PlayScene::Update()
 	//狼の突進時のパーティクル
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
-		if (enemy->GetRushFlag(i) == true && enemy->GetType(i) ==WolfType && enemy->GetHP(i) > 0) {
+		if (enemy->GetRushFlag(i) == true && enemy->GetType(i) == WolfType && enemy->GetHP(i) > 0) {
 			if (mapStage->GetfloorNum() == 0) {
-				particleMan2->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan2->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (mapStage->GetfloorNum() == 1) {
-				particleMan3->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan3->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (mapStage->GetfloorNum() == 2) {
-				particleMan4->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan4->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (mapStage->GetfloorNum() == 3) {
-				particleMan5->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan5->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 		}
 	}
@@ -400,6 +401,12 @@ void PlayScene::Update()
 			position[i].z += player->GetPosition().z;
 			s[i] = (float)rand() / 1000;
 		}
+	}
+	if (positionS.x < 300) {
+		positionS.x += 5;
+	}
+	else if (positionS.x >= 300) {
+		positionS.x = -20;
 	}
 #pragma region チュートリアルUI
 	if (stageNum == 2)
@@ -558,11 +565,12 @@ void PlayScene::Draw()
 	for (int i = 0; i < rainMax; i++) {
 		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 }, rainGraph);
 	}
+
 	//前景描画
 	player->UIDraw();
 	enemy->DrawUI();
 	Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
-
+	
 	if (sceneChangeFlag == true) {
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
 	}
@@ -588,7 +596,12 @@ void PlayScene::Draw()
 	debugText.DrawAll();
 #endif
 }
-
+void PlayScene::LoadDraw()
+{
+	if (LoadFlag == true) {
+		Object::Instance()->Draw(sword, positionS, Vec3{ 5,5,5 }, { 0,90,0 }, Vec4{ 1,1,1,1 });
+	}
+}
 bool PlayScene::GetSceneFlag()
 {
 	return sceneFlag;

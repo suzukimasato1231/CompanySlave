@@ -97,7 +97,7 @@ void Wolf::Draw(EnemyData* oniData)
 		{//UŒ‚Œã‚Ìd’¼
 			Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		}
-		EffectDraw(oniData);
+		//EffectDraw(oniData);
 
 		break;
 	case NOCKBACK:

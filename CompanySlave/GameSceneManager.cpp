@@ -45,7 +45,7 @@ void GameSceneManager::Initialize(_DirectX* directX)
 	LoadUIGraph[4] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load5.png");
 	LoadUIGraph[5] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load6.png");
 	LoadUIGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/LoadUI/Load7.png");
-	sword = Object::Instance()->CreateOBJ("Effect");
+	//sword = Object::Instance()->CreateOBJ("Effect");
 
 	title = new Title();
 	title->Initialize();
@@ -74,8 +74,7 @@ void GameSceneManager::Init()
 
 
 	title->Init();
-	//clear->Init();
-	//play->Init();
+
 	scene = titleScene;
 }
 
@@ -94,7 +93,7 @@ void GameSceneManager::Update()
 			initFlag = false;
 			tFadeFlag = false;
 			tFade = 1;
-			position = { -20.0f,5.0f,-270.0f };
+		
 			LoadCount2 = 0;
 			LoadTime = 70;
 		}
@@ -161,12 +160,7 @@ void GameSceneManager::Update()
 	//ƒ[ƒh‰æ–Ê
 	if (LoadFlag == true) {
 		play->SetUpdateFlag(true);
-		if (position.x < 300) {
-			position.x += 5;
-		}
-		else if (position.x >= 300) {
-			position.x = -20;
-		}
+		play->SetLoadFlag(true);
 		LoadTime -= 1;
 		if (LoadTime > 0) {
 			LoadCount2++;
@@ -180,7 +174,7 @@ void GameSceneManager::Update()
 		}
 		if (LoadTime <= 0) {
 			LoadCount = 0;
-
+			play->SetLoadFlag(false);
 			LoadFlag = false;
 		}
 	}
@@ -252,9 +246,9 @@ void GameSceneManager::Draw()
 	if (LoadFlag == true) {
 		Sprite::Instance()->Draw(BGGraph, Vec2(0, 0), window_width, window_height);
 		Sprite::Instance()->Draw(LoadUIGraph[LoadCount], Vec2(420, 280), 500, 150);
-		Object::Instance()->Draw(sword, position, Vec3{ 5,5,5 }, { 0,90,0 }, Vec4{ 1,1,1,1 });
-	}
 
+	}
+	play->LoadDraw();
 #if _DEBUG
 	debugText.Print(10, 380, 2, "%d", LoadTime);
 	debugText.Print(10, 260, 2, "R:reset");

@@ -33,6 +33,7 @@ public:
 	void Update();
 
 	void Draw();
+	void LoadDraw();
 
 	bool GetSceneFlag();
 	bool SetSceneFlag(bool sceneFlag) { return this->sceneFlag = sceneFlag; }
@@ -40,7 +41,9 @@ public:
 	int GetStageNum() { return stageNum; }
 	void SetStageDebug(int debugNum) { this->stageNum = debugNum; }
 	float SetVolume(float volume) { return this->volume = volume; }
+	bool GetUpdateFlag() { return UpdateFlag; }
 	bool SetUpdateFlag(bool UpdateFlag) { return this->UpdateFlag = UpdateFlag; }
+	bool SetLoadFlag(bool LoadFlag) { return this->LoadFlag = LoadFlag; }
 
 private:
 	Camera* camera = nullptr;
@@ -138,4 +141,9 @@ private://’è‹`
 	bool tutorialLBFlag = false;
 	int LBButtonTimer = 30;
 	int LBButtonCount = 0;
+
+	bool LoadFlag = false;
+
+	Object::ObjectData sword;
+	Vec3 positionS = { -20.0f,5.0f,-270.0f };
 };

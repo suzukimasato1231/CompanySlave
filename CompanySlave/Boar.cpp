@@ -82,7 +82,7 @@ void Boar::Draw(EnemyData* oniData)
 		{//•ŠíU‚è‰º‚ë‚µ
 			Object::Instance()->Draw(attackOBJ[1], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
-		EffectDraw(oniData);
+		//EffectDraw(oniData);
 		break;
 	case NOCKBACK:
 		if (oniData->nockbackTime >= 3)
