@@ -121,10 +121,12 @@ public://取得系
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
 	Object::ObjectData playerAttackObject[9];		//プレイヤー攻撃
+	Object::ObjectData playerLifeObject[2];			//プレイヤー回復
 	int walkCount = 0;								//描画用カウント
 	int walkNo = 0;									//描画するNO
 	int attackCount = 0;							//描画用カウント
 	int attackNo = 0;								//描画するNO
+	int portionNo = 0;								//描画するNO
 	bool attackMode = false;
 	Box pBox;										//プレイヤーの長方形
 	Sphere pSphere;									//プレイヤーの球

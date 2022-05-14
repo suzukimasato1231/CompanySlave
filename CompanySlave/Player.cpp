@@ -42,6 +42,9 @@ void Player::Init()
 	playerAttackObject[7] = Object::Instance()->CreateOBJ("playerAttack3-2","playerOBJ/");
 	playerAttackObject[8] = Object::Instance()->CreateOBJ("playerAttack3-3","playerOBJ/");
 
+	playerLifeObject[0] = Object::Instance()->CreateOBJ("playerKari4-1","playerOBJ/");
+	playerLifeObject[1] = Object::Instance()->CreateOBJ("playerKari4-2", "playerOBJ/");
+
 	swordObject = Object::Instance()->CreateOBJ("sword");
 	tornadoObject = Object::Instance()->CreateOBJ("tornado");
 	swordEffectObject = Object::Instance()->CreateOBJ("Effect");
@@ -116,6 +119,8 @@ void Player::StageInit(int stageNum)
 	switch (stageNum)
 	{
 	case 1:
+		//ポーション
+		portion = portionMax;
 		Filepath = (char*)"Resources/map/Enemy_Tile1.csv";
 		break;
 	case 2:
@@ -125,6 +130,8 @@ void Player::StageInit(int stageNum)
 		Filepath = (char*)"Resources/map/Enemy_Tile3.csv";
 		break;
 	case 4:
+		//ポーション
+		portion = portionMax;
 		Filepath = (char*)"Resources/map/Enemy_Tile4.csv";
 		break;
 	case 5:
@@ -134,6 +141,8 @@ void Player::StageInit(int stageNum)
 		Filepath = (char*)"Resources/map/Enemy_Tile6.csv";
 		break;
 	case 7:
+		//ポーション
+		portion = portionMax;
 		Filepath = (char*)"Resources/map/Enemy_Tile7.csv";
 		break;
 	case 8:
@@ -290,8 +299,9 @@ void Player::Draw()
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
-		if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
-		if (attackMode == true)
+		if(portionFlag == true){Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color);}
+		else if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
+		else if (attackMode == true)
 		{
 			Object::Instance()->Draw(playerAttackObject[attackNo], position, scale, angle, color);
 #if _DEBUG
@@ -940,11 +950,16 @@ void Player::LifePortion()
 		//回復時の膠着時間
 		portionTime = portionTimeMax;
 		portionFlag = true;
+		portionNo = 0;
 	}
 	//膠着時間減少
 	if (portionFlag == true)
 	{
 		portionTime--;
+		if (portionTime < 25)
+		{
+			portionNo = 1;
+		}
 		if (portionTime <= 0)
 		{
 			portionFlag = false;
