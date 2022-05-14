@@ -311,7 +311,9 @@ void Player::Draw()
 	//ƒvƒŒƒCƒ„[
 	if (damageTime % 2 == 0)
 	{
+
 		if (invincivleTime != 0) { Object::Instance()->Draw(playerDamageObject, position, scale, angle, color); }
+		else if (portionFlag == true) { Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color); }
 		else if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		else if (attackMode == true)
 		{
