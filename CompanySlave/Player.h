@@ -120,7 +120,8 @@ public://取得系
 
 private:
 	Object::ObjectData playerSwordWalkObject[4];	//プレイヤー歩きオブジェクト(剣あり)
-	Object::ObjectData playerAttackObject[9];		//プレイヤー攻撃
+	Object::ObjectData playerAttackObject[9];
+	Object::ObjectData playerDamageObject;          //ダメージ食らったとき//プレイヤー攻撃
 	Object::ObjectData playerLifeObject[2];			//プレイヤー回復
 	int walkCount = 0;								//描画用カウント
 	int walkNo = 0;									//描画するNO
@@ -192,6 +193,8 @@ private:
 	Object::ObjectData tornadoObject;//剣
 	int cursorGraph;	//カーソル
 	Object::ObjectData cursorObject;//カーソル
+	SpriteData BlackGraph;//剣回収の白いやつ
+	bool BlackFlag = false; //白いやつフラグ
 
 	std::array <Vec3, 7> swordPosition = { Vec3{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f },{ 10.0f, 0.0f, 0.0f } };	//座標
 	Object::ObjectData swordEffectObject;//剣
@@ -247,6 +250,7 @@ private:
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;
 	int effectCount = 0;
+	int effectCount2 = 0;
 
 	std::array<float, eNumMax >enemyDamegeTime = {};
 
@@ -284,5 +288,8 @@ private:
 
 #endif
 	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
+	bool attackCombo2check = false;
 	int AttackEffectGraph[9];
+	int AttackEffectGraph2[9];
+	bool AttackEnd = false;
 };

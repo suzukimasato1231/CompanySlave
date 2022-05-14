@@ -31,6 +31,7 @@ void Player::Init()
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
 	playerSwordWalkObject[2] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[3] = Object::Instance()->CreateOBJ("playerKari2-3", "playerOBJ/");
+	playerDamageObject = Object::Instance()->CreateOBJ("playerDead", "playerOBJ/");
 
 	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerAttack1-1", "playerOBJ/");
 	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerAttack1-2", "playerOBJ/");
@@ -82,6 +83,15 @@ void Player::Init()
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
 
+	AttackEffectGraph2[0] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect1.png");
+	AttackEffectGraph2[1] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect2.png");
+	AttackEffectGraph2[2] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect3.png");
+	AttackEffectGraph2[3] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect4.png");
+	AttackEffectGraph2[4] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect5.png");
+	AttackEffectGraph2[5] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect6.png");
+	AttackEffectGraph2[6] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect7.png");
+	AttackEffectGraph2[7] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect8.png");
+	AttackEffectGraph2[8] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect9.png");
 
 	swordUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/0White.png");
 	swordUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/1White.png");
@@ -103,6 +113,8 @@ void Player::Init()
 
 	portionSprite[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/Recovery.png");
 	portionSprite[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/Recovery.png");
+
+	BlackGraph = Sprite::Instance()->SpriteCreate(L"Resources/BlackOut.png");
 }
 
 void Player::LoopInit()
@@ -299,7 +311,7 @@ void Player::Draw()
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
-		if(portionFlag == true){Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color);}
+		if (invincivleTime != 0) { Object::Instance()->Draw(playerDamageObject, position, scale, angle, color); }
 		else if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		else if (attackMode == true)
 		{
@@ -362,6 +374,10 @@ void Player::Draw()
 		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale - 0.2f,tornadoScale - 0.2f,tornadoScale - 0.2f }, { 0,tornadoAngle + 285,0 }, color);
 		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale - 0.2f,tornadoScale - 0.2f,tornadoScale - 0.2f }, { 0,tornadoAngle + 45,0 }, color);
 		Object::Instance()->Draw(tornadoObject, { havePosition.x,havePosition.y,havePosition.z }, { tornadoScale - 0.2f,tornadoScale - 0.2f,tornadoScale - 0.2f }, { 0,tornadoAngle + 165,0 }, color);
+	}
+	if (BlackFlag == true)
+	{
+		Sprite::Instance()->Draw(BlackGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,1 });
 	}
 	EffectDraw();
 }
@@ -444,20 +460,7 @@ void Player::Move()
 }
 
 void Player::NormalAttack(Enemy* enemy)
-{//歩きアニメーション用
-	if (attackCount >= 10 && attackMode == true)
-	{
-		attackCount = 0;
-		attackNo++;
-		if (attackNo >= 9)
-		{
-			attackNo = 8;
-		}
-	}
-	if (normalAttackFlag[2] && attackNo >= 9) { attackNo = 8; }
-	if (normalAttackFlag[1] && attackNo >= 6) { attackNo = 5; }
-	if (normalAttackFlag[0] && attackNo >= 3) { attackNo = 2; }
-
+{
 	if (attackMode == true) { attackCount++; }//アニメーションのカウント
 	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0 && portionFlag == false)
 	{
@@ -468,16 +471,27 @@ void Player::NormalAttack(Enemy* enemy)
 			audio->SoundSEPlayWave(sound1);
 			normalAttackFlag[normalAttackCount] = true;
 			normalAttackCount++;
+			effectCount2 = 0;
+			effectCount = 0;
 		}
+		AttackEffect = true;
+	}
+	if (normalAttackCount == 2)
+	{
+		attackCombo2check = true;
+	}
+	else
+	{
+		attackCombo2check = false;
 	}
 	//描画するNO
-	if (normalAttackTime == normalAttackTimeMax)
-	{
-		if (normalAttackFlag[0]) { attackNo = 0; }
-		else if (normalAttackFlag[1]) { attackNo = 3; }
-		else if (normalAttackFlag[2]) { attackNo = 6; }
-		attackCount = 0;//カウントリセット
-	}
+	//if (normalAttackTime == normalAttackTimeMax)
+	//{
+	//	/*if (normalAttackFlag[0]) { attackNo = 0; }
+	//	else if (normalAttackFlag[1]) { attackNo = 3; }
+	//	else if (normalAttackFlag[2]) { attackNo = 6; }*/
+	//	//attackCount = 0;//カウントリセット
+	//}
 
 	//攻撃している時間
 	if (normalAttackTime > 0)
@@ -526,6 +540,9 @@ void Player::NormalAttack(Enemy* enemy)
 			normalAttackCount = 0;
 			attackMode = false;
 			attackNo = 0;
+			AttackEffect = false;
+			effectCount2 = 0;
+			effectCount = 0;
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
 				enemy->SetDamegeFlag(i, false);
@@ -547,12 +564,15 @@ void Player::NormalAttack(Enemy* enemy)
 	if (normalAttackTime == normalAttackTimeMax / 2) { AttackEffect = true; }
 
 	if (AttackEffect == true) {
-
-		if (effectCount < 8) {
+		if (effectCount2 != 8)
+		{
 			effectCount++;
 		}
-		else if (effectCount == 8) {
+		if (effectCount > 1) {
+			effectCount2++;
 			effectCount = 0;
+		}
+		if (effectCount2 == 8) {
 			AttackEffect = false;
 		}
 	}
@@ -574,6 +594,36 @@ void Player::NormalAttack(Enemy* enemy)
 			eslowFlag = false;
 		}
 	}
+
+	//アニメーション用
+	if (effectCount2 == 0 || effectCount2 == 1 || effectCount2 == 2)
+	{
+		attackNo = 1;
+	}
+	if (effectCount2 == 3 || effectCount2 == 4 || effectCount2 == 5)
+	{
+		attackNo = 2;
+	}
+	if (effectCount2 == 6 || effectCount2 == 7 || effectCount2 == 8)
+	{
+		attackNo = 2;
+	}
+	if (normalAttackCount == 2)
+	{
+		if (effectCount2 == 0 || effectCount2 == 1 || effectCount2 == 2)
+		{
+			attackNo = 4;
+		}
+		if (effectCount2 == 3 || effectCount2 == 4 || effectCount2 == 5)
+		{
+			attackNo = 5;
+		}
+		if (effectCount2 == 6 || effectCount2 == 7 || effectCount2 == 8)
+		{
+			attackNo = 6;
+		}
+	}
+
 }
 
 //剣撃つ
@@ -616,6 +666,7 @@ void Player::SwordAttack(Enemy* enemy)
 			start_time = time(NULL);//クールタイム計測開始
 			slowValue = 0.15;
 			slowFlag = true;
+			BlackFlag = true;
 			for (int i = 0; i < 7; i++)
 			{
 				reverseAngle[i] = 0;
@@ -732,6 +783,7 @@ void Player::SwordAttack(Enemy* enemy)
 			nowTime = 0;
 			slowValue = 1;
 			returnFlag = false;
+			BlackFlag = false;
 		}
 	}
 	haveBox.minPosition = XMVectorSet(havePosition.x - (r + 5), havePosition.y - r, havePosition.z - (r + 5), 1);
@@ -1152,35 +1204,92 @@ void Player::EffectDraw()
 		{
 		case Up:
 			AttackAngle.y = 90.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
+
 			break;
 		case Down:
 			AttackAngle.y = 270.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
 			break;
 		case Left:
 			AttackAngle.y = 0.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
 			break;
 		case Right:
 			AttackAngle.y = 180.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
 			break;
 		case UpRight:
 			AttackAngle.y = 120.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
 			break;
 		case UpLeft:
 			AttackAngle.y = 60.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
 			break;
 		case DownRight:
 			AttackAngle.y = 240.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
 			break;
 		case DownLeft:
 			AttackAngle.y = 300.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount]);
+			if (attackCombo2check == false)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
+			}
+			else if (attackCombo2check == true)
+			{
+				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
+			}
 			break;
 		}
 	}
@@ -1241,6 +1350,10 @@ Vec3 Player::GetCameraPos()
 	else if (position.z < -350.0f)
 	{
 		cameraPos.z = -350.0f;
+	}
+	if (BlackFlag == true)
+	{
+		cameraPos.y = -3;
 	}
 	return cameraPos;
 }
