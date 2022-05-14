@@ -12,7 +12,6 @@ void TwinBoar::Init()
 #if _DEBUG
 	debugField = Shape::CreateRect(attackField.y * 2, attackField.x * 2);
 #endif
-	//attackBigOBJ = Shape::CreateRect(attackBigField.x, attackBigField.y);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
 	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/");
@@ -21,9 +20,6 @@ void TwinBoar::Init()
 	//攻撃モーション
 	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
 	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
-	//ノックバック
-	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
-	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
 
 	//ボスの数値
 	bossData.HP = 168.0f;
@@ -46,7 +42,7 @@ void TwinBoar::Draw(EnemyData* oniData)
 		Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		break;
 	case  BOSSATTACK://小突進
-		if (oniData->StatusTime >= sAttackMotionTime)
+		if (oniData->StatusTime >= sAttackMotionTime - sAttackHoldTime)
 		{//武器振り上げ
 			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
@@ -54,7 +50,7 @@ void TwinBoar::Draw(EnemyData* oniData)
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 #endif
 		}
-		else if (oniData->StatusTime >= sAttackHoldTime)
+		else if (oniData->StatusTime >= 0)
 		{//武器振り下ろし
 			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
@@ -72,51 +68,32 @@ void TwinBoar::Draw(EnemyData* oniData)
 		}
 		break;
 	case BOSSATTACK2://同時突進
-		if (attackBigStatus == PREOPERATION)
-		{//武器振り上げ
+		if (attackBigStatus == PREOPERATION)//攻撃準備
+		{
 			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
-			Object::Instance()->Draw(attackBigOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
-#if _DEBUG
-			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
-#endif
 		}
-		else
-		{//武器振り下ろし
+		else if (attackBigStatus == DOUBLEATTACK)//攻撃中
+		{
 			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 #endif
 		}
+		else if (attackBigStatus == DOUBLEAFTER)//攻撃後の隙
+		{
+			Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+		}
+
 		break;
 	case BOSSATTACK3://交互突進
 		if (attackBigStatus == PREOPERATION)
 		{//武器振り上げ
 			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
-			Object::Instance()->Draw(attackBigOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 #endif
-		}
-		else
-		{//武器振り下ろし
-			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
-#if _DEBUG
-			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
-#endif
-		}
-		break;
-	case NOCKBACK:
-		if (oniData->nockbackTime >= 3)
-		{
-			Object::Instance()->Draw(nockBackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
-		}
-		else
-		{
-			Object::Instance()->Draw(nockBackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		}
 		break;
 	}
@@ -145,21 +122,25 @@ void TwinBoar::SearchPlayer(EnemyData* oniData, Player* player)
 			oniData->Status = BOSSATTACK;//小突撃
 			searchEnemyFlag = true;
 			boarNum = boarNumMax;
+			sTime = sTimeMax;
+			sAttack[0] = false;
+			sAttack[1] = false;
 		}
 	}
 }
 
-void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player)
+void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player, int i)
 {
 	if (oniData == nullptr)
 	{
 		assert(oniData);
 	}
 
+	sTime--;
 	//移動
 	oniData->oldPosition = oniData->position;
 	slowValue = player->GetSlow();
-	if (oniData->StatusTime <= 0)
+	if (oniData->StatusTime <= 0 && sTime >= 0)
 	{
 		//プレイヤーとエネミーの位置の差
 		Vec3 memoryPosition = player->GetPosition() - oniData->position;
@@ -188,7 +169,7 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player)
 
 	}
 	//攻撃時間中
-	else
+	else if (oniData->StatusTime > 0)
 	{
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
@@ -204,33 +185,29 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player)
 	//時間が終わったら突進交互か２体同時突進
 	oniData->StatusTime--;
 
-	if (oniData->StatusTime == 0)
+	if (oniData->StatusTime <= 0 && sTime <= 0)
+	{
+		sAttack[i] = true;
+	}
+
+	if (sTime <= 0 && sAttack[0] == true && sAttack[1] == true)
 	{
 		if (attackFlag == true)
 		{
 			oniData->Status = BOSSATTACK2;
 			attackStats = PREOPERATION;
+			doublePreTime = doublePreTimeMax;
 		}
 		else
 		{
 			oniData->Status = BOSSATTACK3;
 			altAttackNum = 0;
-		}
-		boarNum--;
-		oniData->StatusTime = -1;
-		if (boarNum <= 0)
-		{//どっちの攻撃か切り替える
-			if (attackFlag == true)
-			{
-				attackFlag = false;
+			bFlag[0] = false;
+			bFlag[1] = false;
+			bFinishFlag[0] = false;
+			bFinishFlag[1] = false;
 			}
-			else
-			{
-				attackFlag = true;
-			}
-			boarNum = boarNumMax;
-			d_start = time(NULL);
-		}
+		boarNum = boarNumMax;
 	}
 }
 
@@ -242,23 +219,24 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 		assert(oniData);
 	}
 	//攻撃を行っていない＆突進をまだしていなかったら
-	if (altFlag == false && boarNum == num + 1)
+	if (bFlag[num] == false && boarNum > 0 && attackFlag == false)
 	{
-		altFlag = true;
 		attackStats = PREOPERATION;
-		d_start = time(NULL);
+		bPreTime = bPreTimeMax;
+		bFlag[num] = true;
+		attackFlag = true;
 	}
 	//攻撃中
-	if (altFlag == true && boarNum == num + 1)
+	if (bFlag[num] == true && bFinishFlag[num] == false)
 	{
 		if (attackStats == PREOPERATION)
 		{//攻撃予備動作
-			d_end = time(NULL);
 
-			int dTime = d_end - d_start;
-			if (dTime >= 1)
+			bPreTime--;
+			if (bPreTime <= 0)
 			{
 				attackStats = DOUBLEATTACK;
+				oniData->attackDirection = oniData->direction;
 				//プレイヤーとエネミーの位置の差
 				Vec3 memoryPosition = player->GetPosition() - oniData->position;
 				//プレイヤーの向き
@@ -281,26 +259,39 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 			if (dAttackTime <= 0)
 			{//突進が終わったら
 				attackStats = DOUBLEAFTER;
-				d_start = time(NULL);
+				bTime = bTimeMax;
 			}
 		}
 		else
 		{
-			altFlag = false;
-			boarNum--;
+			bTime--;
+			if (bTime <= 0)
+			{
+				boarNum--;
+				attackFlag = false;
+				bFinishFlag[num] = true;
+			}
 		}
 	}
 
 	//交互に突進３回終わったら
-	if (altFlag == false && boarNum == 0 && altAttackNum >= 3)
+	if (boarNum <= 0 && altAttackNum >= 3)
 	{
 		oniData->Status = BOSSATTACK;
+		sTime = sTimeMax;
+		sAttack[0] = false;
+		sAttack[1] = false;
+		attackFlag = true;
 	}
 	//交互に突進を３回行うための処理
-	if (altFlag == false && boarNum == 0)
+	if (boarNum <= 0 && altAttackNum < 3)
 	{
 		altAttackNum++;
 		boarNum = boarNumMax;
+		bFlag[0] = false;
+		bFlag[1] = false;
+		bFinishFlag[0] = false;
+		bFinishFlag[1] = false;
 	}
 }
 
@@ -313,45 +304,57 @@ void TwinBoar::AttackDoubleRush(EnemyData* oniData, Player* player)
 
 	if (attackStats == PREOPERATION)
 	{//攻撃予備動作
-		d_end = time(NULL);
-
-		int dTime = d_end - d_start;
-		if (dTime >= 2)
-		{
+		doublePreTime--;
+		//プレイヤーとエネミーの位置の差
+		Vec3 memoryPosition = player->GetPosition() - oniData->position;
+		//プレイヤーの向き
+		oniData->pDirection = memoryPosition.normalize();
+		oniData->attackDirection = oniData->direction;
+		if (doublePreTime <= 0)
+		{//準備時間が終わったら攻撃モードに映る
 			attackStats = DOUBLEATTACK;
-			//プレイヤーとエネミーの位置の差
-			Vec3 memoryPosition = player->GetPosition() - oniData->position;
-			//プレイヤーの向き
-			oniData->pDirection = memoryPosition.normalize();
-			dAttackTime = dAttackTimeMax;
+			doubleTime = doubleTimeMax;
+			boarNum = boarNumMax;
+
 		}
 	}
-	else if (attackStats == DOUBLEATTACK)
+	else if (attackStats == DOUBLEATTACK)//攻撃中
 	{
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 		{
 			player->Damage(2);
 		}
-		//移動攻撃
-		oniData->oldPosition = oniData->position;
-		slowValue = player->GetSlow();
-		oniData->position += oniData->pDirection * dAttackSpeed * slowValue;
-		dAttackTime -= 1;
-		if (dAttackTime <= 0)
+		if (boarNum == 2)
+		{
+			//移動攻撃
+			oniData->oldPosition = oniData->position;
+			slowValue = player->GetSlow();
+			oniData->position += oniData->pDirection * dAttackSpeed * slowValue;
+		}
+		doubleTime -= 1;
+		if (doubleTime <= 0)
 		{//突進が終わったら
 			attackStats = DOUBLEAFTER;
-			d_start = time(NULL);
+			boarNum--;
+			//2体とも通ったら
+			if (boarNum == 0)
+			{
+				doubleAfterTime = doubleAfterTimeMax;
+			}
 		}
 	}
 	else
 	{//攻撃後の隙の時間2秒
-		d_end = time(NULL);
-		int afterTime = d_end - d_start;
 
-		if (afterTime >= 2)
+		doubleAfterTime--;
+		if (doubleAfterTime <= 0)
 		{
+			attackFlag = false;
 			oniData->Status = BOSSATTACK;
+			sTime = sTimeMax;
+			sAttack[0] = false;
+			sAttack[1] = false;
 		}
 	}
 }

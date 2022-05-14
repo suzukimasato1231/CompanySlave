@@ -30,11 +30,11 @@ public:
 
 	int  SearchStatus() { return BOSSATTACK; }
 	//突進（交互）
-	void AttackRush(EnemyData* oniData, class Player* player,int num);
+	void AttackRush(EnemyData* oniData, class Player* player, int num);
 	//突進（２体同時）
 	void AttackDoubleRush(EnemyData* oniData, class Player* player);
 	//短い突進
-	void AttackShortRush(EnemyData* oniData, class Player* player);
+	void AttackShortRush(EnemyData* oniData, class Player* player, int ty);
 	//ボス情報獲得
 	EnemyData GetBossData() { return bossData; }
 
@@ -68,25 +68,36 @@ private:
 	const int sAttackHoldTime = 50;					//攻撃構える時間
 	const float sAttackSpeed = 0.8f;				//攻撃スピード
 	bool attackFlag = false;
+	const int sTimeMax = 300;						//小攻撃をしていい時間/2
+	int sTime = 0;
+	bool sAttack[2] = { false,false };
 	//2体同時
-	time_t d_start, d_end;							//予備動作時間
+	const int doublePreTimeMax = 100;				//予備動作時間
+	int doublePreTime = 0;
+	const int doubleTimeMax = 300;					//同時突進を行う時間
+	int doubleTime = 0;
+	const int doubleAfterTimeMax = 50;				//攻撃後の硬直時間
+	int doubleAfterTime = 0;
 	int attackBigStatus = 0;						//予備動作開始
 	int attackStats = PREOPERATION;
 	const float dAttackSpeed = 1.2f;				//攻撃スピード
 	const int dAttackTimeMax = 100;					//攻撃時間
 	int dAttackTime = 0;
-
 	//交互突進
-	time_t alt_start, alt_end;						//予備動作時間
+	const int bPreTimeMax = 50;
+	int bPreTime = 0;
+	const int bTimeMax = 300;						//交互突進を行う時間
+	int bTime = 0;
 	const Vec2 attackAltField{ 40.0f,40.0f };		//攻撃範囲
 	int attackAltStatus = 0;						//予備動作開始
 	bool altFlag = false;							//2体のうちどちらかが突進状態
 	int altAttackNum = 0;							//交互突進を連続で何回やったか
+	bool bFlag[2] = { false,false };
+	bool bFinishFlag[2]{ false,false };
 
 	//ボスOBJ
 	Object::ObjectData enemyObject[3];					//プレイヤーオブジェクト
 	Object::ObjectData attackOBJ[2];				//エネミーアタック
-	Object::ObjectData nockBackOBJ[2];				//ノックバックオブジェクト
 	//デバック用
 	Object::ObjectData debugField;	//索敵
 	Object::ObjectData debugField2;//攻撃範囲小

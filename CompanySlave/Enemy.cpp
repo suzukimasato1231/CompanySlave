@@ -859,9 +859,11 @@ void Enemy::UpdateTwinBoar(int i, Player* player)
 		twinBoar.SearchPlayer(eData[i], player);
 		break;
 	case BOSSATTACK:
+	{
 		eData[i]->direction = Direction(i, player);
-		twinBoar.AttackShortRush(eData[i], player);
+		twinBoar.AttackShortRush(eData[i], player, i);
 		break;
+	}
 	case BOSSATTACK2:
 		eData[i]->direction = Direction(i, player);
 		twinBoar.AttackDoubleRush(eData[i], player);
