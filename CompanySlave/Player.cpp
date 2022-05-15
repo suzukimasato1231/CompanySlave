@@ -35,15 +35,15 @@ void Player::Init()
 
 	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerAttack1-1", "playerOBJ/");
 	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerAttack1-2", "playerOBJ/");
-	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerAttack1-3","playerOBJ/");
-	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerAttack2-1","playerOBJ/");
-	playerAttackObject[4] = Object::Instance()->CreateOBJ("playerAttack2-2","playerOBJ/");
-	playerAttackObject[5] = Object::Instance()->CreateOBJ("playerAttack2-3","playerOBJ/");
-	playerAttackObject[6] = Object::Instance()->CreateOBJ("playerAttack3-1","playerOBJ/");
-	playerAttackObject[7] = Object::Instance()->CreateOBJ("playerAttack3-2","playerOBJ/");
-	playerAttackObject[8] = Object::Instance()->CreateOBJ("playerAttack3-3","playerOBJ/");
+	playerAttackObject[2] = Object::Instance()->CreateOBJ("playerAttack1-3", "playerOBJ/");
+	playerAttackObject[3] = Object::Instance()->CreateOBJ("playerAttack2-1", "playerOBJ/");
+	playerAttackObject[4] = Object::Instance()->CreateOBJ("playerAttack2-2", "playerOBJ/");
+	playerAttackObject[5] = Object::Instance()->CreateOBJ("playerAttack2-3", "playerOBJ/");
+	playerAttackObject[6] = Object::Instance()->CreateOBJ("playerAttack3-1", "playerOBJ/");
+	playerAttackObject[7] = Object::Instance()->CreateOBJ("playerAttack3-2", "playerOBJ/");
+	playerAttackObject[8] = Object::Instance()->CreateOBJ("playerAttack3-3", "playerOBJ/");
 
-	playerLifeObject[0] = Object::Instance()->CreateOBJ("playerKari4-1","playerOBJ/");
+	playerLifeObject[0] = Object::Instance()->CreateOBJ("playerKari4-1", "playerOBJ/");
 	playerLifeObject[1] = Object::Instance()->CreateOBJ("playerKari4-2", "playerOBJ/");
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
@@ -63,7 +63,22 @@ void Player::Init()
 	HPGaugeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
 	HPGaugeSub = Sprite::Instance()->SpriteCreate(L"Resources/color/yellow.png");
 	//ソードゲージUI
-	swordGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge.png");
+	swordGraph[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge15.png");
+	swordGraph[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge14.png");
+	swordGraph[2] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge13.png");
+	swordGraph[3] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge12.png");
+	swordGraph[4] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge11.png");
+	swordGraph[5] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge10.png");
+	swordGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge9.png");
+	swordGraph[7] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge8.png");
+	swordGraph[8] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge7.png");
+	swordGraph[9] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge6.png");
+	swordGraph[10] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge5.png");
+	swordGraph[11] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge4.png");
+	swordGraph[12] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge3.png");
+	swordGraph[13] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge2.png");
+	swordGraph[14] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge1.png");
+
 	swordGargeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
 	swordGargeSub = Sprite::Instance()->SpriteCreate(L"Resources/color/blue.png");
 #if _DEBUG
@@ -189,7 +204,7 @@ void Player::StageInit(int stageNum)
 	pBox.maxPosition = XMVectorSet(position.x + r, position.y + r, position.z + r, 1);
 	pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
 	direction = Right;					//プレイヤーの向き
-	
+
 	//ステージ変わった時の初期化
 	walkCount = 0;						//描画用カウント
 	walkNo = 0;							//描画するNO
@@ -659,7 +674,7 @@ void Player::SwordAttack(Enemy* enemy)
 	}
 
 	//剣戻ってくるやつ発動
-	if (Input::Instance()->ControllerDown(ButtonLB) && swordCoolTimeFlag == false &&portionFlag == false)
+	if (Input::Instance()->ControllerDown(ButtonLB) && swordCoolTimeFlag == false && portionFlag == false)
 	{
 
 		if (IsSwordALLHave() == true)
@@ -687,7 +702,7 @@ void Player::SwordAttack(Enemy* enemy)
 		{//回収できない時の描写の時間設定
 			swordNotTime = swordNotTimeMax;
 		}
-	
+
 	}
 	for (int i = 0; i < 7; i++)
 	{
@@ -1152,10 +1167,10 @@ void Player::UIDraw()
 	//HP
 	if (HP > 0)
 	{
-		Sprite::Instance()->Draw(HPGaugeSub, Vec2(70.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
-		Sprite::Instance()->Draw(HPGaugeMain, Vec2(70.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeSub, Vec2(130.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeMain, Vec2(130.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
 	}
-	Sprite::Instance()->Draw(HPGraph, Vec2(20.0f, 30.0f), 500.0f, 30.0f);
+	Sprite::Instance()->Draw(HPGraph, Vec2(80.0f, 30.0f), 500.0f, 30.0f);
 
 	//ポーション
 	if (portion >= 2)
@@ -1181,9 +1196,12 @@ void Player::UIDraw()
 	//番号
 	int number = (int)(swordCoolTimeMax - swordCoolTime) % 10;
 	int number2 = (int)(swordCoolTimeMax - swordCoolTime) / 10;
-	Sprite::Instance()->Draw(skillUI[1], Vec2(37.0f, 30.0f), 56.0f, 70.0f);
-	Sprite::Instance()->Draw(skillUI[0], Vec2(37.0f, 30.0f + 70.0f), 56.0f, -70.0f * (swordCoolTime / swordCoolTimeMax));
-	Sprite::Instance()->Draw(swordGraph, Vec2(5.0f, 5.0f), 120.0f, 120.0f);
+	int swordCoolTimeNum = 15 - (int)swordCoolTime;
+	if (swordCoolTimeNum == 15)
+	{
+		swordCoolTimeNum = 14;
+	}
+	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(5.0f, 5.0f), 120.0f, 120.0f);
 	if (swordCoolTime != swordCoolTimeMax)
 	{
 		//剣クールタイム数字

@@ -263,7 +263,7 @@ private:
 	SpriteData HPGaugeMain;
 
 	//ソードゲージ
-	SpriteData swordGraph;
+	SpriteData swordGraph[15];
 	SpriteData swordGargeSub;
 	SpriteData swordGargeMain;
 

@@ -19,6 +19,7 @@ void WolfFlock::LoopInit()
 {
 	wolfNum = wolfNumMax;
 	flockFlag = false;
+	start_time = time(NULL);
 }
 
 void WolfFlock::Draw(EnemyData* oniData)
@@ -42,11 +43,7 @@ void WolfFlock::SearchPlayer(EnemyData* oniData, Player* player)
 		//プレイヤーが攻撃距離にいたら
 		oniData->Status = SUMMON;//小打撃
 		start_time = time(NULL);
-
 	}
-
-	//狼の遠吠え演出時間
-
 }
 
 void WolfFlock::AttackSummon(EnemyData* oniData)
