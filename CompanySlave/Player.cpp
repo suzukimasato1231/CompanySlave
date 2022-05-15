@@ -4,6 +4,7 @@
 #include "MapStage.h"
 #include"Collision.h"
 #include<time.h>
+#include<random>
 
 Player::Player()
 {}
@@ -532,6 +533,7 @@ void Player::NormalAttack(Enemy* enemy)
 		{
 			normalAttackFlag[j] = false;
 			NormalFieldDirection();
+			bool swordCoolTimeFlag = false;
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
 				if (enemy->GetHP(i) > 0 && enemy->GetType(i) != BossWolfFlock) {
@@ -539,9 +541,23 @@ void Player::NormalAttack(Enemy* enemy)
 					{
 						enemy->DamegeNormal(i, direction);
 						enemy->SetDamegeFlag(i, true);
+						swordCoolTimeFlag = true;
 					}
 				}
 			}
+			//20％の確率で５秒剣投げクールタイム減少
+			if (swordCoolTimeFlag == true)
+			{
+				std::random_device rnd;
+				std::mt19937 mt(rnd());
+				std::uniform_int_distribution<>rand100(0, 99);//0~99の範囲
+				int num = rand100(mt);
+				if (num < 20)
+				{//２０未満ならクールタイム５秒現象
+					swordCoolTimePlas += 5;
+				}
+			}
+
 			normalAttackTime = normalAttackTimeMax;
 			normalGraceTime = normalGraceTimeMax;
 			break;
@@ -681,6 +697,7 @@ void Player::SwordAttack(Enemy* enemy)
 		{//剣を全部持っていた場合
 			swordCoolTimeFlag = true;
 			start_time = time(NULL);//クールタイム計測開始
+			swordCoolTimePlas = 0;
 			slowValue = 0.15;
 			slowFlag = true;
 			BlackFlag = true;
@@ -963,8 +980,9 @@ void Player::SwordAttack(Enemy* enemy)
 	{
 		end_time = time(NULL);
 		swordCoolTime = end_time - start_time;//時間計算
-		if (swordCoolTime >= swordCoolTimeMax)
+		if (swordCoolTime + swordCoolTimePlas >= swordCoolTimeMax)
 		{
+			swordCoolTimePlas = 0;
 			swordCoolTime = swordCoolTimeMax;
 			swordCoolTimeFlag = false;
 		}
@@ -1194,15 +1212,22 @@ void Player::UIDraw()
 		Sprite::Instance()->Draw(swordRotationGraph, Vec2(65.0f, 65.0f), 120.0f, 120.0f, Vec2(0.5f, 0.5f));
 	}
 	//番号
-	int number = (int)(swordCoolTimeMax - swordCoolTime) % 10;
-	int number2 = (int)(swordCoolTimeMax - swordCoolTime) / 10;
-	int swordCoolTimeNum = 15 - (int)swordCoolTime;
-	if (swordCoolTimeNum == 15)
+	//クールタイム時間を足す
+	int coolTime = (int)swordCoolTime + swordCoolTimePlas;
+	if (swordCoolTimeMax <= swordCoolTime + swordCoolTimePlas)
+	{
+		coolTime = swordCoolTimeMax;
+	}
+
+	int number = (int)(swordCoolTimeMax - coolTime) % 10;
+	int number2 = (int)(swordCoolTimeMax - coolTime) / 10;
+	int swordCoolTimeNum = 15 - coolTime;
+	if (swordCoolTimeNum >= 15)
 	{
 		swordCoolTimeNum = 14;
 	}
 	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(5.0f, 5.0f), 120.0f, 120.0f);
-	if (swordCoolTime != swordCoolTimeMax)
+	if (s != swordCoolTimeMax)
 	{
 		//剣クールタイム数字
 		Sprite::Instance()->Draw(swordUI[number2], Vec2(20.0f, 36.0f), 45.0f, 45.0f);

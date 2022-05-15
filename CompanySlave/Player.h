@@ -239,6 +239,7 @@ private:
 	const float swordCoolTimeMax = 15.0f;
 	float swordCoolTime = swordCoolTimeMax;
 	bool swordCoolTimeFlag = false;
+	int swordCoolTimePlas = 0;
 
 	const float swordNotTimeMax = 20;//‰ñŽûŽž•s”­ŽžŠÔ
 	float swordNotTime = 0;
