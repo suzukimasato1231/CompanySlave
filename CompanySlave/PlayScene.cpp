@@ -243,14 +243,11 @@ void PlayScene::Update()
 	player->SetVolume(volume);
 	audio->SetVolume(volume);
 
-
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, enemy, mapStage, sceneChangeFlag);
 
 	//カメラ調整
 	camera->FollowCamera(player->GetCameraPos(), Vec3{ 0,80,-10 }, 0.0f, -15.0f);
-
-
 
 	//パーティクル追加
 	if (player->GetMoveFlag() == true)
@@ -313,16 +310,16 @@ void PlayScene::Update()
 	{
 		if (enemy->GetRushFlag(i) == true && enemy->GetType(i) == WolfType && enemy->GetHP(i) > 0) {
 			if (mapStage->GetfloorNum() == 0) {
-				particleMan2->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan2->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2.0, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (mapStage->GetfloorNum() == 1) {
-				particleMan3->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan3->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2.0, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (mapStage->GetfloorNum() == 2) {
-				particleMan4->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan4->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2.0, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 			if (mapStage->GetfloorNum() == 3) {
-				particleMan5->ParticleAdd3(enemy->GetPosition(i), 0.1f, 1.5, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan5->ParticleAdd3(enemy->GetPosition(i), 0.1f, 2.0, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 		}
 	}
