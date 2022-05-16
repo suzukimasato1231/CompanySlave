@@ -1227,7 +1227,7 @@ void Player::UIDraw()
 		swordCoolTimeNum = 14;
 	}
 	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(5.0f, 5.0f), 120.0f, 120.0f);
-	if (s != swordCoolTimeMax)
+	if (coolTime != swordCoolTimeMax)
 	{
 		//剣クールタイム数字
 		Sprite::Instance()->Draw(swordUI[number2], Vec2(20.0f, 36.0f), 45.0f, 45.0f);
