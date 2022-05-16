@@ -536,7 +536,7 @@ void Player::NormalAttack(Enemy* enemy)
 			bool swordCoolTimeFlag = false;
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
-				if (enemy->GetHP(i) > 0 && enemy->GetType(i) != BossWolfFlock) {
+				if ((enemy->GetHP(i) > 0 && enemy->GetType(i) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(i) == BossTwinBoar)) {
 					if (Collision::CheckBox2Box(enemy->GetBox(i), normalAttackBox))
 					{
 						enemy->DamegeNormal(i, direction);
@@ -791,7 +791,7 @@ void Player::SwordAttack(Enemy* enemy)
 				//–ß‚Á‚Ä‚é‚Æ‚«‚Ì“–‚½‚è”»’è
 				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 				{
-					if (enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) {
+					if ((enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(j) == BossTwinBoar)) {
 						if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
 						{
 							enemy->DamegeSword(j);
@@ -850,7 +850,7 @@ void Player::SwordAttack(Enemy* enemy)
 			//“G‚Æ‚Ì“–‚½‚è”»’è
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock)
+				if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && ((enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(j) == BossTwinBoar)))
 				{
 					isSwordAttack[i] = false;
 					isEnemySting[i][j] = true;
@@ -947,7 +947,7 @@ void Player::SwordAttack(Enemy* enemy)
 				{
 					//“G‚Æ‚Ì“–‚½‚è”»’è
 
-					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock)
+					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && ((enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(j) == BossTwinBoar)))
 					{
 						isSwordAttack[i] = false;
 						isEnemySting[i][j] = true;

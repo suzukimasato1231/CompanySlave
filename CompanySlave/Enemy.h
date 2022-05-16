@@ -120,6 +120,8 @@ public://取得系
 	const float mapSize = 10.0f;
 
 	Vec3 basePosition = { 0,0,0 };//マップチップの初期位置
+
+	float TwinBoarHP() { return twinTotalHP; }
 private:
 	//エネミー１
 	class OniType oniType;
@@ -153,6 +155,8 @@ private:
 	class TwinBoar twinBoar;
 
 	void UpdateTwinBoar(int i, class Player* player);
+
+	float twinTotalHP = 0;
 
 private:
 	const float nockPower = 0.8f;

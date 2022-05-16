@@ -222,37 +222,69 @@ void Enemy::Update(Player* player)
 {
 	for (size_t i = 0; i < eData.size(); i++)
 	{
+		switch (eData[i]->type)
+		{
+		case Oni:
+			if (eData[i]->HP > 0)
+			{
+				UpdateOni(i, player);
+			}
+			break;
+		case OniBow:
+			if (eData[i]->HP > 0)
+			{
+				UpdateBow(i, player);
+			}
+			break;
+		case WolfType:
+			if (eData[i]->HP > 0)
+			{
+				UpdateWolf(i, player);
+			}
+			break;
+		case BoarType:
+			if (eData[i]->HP > 0)
+			{
+				UpdateBoar(i, player);
+			}
+			break;
+		case BossBigOni:
+			if (eData[i]->HP > 0)
+			{
+				UpdateBigOniBoss(i, player);
+			}
+			break;
+		case BossWolfFlock:
+			if (eData[i]->HP > 0)
+			{
+				UpdateWolfFlock(i, player);
+			}
+			break;
+		case BossTwinBoar:
+			twinTotalHP = 0;
+			for (size_t n = 0; n < eData.size(); n++)
+			{//2体のイノシシの合計HPを計算
+				twinTotalHP += eData[n]->HP;
+			}
+			if (twinTotalHP > 0)
+			{
+				UpdateTwinBoar(i, player);
+			}
+			else
+			{//両方HPが無かったら
+				for (size_t n = 0; n < eData.size(); n++)
+				{
+					eData[n]->HP = 0;
+				}
+			}
+			break;
+		}
 		if (eData[i]->HP > 0)
 		{
-			switch (eData[i]->type)
-			{
-			case Oni:
-				UpdateOni(i, player);
-				break;
-			case OniBow:
-				UpdateBow(i, player);
-				break;
-			case WolfType:
-				UpdateWolf(i, player);
-				break;
-			case BoarType:
-				UpdateBoar(i, player);
-				break;
-			case BossBigOni:
-				UpdateBigOniBoss(i, player);
-				break;
-			case BossWolfFlock:
-				UpdateWolfFlock(i, player);
-				break;
-			case BossTwinBoar:
-				UpdateTwinBoar(i, player);
-				break;
-			}
 			NockBack(i);
+			//矢の更新
+			oniBow.BowUpdate(eData[i], player);
 		}
-		//矢の更新
-		oniBow.BowUpdate(eData[i], player);
-
 		//座標を合わせる
 		eData[i]->eBox.minPosition = XMVectorSet(eData[i]->position.x - eData[i]->r, eData[i]->position.y - eData[i]->r, eData[i]->position.z - eData[i]->r, 1);
 		eData[i]->eBox.maxPosition = XMVectorSet(eData[i]->position.x + eData[i]->r, eData[i]->position.y + eData[i]->r, eData[i]->position.z + eData[i]->r, 1);
@@ -318,32 +350,52 @@ void Enemy::Draw()
 {
 	for (size_t i = 0; i < eData.size(); i++)
 	{
-		if (eData[i]->HP > 0)
+
+		switch (eData[i]->type)
 		{
-			switch (eData[i]->type)
+		case Oni:
+			if (eData[i]->HP > 0)
 			{
-			case Oni:
 				oniType.Draw(eData[i]);
-				break;
-			case OniBow:
-				oniBow.Draw(eData[i]);
-				break;
-			case WolfType:
-				wolf.Draw(eData[i]);
-				break;
-			case BoarType:
-				boar.Draw(eData[i]);
-				break;
-			case BossBigOni:
-				bigOniBoss.Draw(eData[i]);
-				break;
-			case BossWolfFlock:
-				wolfFlock.Draw(eData[i]);
-				break;
-			case BossTwinBoar:
-				twinBoar.Draw(eData[i]);
-				break;
 			}
+			break;
+		case OniBow:
+			if (eData[i]->HP > 0)
+			{
+				oniBow.Draw(eData[i]);
+			}
+			break;
+		case WolfType:
+			if (eData[i]->HP > 0)
+			{
+				wolf.Draw(eData[i]);
+			}
+			break;
+		case BoarType:
+			if (eData[i]->HP > 0)
+			{
+				boar.Draw(eData[i]);
+			}
+			break;
+		case BossBigOni:
+			if (eData[i]->HP > 0)
+			{
+				bigOniBoss.Draw(eData[i]);
+			}
+			break;
+		case BossWolfFlock:
+			if (eData[i]->HP > 0)
+			{
+				wolfFlock.Draw(eData[i]);
+			}
+			break;
+		case BossTwinBoar:
+			if (twinTotalHP > 0)
+			{
+				twinBoar.Draw(eData[i]);
+			}
+			break;
+
 
 			//HPゲージ
 			float parsent = eData[i]->HP / eData[i]->HPMax;
@@ -383,7 +435,7 @@ void Enemy::DrawUI()
 			boarNum++;
 			boarTotalHP += eData[i]->HP;
 			boarTotalHPMax += eData[i]->HPMax;
-			if (boarTotalHP > 0 && boarNum == 1)
+			if (boarTotalHP > 0 && boarNum == 2)
 			{
 				float ratio = boarTotalHP / boarTotalHPMax;
 				Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 50.0f);
@@ -454,7 +506,7 @@ void Enemy::DrawBlood()
 	float size = 0.0f;
 	for (size_t i = 0; i < eData.size(); i++)
 	{
-		if (eData[i]->HP <= 0)
+		if (eData[i]->HP <= 0 || (twinTotalHP > 0 && eData[i]->type == BossTwinBoar))
 		{
 			size += 0.01;
 			if (BloodTime[i] > 20) {
@@ -488,7 +540,7 @@ void Enemy::Delete()
 	{
 		BloodPosition[i] = eData[i]->position;
 		//BloodEffectが消えたら血痕が表示される
-		if (eData[i]->HP <= 0)
+		if (eData[i]->HP <= 0 || (twinTotalHP > 0 && eData[i]->type == BossTwinBoar))
 		{
 			//0になるまでタイムのマイナス
 			if (BloodTime[i] > 0) {
