@@ -14,23 +14,26 @@ void TwinBoar::Init()
 #endif
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//’Êíó‘Ô
-	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/");
-	enemyObject[1] = Object::Instance()->CreateOBJ("OniKari1-1", "OniOBJ/");
-	enemyObject[2] = Object::Instance()->CreateOBJ("OniKari1-2", "OniOBJ/");
+	enemyObject[0] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/");
+	enemyObject[1] = Object::Instance()->CreateOBJ("wolf1-1", "WolfOBJ/");
+	enemyObject[2] = Object::Instance()->CreateOBJ("wolf1-2", "WolfOBJ/");
+	enemyObject[3] = Object::Instance()->CreateOBJ("wolf1-3", "WolfOBJ/");
+	enemyObject[4] = Object::Instance()->CreateOBJ("wolf1-4", "WolfOBJ/");
 	//UŒ‚ƒ‚[ƒVƒ‡ƒ“
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("wolf2-1", "WolfOBJ/");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("wolf2-2", "WolfOBJ/");
+	attackOBJ[2] = Object::Instance()->CreateOBJ("wolf2-3", "WolfOBJ/");
 
 	//ƒ{ƒX‚Ì”’l
 	bossData.HP = 168.0f;
 	bossData.HPMax = 168.0f;
-	bossData.scale = { 4.0f,4.0f,4.0f };
+	bossData.scale = { 1.5f,1.5f,1.5f };
 	bossData.r = 15.0f;
 	bossData.bossFlag = true;
 	bossData.nockPossibleFlag = false;
 }
 
-void TwinBoar::Draw(EnemyData* oniData)
+void TwinBoar::Draw(EnemyData* oniData, int i)
 {
 	if (oniData == nullptr)
 	{
@@ -39,20 +42,16 @@ void TwinBoar::Draw(EnemyData* oniData)
 	switch (oniData->Status)
 	{
 	case NORMAL:
-		Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		break;
 	case  BOSSATTACK://¬“Ëi
 		if (oniData->StatusTime >= sAttackMotionTime - sAttackHoldTime)
 		{//•ŠíU‚èã‚°
-			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
-#if _DEBUG
-			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
-#endif
+			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
 		else if (oniData->StatusTime >= 0)
 		{//•ŠíU‚è‰º‚ë‚µ
-			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
@@ -60,40 +59,43 @@ void TwinBoar::Draw(EnemyData* oniData)
 		}
 		else
 		{//ˆÚ“®’†
-			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
-#if _DEBUG
-			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
-				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
-#endif
+			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		}
 		break;
 	case BOSSATTACK2://“¯Žž“Ëi
-		if (attackBigStatus == PREOPERATION)//UŒ‚€”õ
+		if (attackStats == PREOPERATION)//UŒ‚€”õ
 		{
-			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
-		else if (attackBigStatus == DOUBLEATTACK)//UŒ‚’†
+		else if (attackStats == DOUBLEATTACK)//UŒ‚’†
 		{
-			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 #endif
 		}
-		else if (attackBigStatus == DOUBLEAFTER)//UŒ‚Œã‚ÌŒ„
+		else if (attackStats == DOUBLEAFTER)//UŒ‚Œã‚ÌŒ„
 		{
-			Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
-
 		break;
 	case BOSSATTACK3://ŒðŒÝ“Ëi
-		if (attackBigStatus == PREOPERATION)
+		if (attackStats == PREOPERATION && bFlag[i] == true && bFinishFlag[i] == false)
 		{//•ŠíU‚èã‚°
-			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+		}
+		else if (attackStats == DOUBLEATTACK && bFlag[i] == true && bFinishFlag[i] == false)
+		{
+			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 #endif
+		}
+		else
+		{
+			Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
 		break;
 	}
@@ -206,7 +208,7 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player, int i)
 			bFlag[1] = false;
 			bFinishFlag[0] = false;
 			bFinishFlag[1] = false;
-			}
+		}
 		boarNum = boarNumMax;
 	}
 }
@@ -259,18 +261,13 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 			if (dAttackTime <= 0)
 			{//“Ëi‚ªI‚í‚Á‚½‚ç
 				attackStats = DOUBLEAFTER;
-				bTime = bTimeMax;
 			}
 		}
 		else
 		{
-			bTime--;
-			if (bTime <= 0)
-			{
-				boarNum--;
-				attackFlag = false;
-				bFinishFlag[num] = true;
-			}
+			boarNum--;
+			attackFlag = false;
+			bFinishFlag[num] = true;
 		}
 	}
 

@@ -392,11 +392,12 @@ void Enemy::Draw()
 		case BossTwinBoar:
 			if (twinTotalHP > 0)
 			{
-				twinBoar.Draw(eData[i]);
+				twinBoar.Draw(eData[i], i);
 			}
 			break;
-
-
+		}
+		if (eData[i]->HP > 0)
+		{
 			//HPゲージ
 			float parsent = eData[i]->HP / eData[i]->HPMax;
 			if (parsent != 1.0f && eData[i]->bossFlag == false)
@@ -506,7 +507,7 @@ void Enemy::DrawBlood()
 	float size = 0.0f;
 	for (size_t i = 0; i < eData.size(); i++)
 	{
-		if (eData[i]->HP <= 0 || (twinTotalHP > 0 && eData[i]->type == BossTwinBoar))
+		if (eData[i]->HP <= 0 || (twinTotalHP <= 0 && eData[i]->type == BossTwinBoar))
 		{
 			size += 0.01;
 			if (BloodTime[i] > 20) {
@@ -540,7 +541,8 @@ void Enemy::Delete()
 	{
 		BloodPosition[i] = eData[i]->position;
 		//BloodEffectが消えたら血痕が表示される
-		if (eData[i]->HP <= 0 || (twinTotalHP > 0 && eData[i]->type == BossTwinBoar))
+		if ((eData[i]->HP <= 0 && eData[i]->type != BossTwinBoar) ||
+			(twinTotalHP <= 0 && eData[i]->type == BossTwinBoar && eData[i]->Status != NORMAL))
 		{
 			//0になるまでタイムのマイナス
 			if (BloodTime[i] > 0) {

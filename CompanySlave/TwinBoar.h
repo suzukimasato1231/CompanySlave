@@ -22,7 +22,7 @@ public:
 	//初期化
 	void Init();
 
-	void Draw(EnemyData* oniData);
+	void Draw(EnemyData* oniData,int i);
 
 	void LoopInit();
 	//索敵
@@ -78,7 +78,7 @@ private:
 	int doubleTime = 0;
 	const int doubleAfterTimeMax = 50;				//攻撃後の硬直時間
 	int doubleAfterTime = 0;
-	int attackBigStatus = 0;						//予備動作開始
+//	int attackBigStatus = 0;						//予備動作開始
 	int attackStats = PREOPERATION;
 	const float dAttackSpeed = 1.2f;				//攻撃スピード
 	const int dAttackTimeMax = 100;					//攻撃時間
@@ -96,8 +96,8 @@ private:
 	bool bFinishFlag[2]{ false,false };
 
 	//ボスOBJ
-	Object::ObjectData enemyObject[3];					//プレイヤーオブジェクト
-	Object::ObjectData attackOBJ[2];				//エネミーアタック
+	Object::ObjectData enemyObject[5];					//プレイヤーオブジェクト
+	Object::ObjectData attackOBJ[3];					//エネミーアタック
 	//デバック用
 	Object::ObjectData debugField;	//索敵
 	Object::ObjectData debugField2;//攻撃範囲小
