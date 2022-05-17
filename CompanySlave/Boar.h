@@ -47,8 +47,8 @@ private:
 
 	const int attackMotionTime = 100;				//攻撃モーションの時間
 	const int attackHoldTime = 50;					//攻撃を構える時間
-	//const int attackMoveTime = 40;					//攻撃の移動時間
-	//const int attackMotionDamege = 10;				//攻撃モーション中のどの時間でダメージを与えるか
+	//const int attackMoveTime = 40;				//攻撃の移動時間
+	//const int attackMotionDamege = 10;			//攻撃モーション中のどの時間でダメージを与えるか
 
 	const float player2EnemyLength = 50.0f;			//プレイヤーと敵の距離
 

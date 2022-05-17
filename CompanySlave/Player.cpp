@@ -1406,12 +1406,13 @@ Vec3 Player::GetCameraPos()
 		if (cameraPos.y < -3.0f)
 		{
 			cameraPos.y = -3.0f;
+			collectCount = -8.0f;
 		}
 	}
 	else
 	{
 		collectCount += 0.1f;
-		if (collectCount >= 0.0f)
+		if (collectCount > 0.0f)
 		{
 			collectCount = 0.0f;
 		}

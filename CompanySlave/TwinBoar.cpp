@@ -28,7 +28,7 @@ void TwinBoar::Init()
 	bossData.HP = 168.0f;
 	bossData.HPMax = 168.0f;
 	bossData.scale = { 1.5f,1.5f,1.5f };
-	bossData.r = 15.0f;
+	bossData.r = 10.0f;
 	bossData.bossFlag = true;
 	bossData.nockPossibleFlag = false;
 }
@@ -227,6 +227,7 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 		bPreTime = bPreTimeMax;
 		bFlag[num] = true;
 		attackFlag = true;
+		oniData->attackDirection = oniData->direction;
 	}
 	//UŒ‚’†
 	if (bFlag[num] == true && bFinishFlag[num] == false)
