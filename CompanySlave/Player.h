@@ -279,6 +279,7 @@ private:
 	SoundData sound3;
 	float volume = 1.0f;
 
+	float collectCount = 0.1f;
 #if _DEBUG
 	Object::ObjectData attackField;//UŒ‚”ÍˆÍ‰Â‹‰»
 	int redColor;

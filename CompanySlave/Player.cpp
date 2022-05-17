@@ -149,6 +149,7 @@ void Player::StageInit(int stageNum)
 	case 1:
 		//ポーション
 		portion = portionMax;
+		HP = HPMAX;
 		Filepath = (char*)"Resources/map/Enemy_Tile1.csv";
 		break;
 	case 2:
@@ -160,6 +161,7 @@ void Player::StageInit(int stageNum)
 	case 4:
 		//ポーション
 		portion = portionMax;
+		HP = HPMAX;
 		Filepath = (char*)"Resources/map/Enemy_Tile4.csv";
 		break;
 	case 5:
@@ -171,6 +173,7 @@ void Player::StageInit(int stageNum)
 	case 7:
 		//ポーション
 		portion = portionMax;
+		HP = HPMAX;
 		Filepath = (char*)"Resources/map/Enemy_Tile7.csv";
 		break;
 	case 8:
@@ -1398,7 +1401,20 @@ Vec3 Player::GetCameraPos()
 	}
 	if (BlackFlag == true)
 	{
-		cameraPos.y = -3;
+		collectCount -= 0.25f;
+		cameraPos.y += collectCount;
+		if (cameraPos.y < -3.0f)
+		{
+			cameraPos.y = -3.0f;
+		}
+	}
+	else
+	{
+		collectCount += 0.1f;
+		if (collectCount >= 0.0f)
+		{
+			collectCount = 0.0f;
+		}
 	}
 	return cameraPos;
 }

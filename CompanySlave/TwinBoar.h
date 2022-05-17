@@ -78,7 +78,6 @@ private:
 	int doubleTime = 0;
 	const int doubleAfterTimeMax = 50;				//UŒ‚Œã‚Ìd’¼ŠÔ
 	int doubleAfterTime = 0;
-//	int attackBigStatus = 0;						//—\”õ“®ìŠJn
 	int attackStats = PREOPERATION;
 	const float dAttackSpeed = 1.2f;				//UŒ‚ƒXƒs[ƒh
 	const int dAttackTimeMax = 100;					//UŒ‚ŠÔ
