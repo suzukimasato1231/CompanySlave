@@ -13,6 +13,7 @@
 #include"PushCollision.h"
 #include"Enemy.h"
 #include<array>
+#include"../ParticleAdd.h"
 
 extern const int window_width;
 extern const int window_height;
@@ -92,18 +93,7 @@ private://定義
 	//エネミー
 	Enemy* enemy = nullptr;
 
-
-
-	//パーティクル
-	//敵死んだ時のパーティクル
-	ParticleManager* particleMan = nullptr;
-	//歩行パーティクル	
-	ParticleManager* particleMan2 = nullptr;
-	ParticleManager* particleMan3 = nullptr;
-	ParticleManager* particleMan4 = nullptr;
-	ParticleManager* particleMan5 = nullptr;
-
-
+	ParticleAdd* particleAdd = nullptr;
 
 	int stageNum = 1;
 	int deathTime = 20;

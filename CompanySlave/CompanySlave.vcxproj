@@ -258,6 +258,7 @@
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Input\Keybord.h" />
     <ClInclude Include="Input\Mouse.h" />
+    <ClInclude Include="ParticleAdd.h" />
     <ClInclude Include="Pipeline\Pipeline.h" />
     <ClInclude Include="Player\Direction.h" />
     <ClInclude Include="Player\Player.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="Input\Keybord.cpp" />
     <ClCompile Include="Input\Mouse.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ParticleAdd.cpp" />
     <ClCompile Include="Pipeline\Pipeline.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Scene\Clear.cpp" />
