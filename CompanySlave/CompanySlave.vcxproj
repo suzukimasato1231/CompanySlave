@@ -78,12 +78,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)2d\;$(ProjectDir)3d\;$(ProjectDir)base\;$(ProjectDir)Pipeline\;$(ProjectDir)Helper\;$(ProjectDir)Collision\;$(ProjectDir)Input\;$(ProjectDir)Audio\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)2d\;$(ProjectDir)3d\;$(ProjectDir)base\;$(ProjectDir)Pipeline\;$(ProjectDir)Helper\;$(ProjectDir)Collision\;$(ProjectDir)Input\;$(ProjectDir)Audio\;$(ProjectDir)Enemy\;$(ProjectDir)Player\;$(ProjectDir)Scene\;$(ProjectDir)Stage\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)2d\;$(ProjectDir)3d\;$(ProjectDir)base\;$(ProjectDir)Pipeline\;$(ProjectDir)Helper\;$(ProjectDir)Collision\;$(ProjectDir)Input\;$(ProjectDir)Audio\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)2d\;$(ProjectDir)3d\;$(ProjectDir)base\;$(ProjectDir)Pipeline\;$(ProjectDir)Helper\;$(ProjectDir)Collision\;$(ProjectDir)Input\;$(ProjectDir)Audio\;$(ProjectDir)Enemy\;$(ProjectDir)Player\;$(ProjectDir)Scene\;$(ProjectDir)Stage\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -239,16 +239,18 @@
     <ClInclude Include="base\Singleton.h" />
     <ClInclude Include="base\_DirectX.h" />
     <ClInclude Include="base\_Window.h" />
-    <ClInclude Include="BigOniBoss.h" />
-    <ClInclude Include="Boar.h" />
-    <ClInclude Include="Clear.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionPrimitive.h" />
-    <ClInclude Include="Direction.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyHelper.h" />
+    <ClInclude Include="Enemy\BigOniBoss.h" />
+    <ClInclude Include="Enemy\Boar.h" />
+    <ClInclude Include="Enemy\Enemy.h" />
+    <ClInclude Include="Enemy\EnemyHelper.h" />
+    <ClInclude Include="Enemy\OniBow.h" />
+    <ClInclude Include="Enemy\OniType.h" />
+    <ClInclude Include="Enemy\TwinBoar.h" />
+    <ClInclude Include="Enemy\WOLF.h" />
+    <ClInclude Include="Enemy\WolfFlock.h" />
     <ClInclude Include="Fps.h" />
-    <ClInclude Include="GameSceneManager.h" />
     <ClInclude Include="Helper\Easing.h" />
     <ClInclude Include="Helper\LoadCSV.h" />
     <ClInclude Include="Helper\Vec.h" />
@@ -256,17 +258,15 @@
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Input\Keybord.h" />
     <ClInclude Include="Input\Mouse.h" />
-    <ClInclude Include="MapStage.h" />
-    <ClInclude Include="OniBow.h" />
-    <ClInclude Include="OniType.h" />
     <ClInclude Include="Pipeline\Pipeline.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="PushCollision.h" />
-    <ClInclude Include="Title.h" />
-    <ClInclude Include="TwinBoar.h" />
-    <ClInclude Include="WOLF.h" />
-    <ClInclude Include="WolfFlock.h" />
+    <ClInclude Include="Player\Direction.h" />
+    <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="Scene\Clear.h" />
+    <ClInclude Include="Scene\GameSceneManager.h" />
+    <ClInclude Include="Scene\PlayScene.h" />
+    <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="Stage\MapStage.h" />
+    <ClInclude Include="Stage\PushCollision.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2d\DebugText.cpp" />
@@ -279,13 +279,16 @@
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="base\_DirectX.cpp" />
     <ClCompile Include="base\_Window.cpp" />
-    <ClCompile Include="BigOniBoss.cpp" />
-    <ClCompile Include="Boar.cpp" />
-    <ClCompile Include="Clear.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Enemy\BigOniBoss.cpp" />
+    <ClCompile Include="Enemy\Boar.cpp" />
+    <ClCompile Include="Enemy\Enemy.cpp" />
+    <ClCompile Include="Enemy\OniBow.cpp" />
+    <ClCompile Include="Enemy\OniType.cpp" />
+    <ClCompile Include="Enemy\TwinBoar.cpp" />
+    <ClCompile Include="Enemy\WOLF.cpp" />
+    <ClCompile Include="Enemy\WolfFlock.cpp" />
     <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="GameSceneManager.cpp" />
     <ClCompile Include="Helper\Easing.cpp" />
     <ClCompile Include="Helper\LoadCSV.cpp" />
     <ClCompile Include="Helper\Vec.cpp" />
@@ -294,17 +297,14 @@
     <ClCompile Include="Input\Keybord.cpp" />
     <ClCompile Include="Input\Mouse.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MapStage.cpp" />
-    <ClCompile Include="OniBow.cpp" />
-    <ClCompile Include="OniType.cpp" />
     <ClCompile Include="Pipeline\Pipeline.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="PushCollision.cpp" />
-    <ClCompile Include="Title.cpp" />
-    <ClCompile Include="TwinBoar.cpp" />
-    <ClCompile Include="WOLF.cpp" />
-    <ClCompile Include="WolfFlock.cpp" />
+    <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="Scene\Clear.cpp" />
+    <ClCompile Include="Scene\GameSceneManager.cpp" />
+    <ClCompile Include="Scene\PlayScene.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="Stage\MapStage.cpp" />
+    <ClCompile Include="Stage\PushCollision.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

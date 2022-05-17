@@ -66,6 +66,12 @@
     <Filter Include="ソース ファイル\Enemy">
       <UniqueIdentifier>{c4b4bd4d-4489-48a1-8095-a358dbe68352}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{73049572-b41a-4d9e-86cc-91851a9643d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Map">
+      <UniqueIdentifier>{badd8db5-5ac9-4a15-ba73-251e243ea494}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -186,62 +192,62 @@
     <ClInclude Include="3d\Camera.h">
       <Filter>Library\3d\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="MapStage.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Helper\LoadCSV.h">
       <Filter>Library\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="PushCollision.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSceneManager.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Title.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Direction.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="OniType.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyHelper.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="OniBow.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="WOLF.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="BigOniBoss.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Clear.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="WolfFlock.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Boar.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="TwinBoar.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Fps.h">
       <Filter>Library\DirectXCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\BigOniBoss.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Boar.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Enemy.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemyHelper.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\OniBow.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\OniType.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\TwinBoar.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\WOLF.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\WolfFlock.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Direction.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Clear.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameSceneManager.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\PlayScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Title.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage\MapStage.h">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage\PushCollision.h">
+      <Filter>ソース ファイル\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,56 +308,56 @@
     <ClCompile Include="3d\Camera.cpp">
       <Filter>Library\3d\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="MapStage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Helper\LoadCSV.cpp">
       <Filter>Library\Helper</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSceneManager.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="PushCollision.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Title.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="OniType.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="OniBow.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="WOLF.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="BigOniBoss.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Clear.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="WolfFlock.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Boar.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="TwinBoar.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Fps.cpp">
       <Filter>Library\DirectXCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\BigOniBoss.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Boar.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Enemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\OniBow.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\OniType.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\TwinBoar.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\WOLF.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\WolfFlock.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Clear.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameSceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\PlayScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Title.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage\MapStage.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage\PushCollision.cpp">
+      <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
