@@ -85,7 +85,7 @@ void Title::Init()
 	scene = 0;
 
 	position = { 5.0f,0.0f,0.0f };
-	rotation = { 0,-90,-90 };
+	rotation = { 0,90,-90 };
 	size = { 1,1,1 };
 	for (int i = 0; i < rainMax; i++) {
 		//x‚Íƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚É‚µ‚Ä‚¢‚é
@@ -210,7 +210,7 @@ void Title::Update()
 		if (volumeFlag == 0)
 		{
 			position = { 5.0f,0.0f,0.0f };
-			rotation = { 0,-90,-90 };
+			rotation = { 0,90,-90 };
 			size = { 1,1,1 };
 			volumeFade = 0;
 			volumeFadeFlag = false;

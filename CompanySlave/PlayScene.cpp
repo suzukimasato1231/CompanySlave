@@ -359,7 +359,43 @@ void PlayScene::Update()
 		timeRate = 0;
 		sceneFlag = true;
 	}
+	//if (player->GetHP() <= 0)
+	//{
+	//	audio->SoundStop();
+	//	if (deathTime > 0) {
+	//		deathTime--;
+	//	}
+	//	if (deathTime <= 0) {
+	//		if (fade < 1.0f) {
+	//			fade += 0.01f;
+	//		}
+	//	}
+	//	if (fade >= 1.0f) {
+	//		if (color < 0.6f) {
+	//			color += 0.01f;
 
+	//		}
+	//	}
+	//	if (color >= 0.6f) {
+	//		if (swordTime > 0) {
+	//			swordTime--;
+	//		}
+	//		if (swordTime <= 0) {
+
+	//			fade2 += 0.1f;
+
+	//		}
+	//	}
+
+	//}
+
+
+	////プレイシーンを抜ける
+	//if (Input::Instance()->ControllerDown(ButtonA) && fade2 >= 1)
+	//{
+
+	//	sceneFlag = true;
+	//}
 	if (sceneChangeFlag == true)
 	{
 		audio->SoundStop();
@@ -400,7 +436,7 @@ void PlayScene::Update()
 		}
 	}
 	if (positionS.x < 300) {
-		positionS.x += 5;
+		positionS.x += 8;
 	}
 	else if (positionS.x >= 300) {
 		positionS.x = -20;
@@ -591,6 +627,12 @@ void PlayScene::Draw()
 	debugText.Print(10, 500, 2, "%f,%f", player->GetPosition().x, player->GetPosition().z);
 #endif
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
+	//Sprite::Instance()->Draw(GameOverGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(color, color, color, fade));
+	//if (swordTime <= 0) {
+	//	Object::Instance()->Draw(sword2, Vec3(player->GetPosition().x + 50, 5, player->GetPosition().z - 10), Vec3(10, 10, 10), Vec3(0, 90, -20), Vec4(1, 1, 1, 1));
+	//}
+	//Sprite::Instance()->Draw(GameOverTextGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(1, 1, 1, fade2));
+
 #if _DEBUG
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
@@ -599,7 +641,7 @@ void PlayScene::Draw()
 void PlayScene::LoadDraw()
 {
 	if (LoadFlag == true) {
-		Object::Instance()->Draw(sword, positionS, Vec3{ 5,5,5 }, { 0,90,0 }, Vec4{ 1,1,1,1 });
+		Object::Instance()->Draw(sword, positionS, Vec3{ 2,2,4 }, { 0,90,0 }, Vec4{ 1,1,1,1 });
 	}
 }
 bool PlayScene::GetSceneFlag()

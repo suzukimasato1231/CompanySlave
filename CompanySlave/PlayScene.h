@@ -62,6 +62,7 @@ private://’è‹`
 	SpriteData Parent;
 	SpriteData controlGraph;
 	SpriteData GameOverGraph;
+	SpriteData GameOverTextGraph;
 	SpriteData SChangeGraph;
 
 	SpriteData AButton[2];
@@ -105,7 +106,11 @@ private://’è‹`
 
 
 	int stageNum = 1;
-	float fade = 1.0f;
+	int deathTime = 20;
+	int swordTime = 10;
+	float fade = 0.0f;
+	float fade2 = 0.0f;
+	float color = 0.0f;
 	bool stageFlag = true;
 
 	bool sceneFlag = false;
@@ -146,4 +151,6 @@ private://’è‹`
 
 	Object::ObjectData sword;
 	Vec3 positionS = { -20.0f,5.0f,-270.0f };
+
+	Object::ObjectData sword2;
 };
