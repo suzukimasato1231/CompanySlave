@@ -252,7 +252,7 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 			//攻撃範囲内にいたらプレイヤーにダメージ
 			if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 			{
-				player->Damage(3);
+				player->Damage(1);
 			}
 			//移動攻撃
 			oniData->oldPosition = oniData->position;
@@ -321,7 +321,7 @@ void TwinBoar::AttackDoubleRush(EnemyData* oniData, Player* player)
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 		{
-			player->Damage(2);
+			player->Damage(1);
 		}
 		if (boarNum == 2)
 		{

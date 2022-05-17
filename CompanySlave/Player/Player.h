@@ -172,7 +172,7 @@ private:
 	float radDir = 0.0f;
 
 	//ƒ_ƒ[ƒWŒã‚Ì–³“G
-	const int invincibleTimeMax = 40;
+	const int invincibleTimeMax = 60;
 	int invincivleTime = 0;
 
 	//’ÊíUŒ‚
