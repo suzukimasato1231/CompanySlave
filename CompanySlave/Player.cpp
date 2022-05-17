@@ -136,6 +136,7 @@ void Player::Init()
 void Player::LoopInit()
 {
 	HP = HPMAX;
+	HPSub = HPMAX;
 	//ポーション
 	portion = portionMax;
 }
@@ -150,6 +151,7 @@ void Player::StageInit(int stageNum)
 		//ポーション
 		portion = portionMax;
 		HP = HPMAX;
+		HPSub = HP;
 		Filepath = (char*)"Resources/map/Enemy_Tile1.csv";
 		break;
 	case 2:
@@ -162,6 +164,7 @@ void Player::StageInit(int stageNum)
 		//ポーション
 		portion = portionMax;
 		HP = HPMAX;
+		HPSub = HP;
 		Filepath = (char*)"Resources/map/Enemy_Tile4.csv";
 		break;
 	case 5:
@@ -174,6 +177,7 @@ void Player::StageInit(int stageNum)
 		//ポーション
 		portion = portionMax;
 		HP = HPMAX;
+		HPSub = HP;
 		Filepath = (char*)"Resources/map/Enemy_Tile7.csv";
 		break;
 	case 8:
@@ -1036,7 +1040,9 @@ void Player::LifePortion()
 		if (HP > HPMAX)
 		{
 			HP = HPMAX;
+			
 		}
+		HPSub = HP;
 		//回復時の膠着時間
 		portionTime = portionTimeMax;
 		portionFlag = true;
@@ -1188,7 +1194,11 @@ void Player::UIDraw()
 	//HP
 	if (HP > 0)
 	{
-		Sprite::Instance()->Draw(HPGaugeSub, Vec2(130.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		if (HPSub > HP)
+		{
+			HPSub -= 0.1f;
+		}
+		Sprite::Instance()->Draw(HPGaugeSub, Vec2(130.0f, 35.0f), 380.0f * (HPSub / HPMAX), 20.0f);
 		Sprite::Instance()->Draw(HPGaugeMain, Vec2(130.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
 	}
 	Sprite::Instance()->Draw(HPGraph, Vec2(80.0f, 30.0f), 500.0f, 30.0f);

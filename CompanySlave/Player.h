@@ -146,6 +146,7 @@ private:
 	Vec3 Rangle = { 0.0f ,0.0f,0.0f };
 	const float HPMAX = 12;
 	float HP = 12;						//プレイヤーHP
+	float HPSub = 12;					//描画上の演出用HP
 	const int damageTimeMax = 20;
 	int damageTime = 0;					//ダメージ食らったかの見た目用
 

@@ -84,6 +84,8 @@ public://Žæ“¾Œn
 
 	int GetType(int i) { return eData[i]->type; }
 
+	bool GetBossFlag(int i) { return eData[i]->bossFlag; }
+
 	int GetBowAngle(int i) { return eData[i]->bowAngle; }
 
 	float GetHP(int i) { return eData[i]->HP; }
@@ -95,8 +97,6 @@ public://Žæ“¾Œn
 	Sphere GetSphere(int i) { return eData[i]->eSphere; }
 	//ƒGƒlƒ~[”Žæ“¾
 	int GetEnemySize() { return eData.size(); }
-	//UŒ‚‚³‚ê‚½‚©‚ðŽæ“¾
-	//bool GetWasAttackFlag(int i) { return eData[i]->wasAttackFlag; }
 
 	float GetEnemyR(int i) { return eData[i]->r; }
 
