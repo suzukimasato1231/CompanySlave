@@ -80,7 +80,10 @@ void PushCollision::Player2Mapchip(class Player* player, class Enemy* enemy, cla
 				}
 				if (!(mapStage->GetMap(i, j) == NONE))//0ˆÈŠO“–‚½‚è”»’è
 				{
-					bool HitFlag = Collision::CheckBox2Box(enemy->GetBox(n), mapStage->GetPositionBlock(i, j));
+					Box eBox;
+					eBox.maxPosition = XMVectorSet(enemy->GetPosition(n).x + 5, enemy->GetPosition(n).y + 5, enemy->GetPosition(n).z + 5, 1);
+					eBox.minPosition = XMVectorSet(enemy->GetPosition(n).x - 5, enemy->GetPosition(n).y - 5, enemy->GetPosition(n).z - 5, 1);
+					bool HitFlag = Collision::CheckBox2Box(eBox, mapStage->GetPositionBlock(i, j));
 					if (HitFlag)
 					{
 						enemy->SetPosition(n, PushBack(enemy->GetPosition(n), enemy->GetOldPosition(n), 5.0f,
