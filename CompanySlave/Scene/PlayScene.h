@@ -109,7 +109,7 @@ private://’è‹`
 	//int sceneChangeTime = 60;
 
 	float volume = 1.0f;
-	
+	bool audioFlag = false;
 	bool UpdateFlag = false;
 
 	//‰JŠÖŒW

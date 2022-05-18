@@ -66,6 +66,7 @@ void PlayScene::Initialize()
 	particleAdd->Init();
 	
 	sword = Object::Instance()->CreateOBJ("Effect");
+	sword2 = Object::Instance()->CreateOBJ("sword2");
 
 
 	//マップチップの初期化
@@ -130,6 +131,7 @@ void PlayScene::Init()
 	LBButtonTimer = 30;
 	LBButtonCount = 0;
 
+	audioFlag = false;
 
 	srand(time(NULL));
 
@@ -147,7 +149,7 @@ void PlayScene::StageInit()
 {
 	if (stageFlag == true)
 	{
-		audio->SoundBGMPlayLoopWave(sound1);
+		audio->SoundBGMPlayLoopWave(sound1,0);
 		switch (stageNum)
 		{
 		case 1:
@@ -164,7 +166,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
-			audio->SoundBGMPlayLoopWave(sound2);
+			audio->SoundBGMPlayLoopWave(sound2,1);
 			break;
 		case 4:
 			player->StageInit(stageNum);
@@ -180,7 +182,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
-			audio->SoundBGMPlayLoopWave(sound2);
+			audio->SoundBGMPlayLoopWave(sound2,1);
 			break;
 		case 7:
 			player->StageInit(stageNum);
@@ -196,6 +198,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
+			audio->SoundBGMPlayLoopWave(sound2, 1);
 			break;
 		default:
 			break;
@@ -226,16 +229,11 @@ void PlayScene::Update()
 			if (player->GetHP() >= 0)
 			{
 				player->Update(enemy);
+				enemy->Update(player);
 			}
-			enemy->Update(player);
+		
 		}
 	}
-
-	//0が無音
-	enemy->SetVolume(volume);
-	player->SetVolume(volume);
-	audio->SetVolume(volume);
-
 	//マップチップとプレイヤーの押し戻し処理
 	PushCollision::Player2Mapchip(player, enemy, mapStage, sceneChangeFlag);
 
@@ -245,10 +243,39 @@ void PlayScene::Update()
 	//パーティクル追加
 	particleAdd->Update(player, enemy, mapStage);
 	
+#pragma region 音関係
+	//0が無音
+	enemy->SetVolume(volume);
+	player->SetVolume(volume);
+	audio->SetVolume(volume);
 
+	audioFlag = true;
+
+	for (int e = 0; e < enemy->GetEnemySize(); e++)
+	{
+		if (enemy->GetHP(e) > 0)
+		{
+			audioFlag= false;
+		}
+	}
+
+	if (audioFlag == true&&stageNum==4) {
+		audio->SoundStop(1);
+	}
+	else if (audioFlag == true && stageNum == 6) {
+		audio->SoundStop(1);
+	}	
+	else if (audioFlag == true && stageNum == 10) {
+		audio->SoundStop(1);
+	}
+
+	if (Input::Instance()->KeybordTrigger(DIK_R)) {
+		audio->SoundStop(0);
+	}
+#pragma endregion
 	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
 	{
-		audio->SoundStop();
+		audio->SoundStop(0);
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
@@ -264,9 +291,40 @@ void PlayScene::Update()
 		sceneFlag = true;
 	}
 
+	//if (player->GetHP() <= 0)
+	//{
+	//	audio->SoundStop(0);
+	//	if (deathTime > 0) {
+	//		deathTime--;
+	//	}
+	//	if (deathTime <= 0) {
+	//		if (fade < 1.0f) {
+	//			fade += 0.01f;
+	//		}
+	//	}
+	//	if (fade >= 1.0f) {
+	//		if (color < 0.6f) {
+	//			color += 0.01f;
+
+	//		}
+	//	}
+	//	if (color >= 0.6f) {
+	//		if (swordTime > 0) {
+	//			swordTime--;
+	//		}
+	//		if (swordTime <= 0) {
+
+	//			fade2 += 0.1f;
+
+	//		}
+	//	}
+
+	//}
+
 	if (sceneChangeFlag == true)
 	{
-		audio->SoundStop();
+		audio->SoundStop(0);
+		audio->SoundStop(1);
 		if (ChangeGraphPosition.x < 0)
 		{
 			ChangeGraphPosition.x += 22;

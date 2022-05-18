@@ -53,10 +53,10 @@ public:
 	//1âÒçƒê∂
 	void Audio::SoundSEPlayWave( const SoundData &soundData);
 	//ÉãÅ[Évçƒê∂
-	void Audio::SoundBGMPlayLoopWave( const SoundData &soundData);
+	void Audio::SoundBGMPlayLoopWave( const SoundData &soundData,int i);
 	
-	void Audio::SoundStop();
+	void Audio::SoundStop(int i);
 	void Audio::SetVolume(float volume);
-	IXAudio2SourceVoice *BGM = nullptr;
+	IXAudio2SourceVoice* BGM[2] = { nullptr,nullptr };
 };
 

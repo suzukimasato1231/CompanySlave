@@ -94,7 +94,7 @@ void Title::Init()
 		pos[i].x = rand() % 1300;
 		s[i] = rand() % 500 - 400;
 	}
-	audio->SoundBGMPlayLoopWave(sound1);
+	audio->SoundBGMPlayLoopWave(sound1,0);
 }
 
 void Title::Update()
@@ -258,7 +258,7 @@ void Title::AudioUpdate()
 {
 
 	if (audioFlag == false) {
-		audio->SoundStop();
+		audio->SoundStop(0);
 	}
 	audio->SetVolume(volume);
 

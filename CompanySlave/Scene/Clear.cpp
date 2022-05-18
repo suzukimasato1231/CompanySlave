@@ -66,7 +66,7 @@ void Clear::Init()
 	TextFlag = false;
 	bottanFlag = false;
 
-	audio->SoundBGMPlayLoopWave(sound1);
+	audio->SoundBGMPlayLoopWave(sound1,0);
 }
 
 void Clear::Update()
@@ -76,7 +76,7 @@ void Clear::Update()
 	Object::Instance()->SetLight(lightGroup);
 
 	if (audioFlag == false) {
-		audio->SoundStop();
+		audio->SoundStop(0);
 	}
 	audio->SetVolume(volume);
 
