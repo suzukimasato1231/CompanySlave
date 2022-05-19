@@ -63,7 +63,7 @@ private:
 	const Vec2 attackField{ 15.0f,15.0f };
 	//行動を行う所定位置
 	const Vec3 fixedPosition[2] = { {250.0f,0.0f,-200.0f} ,{750.0f,0.0f,-200.0f} };
-	float moveFixedSpeed = 2.0f;
+	float moveFixedSpeed = 1.0f;
 	//小突進
 	const float sPlayer2EnemyLength = 50.0f;		//小突進を行う距離
 	const int sAttackMotionTime = 100;				//攻撃モーション全体
@@ -76,7 +76,7 @@ private:
 	//2体同時
 	const int doublePreTimeMax = 100;				//予備動作時間
 	int doublePreTime = 0;
-	const int doubleTimeMax = 300;					//同時突進を行う時間
+	const int doubleTimeMax = 500;					//同時突進を行う時間
 	int doubleTime = 0;
 	const int doubleAfterTimeMax = 50;				//攻撃後の硬直時間
 	int doubleAfterTime = 0;

@@ -89,6 +89,8 @@ private:
 
 	//剣を全部もってるかどうか
 	bool IsSwordALLHave();
+	//不発時バツのシェイク
+	void ShakeUpdate();
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -205,13 +207,13 @@ private:
 	std::array<bool, 7> isSwordAttack = { false,false,false,false,false,false,false };//アタックフラグ
 	std::array<int, 7> stingCnt = { 0,0,0,0,0,0,0 };//刺さるまでの時間
 	std::array<bool, 7> haveSword = { true,true,true,true,true,true,true };//持ってる剣
-	bool isEnemySting[7][eNumMax];//敵に刺さってるか
+	bool isEnemySting[7][eNumMax];			//敵に刺さってるか
 	std::array < Box, 7> swordAttackBox;	//剣の当たり判定
-	int shotNo = 0;//どの剣か
-	bool returnFlag = false;//剣が戻る時のフラグ
-	float nowTime = 0;//剣が戻る時のラープ
-	float endTime = 3;//剣が戻る時のラープ
-	float timeRate = 0;//剣が戻る時のラープ
+	int shotNo = 0;							//どの剣か
+	bool returnFlag = false;				//剣が戻る時のフラグ
+	float nowTime = 0;						//剣が戻る時のラープ
+	float endTime = 3;						//剣が戻る時のラープ
+	float timeRate = 0;						//剣が戻る時のラープ
 	std::array<float, 7> reverseValue = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
 	std::array<int, 7>  reverseAngle = { 0,0,0,0,0,0,0 };
 	std::array<bool, 7>  swordStop = { false,false,false,false,false,false,false };
@@ -244,6 +246,11 @@ private:
 
 	const float swordNotTimeMax = 20;//回収時不発時間
 	float swordNotTime = 0;
+	const float lifeNotTimeMax = 20;//回復不発時時間
+	float lifeNotTime = 0;
+	Vec2 shake = {};				//不発時シェイク
+
+	SpriteData lifeNot;				//ライフ満タン時
 
 	//エフェクト関係
 	float AttackEffectSize = 5.0f;

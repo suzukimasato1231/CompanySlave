@@ -137,6 +137,7 @@ void Player::Init()
 	skillUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/swordSkill2.png");
 
 	swordNot = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordNot.png");
+	lifeNot = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordNot.png");
 
 	swordRotationGraph = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordRotion.png");
 
@@ -296,6 +297,8 @@ void Player::Update(Enemy* enemy)
 	}
 
 	Angle();
+
+	ShakeUpdate();
 
 	SwordAngle();
 	//無敵時間の更新
@@ -676,10 +679,9 @@ void Player::SwordAttack(Enemy* enemy)
 	}
 
 	//剣戻ってくるやつ発動
-	if (Input::Instance()->ControllerDown(ButtonLB) && swordCoolTimeFlag == false && portionFlag == false)
+	if (Input::Instance()->ControllerDown(ButtonLB) && portionFlag == false)
 	{
-
-		if (IsSwordALLHave() == true)
+		if (IsSwordALLHave() == true && swordCoolTimeFlag == false)
 		{//剣を全部持っていた場合
 			swordCoolTimeFlag = true;
 			start_time = time(NULL);//クールタイム計測開始
@@ -1003,29 +1005,33 @@ void Player::SwordAttack(Enemy* enemy)
 			eslowFlag = false;
 		}
 	}
-	/*else if (eslowFlag == false)
-	{
-		slowValue = 1;
-	}*/
+
 }
 void Player::LifePortion()
 {
 	//HPが減っていて且つポーションを持っていた場合
 	if ((Input::Instance()->KeybordTrigger(DIK_Q) || Input::Instance()->ControllerDown(ButtonY))
-		&& portion > 0 && HP < HPMAX && portionFlag == false && avoidanceTime <= 0 && normalAttackTime <= 0)
+		&& portion > 0 && portionFlag == false && avoidanceTime <= 0 && normalAttackTime <= 0)
 	{
-		portion--;
-		HP += 4;
-		if (HP > HPMAX)
-		{
-			HP = HPMAX;
-
+		if (HP >= HPMAX)
+		{//回復不発時
+			lifeNotTime = lifeNotTimeMax;
 		}
-		HPSub = HP;
-		//回復時の膠着時間
-		portionTime = portionTimeMax;
-		portionFlag = true;
-		portionNo = 0;
+		else
+		{//回復実行時
+			portion--;
+			HP += 4;
+			if (HP > HPMAX)
+			{
+				HP = HPMAX;
+
+			}
+			HPSub = HP;
+			//回復時の膠着時間
+			portionTime = portionTimeMax;
+			portionFlag = true;
+			portionNo = 0;
+		}
 	}
 	//膠着時間減少
 	if (portionFlag == true)
@@ -1040,6 +1046,12 @@ void Player::LifePortion()
 			portionFlag = false;
 		}
 	}
+
+	if (lifeNotTime > 0)
+	{
+		lifeNotTime--;
+	}
+
 }
 void   Player::Angle()
 {
@@ -1218,7 +1230,7 @@ void Player::UIDraw()
 	{
 		swordCoolTimeNum = 14;
 	}
-	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(5.0f, 5.0f), 120.0f, 120.0f);
+	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(-10.0f, -10.0f), 140.0f, 140.0f);
 	if (coolTime != swordCoolTimeMax)
 	{
 		//剣クールタイム数字
@@ -1229,7 +1241,19 @@ void Player::UIDraw()
 	//回収不発時
 	if (swordNotTime > 0)
 	{
-		Sprite::Instance()->Draw(swordNot, Vec2(5.0f, 5.0f), 120.0f, 120.0f);
+		Sprite::Instance()->Draw(swordNot, Vec2(0.0f + shake.x, 0.0f + shake.y), 120.0f, 120.0f);
+	}
+	//回復不発時
+	if (lifeNotTime > 0)
+	{
+		if (portion >= 2)
+		{
+			Sprite::Instance()->Draw(lifeNot, Vec2(160.0f+shake.x, 75.0f + shake.y), 40.0f, 40.0f);
+		}
+		if (portion >= 1)
+		{
+			Sprite::Instance()->Draw(lifeNot, Vec2(120.0f + shake.x, 75.0f + shake.y), 40.0f, 40.0f);
+		}
 	}
 }
 
@@ -1316,6 +1340,17 @@ bool Player::IsSwordALLHave()
 		}
 	}
 	return Flag;
+}
+
+void Player::ShakeUpdate()
+{
+	if (swordNotTime > 0 || lifeNotTime > 0)
+	{
+		int powerX = rand() % 30;
+		int powerY = rand() % 30;		
+		shake.x = static_cast<float>(powerX)/10;
+		shake.y = static_cast<float>(powerX) / 10;
+	}
 }
 
 Vec3 Player::GetCameraPos()
