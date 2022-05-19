@@ -231,7 +231,6 @@ void PlayScene::Update()
 				player->Update(enemy);
 				enemy->Update(player);
 			}
-		
 		}
 	}
 	//マップチップとプレイヤーの押し戻し処理
@@ -279,7 +278,7 @@ void PlayScene::Update()
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
-		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
+		if (stageNum == 4 || stageNum == 7 ||	 stageNum == 10) {
 			audio->SoundStop(1);
 		}
 	}
@@ -329,7 +328,7 @@ void PlayScene::Update()
 		//audio->SoundStop(1);
 		if (ChangeGraphPosition.x < 0)
 		{
-			ChangeGraphPosition.x += 22;
+			ChangeGraphPosition.x += 32;
 		}
 		if (ChangeGraphPosition.x >= 0)
 		{
