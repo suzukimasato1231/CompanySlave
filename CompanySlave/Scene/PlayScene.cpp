@@ -279,8 +279,10 @@ void PlayScene::Update()
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
+		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
+			audio->SoundStop(1);
+		}
 	}
-
 	//プレイシーンを抜ける
 	if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
 	{
