@@ -48,11 +48,11 @@ private:
 	//ボスステータス
 	EnemyData bossData;
 
-	const float moveSpeed = 0.30f;					//敵のスピード
+	const float moveSpeed = 0.60f;					//敵のスピード
 
-	time_t start_time, end_time;	//時間計測
+	time_t start_time, end_time;					//時間計測
 
-	const int boarNumMax = 2;//イノシシの数
+	const int boarNumMax = 2;						//イノシシの数
 	int boarNum = 2;
 
 	//ボス行動ステータス
@@ -60,13 +60,15 @@ private:
 	const Vec2 attackEnemies{ 300.0f,110.0f };		//索敵範囲:width,height
 	const float player2EnemyLength = 500.0f;		//索敵距離
 	bool searchEnemyFlag = false;					//片方でも見つかったかどうか
-
 	const Vec2 attackField{ 15.0f,15.0f };
+	//行動を行う所定位置
+	const Vec3 fixedPosition[2] = { {250.0f,0.0f,-200.0f} ,{750.0f,0.0f,-200.0f} };
+	float moveFixedSpeed = 2.0f;
 	//小突進
 	const float sPlayer2EnemyLength = 50.0f;		//小突進を行う距離
 	const int sAttackMotionTime = 100;				//攻撃モーション全体
 	const int sAttackHoldTime = 50;					//攻撃構える時間
-	const float sAttackSpeed = 0.8f;				//攻撃スピード
+	const float sAttackSpeed = 1.0f;				//攻撃スピード
 	bool attackFlag = false;
 	const int sTimeMax = 300;						//小攻撃をしていい時間/2
 	int sTime = 0;

@@ -125,8 +125,8 @@ private:
 	Object::ObjectData playerLifeObject[2];			//プレイヤー回復
 	int walkCount = 0;								//描画用カウント
 	int walkNo = 0;									//描画するNO
-	int attackCount = 0;							//描画用カウント
-	int attackNo = 0;								//描画するNO
+	int attackCount = 0;							//攻撃モーション描画用カウント
+	int attackNo = 0;								//攻撃モーションNo
 	int portionNo = 0;								//描画するNO
 	bool attackMode = false;
 	Box pBox;										//プレイヤーの長方形
@@ -152,10 +152,10 @@ private:
 
 	//回復アイテム
 	SpriteData portionSprite[2];
-	const int portionMax = 2;//最大個数
+	const int portionMax = 2;			//最大個数
 	int portion = 0;
 	bool portionFlag = false;
-	const int portionTimeMax = 50;//回復時間
+	const int portionTimeMax = 50;		//回復時間
 	int portionTime = 0;
 
 	//動いているかどうか
@@ -179,15 +179,15 @@ private:
 	std::array <bool, 3> normalAttackFlag = { false,false,false };	//通常攻撃可能か
 	float normalLength = 20.0f;							//攻撃の半径
 	float normalLengthSub = 15.0f;						//向いていない方向の攻撃の半径
-	const int normalAttackTimeMax = 20;					//攻撃と攻撃の間の時間
+	const int normalAttackTimeMax = 35;					//攻撃と攻撃の間の時間
 	int normalAttackTime = 0;							//攻撃と攻撃の間
 	int normalDirection = 0;							//攻撃の向き
 	Box normalAttackBox;								//実際の攻撃の当たり判定
 	int normalAttackCount = 0;							//通常攻撃の何回目か
 	const int normalGraceTimeMax = 50;					//連続切りまでの猶予
 	int normalGraceTime = 0;							//連続切りまでの猶予
-	float attackMoveHighSpeed = 1.0f;					//３撃目の進むスピード
-	float attackMoveSpeed = 0.5f;						//攻撃方向へ進むスピード
+	float attackMoveHighSpeed = 0.4f;					//３撃目の進むスピード
+	float attackMoveSpeed = 0.3f;						//攻撃方向へ進むスピード
 
 	//剣攻撃
 	Object::ObjectData swordObject;//剣
@@ -246,13 +246,9 @@ private:
 	float swordNotTime = 0;
 
 	//エフェクト関係
-	bool AttackEffect = false;
 	float AttackEffectSize = 5.0f;
 	Vec3 AttackScale{ 1.0f,1.0f,1.0f };
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
-	int effectTime = 10;
-	int effectCount = 0;
-	int effectCount2 = 0;
 
 	std::array<float, eNumMax >enemyDamegeTime = {};
 
@@ -291,8 +287,9 @@ private:
 
 #endif
 	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
-	bool attackCombo2check = false;
-	int AttackEffectGraph[9];
-	int AttackEffectGraph2[9];
+	bool attackEfectFlag = true;
+	int AttackEffectGraph[27];
+	int attackEfectNo = 0;
+	int attackEffectCount = 0;
 	bool AttackEnd = false;
 };

@@ -89,6 +89,7 @@ void Player::Init()
 	normalFieldOBJ2 = Shape::CreateRect(normalLength, normalLength);
 #endif
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
+	//１攻撃目のエフェクト
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
 	AttackEffectGraph[1] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect2.png");
 	AttackEffectGraph[2] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect3.png");
@@ -99,15 +100,27 @@ void Player::Init()
 	AttackEffectGraph[7] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
 
-	AttackEffectGraph2[0] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect1.png");
-	AttackEffectGraph2[1] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect2.png");
-	AttackEffectGraph2[2] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect3.png");
-	AttackEffectGraph2[3] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect4.png");
-	AttackEffectGraph2[4] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect5.png");
-	AttackEffectGraph2[5] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect6.png");
-	AttackEffectGraph2[6] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect7.png");
-	AttackEffectGraph2[7] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect8.png");
-	AttackEffectGraph2[8] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect9.png");
+	//2攻撃目のエフェクト
+	AttackEffectGraph[9] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
+	AttackEffectGraph[10] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect2.png");
+	AttackEffectGraph[11] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect3.png");
+	AttackEffectGraph[12] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect4.png");
+	AttackEffectGraph[13] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect5.png");
+	AttackEffectGraph[14] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect6.png");
+	AttackEffectGraph[15] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect7.png");
+	AttackEffectGraph[16] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
+	AttackEffectGraph[17] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
+
+	//2攻撃目のエフェクト
+	AttackEffectGraph[18] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
+	AttackEffectGraph[19] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect2.png");
+	AttackEffectGraph[20] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect3.png");
+	AttackEffectGraph[21] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect4.png");
+	AttackEffectGraph[22] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect5.png");
+	AttackEffectGraph[23] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect6.png");
+	AttackEffectGraph[24] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect7.png");
+	AttackEffectGraph[25] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
+	AttackEffectGraph[26] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
 
 	swordUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/0White.png");
 	swordUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/1White.png");
@@ -259,10 +272,6 @@ void Player::StageInit(int stageNum)
 	}
 	swordCoolTimeFlag = false;
 	swordCoolTime = swordCoolTimeMax;
-	//エフェクト関係
-	AttackEffect = false;
-	effectTime = 10;
-	effectCount = 0;
 
 	eslowTime = 120;
 
@@ -334,7 +343,6 @@ void Player::Draw()
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
-
 		if (invincivleTime != 0) { Object::Instance()->Draw(playerDamageObject, position, scale, angle, color); }
 		else if (portionFlag == true) { Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color); }
 		else if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
@@ -455,7 +463,7 @@ void Player::Move()
 		walkNo = 0;
 		moveFlag = false;
 	}
-	if (avoidanceTime <= 0 && normalAttackTime <= 0 && portionFlag == false)
+	if (avoidanceTime <= 0 && normalAttackTime <= 0 && portionFlag == false && attackMode == false)
 	{
 		//移動
 		//キーボード
@@ -486,37 +494,18 @@ void Player::Move()
 
 void Player::NormalAttack(Enemy* enemy)
 {
-	if (attackMode == true) { attackCount++; }//アニメーションのカウント
+	//if (attackMode == true) { attackCount++; }//アニメーションのカウント
 	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0 && portionFlag == false)
 	{
 		attackMode = true;
+
 		//連続攻撃を数える
 		if (normalAttackCount < 3)
 		{
-			audio->SoundSEPlayWave(sound1);
 			normalAttackFlag[normalAttackCount] = true;
 			normalAttackCount++;
-			effectCount2 = 0;
-			effectCount = 0;
 		}
-		AttackEffect = true;
 	}
-	if (normalAttackCount == 2)
-	{
-		attackCombo2check = true;
-	}
-	else
-	{
-		attackCombo2check = false;
-	}
-	//描画するNO
-	//if (normalAttackTime == normalAttackTimeMax)
-	//{
-	//	/*if (normalAttackFlag[0]) { attackNo = 0; }
-	//	else if (normalAttackFlag[1]) { attackNo = 3; }
-	//	else if (normalAttackFlag[2]) { attackNo = 6; }*/
-	//	//attackCount = 0;//カウントリセット
-	//}
 
 	//攻撃している時間
 	if (normalAttackTime > 0)
@@ -532,12 +521,50 @@ void Player::NormalAttack(Enemy* enemy)
 			position.x += attackMoveSpeed * sinRad * slowValue;
 			position.z += attackMoveSpeed * cosRad * slowValue;
 		}
+		//攻撃モーションNo更新
+		attackCount++;
+		if (attackCount >= 31)
+		{
+			attackCount = 31;
+		}
+		if (attackCount % 10 == 0)
+		{
+			attackNo++;
+			if (attackNo >= 9)
+			{
+				attackNo = 8;
+			}
+		}
+		//攻撃エフェクト更新
+		attackEffectCount++;
+		if (attackEffectCount >= 26)
+		{
+			attackEffectCount = 26;
+		}
+		if (attackEffectCount % 3 == 0)
+		{
+			attackEfectNo++;
+			if (attackEfectNo >= 27)
+			{
+				attackEfectNo = 27;
+			}
+		}
+	}
+	else
+	{
+		attackEfectFlag = false;
 	}
 
 	for (int j = 0; j < 3; j++)
 	{//攻撃判定は一番最初
 		if (normalAttackFlag[j] == true && normalAttackTime <= 0)
 		{
+			attackEfectFlag = true;
+			audio->SoundSEPlayWave(sound1);
+			attackNo = 3 * j;
+			attackEfectNo = 9 * j;
+			attackCount = 0;
+			attackEffectCount = 0;
 			normalAttackFlag[j] = false;
 			NormalFieldDirection();
 			bool swordCoolTimeFlag = false;
@@ -579,10 +606,6 @@ void Player::NormalAttack(Enemy* enemy)
 		{
 			normalAttackCount = 0;
 			attackMode = false;
-			attackNo = 0;
-			AttackEffect = false;
-			effectCount2 = 0;
-			effectCount = 0;
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
 				enemy->SetDamegeFlag(i, false);
@@ -601,21 +624,7 @@ void Player::NormalAttack(Enemy* enemy)
 	if (normalAttackCount == 3) {
 		AttackScale = { 5.0f,5.0f,5.0f };
 	}
-	if (normalAttackTime == normalAttackTimeMax / 2) { AttackEffect = true; }
 
-	if (AttackEffect == true) {
-		if (effectCount2 != 8)
-		{
-			effectCount++;
-		}
-		if (effectCount > 1) {
-			effectCount2++;
-			effectCount = 0;
-		}
-		if (effectCount2 == 8) {
-			AttackEffect = false;
-		}
-	}
 	eslowFlag = true;
 	for (int e = 0; e < enemy->GetEnemySize(); e++)
 	{
@@ -634,36 +643,6 @@ void Player::NormalAttack(Enemy* enemy)
 			eslowFlag = false;
 		}
 	}
-
-	//アニメーション用
-	if (effectCount2 == 0 || effectCount2 == 1 || effectCount2 == 2)
-	{
-		attackNo = 1;
-	}
-	if (effectCount2 == 3 || effectCount2 == 4 || effectCount2 == 5)
-	{
-		attackNo = 2;
-	}
-	if (effectCount2 == 6 || effectCount2 == 7 || effectCount2 == 8)
-	{
-		attackNo = 2;
-	}
-	if (normalAttackCount == 2)
-	{
-		if (effectCount2 == 0 || effectCount2 == 1 || effectCount2 == 2)
-		{
-			attackNo = 4;
-		}
-		if (effectCount2 == 3 || effectCount2 == 4 || effectCount2 == 5)
-		{
-			attackNo = 5;
-		}
-		if (effectCount2 == 6 || effectCount2 == 7 || effectCount2 == 8)
-		{
-			attackNo = 6;
-		}
-	}
-
 }
 
 //剣撃つ
@@ -1040,7 +1019,7 @@ void Player::LifePortion()
 		if (HP > HPMAX)
 		{
 			HP = HPMAX;
-			
+
 		}
 		HPSub = HP;
 		//回復時の膠着時間
@@ -1256,98 +1235,49 @@ void Player::UIDraw()
 
 void Player::EffectDraw()
 {
-	if (AttackEffect == true)
+	if (attackEfectFlag == true)
 	{
 		switch (direction)
 		{
 		case Up:
 			AttackAngle.y = 90.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
-
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z + r + AttackEffectSize),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		case Down:
 			AttackAngle.y = 270.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x, position.y, position.z - r - AttackEffectSize),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		case Left:
 			AttackAngle.y = 0.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - r - AttackEffectSize, position.y, position.z),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		case Right:
 			AttackAngle.y = 180.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize, position.y, position.z), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + r + AttackEffectSize, position.y, position.z),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		case UpRight:
 			AttackAngle.y = 120.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z + AttackEffectSize),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		case UpLeft:
 			AttackAngle.y = 60.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z + AttackEffectSize),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		case DownRight:
 			AttackAngle.y = 240.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x + AttackEffectSize, position.y, position.z - AttackEffectSize),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		case DownLeft:
 			AttackAngle.y = 300.0f;
-			if (attackCombo2check == false)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph[effectCount2]);
-			}
-			else if (attackCombo2check == true)
-			{
-				Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize), AttackScale, AttackAngle, color, AttackEffectGraph2[effectCount2]);
-			}
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(position.x - AttackEffectSize, position.y, position.z - AttackEffectSize),
+				AttackScale, AttackAngle, color, AttackEffectGraph[attackEfectNo]);
 			break;
 		}
 	}

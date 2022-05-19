@@ -59,7 +59,8 @@ void TwinBoar::Draw(EnemyData* oniData, int i)
 		}
 		else
 		{//ˆÚ“®’†
-			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), 
+				oniData->scale,Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f), oniData->color);
 		}
 		break;
 	case BOSSATTACK2://“¯Žž“Ëi
@@ -189,7 +190,19 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player, int i)
 
 	if (oniData->StatusTime <= 0 && sTime <= 0)
 	{
-		sAttack[i] = true;
+		/*if (fixedPosition[i].x - 5.0f < oniData->position.x && fixedPosition[i].x + 5.0f > oniData->position.x &&
+			fixedPosition[i].z - 5.0f < oniData->position.z && fixedPosition[i].z + 5.0f > oniData->position.z)*/
+		{//Š’è‚ÌˆÊ’u‚ÖˆÚ“®‚µ‚½‚ç
+			sAttack[i] = true;
+		}
+		//else
+		//{//Š’è‚ÌˆÊ’u‚ÖˆÚ“®		
+		//	oniData->bowAngle = atan2(fixedPosition[i].z - oniData->position.z, fixedPosition[i].x - oniData->position.x);
+		//	Vec3 memoryPosition = fixedPosition[i] - oniData->position;
+		//	oniData->pDirection = memoryPosition.normalize();
+		//	Vec3 direction = memoryPosition.normalize();
+		//	oniData->position += direction * moveFixedSpeed * slowValue;
+		//}
 	}
 
 	if (sTime <= 0 && sAttack[0] == true && sAttack[1] == true)
