@@ -262,7 +262,7 @@ void PlayScene::Update()
 	if (audioFlag == true&&stageNum==4) {
 		audio->SoundStop(1);
 	}
-	else if (audioFlag == true && stageNum == 6) {
+	else if (audioFlag == true && stageNum == 7) {
 		audio->SoundStop(1);
 	}	
 	else if (audioFlag == true && stageNum == 10) {
