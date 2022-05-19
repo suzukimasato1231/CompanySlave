@@ -324,7 +324,7 @@ void PlayScene::Update()
 	if (sceneChangeFlag == true)
 	{
 		audio->SoundStop(0);
-		audio->SoundStop(1);
+		//audio->SoundStop(1);
 		if (ChangeGraphPosition.x < 0)
 		{
 			ChangeGraphPosition.x += 22;
