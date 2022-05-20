@@ -14,15 +14,18 @@ void TwinBoar::Init()
 #endif
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//’Êíó‘Ô
-	enemyObject[0] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/");
-	enemyObject[1] = Object::Instance()->CreateOBJ("wolf1-1", "WolfOBJ/");
-	enemyObject[2] = Object::Instance()->CreateOBJ("wolf1-2", "WolfOBJ/");
-	enemyObject[3] = Object::Instance()->CreateOBJ("wolf1-3", "WolfOBJ/");
-	enemyObject[4] = Object::Instance()->CreateOBJ("wolf1-4", "WolfOBJ/");
+	enemyObject[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/");
+	enemyObject[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/");
+	enemyObject[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/");
+	enemyObject[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/");
+	enemyObject[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/");
 	//UŒ‚ƒ‚[ƒVƒ‡ƒ“
-	attackOBJ[0] = Object::Instance()->CreateOBJ("wolf2-1", "WolfOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("wolf2-2", "WolfOBJ/");
-	attackOBJ[2] = Object::Instance()->CreateOBJ("wolf2-3", "WolfOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/");
+	attackOBJ[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/");
+	attackOBJ[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/");
+	attackOBJ[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/");
+
 
 	//ƒ{ƒX‚Ì”’l
 	bossData.HP = 168.0f;
@@ -51,7 +54,7 @@ void TwinBoar::Draw(EnemyData* oniData, int i)
 		}
 		else if (oniData->StatusTime >= 0)
 		{//•ŠíU‚è‰º‚ë‚µ
-			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
@@ -59,8 +62,7 @@ void TwinBoar::Draw(EnemyData* oniData, int i)
 		}
 		else
 		{//ˆÚ“®’†
-			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), 
-				oniData->scale,Vec3(0.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f), oniData->color);
+			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		}
 		break;
 	case BOSSATTACK2://“¯Žž“Ëi
@@ -70,7 +72,7 @@ void TwinBoar::Draw(EnemyData* oniData, int i)
 		}
 		else if (attackStats == DOUBLEATTACK)//UŒ‚’†
 		{
-			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
@@ -88,7 +90,7 @@ void TwinBoar::Draw(EnemyData* oniData, int i)
 		}
 		else if (attackStats == DOUBLEATTACK && bFlag[i] == true && bFinishFlag[i] == false)
 		{
-			Object::Instance()->Draw(attackOBJ[1], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 #if _DEBUG
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x, 0.0f, oniData->position.z),
 				Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
@@ -96,7 +98,7 @@ void TwinBoar::Draw(EnemyData* oniData, int i)
 		}
 		else
 		{
-			Object::Instance()->Draw(enemyObject[0], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(enemyObject[oniData->walkNum], Vec3(oniData->position.x, oniData->position.y, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
 		break;
 	}

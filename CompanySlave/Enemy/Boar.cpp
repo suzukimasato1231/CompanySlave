@@ -14,10 +14,18 @@ void Boar::Init()
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//’Êíó‘Ô
-	enemyObject = Object::Instance()->CreateOBJ("OniKari", "OniOBJ/");
+		//’Êíó‘Ô
+	enemyObject[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/");
+	enemyObject[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/");
+	enemyObject[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/");
+	enemyObject[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/");
+	enemyObject[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/");
 	//UŒ‚ƒ‚[ƒVƒ‡ƒ“
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/");
+	attackOBJ[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/");
+	attackOBJ[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/");
+	attackOBJ[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/");
+	attackOBJ[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/");
 	//ƒmƒbƒNƒoƒbƒN
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
@@ -49,7 +57,7 @@ void Boar::Draw(EnemyData* oniData)
 	switch (oniData->Status)
 	{
 	case NORMAL:
-		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		switch (oniData->direction)
 		{
 		case Up:
@@ -71,7 +79,7 @@ void Boar::Draw(EnemyData* oniData)
 		}
 		break;
 	case MOVE:
-		Object::Instance()->Draw(enemyObject, oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
+		Object::Instance()->Draw(enemyObject[oniData->walkNum], oniData->position, oniData->scale, DirectionAngle(oniData->direction), oniData->color);
 		break;
 	case ATTACK:
 		if (oniData->StatusTime >= attackMotionTime - attackHoldTime)
@@ -80,7 +88,7 @@ void Boar::Draw(EnemyData* oniData)
 		}
 		else
 		{//•ŠíU‚è‰º‚ë‚µ
-			Object::Instance()->Draw(attackOBJ[1], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
+			Object::Instance()->Draw(attackOBJ[oniData->walkNum], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
 		//EffectDraw(oniData);
 		break;
@@ -152,6 +160,17 @@ void Boar::SearchPlayer(EnemyData* oniData, Player* player)
 			oniData->StatusTime = attackMotionTime;
 		}
 	}
+	//•à‚«•`‰æ‚Ì”Žš
+	if (oniData->walkTime % 10 == 0)
+	{
+		oniData->walkNum++;
+		if (oniData->walkNum >= 5)
+		{
+			oniData->walkNum = 0;
+			oniData->walkTime = 0;
+		}
+	}
+	oniData->walkTime++;
 }
 
 void Boar::Attack(EnemyData* oniData, Player* player)
@@ -203,6 +222,17 @@ void Boar::Attack(EnemyData* oniData, Player* player)
 	{
 		oniData->Status = MOVE;
 	}
+	//•à‚«•`‰æ‚Ì”Žš
+	if (oniData->walkTime % 10 == 0)
+	{
+		oniData->walkNum++;
+		if (oniData->walkNum >= 5)
+		{
+			oniData->walkNum = 0;
+			oniData->walkTime = 0;
+		}
+	}
+	oniData->walkTime++;
 }
 
 void Boar::EffectDraw(EnemyData* oniData)
