@@ -98,7 +98,7 @@ private:
 
 	//ボスOBJ
 	Object::ObjectData enemyObject[5];					//プレイヤーオブジェクト
-	Object::ObjectData attackOBJ[3];					//エネミーアタック
+	Object::ObjectData attackOBJ[5];					//エネミーアタック
 	//デバック用
 	Object::ObjectData debugField;	//索敵
 	Object::ObjectData debugField2;//攻撃範囲小
