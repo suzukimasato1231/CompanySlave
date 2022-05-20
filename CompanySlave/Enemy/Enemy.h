@@ -36,7 +36,7 @@ public:
 
 	void DrawUI();//UI•`‰æ
 	//ŒŒ­•`‰æ
-	void BloodDraw();
+	void FirstDraw();
 	//“G‚ÌˆÊ’u‚ğİ’è
 	void SetPosition(int i, Vec3 position);
 

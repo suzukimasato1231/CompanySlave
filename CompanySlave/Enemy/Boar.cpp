@@ -15,20 +15,20 @@ void Boar::Init()
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
 		//通常状態
-	enemyObject[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/");
-	enemyObject[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/");
-	enemyObject[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/");
-	enemyObject[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/");
-	enemyObject[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/");
+	enemyObject[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/", true);
+	enemyObject[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/", true);
+	enemyObject[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/", true);
+	enemyObject[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/", true);
+	enemyObject[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/", true);
 	//攻撃モーション
-	attackOBJ[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/");
-	attackOBJ[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/");
-	attackOBJ[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/");
-	attackOBJ[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/", true);
+	attackOBJ[1] = Object::Instance()->CreateOBJ("Boar1-1", "BoarOBJ/", true);
+	attackOBJ[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/", true);
+	attackOBJ[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/", true);
+	attackOBJ[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/", true);
 	//ノックバック
-	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
-	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
+	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1", "", true);
+	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2", "", true);
 
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
@@ -185,7 +185,7 @@ void Boar::Attack(EnemyData* oniData, Player* player)
 
 	}
 	//攻撃時間中
-	else 
+	else
 	{
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)

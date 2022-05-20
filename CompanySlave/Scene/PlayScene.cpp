@@ -498,7 +498,7 @@ void PlayScene::Draw()
 	mapStage->Draw(camera->GetEye());
 
 	//“G‚ÌŒŒ­
-	enemy->BloodDraw();
+	enemy->FirstDraw();
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	player->Draw();

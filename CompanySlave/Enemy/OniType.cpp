@@ -18,15 +18,15 @@ void OniType::Init()
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
-	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/");
-	enemyObject[1] = Object::Instance()->CreateOBJ("OniKari1-1", "OniOBJ/");
-	enemyObject[2] = Object::Instance()->CreateOBJ("OniKari1-2", "OniOBJ/");
+	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/", true);
+	enemyObject[1] = Object::Instance()->CreateOBJ("OniKari1-1", "OniOBJ/", true);
+	enemyObject[2] = Object::Instance()->CreateOBJ("OniKari1-2", "OniOBJ/", true);
 	//攻撃モーション
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/", true);
+	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/", true);
 	//ノックバック
-	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
-	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
+	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1","", true);
+	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2","", true);
 
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);

@@ -20,16 +20,16 @@ void OniBow::Init()
 	//“G‚Ì“Ç‚Ýž‚Ý
 	//enemyObject = Object::Instance()->CreateOBJ("OniKari");
 	//“G‚ÌUŒ‚ó‘Ô‚Ì“Ç‚Ýž‚Ý
-	attackOBJ[0] = Object::Instance()->CreateOBJ("Oniyumi2-0", "OniyumiOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("Oniyumi2-1", "OniyumiOBJ/");
-	attackOBJ[2] = Object::Instance()->CreateOBJ("Oniyumi2-2", "OniyumiOBJ/");
-	attackOBJ[3] = Object::Instance()->CreateOBJ("Oniyumi2-3", "OniyumiOBJ/");
-	attackOBJ[4] = Object::Instance()->CreateOBJ("Oniyumi2-4", "OniyumiOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("Oniyumi2-0", "OniyumiOBJ/",true);
+	attackOBJ[1] = Object::Instance()->CreateOBJ("Oniyumi2-1", "OniyumiOBJ/",true);
+	attackOBJ[2] = Object::Instance()->CreateOBJ("Oniyumi2-2", "OniyumiOBJ/",true);
+	attackOBJ[3] = Object::Instance()->CreateOBJ("Oniyumi2-3", "OniyumiOBJ/",true);
+	attackOBJ[4] = Object::Instance()->CreateOBJ("Oniyumi2-4", "OniyumiOBJ/",true);
 
 	//“G‹|•à‚«
-	enemyWalk[0] = Object::Instance()->CreateOBJ("Oniyumi1-0", "OniyumiOBJ/");
-	enemyWalk[1] = Object::Instance()->CreateOBJ("Oniyumi1-1", "OniyumiOBJ/");
-	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2", "OniyumiOBJ/");
+	enemyWalk[0] = Object::Instance()->CreateOBJ("Oniyumi1-0", "OniyumiOBJ/", true);
+	enemyWalk[1] = Object::Instance()->CreateOBJ("Oniyumi1-1", "OniyumiOBJ/", true);
+	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2", "OniyumiOBJ/", true);
 
 	//–î‚Ìobj“Çž
 	bowOBJ = Object::Instance()->CreateOBJ("enemyArrow", "OniyumiOBJ/");

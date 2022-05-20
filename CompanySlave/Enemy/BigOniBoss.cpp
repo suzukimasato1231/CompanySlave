@@ -16,15 +16,15 @@ void BigOniBoss::Init()
 	attackBigOBJ = Shape::CreateCircle(attackBigField, 20.0f);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
-	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/");
-	enemyObject[1] = Object::Instance()->CreateOBJ("OniKari1-1", "OniOBJ/");
-	enemyObject[2] = Object::Instance()->CreateOBJ("OniKari1-2", "OniOBJ/");
+	enemyObject[0] = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/", true);
+	enemyObject[1] = Object::Instance()->CreateOBJ("OniKari1-1", "OniOBJ/", true);
+	enemyObject[2] = Object::Instance()->CreateOBJ("OniKari1-2", "OniOBJ/", true);
 	//攻撃モーション
-	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/", true);
+	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/", true);
 	//ノックバック
-	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1");
-	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2");
+	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1", "", true);
+	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2", "", true);
 
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
@@ -125,7 +125,7 @@ void BigOniBoss::Draw(EnemyData* oniData)
 		if (attackBigStatus == PREOPERATION)
 		{//武器振り上げ
 			Object::Instance()->Draw(attackOBJ[0], Vec3(oniData->position.x, oniData->position.y + 15.0f, oniData->position.z), oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
-			Object::Instance()->Draw(attackBigOBJ, oniData->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+			//Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->position.x, oniData->position.y - 2.0f, oniData->position.z), Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 		}
 		else
 		{//武器振り下ろし
@@ -158,6 +158,30 @@ void BigOniBoss::Draw(EnemyData* oniData)
 		break;
 	}
 	EffectDraw(oniData);
+}
+
+void BigOniBoss::PreDraw(EnemyData* oniData)
+{
+	switch (oniData->Status)
+	{
+	case NORMAL:
+		break;
+	case  BOSSATTACK:
+		break;
+	case BOSSATTACK2:
+		if (attackBigStatus == PREOPERATION)
+		{
+			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->position.x, oniData->position.y - 2.0f, oniData->position.z), Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+		}
+		else
+		{
+		}
+		break;
+	case SUMMON:
+		break;
+	case NOCKBACK:
+		break;
+	}
 }
 
 void BigOniBoss::SearchPlayer(EnemyData* oniData, Player* player)

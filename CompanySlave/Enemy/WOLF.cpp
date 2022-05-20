@@ -14,18 +14,18 @@ void Wolf::Init()
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//通常状態
-	enemyObject[0] = Object::Instance()->CreateOBJ("wolf1-0","WolfOBJ/");
-	enemyObject[1] = Object::Instance()->CreateOBJ("wolf1-1", "WolfOBJ/");
-	enemyObject[2] = Object::Instance()->CreateOBJ("wolf1-2", "WolfOBJ/");
-	enemyObject[3] = Object::Instance()->CreateOBJ("wolf1-3", "WolfOBJ/");
-	enemyObject[4] = Object::Instance()->CreateOBJ("wolf1-4", "WolfOBJ/");
+	enemyObject[0] = Object::Instance()->CreateOBJ("wolf1-0","WolfOBJ/", true);
+	enemyObject[1] = Object::Instance()->CreateOBJ("wolf1-1", "WolfOBJ/", true);
+	enemyObject[2] = Object::Instance()->CreateOBJ("wolf1-2", "WolfOBJ/", true);
+	enemyObject[3] = Object::Instance()->CreateOBJ("wolf1-3", "WolfOBJ/", true);
+	enemyObject[4] = Object::Instance()->CreateOBJ("wolf1-4", "WolfOBJ/", true);
 	//攻撃モーション
-	attackOBJ[0] = Object::Instance()->CreateOBJ("wolf2-1", "WolfOBJ/");
-	attackOBJ[1] = Object::Instance()->CreateOBJ("wolf2-2", "WolfOBJ/");
-	attackOBJ[2] = Object::Instance()->CreateOBJ("wolf2-3", "WolfOBJ/");
+	attackOBJ[0] = Object::Instance()->CreateOBJ("wolf2-1", "WolfOBJ/", true);
+	attackOBJ[1] = Object::Instance()->CreateOBJ("wolf2-2", "WolfOBJ/", true);
+	attackOBJ[2] = Object::Instance()->CreateOBJ("wolf2-3", "WolfOBJ/", true);
 	//ノックバック
-	nockBackOBJ[0] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/");
-	nockBackOBJ[1] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/");
+	nockBackOBJ[0] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/", true);
+	nockBackOBJ[1] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/", true);
 
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);

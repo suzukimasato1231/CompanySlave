@@ -24,6 +24,8 @@ public:
 
 	void Draw(EnemyData* oniData,int i);
 
+	void PreDraw(EnemyData* oniData, int i);
+
 	void LoopInit();
 	//索敵
 	void SearchPlayer(EnemyData* oniData, class Player* player);
@@ -63,12 +65,12 @@ private:
 	const Vec2 attackField{ 15.0f,15.0f };
 	//行動を行う所定位置
 	const Vec3 fixedPosition[2] = { {250.0f,0.0f,-200.0f} ,{750.0f,0.0f,-200.0f} };
-	float moveFixedSpeed = 1.0f;
+	float moveFixedSpeed = 1.2f;
 	//小突進
 	const float sPlayer2EnemyLength = 50.0f;		//小突進を行う距離
-	const int sAttackMotionTime = 100;				//攻撃モーション全体
+	const int sAttackMotionTime = 120;				//攻撃モーション全体
 	const int sAttackHoldTime = 50;					//攻撃構える時間
-	const float sAttackSpeed = 1.0f;				//攻撃スピード
+	const float sAttackSpeed = 1.3f;				//攻撃スピード
 	bool attackFlag = false;
 	const int sTimeMax = 300;						//小攻撃をしていい時間/2
 	int sTime = 0;
@@ -81,7 +83,7 @@ private:
 	const int doubleAfterTimeMax = 50;				//攻撃後の硬直時間
 	int doubleAfterTime = 0;
 	int attackStats = PREOPERATION;
-	const float dAttackSpeed = 1.2f;				//攻撃スピード
+	const float dAttackSpeed = 1.5f;				//攻撃スピード
 	const int dAttackTimeMax = 100;					//攻撃時間
 	int dAttackTime = 0;
 	//交互突進

@@ -446,7 +446,7 @@ void Enemy::DrawUI()
 	}
 }
 
-void Enemy::BloodDraw()
+void Enemy::FirstDraw()
 {
 	float size = 0.0f;
 	for (size_t i = 0; i < eData.size(); i++)
@@ -455,6 +455,28 @@ void Enemy::BloodDraw()
 		if (BloodFlag[i] == true && eData[i]->type != BossWolfFlock) {
 			Object::Instance()->Draw(Blood, Vec3(BloodPosition[i].x, 0.0f - 0.9f + size, BloodPosition[i].z),
 				Vec3(1, 1, 1), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), BloodGraph);
+		}
+		switch (eData[i]->type)
+		{
+		case BoarType:
+			if (eData[i]->HP > 0)
+			{		
+			}
+			break;
+		case BossBigOni:
+			if (eData[i]->HP > 0)
+			{
+				bigOniBoss.PreDraw(eData[i]);
+			}
+			break;
+		case BossTwinBoar:
+			if (twinTotalHP > 0)
+			{
+				twinBoar.PreDraw(eData[i], i);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }
