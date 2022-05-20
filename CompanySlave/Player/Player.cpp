@@ -346,7 +346,7 @@ void Player::Draw()
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
-		if (invincivleTime != 0) { Object::Instance()->Draw(playerDamageObject, position, scale, angle, color); }
+		if (invincivleTime >= 30) { Object::Instance()->Draw(playerDamageObject, position, scale, angle, color); }
 		else if (portionFlag == true) { Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color); }
 		else if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		else if (attackMode == true)
@@ -433,7 +433,7 @@ void Player::Move()
 		walkNo = 0;
 	}
 	//移動
-	if ((Input::Instance()->KeybordInputArrow() || Input::Instance()->ConLeftInput()) && portionFlag == false)
+	if ((Input::Instance()->KeybordInputArrow() || Input::Instance()->ConLeftInput()) && portionFlag == false && invincivleTime <= 30)
 	{
 		//向き変更
 		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
@@ -466,7 +466,7 @@ void Player::Move()
 		walkNo = 0;
 		moveFlag = false;
 	}
-	if (avoidanceTime <= 0 && normalAttackTime <= 0 && portionFlag == false && attackMode == false)
+	if (avoidanceTime <= 0 && normalAttackTime <= 0 && portionFlag == false && attackMode == false && invincivleTime <= 30)
 	{
 		//移動
 		//キーボード
@@ -498,7 +498,8 @@ void Player::Move()
 void Player::NormalAttack(Enemy* enemy)
 {
 	//if (attackMode == true) { attackCount++; }//アニメーションのカウント
-	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) && avoidanceTime <= 0 && portionFlag == false)
+	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) 
+		&& avoidanceTime <= 0 && portionFlag == false && invincivleTime <= 30)
 	{
 		attackMode = true;
 
@@ -653,7 +654,7 @@ void Player::SwordAttack(Enemy* enemy)
 {
 
 	//撃つ
-	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag && portionFlag == false)
+	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag && portionFlag == false && invincivleTime <= 30)
 	{
 		audio->SoundSEPlayWave(sound2);
 		swordPosition[shotNo] = position;
@@ -679,7 +680,7 @@ void Player::SwordAttack(Enemy* enemy)
 	}
 
 	//剣戻ってくるやつ発動
-	if (Input::Instance()->ControllerDown(ButtonLB) && portionFlag == false)
+	if (Input::Instance()->ControllerDown(ButtonLB) && portionFlag == false && invincivleTime <= 30)
 	{
 		if (IsSwordALLHave() == true && swordCoolTimeFlag == false)
 		{//剣を全部持っていた場合
@@ -1011,7 +1012,7 @@ void Player::LifePortion()
 {
 	//HPが減っていて且つポーションを持っていた場合
 	if ((Input::Instance()->KeybordTrigger(DIK_Q) || Input::Instance()->ControllerDown(ButtonY))
-		&& portion > 0 && portionFlag == false && avoidanceTime <= 0 && normalAttackTime <= 0)
+		&& portion > 0 && portionFlag == false && avoidanceTime <= 0 && normalAttackTime <= 0 && invincivleTime <= 30)
 	{
 		if (HP >= HPMAX)
 		{//回復不発時
@@ -1119,7 +1120,7 @@ void Player::Avoidance()
 	}
 	//回避開始
 	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonA))
-		&& avoidanceFlag == false && normalAttackTime <= 0)
+		&& avoidanceFlag == false && normalAttackTime <= 0 && invincivleTime <= 30)
 	{
 		avoidanceFlag = true;
 		avoidanceTime = avoidanceTimeMax;
@@ -1178,6 +1179,15 @@ void Player::Damage(int damegeNum)
 	HP -= damegeNum;
 
 	invincivleTime = invincibleTimeMax;
+	//ダメージ処理による初期化
+	avoidanceTime = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		normalAttackFlag[i] = false;
+	}
+	normalAttackTime = 0;
+	normalAttackCount = 0;
+	portionTime = 0;
 }
 
 void Player::UIDraw()
