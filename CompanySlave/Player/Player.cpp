@@ -27,6 +27,10 @@ void Player::Init()
 	sound1 = Audio::SoundLoadWave("Resources/Music/SE/katana.wav");
 	sound2 = Audio::SoundLoadWave("Resources/Music/SE/hiken.wav");
 	sound3 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
+	sound4 = Audio::SoundLoadWave("Resources/Music/SE/speed.wav");
+	sound5 = Audio::SoundLoadWave("Resources/Music/SE/bbb.wav");
+	sound6 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
+	//6‚Ì‚ÝSE’T‚µ’†
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
@@ -1122,6 +1126,7 @@ void Player::Avoidance()
 	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonA))
 		&& avoidanceFlag == false && normalAttackTime <= 0 && invincivleTime <= 30)
 	{
+		audio->SoundSEPlayWave(sound4);
 		avoidanceFlag = true;
 		avoidanceTime = avoidanceTimeMax;
 		avoiDirection = direction;

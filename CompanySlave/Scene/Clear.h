@@ -32,7 +32,7 @@ public:
 
 	void Draw();
 
-	bool GetBottanFlag() { return bottanFlag; }
+	bool GetButtonFlag() { return buttonFlag; }
 	float GetVolume() { return volume; }
 	float SetVolume(float volume) { return this->volume = volume; }
 	bool SetAudioFlag(bool audioFlag) { return this->audioFlag = audioFlag; }
@@ -70,7 +70,7 @@ private://定義
 	float color = 1;//色
 
 	bool TextFlag = false;//完の文字のフラグ
-	bool bottanFlag = false;//ボタンが押せるかのフラグ
+	bool buttonFlag = false;//ボタンが押せるかのフラグ
 	bool audioFlag = true;
 };
 

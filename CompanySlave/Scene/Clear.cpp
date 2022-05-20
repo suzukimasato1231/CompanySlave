@@ -13,6 +13,7 @@ Clear::~Clear()
 	audio->xAudio2.Reset();
 	//音データ解放
 	Audio::SoundUnload(&sound1);
+	Audio::SoundUnload(&sound2);
 	safe_delete(audio);
 }
 void Clear::Initialize()
@@ -34,6 +35,8 @@ void Clear::Initialize()
 
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/Music/BGM/Samurai_Moon_2.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/SE/button.wav");
+
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
@@ -64,7 +67,7 @@ void Clear::Init()
 	color = 1;
 	colorTimer = 60;
 	TextFlag = false;
-	bottanFlag = false;
+	buttonFlag = false;
 
 	audio->SoundBGMPlayLoopWave(sound1,0);
 }
@@ -93,11 +96,16 @@ void Clear::Update()
 		}
 		else if (color <= 0.1) {
 			TextFlag = true;
-			bottanFlag = true;
+			buttonFlag = true;
 		}
 
 	}
-
+	if (buttonFlag == true) {
+		if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+		{
+			audio->SoundSEPlayWave(sound2);
+		}
+	}
 	//ライト更新
 	lightGroup->Update();
 }

@@ -13,6 +13,7 @@ Title::~Title()
 	audio->xAudio2.Reset();
 	//音データ解放
 	Audio::SoundUnload(&sound1);
+	Audio::SoundUnload(&sound2);
 	safe_delete(audio);
 }
 void Title::Initialize()
@@ -29,6 +30,8 @@ void Title::Initialize()
 
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/Music/BGM/heiannoyoi.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Music/SE/button.wav");
+
 	//スプライト画像読み込み
 	spriteGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/select.png");
@@ -176,6 +179,7 @@ void Title::Update()
 		{
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 			{
+				audio->SoundSEPlayWave(sound2);
 				volume2 = 1;
 				scene = 1;
 				sceneChangeFlag = true;
@@ -215,6 +219,10 @@ void Title::Update()
 			volumeFade = 0;
 			volumeFadeFlag = false;
 			rainFlag = true;
+			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
+			{
+				audio->SoundSEPlayWave(sound2);
+			}
 		}
 		else if (volumeFlag == 1)
 		{

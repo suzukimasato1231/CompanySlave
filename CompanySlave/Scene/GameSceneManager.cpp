@@ -129,7 +129,7 @@ void GameSceneManager::Update()
 			initFlag = true;
 		}
 		//この数値を変えればクリアシーンに行けるステージを変えられる↓
-		if (play->GetSceneChangeFlag() == true && play->GetStageNum() == 10) {
+		if (play->GetSceneChangeFlag() == true && play->GetStageNum() == 2) {
 			clear->Init();
 			clear->SetAudioFlag(true);
 			scene = clearScene;
@@ -144,7 +144,7 @@ void GameSceneManager::Update()
 	//クリアシーン
 	else if (scene == clearScene) {
 
-		if (clear->GetBottanFlag() == true) {
+		if (clear->GetButtonFlag() == true) {
 
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 			{
