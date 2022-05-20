@@ -101,15 +101,15 @@ void Player::Init()
 	AttackEffectGraph[8] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
 
 	//2攻撃目のエフェクト
-	AttackEffectGraph[9] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
-	AttackEffectGraph[10] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect2.png");
-	AttackEffectGraph[11] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect3.png");
-	AttackEffectGraph[12] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect4.png");
-	AttackEffectGraph[13] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect5.png");
-	AttackEffectGraph[14] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect6.png");
-	AttackEffectGraph[15] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect7.png");
-	AttackEffectGraph[16] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect8.png");
-	AttackEffectGraph[17] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect9.png");
+	AttackEffectGraph[9] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect1.png");
+	AttackEffectGraph[10] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect2.png");
+	AttackEffectGraph[11] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect3.png");
+	AttackEffectGraph[12] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect4.png");
+	AttackEffectGraph[13] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect5.png");
+	AttackEffectGraph[14] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect6.png");
+	AttackEffectGraph[15] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect7.png");
+	AttackEffectGraph[16] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect8.png");
+	AttackEffectGraph[17] = Object::Instance()->LoadTexture(L"Resources/Effect/4effect9.png");
 
 	//2攻撃目のエフェクト
 	AttackEffectGraph[18] = Object::Instance()->LoadTexture(L"Resources/Effect/2effect1.png");
