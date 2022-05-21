@@ -508,7 +508,7 @@ void Player::Move()
 void Player::NormalAttack(Enemy* enemy)
 {
 	//if (attackMode == true) { attackCount++; }//アニメーションのカウント
-	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX)) 
+	if ((Input::Instance()->KeybordTrigger(DIK_D) || Input::Instance()->ControllerDown(ButtonX))
 		&& avoidanceTime <= 0 && portionFlag == false && invincivleTime <= 30)
 	{
 		attackMode = true;
@@ -1134,12 +1134,21 @@ void Player::Avoidance()
 	}
 	//回避開始
 	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonA))
-		&& avoidanceFlag == false && normalAttackTime <= 0 && invincivleTime <= 30)
+		&& avoidanceFlag == false && invincivleTime <= 30)
 	{
+		normalAttackCount = 0;
 		audio->SoundSEPlayWave(sound4);
 		avoidanceFlag = true;
 		avoidanceTime = avoidanceTimeMax;
 		avoiDirection = direction;
+		//攻撃中断
+		normalAttackTime = 0;
+		attackMode = false;
+		attackEfectFlag = false;
+		for (int i = 0; i < 3; i++)
+		{
+			normalAttackFlag[i] = false;
+		}
 	}
 	//回避中
 	if (avoidanceTime > 0)
@@ -1273,7 +1282,7 @@ void Player::UIDraw()
 	{
 		if (portion >= 2)
 		{
-			Sprite::Instance()->Draw(lifeNot, Vec2(160.0f+shake.x, 75.0f + shake.y), 40.0f, 40.0f);
+			Sprite::Instance()->Draw(lifeNot, Vec2(160.0f + shake.x, 75.0f + shake.y), 40.0f, 40.0f);
 		}
 		if (portion >= 1)
 		{
@@ -1372,8 +1381,8 @@ void Player::ShakeUpdate()
 	if (swordNotTime > 0 || lifeNotTime > 0)
 	{
 		int powerX = rand() % 30;
-		int powerY = rand() % 30;		
-		shake.x = static_cast<float>(powerX)/10;
+		int powerY = rand() % 30;
+		shake.x = static_cast<float>(powerX) / 10;
 		shake.y = static_cast<float>(powerX) / 10;
 	}
 }
