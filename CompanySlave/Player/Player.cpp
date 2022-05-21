@@ -711,6 +711,7 @@ void Player::SwordAttack(Enemy* enemy)
 		else
 		{//‰ñŽû‚Å‚«‚È‚¢Žž‚Ì•`ŽÊ‚ÌŽžŠÔÝ’è
 			swordNotTime = swordNotTimeMax;
+			audio->SoundSEPlayWave(sound5);
 		}
 
 	}

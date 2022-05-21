@@ -191,6 +191,7 @@ void Title::Update()
 		//‰¹—Ê’²ß
 		if (Input::Instance()->ControllerDown(ButtonB))
 		{
+			audio->SoundSEPlayWave(sound2);
 			volumeFlag++;
 			position = { -50.0f,0.0f,0.0f };
 			rotation = { 90,0,0 };
