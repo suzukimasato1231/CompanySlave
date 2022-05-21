@@ -17,6 +17,9 @@ Player::~Player()
 	Audio::SoundUnload(&sound1);
 	Audio::SoundUnload(&sound2);
 	Audio::SoundUnload(&sound3);
+	Audio::SoundUnload(&sound4);
+	Audio::SoundUnload(&sound5);
+	Audio::SoundUnload(&sound6);
 	safe_delete(audio);
 }
 
@@ -29,8 +32,7 @@ void Player::Init()
 	sound3 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
 	sound4 = Audio::SoundLoadWave("Resources/Music/SE/speed.wav");
 	sound5 = Audio::SoundLoadWave("Resources/Music/SE/bbb.wav");
-	sound6 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
-	//6‚Ì‚İSE’T‚µ’†
+	sound6 = Audio::SoundLoadWave("Resources/Music/SE/krkr.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
@@ -979,6 +981,7 @@ void Player::SwordAttack(Enemy* enemy)
 			swordCoolTimePlas = 0;
 			swordCoolTime = swordCoolTimeMax;
 			swordCoolTimeFlag = false;
+			audio->SoundSEPlayWave(sound6);
 		}
 	}
 	//‰ñû•s”­‚Ì‰‰o
