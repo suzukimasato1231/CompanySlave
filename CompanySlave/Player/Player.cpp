@@ -20,6 +20,8 @@ Player::~Player()
 	Audio::SoundUnload(&sound4);
 	Audio::SoundUnload(&sound5);
 	Audio::SoundUnload(&sound6);
+	Audio::SoundUnload(&sound7);
+	Audio::SoundUnload(&sound8);
 	safe_delete(audio);
 }
 
@@ -33,6 +35,8 @@ void Player::Init()
 	sound4 = Audio::SoundLoadWave("Resources/Music/SE/speed.wav");
 	sound5 = Audio::SoundLoadWave("Resources/Music/SE/bbb.wav");
 	sound6 = Audio::SoundLoadWave("Resources/Music/SE/krkr.wav");
+	sound7 = Audio::SoundLoadWave("Resources/Music/SE/HP.wav");
+	sound8 = Audio::SoundLoadWave("Resources/Music/SE/hk.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
@@ -598,6 +602,7 @@ void Player::NormalAttack(Enemy* enemy)
 				int num = rand100(mt);
 				if (num < 20)
 				{//‚Q‚O–¢–ž‚È‚çƒN[ƒ‹ƒ^ƒCƒ€‚T•bŒ»Û
+					audio->SoundSEPlayWave(sound8);
 					swordCoolTimePlas += 5;
 				}
 			}
@@ -1028,6 +1033,7 @@ void Player::LifePortion()
 		}
 		else
 		{//‰ñ•œŽÀsŽž
+			audio->SoundSEPlayWave(sound7);
 			portion--;
 			HP += 4;
 			if (HP > HPMAX)

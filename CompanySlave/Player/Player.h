@@ -284,6 +284,8 @@ private:
 	SoundData sound4;
 	SoundData sound5;
 	SoundData sound6;
+	SoundData sound7;
+	SoundData sound8;
 	float volume = 1.0f;
 
 	float collectCount = 0.1f;
