@@ -520,11 +520,11 @@ void PlayScene::Draw()
 	//‘OŒi•`‰æ
 	player->UIDraw();
 	enemy->DrawUI();
-	if (stageNum == 2 || stageNum == 3)
+	/*if (stageNum == 2 || stageNum == 3)
 	{
 		Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 
-	}
+	}*/
 	if (sceneChangeFlag == true) {
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
 	}

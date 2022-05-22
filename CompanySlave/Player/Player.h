@@ -91,6 +91,8 @@ private:
 	bool IsSwordALLHave();
 	//不発時バツのシェイク
 	void ShakeUpdate();
+
+	bool AttackToFlag();
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -238,10 +240,11 @@ private:
 	SpriteData skillUI[2];			//クールタイムゲージ
 	SpriteData swordNot;			//剣回収不発時
 	SpriteData swordRotationGraph;	//回収ゲージが溜まった時の演出
+	SpriteData swordPre;
 	time_t start_time, end_time;	//時間計測
 	const float swordCoolTimeMax = 15.0f;
 	float swordCoolTime = swordCoolTimeMax;
-	bool swordCoolTimeFlag = false;
+	bool swordCoolTimeFlag = false;			//ソードゲージが回復したかどうか
 	int swordCoolTimePlas = 0;
 
 	const float swordNotTimeMax = 20;//回収時不発時間

@@ -143,6 +143,8 @@ void Player::Init()
 	swordUI[8] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/8White.png");
 	swordUI[9] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/9White.png");
 
+	swordPre = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/sword.png");
+
 	skillUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/swordSkill1.png");
 	skillUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/swordSkill2.png");
 
@@ -443,34 +445,38 @@ void Player::Move()
 		walkNo = 0;
 	}
 	//移動
-	if ((Input::Instance()->KeybordInputArrow() || Input::Instance()->ConLeftInput()) && portionFlag == false && invincivleTime <= 30)
+	if ((Input::Instance()->KeybordInputArrow() || Input::Instance()->ConLeftInput())
+		&& portionFlag == false && invincivleTime <= 30)
 	{
-		//向き変更
-		if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
-		else if (Input::Instance()->KeybordPush(DIK_LEFT)) { angle.y = 180; }
-		else if (Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 270; }
-		else if (Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 90; }
-		if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
-			angle.y = 315;
-		}
-		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
-			angle.y = 225;
-		}
-		else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN))
+		if ((normalAttackTime <= 1 && AttackToFlag() == true) || (attackMode == false && AttackToFlag() == false))
 		{
-			angle.y = 45;
-		}
-		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN))
-		{
-			angle.y = 135;
-		}
+			//向き変更
+			if (Input::Instance()->KeybordPush(DIK_RIGHT)) { angle.y = 0; }
+			else if (Input::Instance()->KeybordPush(DIK_LEFT)) { angle.y = 180; }
+			else if (Input::Instance()->KeybordPush(DIK_UP)) { angle.y = 270; }
+			else if (Input::Instance()->KeybordPush(DIK_DOWN)) { angle.y = 90; }
+			if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
+				angle.y = 315;
+			}
+			else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
+				angle.y = 225;
+			}
+			else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN))
+			{
+				angle.y = 45;
+			}
+			else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN))
+			{
+				angle.y = 135;
+			}
 
-		if (Input::Instance()->ConLeftInput() && portionFlag == false)
-		{
-			angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
+			if (Input::Instance()->ConLeftInput() && portionFlag == false)
+			{
+				angle.y = XMConvertToDegrees(atan2(sinRad, cosRad)) - 90;
+			}
+			walkCount++;//アニメーションのタイマー
+			moveFlag = true;
 		}
-		walkCount++;//アニメーションのタイマー
-		moveFlag = true;
 	}
 	else {
 		walkNo = 0;
@@ -1073,39 +1079,45 @@ void   Player::Angle()
 	float rad = 0.0f;
 	if (Input::Instance()->KeybordInputArrow())
 	{
-		//右上
-		if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
-			rad = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
-		}//右下
-		else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
-			rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
-		}//左下
-		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
-			rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
-		}//左上
-		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
-			rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
-		}//上
-		else if (Input::Instance()->KeybordPush(DIK_UP)) {
-			rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
-		}//右
-		else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
-			rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
-		}//下
-		else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
-			rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
-		}//左
-		else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
-			rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
+		if ((normalAttackTime <= 1 && AttackToFlag() == true) || (attackMode == false && AttackToFlag() == false))
+		{
+			//右上
+			if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP)) {
+				rad = atan2(position.z + 10.0f - position.z, position.x + 10.0f - position.x);
+			}//右下
+			else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
+				rad = atan2(position.z + 10.0f - position.z, position.x - 10.0f - position.x);
+			}//左下
+			else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)) {
+				rad = atan2(position.z - 10.0f - position.z, position.x - 10.0f - position.x);
+			}//左上
+			else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)) {
+				rad = atan2(position.z - 10.0f - position.z, position.x + 10.0f - position.x);
+			}//上
+			else if (Input::Instance()->KeybordPush(DIK_UP)) {
+				rad = atan2(position.z - position.z, position.x + 10.0f - position.x);
+			}//右
+			else if (Input::Instance()->KeybordPush(DIK_RIGHT)) {
+				rad = atan2(position.z + 10.0f - position.z, position.x - position.x);
+			}//下
+			else if (Input::Instance()->KeybordPush(DIK_DOWN)) {
+				rad = atan2(position.z - position.z, position.x - 10.0f - position.x);
+			}//左
+			else if (Input::Instance()->KeybordPush(DIK_LEFT)) {
+				rad = atan2(position.z - 10.0f - position.z, position.x - position.x);
+			}
+			sinRad = sinf(rad);
+			cosRad = cosf(rad);
 		}
-		sinRad = sinf(rad);
-		cosRad = cosf(rad);
 	}
 	if (Input::Instance()->ConLeftInput())
 	{
-		rad = Input::Instance()->GetLeftAngle();
-		sinRad = sinf(-rad);
-		cosRad = cosf(rad);
+		if ((normalAttackTime <= 1 && AttackToFlag() == true) || (attackMode == false && AttackToFlag() == false))
+		{
+			rad = Input::Instance()->GetLeftAngle();
+			sinRad = sinf(-rad);
+			cosRad = cosf(rad);
+		}
 	}
 }
 
@@ -1165,34 +1177,37 @@ void Player::Avoidance()
 
 void Player::PDirection()
 {
-	//右上
-	if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
-		|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
-		direction = UpRight;
-	}//右下
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
-		|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
-		direction = DownRight;
-	}//左下
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
-		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
-		direction = DownLeft;
-	}//左上
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
-		|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
-		direction = UpLeft;
-	}//上
-	else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) {
-		direction = Up;
-	}//右
-	else if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) {
-		direction = Right;
-	}//下
-	else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) {
-		direction = Down;
-	}//左
-	else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) {
-		direction = Left;
+	if ((normalAttackTime <= 1 && AttackToFlag() == true) || (attackMode == false && AttackToFlag() == false))
+	{
+		//右上
+		if ((Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_UP))
+			|| (Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonUp))) {
+			direction = UpRight;
+		}//右下
+		else if (Input::Instance()->KeybordPush(DIK_RIGHT) && Input::Instance()->KeybordPush(DIK_DOWN)
+			|| Input::Instance()->ControllerPush(LButtonRight) && Input::Instance()->ControllerPush(LButtonDown)) {
+			direction = DownRight;
+		}//左下
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_DOWN)
+			|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonDown)) {
+			direction = DownLeft;
+		}//左上
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) && Input::Instance()->KeybordPush(DIK_UP)
+			|| Input::Instance()->ControllerPush(LButtonLeft) && Input::Instance()->ControllerPush(LButtonUp)) {
+			direction = UpLeft;
+		}//上
+		else if (Input::Instance()->KeybordPush(DIK_UP) || Input::Instance()->ControllerPush(LButtonUp)) {
+			direction = Up;
+		}//右
+		else if (Input::Instance()->KeybordPush(DIK_RIGHT) || Input::Instance()->ControllerPush(LButtonRight)) {
+			direction = Right;
+		}//下
+		else if (Input::Instance()->KeybordPush(DIK_DOWN) || Input::Instance()->ControllerPush(LButtonDown)) {
+			direction = Down;
+		}//左
+		else if (Input::Instance()->KeybordPush(DIK_LEFT) || Input::Instance()->ControllerPush(LButtonLeft)) {
+			direction = Left;
+		}
 	}
 }
 
@@ -1223,19 +1238,19 @@ void Player::UIDraw()
 		{
 			HPSub -= 0.1f;
 		}
-		Sprite::Instance()->Draw(HPGaugeSub, Vec2(130.0f, 35.0f), 380.0f * (HPSub / HPMAX), 20.0f);
-		Sprite::Instance()->Draw(HPGaugeMain, Vec2(130.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeSub, Vec2(140.0f, 35.0f), 380.0f * (HPSub / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeMain, Vec2(140.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
 	}
-	Sprite::Instance()->Draw(HPGraph, Vec2(80.0f, 30.0f), 500.0f, 30.0f);
+	Sprite::Instance()->Draw(HPGraph, Vec2(90.0f, 30.0f), 500.0f, 30.0f);
 
 	//ポーション
 	if (portion >= 2)
 	{
-		Sprite::Instance()->Draw(portionSprite[0], Vec2(160.0f, 70.0f), 40.0f, 40.0f);
+		Sprite::Instance()->Draw(portionSprite[0], Vec2(170.0f, 70.0f), 40.0f, 40.0f);
 	}
 	if (portion >= 1)
 	{
-		Sprite::Instance()->Draw(portionSprite[1], Vec2(120.0f, 70.0f), 40.0f, 40.0f);
+		Sprite::Instance()->Draw(portionSprite[1], Vec2(130.0f, 70.0f), 40.0f, 40.0f);
 	}
 
 	//ソードゲージ
@@ -1247,7 +1262,7 @@ void Player::UIDraw()
 		{
 			swordRotationGraph.rotation = 0.0f;
 		}
-		Sprite::Instance()->Draw(swordRotationGraph, Vec2(65.0f, 65.0f), 120.0f, 120.0f, Vec2(0.5f, 0.5f));
+		Sprite::Instance()->Draw(swordRotationGraph, Vec2(70.0f, 70.0f), 120.0f, 120.0f, Vec2(0.5f, 0.5f));
 	}
 	//番号
 	//クールタイム時間を足す
@@ -1256,7 +1271,6 @@ void Player::UIDraw()
 	{
 		coolTime = swordCoolTimeMax;
 	}
-
 	int number = (int)(swordCoolTimeMax - coolTime) % 10;
 	int number2 = (int)(swordCoolTimeMax - coolTime) / 10;
 	int swordCoolTimeNum = 15 - coolTime;
@@ -1264,12 +1278,18 @@ void Player::UIDraw()
 	{
 		swordCoolTimeNum = 14;
 	}
-	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(-10.0f, -10.0f), 140.0f, 140.0f);
+	//ソードゲージ外枠
+	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(-30.0f, -30.0f), 200.0f, 200.0f);
+	//剣の交差画像
+	if (swordCoolTimeFlag == false)
+	{
+		Sprite::Instance()->Draw(swordPre, Vec2(20.0f, 10.0f), 100.0f, 100.0f);
+	}
 	if (coolTime != swordCoolTimeMax)
 	{
 		//剣クールタイム数字
-		Sprite::Instance()->Draw(swordUI[number2], Vec2(20.0f, 36.0f), 45.0f, 45.0f);
-		Sprite::Instance()->Draw(swordUI[number], Vec2(65.0f, 36.0f), 45.0f, 45.0f);
+		Sprite::Instance()->Draw(swordUI[number2], Vec2(25.0f, 36.0f), 45.0f, 45.0f);
+		Sprite::Instance()->Draw(swordUI[number], Vec2(70.0f, 36.0f), 45.0f, 45.0f);
 	}
 
 	//回収不発時
@@ -1282,11 +1302,11 @@ void Player::UIDraw()
 	{
 		if (portion >= 2)
 		{
-			Sprite::Instance()->Draw(lifeNot, Vec2(160.0f + shake.x, 75.0f + shake.y), 40.0f, 40.0f);
+			Sprite::Instance()->Draw(lifeNot, Vec2(170.0f + shake.x, 75.0f + shake.y), 40.0f, 40.0f);
 		}
 		if (portion >= 1)
 		{
-			Sprite::Instance()->Draw(lifeNot, Vec2(120.0f + shake.x, 75.0f + shake.y), 40.0f, 40.0f);
+			Sprite::Instance()->Draw(lifeNot, Vec2(130.0f + shake.x, 75.0f + shake.y), 40.0f, 40.0f);
 		}
 	}
 }
@@ -1384,6 +1404,18 @@ void Player::ShakeUpdate()
 		int powerY = rand() % 30;
 		shake.x = static_cast<float>(powerX) / 10;
 		shake.y = static_cast<float>(powerX) / 10;
+	}
+}
+
+bool Player::AttackToFlag()
+{
+	if (normalAttackFlag[0] == true || normalAttackFlag[1] == true || normalAttackFlag[2] == true)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
