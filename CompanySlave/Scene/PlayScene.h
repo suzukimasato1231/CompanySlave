@@ -66,10 +66,7 @@ private://定義
 	SpriteData GameOverTextGraph;
 	SpriteData SChangeGraph;
 
-	SpriteData AButton[2];
-	SpriteData LBButton[2];
-	SpriteData RBButton[2];
-	SpriteData XButton[2];
+
 	//オブジェクトデータ
 
 	//オブジェクト画像
@@ -123,7 +120,7 @@ private://定義
 	float v = 0;//速度
 	float g = 9.8f;//重力
 	float rainSlow = 1.0f;//雨のスロー
-
+	Object::ObjectData tutorial;
 	bool tutorialAFlag = false;
 	int AButtonTimer = 30;
 	int AButtonCount = 0;
@@ -136,6 +133,11 @@ private://定義
 	bool tutorialLBFlag = false;
 	int LBButtonTimer = 30;
 	int LBButtonCount = 0;
+
+	int AButton[2];
+	int LBButton[2];
+	int RBButton[2];
+	int XButton[2];
 
 	bool LoadFlag = false;
 

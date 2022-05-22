@@ -47,15 +47,16 @@ void PlayScene::Initialize()
 		RainOBJ[i] = Shape::CreateRect(1, 1);
 	}
 	rainGraph = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-
-	AButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/A1.png");
-	AButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/A2.png");
-	XButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/X1.png");
-	XButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/X2.png");
-	RBButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/RB1.png");
-	RBButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/RB2.png");
-	LBButton[0] = Sprite::Instance()->SpriteCreate(L"Resources/Button/LB1.png");
-	LBButton[1] = Sprite::Instance()->SpriteCreate(L"Resources/Button/LB2.png");
+	
+	tutorial= Shape::CreateRect(10, 10);
+	AButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/A1.png");
+	AButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/A2.png");
+	XButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/X1.png");
+	XButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/X2.png");
+	RBButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/RB1.png");
+	RBButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/RB2.png");
+	LBButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/LB1.png");
+	LBButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/LB2.png");
 
 
 	//3Dオブジェクト画像読み込み
@@ -529,20 +530,21 @@ void PlayScene::Draw()
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
 	}
 	if (tutorialAFlag == true) {
-		Sprite::Instance()->Draw(AButton[AButtonCount], Vec2(600, 0), 100, 100);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{10 ,0, 0}, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
+
 	}
 	if (tutorialXFlag == true) {
-		Sprite::Instance()->Draw(XButton[XButtonCount], Vec2(600, 0), 100, 100);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 10,0,0 }, Vec4{ 1,1,1,1 }, XButton[XButtonCount]);
 	}
 	if (tutorialRBFlag == true) {
-		Sprite::Instance()->Draw(RBButton[RBButtonCount], Vec2(600, 0), 100, 100);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 10,0,0 }, Vec4{ 1,1,1,1 }, RBButton[RBButtonCount]);
 	}
 	if (tutorialLBFlag == true) {
-		Sprite::Instance()->Draw(LBButton[LBButtonCount], Vec2(600, 0), 100, 100);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 10,0,0 }, Vec4{ 1,1,1,1 }, LBButton[LBButtonCount]);
 	}
 #if _DEBUG
 	debugText.Print(10, 180, 2, "%d", stageNum);
-	debugText.Print(10, 500, 2, "%f,%f", player->GetPosition().x, player->GetPosition().z);
+	debugText.Print(10, 500, 2, "ss%d",player->GetSS());
 #endif
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 	//Sprite::Instance()->Draw(GameOverGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(color, color, color, fade));

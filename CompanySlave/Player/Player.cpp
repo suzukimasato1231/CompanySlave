@@ -22,6 +22,8 @@ Player::~Player()
 	Audio::SoundUnload(&sound6);
 	Audio::SoundUnload(&sound7);
 	Audio::SoundUnload(&sound8);
+	Audio::SoundUnload(&sound9);
+	Audio::SoundUnload(&sound10);
 	safe_delete(audio);
 }
 
@@ -37,6 +39,8 @@ void Player::Init()
 	sound6 = Audio::SoundLoadWave("Resources/Music/SE/krkr.wav");
 	sound7 = Audio::SoundLoadWave("Resources/Music/SE/HP.wav");
 	sound8 = Audio::SoundLoadWave("Resources/Music/SE/hk.wav");
+	sound9 = Audio::SoundLoadWave("Resources/Music/SE/damege.wav");
+	sound10 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
@@ -291,6 +295,9 @@ void Player::StageInit(int stageNum)
 	//ƒ|[ƒVƒ‡ƒ“
 	portionFlag = false;
 	portionTime = 0;
+
+	swordSoundFlag = false;
+	swordSoundCount = 0;
 }
 
 void Player::Update(Enemy* enemy)
@@ -908,15 +915,29 @@ void Player::SwordAttack(Enemy* enemy)
 			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
 			{
 				haveSword[i] = true;
+					swordSoundFlag = true;
+			}
+			else {
+					swordSoundFlag = false;
+			}
+			if (haveSword[i]) {
+					swordSoundFlag = false;
 			}
 		}
 
+		if (swordSoundFlag == true) {
+				audio->SoundSEPlayWave(sound10);
+				swordSoundFlag = false;
+		}
 		//Žh‚³‚Á‚½“G‚ÉŒ•‚ª’Ç‚Á‚©‚¯‚é
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
 			if (isEnemySting[i][j])
 			{
 				swordPosition[i] = enemy->GetPosition(j);
+			}
+			else if (isEnemySting[i][j]==false){
+		
 			}
 		}
 
@@ -1243,6 +1264,7 @@ void Player::Damage(int damegeNum)
 	normalAttackTime = 0;
 	normalAttackCount = 0;
 	portionTime = 0;
+	audio->SoundSEPlayWave(sound9);
 }
 
 void Player::UIDraw()

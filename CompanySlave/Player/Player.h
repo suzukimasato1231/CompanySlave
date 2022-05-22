@@ -119,7 +119,7 @@ public://Žæ“¾Œn
 	int GetInvincivleTime() { return invincivleTime; }
 	//ƒJƒƒ‰‚ÌÀ•W‚ð‹‚ß‚é
 	Vec3 GetCameraPos();
-
+	bool GetSS() { return swordSoundFlag; }
 	float SetVolume(float volume) { return this->volume = volume; };
 
 private:
@@ -292,6 +292,12 @@ private:
 	SoundData sound6;
 	SoundData sound7;
 	SoundData sound8;
+	SoundData sound9;
+	SoundData sound10;
+
+	bool swordSoundFlag = false;
+	bool swordSoundFlag2 = false;
+	bool swordSoundCount = 0;
 	float volume = 1.0f;
 
 	float collectCount = 0.1f;
