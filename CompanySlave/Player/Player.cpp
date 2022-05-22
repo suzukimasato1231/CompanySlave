@@ -532,15 +532,29 @@ void Player::NormalAttack(Enemy* enemy)
 	{
 		normalAttackTime--;
 		if (normalAttackFlag[0] == false && normalAttackFlag[1] == false && normalAttackFlag[2] == false && normalAttackCount == 3)
-		{
+		{//3攻撃目のスピード
 			position.x += attackMoveHighSpeed * sinRad * slowValue;
 			position.z += attackMoveHighSpeed * cosRad * slowValue;
+
+			attackMoveHighSpeed -= 0.20f;
+			if (attackMoveHighSpeed <= 0.1f)
+			{
+				attackMoveHighSpeed = 0.05f;
+			}
 		}
 		else
-		{
+		{//1,2攻撃目のスピード
 			position.x += attackMoveSpeed * sinRad * slowValue;
 			position.z += attackMoveSpeed * cosRad * slowValue;
 		}
+
+		attackMoveSpeed -= 0.20f;
+		if (attackMoveSpeed <= 0.1f)
+		{
+			attackMoveSpeed = 0.05f;
+		}
+		
+
 		//攻撃モーションNo更新
 		attackCount++;
 		if (attackCount >= 31)
@@ -588,6 +602,8 @@ void Player::NormalAttack(Enemy* enemy)
 			normalAttackFlag[j] = false;
 			NormalFieldDirection();
 			bool swordCoolTimeFlag = false;
+			attackMoveSpeed = attackMoveSpeed2;
+			attackMoveHighSpeed = attackMoveHighSpeed2;
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 			{
 				if ((enemy->GetHP(i) > 0 && enemy->GetType(i) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(i) == BossTwinBoar)) {

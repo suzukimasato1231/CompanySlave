@@ -190,8 +190,11 @@ private:
 	int normalAttackCount = 0;							//通常攻撃の何回目か
 	const int normalGraceTimeMax = 50;					//連続切りまでの猶予
 	int normalGraceTime = 0;							//連続切りまでの猶予
-	float attackMoveHighSpeed = 0.4f;					//３撃目の進むスピード
-	float attackMoveSpeed = 0.3f;						//攻撃方向へ進むスピード
+	float attackMoveHighSpeed = 0.7f;					//３撃目の進むスピード
+	float attackMoveSpeed = 0.2f;						//攻撃方向へ進むスピード
+
+	const float attackMoveSpeed2 = 2.0f;
+	const float attackMoveHighSpeed2 = 3.0f;
 
 	//剣攻撃
 	Object::ObjectData swordObject;//剣
