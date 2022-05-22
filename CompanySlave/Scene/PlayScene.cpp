@@ -47,8 +47,8 @@ void PlayScene::Initialize()
 		RainOBJ[i] = Shape::CreateRect(1, 1);
 	}
 	rainGraph = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
-	
-	tutorial= Shape::CreateRect(10, 10);
+
+	tutorial = Shape::CreateRect(6, 6);
 	AButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/A1.png");
 	AButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/A2.png");
 	XButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/X1.png");
@@ -65,7 +65,7 @@ void PlayScene::Initialize()
 	//パーティクル
 	particleAdd = new ParticleAdd;
 	particleAdd->Init();
-	
+
 	sword = Object::Instance()->CreateOBJ("Effect");
 	sword2 = Object::Instance()->CreateOBJ("sword2");
 
@@ -150,7 +150,7 @@ void PlayScene::StageInit()
 {
 	if (stageFlag == true)
 	{
-		audio->SoundBGMPlayLoopWave(sound1,0);
+		audio->SoundBGMPlayLoopWave(sound1, 0);
 		switch (stageNum)
 		{
 		case 1:
@@ -167,7 +167,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
-			audio->SoundBGMPlayLoopWave(sound2,1);
+			audio->SoundBGMPlayLoopWave(sound2, 1);
 			break;
 		case 4:
 			player->StageInit(stageNum);
@@ -183,7 +183,7 @@ void PlayScene::StageInit()
 			player->StageInit(stageNum);
 			enemy->StageInit(stageNum);
 			mapStage->StageInit(stageNum);
-			audio->SoundBGMPlayLoopWave(sound2,1);
+			audio->SoundBGMPlayLoopWave(sound2, 1);
 			break;
 		case 7:
 			player->StageInit(stageNum);
@@ -242,7 +242,7 @@ void PlayScene::Update()
 
 	//パーティクル追加
 	particleAdd->Update(player, enemy, mapStage);
-	
+
 #pragma region 音関係
 	//0が無音
 	enemy->SetVolume(volume);
@@ -255,16 +255,16 @@ void PlayScene::Update()
 	{
 		if (enemy->GetHP(e) > 0)
 		{
-			audioFlag= false;
+			audioFlag = false;
 		}
 	}
 
-	if (audioFlag == true&&stageNum==4) {
+	if (audioFlag == true && stageNum == 4) {
 		audio->SoundStop(1);
 	}
 	else if (audioFlag == true && stageNum == 7) {
 		audio->SoundStop(1);
-	}	
+	}
 	else if (audioFlag == true && stageNum == 10) {
 		audio->SoundStop(1);
 	}
@@ -279,7 +279,7 @@ void PlayScene::Update()
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
-		if (stageNum == 4 || stageNum == 7 ||	 stageNum == 10) {
+		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
 			audio->SoundStop(1);
 		}
 	}
@@ -530,21 +530,21 @@ void PlayScene::Draw()
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
 	}
 	if (tutorialAFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{10 ,0, 0}, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30 ,0, 0 }, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
 
 	}
 	if (tutorialXFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 10,0,0 }, Vec4{ 1,1,1,1 }, XButton[XButtonCount]);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, XButton[XButtonCount]);
 	}
 	if (tutorialRBFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 10,0,0 }, Vec4{ 1,1,1,1 }, RBButton[RBButtonCount]);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, RBButton[RBButtonCount]);
 	}
 	if (tutorialLBFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y+20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 10,0,0 }, Vec4{ 1,1,1,1 }, LBButton[LBButtonCount]);
+		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, LBButton[LBButtonCount]);
 	}
 #if _DEBUG
 	debugText.Print(10, 180, 2, "%d", stageNum);
-	debugText.Print(10, 500, 2, "ss%d",player->GetSS());
+	debugText.Print(10, 500, 2, "ss%d", player->GetSS());
 #endif
 	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 	//Sprite::Instance()->Draw(GameOverGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(color, color, color, fade));

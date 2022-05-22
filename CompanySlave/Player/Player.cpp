@@ -1276,10 +1276,10 @@ void Player::UIDraw()
 		{
 			HPSub -= 0.1f;
 		}
-		Sprite::Instance()->Draw(HPGaugeSub, Vec2(140.0f, 35.0f), 380.0f * (HPSub / HPMAX), 20.0f);
-		Sprite::Instance()->Draw(HPGaugeMain, Vec2(140.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeSub, Vec2(160.0f, 35.0f), 380.0f * (HPSub / HPMAX), 20.0f);
+		Sprite::Instance()->Draw(HPGaugeMain, Vec2(160.0f, 35.0f), 380.0f * (HP / HPMAX), 20.0f);
 	}
-	Sprite::Instance()->Draw(HPGraph, Vec2(90.0f, 30.0f), 500.0f, 30.0f);
+	Sprite::Instance()->Draw(HPGraph, Vec2(110.0f, 30.0f), 500.0f, 30.0f);
 
 	//ポーション
 	if (portion >= 2)
@@ -1333,7 +1333,7 @@ void Player::UIDraw()
 	//回収不発時
 	if (swordNotTime > 0)
 	{
-		Sprite::Instance()->Draw(swordNot, Vec2(0.0f + shake.x, 0.0f + shake.y), 120.0f, 120.0f);
+		Sprite::Instance()->Draw(swordNot, Vec2(10.0f + shake.x, 10.0f + shake.y), 120.0f, 120.0f);
 	}
 	//回復不発時
 	if (lifeNotTime > 0)
