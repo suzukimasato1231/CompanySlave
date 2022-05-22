@@ -622,19 +622,19 @@ void Player::NormalAttack(Enemy* enemy)
 					}
 				}
 			}
-			//20％の確率で５秒剣投げクールタイム減少
-			if (swordCoolTimeFlag == true)
-			{
-				std::random_device rnd;
-				std::mt19937 mt(rnd());
-				std::uniform_int_distribution<>rand100(0, 99);//0~99の範囲
-				int num = rand100(mt);
-				if (num < 20)
-				{//２０未満ならクールタイム５秒現象
-					audio->SoundSEPlayWave(sound8);
-					swordCoolTimePlas += 5;
-				}
-			}
+			////20％の確率で５秒剣投げクールタイム減少
+			//if (swordCoolTimeFlag == true)
+			//{
+			//	std::random_device rnd;
+			//	std::mt19937 mt(rnd());
+			//	std::uniform_int_distribution<>rand100(0, 99);//0~99の範囲
+			//	int num = rand100(mt);
+			//	if (num < 20)
+			//	{//２０未満ならクールタイム５秒現象
+			//		audio->SoundSEPlayWave(sound8);
+			//		swordCoolTimePlas += 5;
+			//	}
+			//}
 
 			normalAttackTime = normalAttackTimeMax;
 			normalGraceTime = normalGraceTimeMax;
