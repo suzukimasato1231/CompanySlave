@@ -35,6 +35,9 @@ void TwinBoar::Init()
 	bossData.r = 10.0f;
 	bossData.bossFlag = true;
 	bossData.nockPossibleFlag = false;
+	
+	AttackSound = false;
+	SoundCount = 0;
 }
 
 void TwinBoar::Draw(EnemyData* oniData, int i)
@@ -241,6 +244,7 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player, int i)
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 		{
 			player->Damage(1);
+			AttackSound = true;
 		}
 		//ˆÚ“®UŒ‚
 		oniData->oldPosition = oniData->position;
@@ -309,6 +313,17 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player, int i)
 		}
 		boarNum = boarNumMax;
 	}
+	if (AttackSound == true) {
+		SoundCount++;
+		if (SoundCount == 8) {
+			SoundCount = 0;
+			oniData->attakBFlag = true;
+			AttackSound = false;
+		}
+	}
+	else {
+		oniData->attakBFlag = false;
+	}
 }
 
 
@@ -359,6 +374,7 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 			if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 			{
 				player->Damage(1);
+				AttackSound = true;
 			}
 			//ˆÚ“®UŒ‚
 			oniData->oldPosition = oniData->position;
@@ -409,6 +425,17 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 		bFinishFlag[0] = false;
 		bFinishFlag[1] = false;
 	}
+	if (AttackSound == true) {
+		SoundCount++;
+		if (SoundCount == 8) {
+			SoundCount = 0;
+			oniData->attakBFlag = true;
+			AttackSound = false;
+		}
+	}
+	else {
+		oniData->attakBFlag = false;
+	}
 }
 
 void TwinBoar::AttackDoubleRush(EnemyData* oniData, Player* player)
@@ -445,6 +472,7 @@ void TwinBoar::AttackDoubleRush(EnemyData* oniData, Player* player)
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 		{
 			player->Damage(1);
+			AttackSound  = true;
 		}
 		if (boarNum == 2)
 		{
@@ -489,6 +517,17 @@ void TwinBoar::AttackDoubleRush(EnemyData* oniData, Player* player)
 			sAttack[0] = false;
 			sAttack[1] = false;
 		}
+	}
+	if (AttackSound == true) {
+		SoundCount++;
+		if (SoundCount == 8) {
+			SoundCount = 0;
+			oniData->attakBFlag = true;
+			AttackSound = false;
+		}
+	}
+	else {
+		oniData->attakBFlag = false;
 	}
 }
 

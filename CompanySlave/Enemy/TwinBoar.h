@@ -108,6 +108,11 @@ private:
 	int redColor;
 	//エフェクト関係
 
+	bool AttackSound = false;
+
+
+	int SoundCount = 0;
+
 	float slowValue = 1;
 };
 

@@ -40,7 +40,7 @@ void Player::Init()
 	sound7 = Audio::SoundLoadWave("Resources/Music/SE/HP.wav");
 	sound8 = Audio::SoundLoadWave("Resources/Music/SE/hk.wav");
 	sound9 = Audio::SoundLoadWave("Resources/Music/SE/damege.wav");
-	sound10 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
+	sound10 = Audio::SoundLoadWave("Resources/Music/SE/collect.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
@@ -914,7 +914,7 @@ void Player::SwordAttack(Enemy* enemy)
 		{
 			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
 			{
-				haveSword[i] = true;
+			
 					swordSoundFlag = true;
 			}
 			else {
@@ -926,6 +926,7 @@ void Player::SwordAttack(Enemy* enemy)
 		}
 
 		if (swordSoundFlag == true) {
+			haveSword[i] = true;
 				audio->SoundSEPlayWave(sound10);
 				swordSoundFlag = false;
 		}

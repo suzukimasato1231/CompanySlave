@@ -296,7 +296,6 @@ private:
 	SoundData sound10;
 
 	bool swordSoundFlag = false;
-	bool swordSoundFlag2 = false;
 	bool swordSoundCount = 0;
 	float volume = 1.0f;
 
