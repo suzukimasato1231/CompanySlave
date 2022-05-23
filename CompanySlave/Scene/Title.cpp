@@ -46,8 +46,6 @@ void Title::Initialize()
 
 	VolumeUI[0] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeUI.png");
 	VolumeUI[1] = Sprite::Instance()->SpriteCreate(L"Resources/Volume.png");
-	VolumeUI[2] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeArrow1.png");
-	VolumeUI[3] = Sprite::Instance()->SpriteCreate(L"Resources/VolumeArrow2.png");
 
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
@@ -97,6 +95,8 @@ void Title::Init()
 		pos[i].x = rand() % 1300;
 		s[i] = rand() % 500 - 400;
 	}
+	ControllerLFlag = false;
+	ControllerRFlag = false;
 	audio->SoundBGMPlayLoopWave(sound1,0);
 }
 
@@ -201,17 +201,7 @@ void Title::Update()
 		{
 			volumeFlag = 0;
 		}
-		if (Input::Instance()->ConLeftInput())
-		{
-			if (direction == Right)
-			{
-				volumeArrowFlag = true;
-			}
-			else if (direction == Left)
-			{
-				volumeArrowFlag = false;
-			}
-		}
+
 		if (volumeFlag == 0)
 		{
 			position = { 5.0f,0.0f,0.0f };
@@ -241,21 +231,37 @@ void Title::Update()
 			{
 				volumeFade += 0.1;
 			}
-			if (volumeFade >= 1 && Input::Instance()->ControllerDown(ButtonA))
+			if (direction == Right || direction == UpRight || direction == DownRight)
 			{
-				if (volumeArrowFlag == true && volume < 1)
+				ControllerRFlag = true;
+			}
+			else { ControllerRFlag = false; }
+
+			if (direction == Left || direction == UpLeft || direction == DownLeft)
+			{
+				ControllerLFlag = true;
+			}
+			else { ControllerLFlag = false; }
+
+			if (Input::Instance()->ControllerDown(LButtonRight) && ControllerRFlag == true)
+			{
+				if (volume < 1)
 				{
 					volume += 0.1;
 					volume2 += 0.1;
 					volumeB += 50;
 				}
-				if (volumeArrowFlag == false && volume >= 0)
+			}
+			else if (Input::Instance()->ControllerDown(LButtonLeft) && ControllerLFlag == true)
+			{
+				if (volume > 0)
 				{
 					volume -= 0.1;
 					volume2 -= 0.1;
 					volumeB -= 50;
 				}
 			}
+
 		}
 	}
 
@@ -335,12 +341,7 @@ void Title::Draw()
 		else if (volumeFlag == 1) {
 			Sprite::Instance()->Draw(VolumeUI[1], Vec2(420, 350), volumeB, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
 			Sprite::Instance()->Draw(VolumeUI[0], Vec2(420, 350), 500, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
-			if (volumeArrowFlag == false) {
-				Sprite::Instance()->Draw(VolumeUI[2], Vec2(370, 350), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
-			}
-			if (volumeArrowFlag == true) {
-				Sprite::Instance()->Draw(VolumeUI[3], Vec2(370, 350), 600, 40, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, volumeFade));
-			}
+		
 			Sprite::Instance()->Draw(Button[1], Vec2(0, 0), window_width, window_height, Vec2(0.0f, 0.0f), Vec4(1, 1, 1, 1));
 
 		}

@@ -71,7 +71,7 @@ private://定義
 	SpriteData rain[rainMax];
 	SpriteData Button[2];
 	SpriteData Number[10];
-	SpriteData VolumeUI[4];
+	SpriteData VolumeUI[2];
 
 	//オブジェクトデータ
 	Object::ObjectData swordObject;
@@ -119,7 +119,8 @@ private://定義
 
 	bool volumeFadeFlag = false;
 	float volumeFade = 0;
-
+	bool ControllerLFlag = false;
+	bool ControllerRFlag = false;
 };
 
 
