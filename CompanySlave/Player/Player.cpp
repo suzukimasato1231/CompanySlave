@@ -47,6 +47,7 @@ void Player::Init()
 	playerSwordWalkObject[2] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[3] = Object::Instance()->CreateOBJ("playerKari2-3", "playerOBJ/");
 	playerDamageObject = Object::Instance()->CreateOBJ("playerDead", "playerOBJ/");
+	playerLifeEffectObject = Object::Instance()->CreateOBJ("Healing", "playerOBJ/");
 
 	playerAttackObject[0] = Object::Instance()->CreateOBJ("playerAttack1-1", "playerOBJ/");
 	playerAttackObject[1] = Object::Instance()->CreateOBJ("playerAttack1-3", "playerOBJ/");
@@ -93,6 +94,16 @@ void Player::Init()
 	swordGraph[12] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge3.png");
 	swordGraph[13] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge2.png");
 	swordGraph[14] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGauge1.png");
+
+	timeUpEffectGraph[0] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect1.png");
+	timeUpEffectGraph[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect2.png");
+	timeUpEffectGraph[2] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect3.png");
+	timeUpEffectGraph[3] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect4.png");
+	timeUpEffectGraph[4] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect5.png");
+	timeUpEffectGraph[5] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect6.png");
+	timeUpEffectGraph[6] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect7.png");
+	timeUpEffectGraph[7] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect8.png");
+	timeUpEffectGraph[8] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/TimeUpEffect9.png");
 
 	swordGargeMain = Sprite::Instance()->SpriteCreate(L"Resources/color/red.png");
 	swordGargeSub = Sprite::Instance()->SpriteCreate(L"Resources/color/blue.png");
@@ -366,7 +377,12 @@ void Player::Draw()
 	if (damageTime % 2 == 0)
 	{
 		if (invincivleTime >= 30) { Object::Instance()->Draw(playerDamageObject, position, scale, angle, color); }
-		else if (portionFlag == true) { Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color); }
+		else if (portionFlag == true) 
+		{
+			Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color); 
+			Object::Instance()->Draw(playerLifeEffectObject, { position.x ,position.y + lifeEffectPos ,position.z }, { 0.75f,0.75f ,0.75f }, { 0,0,0 }, color);
+			Object::Instance()->Draw(playerLifeEffectObject, { position.x ,position.y + lifeEffectPos - 3 ,position.z }, { 0.75f,0.75f ,0.75f }, { 0,90,0 }, color);
+		}
 		else if (attackMode == false) { Object::Instance()->Draw(playerSwordWalkObject[walkNo], position, scale, angle, color); }
 		else if (attackMode == true)
 		{
@@ -787,7 +803,7 @@ void Player::SwordAttack(Enemy* enemy)
 	//剣戻ってくるやつ処理
 	if (returnFlag)
 	{
-
+		timeUpEfectFlag = true;
 		tornadoScale -= 0.01 * slowValue;
 		tornadoAngle += 24 * slowValue;
 		if (slowFlag)
@@ -1095,6 +1111,7 @@ void Player::LifePortion()
 	//膠着時間減少
 	if (portionFlag == true)
 	{
+		lifeEffectPos += 0.4;
 		portionTime--;
 		if (portionTime < 25)
 		{
@@ -1105,7 +1122,10 @@ void Player::LifePortion()
 			portionFlag = false;
 		}
 	}
-
+	else if (portionFlag == false)
+	{
+		lifeEffectPos = -6.0;
+	}
 	if (lifeNotTime > 0)
 	{
 		lifeNotTime--;
@@ -1317,10 +1337,25 @@ void Player::UIDraw()
 	{
 		swordCoolTimeNum = 14;
 	}
+	//溜まったエフェクトのカウント
+	if (swordCoolTimeNum == 0 && timeUpEfectFlag)
+	{
+		timeUpEfectNo++;
+		if (timeUpEfectNo >= 8)
+		{
+			timeUpEfectFlag = false;
+			timeUpEfectNo = 0;
+		}
+	}
 	//ソードゲージ外枠
 	Sprite::Instance()->Draw(swordGraph[swordCoolTimeNum], Vec2(-30.0f, -30.0f), 200.0f, 200.0f);
+	//溜まったエフェクト
+	if (swordCoolTimeNum == 0 && timeUpEfectFlag)
+	{
+		Sprite::Instance()->Draw(timeUpEffectGraph[timeUpEfectNo], Vec2(-30.0f, -30.0f), 200.0f, 200.0f);
+	}
 	//剣の交差画像
-	if (swordCoolTimeFlag == false)
+	if (swordCoolTimeFlag == true)
 	{
 		Sprite::Instance()->Draw(swordPre, Vec2(20.0f, 10.0f), 100.0f, 100.0f);
 	}
@@ -1479,6 +1514,20 @@ Vec3 Player::GetCameraPos()
 	{
 		cameraPos.z = -350.0f;
 	}
+
+	//カメラシェイク
+	if (invincivleTime >= 30) {
+		std::random_device randX;
+		std::mt19937 rtX(randX());
+		std::uniform_int_distribution<>rand2X(0, 2);//0~2の範囲
+		int randPosX = rand2X(rtX) - 1;
+		std::random_device randY;
+		std::mt19937 rtY(randY());
+		std::uniform_int_distribution<>rand2Y(0, 2);//0~2の範囲
+		int randPosY = rand2Y(rtY) - 1;
+		cameraPos = { position.x - randPosX,position.y - randPosY,position.z };
+	}
+
 	if (BlackFlag == true)
 	{
 		collectCount -= 0.25f;
