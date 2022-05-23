@@ -127,6 +127,8 @@ private:
 	Object::ObjectData playerAttackObject[9];
 	Object::ObjectData playerDamageObject;          //ダメージ食らったとき//プレイヤー攻撃
 	Object::ObjectData playerLifeObject[2];			//プレイヤー回復
+	Object::ObjectData playerLifeEffectObject;      //回復エフェクト
+	float lifeEffectPos = -6;                       //回復エフェクトの上にあげるための値
 	int walkCount = 0;								//描画用カウント
 	int walkNo = 0;									//描画するNO
 	int attackCount = 0;							//攻撃モーション描画用カウント
@@ -315,4 +317,9 @@ private:
 	int attackEfectNo = 0;
 	int attackEffectCount = 0;
 	bool AttackEnd = false;
+
+
+	bool timeUpEfectFlag = true;
+	SpriteData timeUpEffectGraph[9];
+	int timeUpEfectNo = 0;
 };
