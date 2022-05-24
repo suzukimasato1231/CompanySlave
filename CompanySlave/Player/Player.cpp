@@ -1530,18 +1530,18 @@ void Player::FiveLife()
 	{
 		endFive.x = 70.0f;
 	}
-	/*else if (position.x > 890.0f)
+	else if (position.x > 890.0f)
 	{
-		endFive =;
+		endFive.x = 850.0f;
 	}
 	if (position.z > -65.0f)
 	{
-		endFive = Vec3();
+		endFive.z = -55.0f;
 	}
 	else if (position.z < -350.0f)
 	{
-		endFive = Vec3();
-	}*/
+		endFive.z = -340.0f;
+	}
 	//‹…‚ªƒQ[ƒW‚ÉŒü‚©‚Á‚Ä‚¢‚­ˆ—
 	for (int i = 0; i < fiveLifeFlag2.size(); i++)
 	{

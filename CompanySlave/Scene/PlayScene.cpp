@@ -501,13 +501,14 @@ void PlayScene::Draw()
 	//敵の血痕
 	enemy->FirstDraw();
 
+	//パーティクル描画
+	mapStage->DrawParticle(camera->GetEye());
+
 	//プレイヤーの描画
 	player->Draw();
 
 	enemy->Draw();
 
-	//パーティクル描画
-	mapStage->DrawParticle(camera->GetEye());
 
 	particleAdd->Draw();
 
