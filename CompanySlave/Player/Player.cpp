@@ -39,7 +39,7 @@ void Player::Init()
 	sound6 = Audio::SoundLoadWave("Resources/Music/SE/krkr.wav");
 	sound7 = Audio::SoundLoadWave("Resources/Music/SE/HP.wav");
 	sound8 = Audio::SoundLoadWave("Resources/Music/SE/hk.wav");
-	sound9 = Audio::SoundLoadWave("Resources/Music/SE/damege.wav");
+	sound9 = Audio::SoundLoadWave("Resources/Music/SE/Damege.wav");
 	sound10 = Audio::SoundLoadWave("Resources/Music/SE/collect.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
