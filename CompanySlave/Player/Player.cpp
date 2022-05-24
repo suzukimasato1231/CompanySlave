@@ -35,7 +35,7 @@ void Player::Init()
 	sound2 = Audio::SoundLoadWave("Resources/Music/SE/hiken.wav");
 	sound3 = Audio::SoundLoadWave("Resources/Music/SE/return.wav");
 	sound4 = Audio::SoundLoadWave("Resources/Music/SE/speed.wav");
-	sound5 = Audio::SoundLoadWave("Resources/Music/SE/bbb.wav");
+	sound5 = Audio::SoundLoadWave("Resources/Music/SE/Error.wav");
 	sound6 = Audio::SoundLoadWave("Resources/Music/SE/krkr.wav");
 	sound7 = Audio::SoundLoadWave("Resources/Music/SE/HP.wav");
 	sound8 = Audio::SoundLoadWave("Resources/Music/SE/hk.wav");
