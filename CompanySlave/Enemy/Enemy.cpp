@@ -227,6 +227,7 @@ void Enemy::Update(Player* player)
 {
 	for (size_t i = 0; i < eData.size(); i++)
 	{
+		eData[i]->oldPosition = eData[i]->position;
 		switch (eData[i]->type)
 		{
 		case Oni:
