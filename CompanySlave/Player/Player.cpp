@@ -1371,7 +1371,7 @@ void Player::UIDraw()
 		Sprite::Instance()->Draw(timeUpEffectGraph[timeUpEfectNo], Vec2(-30.0f, -30.0f), 200.0f, 200.0f);
 	}
 	//Œ•‚ÌŒð·‰æ‘œ
-	if (swordCoolTimeFlag == true)
+	if (swordCoolTimeFlag == false)
 	{
 		Sprite::Instance()->Draw(swordPre, Vec2(20.0f, 10.0f), 100.0f, 100.0f);
 	}
