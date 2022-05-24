@@ -35,7 +35,7 @@ void TwinBoar::Init()
 	bossData.r = 10.0f;
 	bossData.bossFlag = true;
 	bossData.nockPossibleFlag = false;
-	
+
 	AttackSound = false;
 	SoundCount = 0;
 }
@@ -141,7 +141,7 @@ void TwinBoar::PreDraw(EnemyData* oniData, int i)
 		{
 			oniData->oldPosition = oniData->pDirection * 55.0f;
 			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 2.0f, oniData->bowPos.z + oniData->oldPosition.z),
-				oniData->scale,Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
+				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
 		}
 		else if (attackStats == DOUBLEAFTER)//攻撃後の隙
 		{
@@ -152,13 +152,13 @@ void TwinBoar::PreDraw(EnemyData* oniData, int i)
 		{//武器振り上げ
 			oniData->oldPosition = oniData->pDirection * 55.0f;
 			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 2.0f, oniData->bowPos.z + oniData->oldPosition.z),
-				oniData->scale,Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
+				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
 		}
 		else if (attackStats == DOUBLEATTACK && bFlag[i] == true && bFinishFlag[i] == false)
 		{
 			oniData->oldPosition = oniData->pDirection * 55.0f;
 			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 2.0f, oniData->bowPos.z + oniData->oldPosition.z),
-				oniData->scale,Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
+				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
 		}
 		else
 		{
@@ -211,15 +211,19 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player, int i)
 	if (oniData->StatusTime <= 0 && sTime >= 0)
 	{
 		//プレイヤーとエネミーの位置の差
-		Vec3 memoryPosition = player->GetPosition() - oniData->position;
+		Vec3 memoryPosition = {};
+		memoryPosition.x = player->GetPosition().x - oniData->position.x;
+		memoryPosition.z = player->GetPosition().z - oniData->position.z;
 		//長さを求める
 		float length = memoryPosition.length();
 		//プレイヤーの向き
 		oniData->bowAngle = atan2(player->GetPosition().z - oniData->position.z, player->GetPosition().x - oniData->position.x);
 		if (length < sPlayer2EnemyLength)
 		{
+			Vec3 memoryPosition = {};
 			//プレイヤーとエネミーの位置の差
-			Vec3 memoryPosition = player->GetPosition() - oniData->position;
+			memoryPosition.x = player->GetPosition().x - oniData->position.x;
+			memoryPosition.z = player->GetPosition().z - oniData->position.z;
 			oniData->pDirection = memoryPosition.normalize();
 			oniData->attackDirection = oniData->direction;
 			oniData->StatusTime = sAttackMotionTime;
@@ -276,7 +280,10 @@ void TwinBoar::AttackShortRush(EnemyData* oniData, Player* player, int i)
 		else
 		{//所定の位置へ移動		
 			oniData->bowAngle = atan2(fixedPosition[i].z - oniData->position.z, fixedPosition[i].x - oniData->position.x);
-			Vec3 memoryPosition = fixedPosition[i] - oniData->position;
+			Vec3 memoryPosition = {};
+			memoryPosition.x = fixedPosition[i].x - oniData->position.x;
+			memoryPosition.z = fixedPosition[i].z - oniData->position.z;
+
 			oniData->pDirection = memoryPosition.normalize();
 			Vec3 direction = memoryPosition.normalize();
 			oniData->position += direction * moveFixedSpeed * slowValue;
@@ -354,7 +361,9 @@ void TwinBoar::AttackRush(EnemyData* oniData, Player* player, int num)
 			{
 				oniData->attackDirection = oniData->direction;
 				//プレイヤーとエネミーの位置の差
-				Vec3 memoryPosition = player->GetPosition() - oniData->position;
+				Vec3 memoryPosition = {};
+				memoryPosition.x = player->GetPosition().x - oniData->position.x;
+				memoryPosition.z = player->GetPosition().z - oniData->position.z;
 				//プレイヤーの向き
 				oniData->pDirection = memoryPosition.normalize();
 				//プレイヤーの向き
@@ -449,7 +458,9 @@ void TwinBoar::AttackDoubleRush(EnemyData* oniData, Player* player)
 	{//攻撃予備動作
 
 		//プレイヤーとエネミーの位置の差
-		Vec3 memoryPosition = player->GetPosition() - oniData->position;
+		Vec3 memoryPosition = {};
+		memoryPosition.x = player->GetPosition().x - oniData->position.x;
+		memoryPosition.z = player->GetPosition().z - oniData->position.z;
 		//プレイヤーの向き
 		oniData->pDirection = memoryPosition.normalize();
 		oniData->attackDirection = oniData->direction;
@@ -472,7 +483,7 @@ void TwinBoar::AttackDoubleRush(EnemyData* oniData, Player* player)
 		if (Collision::CheckBox2Box(oniData->eBox, player->GetBox()) && player->GetInvincivleTime() == 0)
 		{
 			player->Damage(1);
-			AttackSound  = true;
+			AttackSound = true;
 		}
 		if (boarNum == 2)
 		{

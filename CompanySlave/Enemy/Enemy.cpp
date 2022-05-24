@@ -413,8 +413,8 @@ void Enemy::Draw()
 			float parsent2 = eData[i]->subHP / eData[i]->HPMax;
 			if (parsent != 1.0f && eData[i]->bossFlag == false)
 			{
-				Object::Instance()->Draw(hpSubOBJ, Vec3(eData[i]->position.x + 0.1 - (1.0f - parsent2) * 6.0, eData[i]->position.y + 4.9f + eData[i]->r, eData[i]->position.z + 5.0f),
-					Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpSub);
+				Object::Instance()->Draw(hpSubOBJ, Vec3(eData[i]->position.x + 0.01 - (1.0f - parsent2) * 6.0, eData[i]->position.y + 4.9f + eData[i]->r, eData[i]->position.z + 5.0f),
+					Vec3(parsent2, 0.9f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpSub);
 				Object::Instance()->Draw(hpGaugeOBJ, Vec3(eData[i]->position.x - (1.0f - parsent) * 6.0, eData[i]->position.y + 5.0f + eData[i]->r, eData[i]->position.z + 5.0f),
 					Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGaugeGraph);
 				//HP˜g
