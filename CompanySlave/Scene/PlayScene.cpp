@@ -50,7 +50,8 @@ void PlayScene::Initialize()
 	}
 	rainGraph = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
-	tutorial = Shape::CreateRect(4, 4);
+	tutorial = Shape::CreateRect(10, 10);
+	tutorial2 = Shape::CreateRect(12, 6);
 	AButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/A1.png");
 	AButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/A2.png");
 	XButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/X1.png");
@@ -557,10 +558,10 @@ void PlayScene::Draw()
 		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, XButton[XButtonCount]);
 	}
 	if (tutorialRBFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, RBButton[RBButtonCount]);
+		Object::Instance()->Draw(tutorial2, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, RBButton[RBButtonCount]);
 	}
 	if (tutorialLBFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, LBButton[LBButtonCount]);
+		Object::Instance()->Draw(tutorial2, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, LBButton[LBButtonCount]);
 	}
 #if _DEBUG
 	debugText.Print(10, 180, 2, "%d", stageNum);
