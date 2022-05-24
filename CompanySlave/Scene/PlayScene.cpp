@@ -40,9 +40,9 @@ void PlayScene::Initialize()
 	//スプライト画像読み込み
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
-	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
-	//GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
-	//GameOverTextGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver2.png");
+	//GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
+	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
+	GameOverTextGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver2.png");
 	SChangeGraph = Sprite::Instance()->SpriteCreate(L"Resources/SceneChange.png");
 
 	for (int i = 0; i < rainMax; i++) {
@@ -279,31 +279,33 @@ void PlayScene::Update()
 		audio->SoundStop(0);
 	}
 #pragma endregion
-	if (player->GetHP() <= 0 && deadGraphPos.y < 0)
-	{
-		audio->SoundStop(0);
-		nowTime += 0.1;
-		timeRate = min(nowTime / endTime, 1);
-		deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
-		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
-			audio->SoundStop(1);
-		}
+	//if (player->GetHP() <= 0 && deadGraphPos.y < 0)
+	//{
+	//	audio->SoundStop(0);
+	//	nowTime += 0.1;
+	//	timeRate = min(nowTime / endTime, 1);
+	//	deadGraphPos.y = -800 * (1.0f - (timeRate * timeRate) * (3 - (2 * timeRate))) + 0 * (timeRate * timeRate) * (3 - (2 * timeRate));
+	//	if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
+	//		audio->SoundStop(1);
+	//	}
 
-	}
-	//プレイシーンを抜ける
-	if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
-	{
-	 	if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
-		audio->SoundStop(1);
-		}
-		deadGraphPos.y = -800;
-		nowTime = 0;
-		endTime = 5;
-		timeRate = 0;
-		sceneFlag = true;
-	}
+	//}
+	////プレイシーンを抜ける
+	//if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
+	//{
+	// 	if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
+	//	audio->SoundStop(1);
+	//	}
+	//	deadGraphPos.y = -800;
+	//	nowTime = 0;
+	//	endTime = 5;
+	//	timeRate = 0;
+	//	sceneFlag = true;
+	//}
 
-	/*if (player->GetHP() <= 0)
+	//ゲームオーバー画面deGozaru
+
+	if (player->GetHP() <= 0)
 	{
 		audio->SoundStop(0);
 		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
@@ -333,8 +335,7 @@ void PlayScene::Update()
 
 			}
 		}
-
-	}*/
+	}
 	if (Input::Instance()->ControllerDown(ButtonA) && fade2 >= 1.0f)
 	{
 
@@ -565,12 +566,12 @@ void PlayScene::Draw()
 	debugText.Print(10, 180, 2, "%d", stageNum);
 	debugText.Print(10, 500, 2, "ss%d", player->GetSS());
 #endif
-	Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
-	//Sprite::Instance()->Draw(GameOverGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(color, color, color, fade));
-	//if (swordTime <= 0) {
-	//	Object::Instance()->Draw(sword2, Vec3(player->GetPosition().x + 50, 5, player->GetPosition().z - 10), Vec3(10, 10, 10), Vec3(0, 90, -20), Vec4(1, 1, 1, 1));
-	//}
-	//Sprite::Instance()->Draw(GameOverTextGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(1, 1, 1, fade2));
+	//Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
+	Sprite::Instance()->Draw(GameOverGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(color, color, color, fade));
+	if (swordTime <= 0) {
+		Object::Instance()->Draw(sword2, Vec3(player->GetPosition().x + 50, 5, player->GetPosition().z - 10), Vec3(10, 10, 10), Vec3(0, 90, -20), Vec4(1, 1, 1, 1));
+	}
+	Sprite::Instance()->Draw(GameOverTextGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(1, 1, 1, fade2));
 
 #if _DEBUG
 	//デバックテキスト描画ここは変わらない
