@@ -172,6 +172,9 @@ void Player::Init()
 	portionSprite[1] = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/Recovery.png");
 
 	BlackGraph = Sprite::Instance()->SpriteCreate(L"Resources/BlackOut.png");
+
+	fiveLife = Object::Instance()->CreateOBJ("sphere", "", true);
+	gaugeRight = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGaugeRight.png");
 }
 
 void Player::LoopInit()
@@ -346,6 +349,8 @@ void Player::Update(Enemy* enemy)
 	LifePortion();
 	//回避
 	Avoidance();
+	//5秒回復演出更新
+	FiveLife();
 	if (position.x < 0)
 	{
 		position.x = 0;
@@ -451,6 +456,15 @@ void Player::Draw()
 		Sprite::Instance()->Draw(BlackGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,1 });
 	}
 	EffectDraw();
+	//５秒回復の球
+	for (int i = 0; i < fiveLifeFlag2.size(); i++)
+	{
+		if (fiveLifeFlag2[i] && startFiveTime[i] <= 0)
+		{
+			Object::Instance()->Draw(fiveLife, fiveLifePos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, 0.0f, 0.0f),
+				Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+	}
 }
 
 //移動
@@ -624,7 +638,7 @@ void Player::NormalAttack(Enemy* enemy)
 			attackEffectCount = 0;
 			normalAttackFlag[j] = false;
 			NormalFieldDirection();
-			bool swordCoolTimeFlag = false;
+			bool swordCoolTimeLifeFlag = false;
 			attackMoveSpeed = attackMoveSpeed2;
 			attackMoveHighSpeed = attackMoveHighSpeed2;
 			for (size_t i = 0; i < enemy->GetEnemySize(); i++)
@@ -634,12 +648,12 @@ void Player::NormalAttack(Enemy* enemy)
 					{
 						enemy->DamegeNormal(i, direction);
 						enemy->SetDamegeFlag(i, true);
-						swordCoolTimeFlag = true;
+						swordCoolTimeLifeFlag = true;
 					}
 				}
 			}
 			//20％の確率で５秒剣投げクールタイム減少
-			if (swordCoolTimeFlag == true)
+			if (swordCoolTimeLifeFlag == true && swordCoolTimeFlag == true && fiveLifeFlag[0] == false && fiveLifeFlag[1] == false)
 			{
 				std::random_device rnd;
 				std::mt19937 mt(rnd());
@@ -648,7 +662,7 @@ void Player::NormalAttack(Enemy* enemy)
 				if (num < 20)
 				{//２０未満ならクールタイム５秒現象
 					audio->SoundSEPlayWave(sound8);
-					swordCoolTimePlas += 5;
+					fiveLifeFlag[0] = true;
 				}
 			}
 
@@ -1359,6 +1373,10 @@ void Player::UIDraw()
 	{
 		Sprite::Instance()->Draw(swordPre, Vec2(20.0f, 10.0f), 100.0f, 100.0f);
 	}
+	if (gaugeRightTime % 8 <= 4 && gaugeRightTime > 0)
+	{
+		Sprite::Instance()->Draw(gaugeRight, Vec2(-30.0f, -30.0f), 200.0f, 200.0f);
+	}
 	if (coolTime != swordCoolTimeMax)
 	{
 		//剣クールタイム数字
@@ -1490,6 +1508,70 @@ bool Player::AttackToFlag()
 	else
 	{
 		return false;
+	}
+}
+
+
+
+void Player::FiveLife()
+{
+	if (fiveLifeFlag[0] == true)
+	{//初期化
+		//fiveLifePos.fill(position);
+		fiveTime.fill(0.0f);
+		fiveLifeFlag2.fill(true);
+		startFiveTime = startFiveTimeMax;
+		fiveLifeFlag[0] = false;
+		fiveLifeFlag[1] = true;
+	}
+	//実際の動きの更新
+	endFive = position + endFivePos;
+	if (position.x < 110.0f)
+	{
+		endFive.x = 70.0f;
+	}
+	/*else if (position.x > 890.0f)
+	{
+		endFive =;
+	}
+	if (position.z > -65.0f)
+	{
+		endFive = Vec3();
+	}
+	else if (position.z < -350.0f)
+	{
+		endFive = Vec3();
+	}*/
+	//球がゲージに向かっていく処理
+	for (int i = 0; i < fiveLifeFlag2.size(); i++)
+	{
+		if (fiveLifeFlag2[i])
+		{
+			fiveLifePos[i] = position;
+			if (startFiveTime[i] <= 0)
+			{
+				fiveTime[i] += 0.5f;
+				float rat = fiveTime[i] / fiveTimeMax;
+				fiveLifePos[i] = Easing::easeOut(position, endFive, rat);
+				if (rat >= 1.0f)
+				{
+					fiveLifeFlag2[i] = false;
+					swordCoolTimePlas += 1;
+					gaugeRightTime = gaugeRightTimeMax;
+					if (i == fiveLifeFlag2.size() - 1)
+					{
+						fiveLifeFlag[1] = false;
+					}
+				}
+			}
+			startFiveTime[i] -= 1.0f;
+
+		}
+	}
+
+	if (gaugeRightTime > 0)
+	{
+		gaugeRightTime--;
 	}
 }
 

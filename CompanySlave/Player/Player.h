@@ -93,6 +93,9 @@ private:
 	void ShakeUpdate();
 
 	bool AttackToFlag();
+
+	//20%‚ÌŠm—¦‚Å‚T•b‰ñ•œ
+	void FiveLife();
 public://æ“¾Œn
 	//À•W
 	Vec3 GetPosition() { return position; }
@@ -322,4 +325,22 @@ private:
 	bool timeUpEfectFlag = true;
 	SpriteData timeUpEffectGraph[9];
 	int timeUpEfectNo = 0;
+
+	//5•b‰ñ•œ
+	Object::ObjectData fiveLife;
+	static const int fiveNum = 5;
+	bool fiveLifeFlag[2] = {};
+	std::array<bool, fiveNum> fiveLifeFlag2 = {};
+	std::array<Vec3, fiveNum> fiveLifePos = {};
+	const std::array<float, fiveNum>startFiveTimeMax = { 5.0f,10.0f,15.0f,20.0f,25.0f };
+	std::array<float, fiveNum>startFiveTime = {};
+	std::array<float, fiveNum> fiveTime = {};
+	const float fiveTimeMax = 15.0f;
+	const Vec3 endFivePos = { -40.0f,40.0f,6.0f };
+	Vec3 endFive = {}, startFive = {};
+
+	//ƒQ[ƒW‚ªŒõ‚éˆ—
+	SpriteData  gaugeRight;
+	const int gaugeRightTimeMax = 30;
+	int gaugeRightTime = 0;
 };
