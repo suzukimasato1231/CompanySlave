@@ -163,6 +163,8 @@ private:
 	//HPUI
 	Object::ObjectData hpOBJ;
 	Object::ObjectData hpGaugeOBJ;
+	Object::ObjectData hpSubOBJ;
+	int hpSub;
 	Object::ObjectData explosionOBJ;
 	int hpGaugeGraph;
 	int hpGraph;
@@ -172,7 +174,7 @@ private:
 	//É{ÉXUI
 	SpriteData bossSprite;
 	SpriteData bossHPSprite;
-
+	SpriteData bossSubHPSPrite;
 	int redColor;
 	//ååä÷åWÇÃïœêî
 

@@ -69,6 +69,7 @@ struct EnemyData
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//F
 	float HPMax = 7;					//Å‘åHP
 	float HP = 7;						//HP
+	float subHP = 7;					//Œ©‚½–Ú•ÏX•Û‘¶—pHP
 	float r = 5;						//‘å‚«‚³
 	int Status = NORMAL;				//ó‘Ô
 	int memoryStatus = NORMAL;

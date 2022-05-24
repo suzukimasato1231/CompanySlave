@@ -1210,14 +1210,14 @@ void Player::SwordAngle()
 void Player::Avoidance()
 {
 	//回避クールタイム減少
-	if (avoiCoolTime > 0)
+
+	avoiCoolTime--;
+	if (avoiCoolTime <= 0&& avoidanceTime <= 0)
 	{
-		avoiCoolTime--;
-		if (avoiCoolTime <= 0)
-		{
-			avoidanceFlag = false;
-		}
+		avoiCoolTime = 0;
+		avoidanceFlag = false;
 	}
+
 	//回避開始
 	if ((Input::Instance()->KeybordTrigger(DIK_F) || Input::Instance()->ControllerDown(ButtonA))
 		&& avoidanceFlag == false && invincivleTime <= 30)

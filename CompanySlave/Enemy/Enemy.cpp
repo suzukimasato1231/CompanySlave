@@ -37,9 +37,11 @@ void Enemy::Init()
 
 	//“GHP
 	hpGaugeOBJ = Shape::CreateRect(12.0f, 1.8f);
+	hpSubOBJ = Shape::CreateRect(11.8f, 1.7f);
 	hpOBJ = Shape::CreateRect(15.0f, 2.0f);
 	hpGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/EnemyGauge.png");
 	hpGaugeGraph = Object::Instance()->LoadTexture(L"Resources/EnemyUI/HP.png");
+	hpSub = Object::Instance()->LoadTexture(L"Resources/color/yellow.png");
 	//ŒŒ
 	Blood = Shape::CreateRect(10, 10);
 	BloodGraph = Object::Instance()->LoadTexture(L"Resources/Blood/Blood.png");
@@ -54,6 +56,7 @@ void Enemy::Init()
 
 	bossSprite = Sprite::Instance()->SpriteCreate(L"Resources/EnemyUI/Boss_HP.png");
 	bossHPSprite = Sprite::Instance()->SpriteCreate(L"Resources/EnemyUI/HP.png");
+	bossSubHPSPrite = Sprite::Instance()->SpriteCreate(L"Resources/color/yellow.png");
 
 	explosionOBJ = Shape::CreateRect(10, 10);
 	explosionGraph = Object::Instance()->LoadTexture(L"Resources/Point.png");
@@ -190,6 +193,8 @@ void Enemy::StageInit(int stageNum)
 				eData[num]->eBox.maxPosition = XMVectorSet(
 					eData[num]->position.x + eData[num]->r, eData[num]->position.y + eData[num]->r, eData[num]->position.z + eData[num]->r, 1);
 				eData[num]->eSphere.radius = 5.0f;
+				eData[num]->HP = eData[num]->HPMax;
+				eData[num]->subHP = eData[num]->HPMax;
 				//“G‚ÌŒü‚«‚ðÝ’è
 				switch (spawnMap[j][i] % 10)
 				{
@@ -398,10 +403,17 @@ void Enemy::Draw()
 		}
 		if (eData[i]->HP > 0)
 		{
+			if (eData[i]->subHP > eData[i]->HP)
+			{
+				eData[i]->subHP -= 0.1f;
+			}
 			//HPƒQ[ƒW
 			float parsent = eData[i]->HP / eData[i]->HPMax;
+			float parsent2 = eData[i]->subHP / eData[i]->HPMax;
 			if (parsent != 1.0f && eData[i]->bossFlag == false)
 			{
+				Object::Instance()->Draw(hpSubOBJ, Vec3(eData[i]->position.x + 0.1 - (1.0f - parsent2) * 6.0, eData[i]->position.y + 4.9f + eData[i]->r, eData[i]->position.z + 5.0f),
+					Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpSub);
 				Object::Instance()->Draw(hpGaugeOBJ, Vec3(eData[i]->position.x - (1.0f - parsent) * 6.0, eData[i]->position.y + 5.0f + eData[i]->r, eData[i]->position.z + 5.0f),
 					Vec3(parsent, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGaugeGraph);
 				//HP˜g
@@ -422,11 +434,18 @@ void Enemy::DrawUI()
 	int boarNum = 0;
 	float boarTotalHP = 0;
 	float boarTotalHPMax = 0;
+	float boarTotalSubHP = 0;
 	for (size_t i = 0; i < eData.size(); i++)
 	{
 		if (eData[i]->HP > 0 && eData[i]->bossFlag == true && eData[i]->Status != NORMAL && eData[i]->type != BossTwinBoar)
 		{
+			if (eData[i]->HP < eData[i]->subHP)
+			{
+				eData[i]->subHP -= 0.1f;
+			}
 			float ratio = eData[i]->HP / eData[i]->HPMax;
+			float ratio2 = eData[i]->subHP / eData[i]->HPMax;
+			Sprite::Instance()->Draw(bossSubHPSPrite, Vec2(150.0f, 650.0f), 1000.0f * ratio2, 50.0f);
 			Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 50.0f);
 			Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 50.0f);
 		}
@@ -436,9 +455,12 @@ void Enemy::DrawUI()
 			boarNum++;
 			boarTotalHP += eData[i]->HP;
 			boarTotalHPMax += eData[i]->HPMax;
+			boarTotalSubHP += eData[i]->subHP;
 			if (boarTotalHP > 0 && boarNum == 2)
 			{
 				float ratio = boarTotalHP / boarTotalHPMax;
+				float ratio2 = boarTotalSubHP / boarTotalHPMax;
+				Sprite::Instance()->Draw(bossSubHPSPrite, Vec2(150.0f, 650.0f), 1000.0f * ratio2, 50.0f);
 				Sprite::Instance()->Draw(bossHPSprite, Vec2(150.0f, 650.0f), 1000.0f * ratio, 50.0f);
 				Sprite::Instance()->Draw(bossSprite, Vec2(100.0f, 650.0f), 1100.0f, 50.0f);
 			}
