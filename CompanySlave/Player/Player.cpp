@@ -1530,7 +1530,7 @@ void Player::FiveLife()
 	{
 		endFive.x = 70.0f;
 	}
-	else if (position.x > 890.0f)
+		else if (position.x > 890.0f)
 	{
 		endFive.x = 850.0f;
 	}
@@ -1607,7 +1607,7 @@ Vec3 Player::GetCameraPos()
 		std::mt19937 rtY(randY());
 		std::uniform_int_distribution<>rand2Y(0, 2);//0~2‚Ì”ÍˆÍ
 		int randPosY = rand2Y(rtY) - 1;
-		cameraPos = { position.x - randPosX,position.y - randPosY,position.z };
+		cameraPos = { cameraPos.x - randPosX,cameraPos.y - randPosY,cameraPos.z };
 	}
 
 	if (BlackFlag == true)
