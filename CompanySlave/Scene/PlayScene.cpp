@@ -48,7 +48,7 @@ void PlayScene::Initialize()
 	}
 	rainGraph = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
-	tutorial = Shape::CreateRect(6, 6);
+	tutorial = Shape::CreateRect(4, 4);
 	AButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/A1.png");
 	AButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/A2.png");
 	XButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/X1.png");
