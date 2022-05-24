@@ -1357,10 +1357,16 @@ void Player::UIDraw()
 	if (swordCoolTimeNum == 0 && timeUpEfectFlag)
 	{
 		timeUpEfectNo++;
-		if (timeUpEfectNo >= 8)
+		if (timeUpEfectNo >= 3)
 		{
-			timeUpEfectFlag = false;
+			timeUpEfectNo2++;
 			timeUpEfectNo = 0;
+			if (timeUpEfectNo2 >= 8)
+			{
+				timeUpEfectFlag = false;
+				timeUpEfectNo2 = 0;
+				timeUpEfectNo = 0;
+			}
 		}
 	}
 	//ソードゲージ外枠
@@ -1368,7 +1374,7 @@ void Player::UIDraw()
 	//溜まったエフェクト
 	if (swordCoolTimeNum == 0 && timeUpEfectFlag)
 	{
-		Sprite::Instance()->Draw(timeUpEffectGraph[timeUpEfectNo], Vec2(-30.0f, -30.0f), 200.0f, 200.0f);
+		Sprite::Instance()->Draw(timeUpEffectGraph[timeUpEfectNo2], Vec2(-30.0f, -30.0f), 200.0f, 200.0f);
 	}
 	//剣の交差画像
 	if (swordCoolTimeFlag == false)

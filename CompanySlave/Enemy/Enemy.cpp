@@ -329,7 +329,7 @@ void Enemy::Update(Player* player)
 		{
 			explosionGraphCnt[i]++;
 		}
-		if (explosionGraphCnt[i] > 30)
+		if (eData[i]->explosionCount==0)
 		{
 			explosionFlag[i] = false;
 		}

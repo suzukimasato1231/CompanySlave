@@ -322,9 +322,10 @@ private:
 	bool AttackEnd = false;
 
 
-	bool timeUpEfectFlag = true;
+	bool timeUpEfectFlag = false;
 	SpriteData timeUpEffectGraph[9];
 	int timeUpEfectNo = 0;
+	int timeUpEfectNo2 = 0;
 
 	//5•b‰ñ•œ
 	Object::ObjectData fiveLife;
