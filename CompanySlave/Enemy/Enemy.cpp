@@ -335,16 +335,34 @@ void Enemy::Update(Player* player)
 		}
 		//‰¹
 		if (eData[i]->attakFlag == true) {
-			audio->SoundSEPlayWave(sound1);//‚±‚ñ–_
+			if (eData[i]->HP > 0 && eData[i]->type == Oni) {
+				audio->SoundSEPlayWave(sound1);//‚±‚ñ–_
+			}
+			if (eData[i]->HP > 0 && eData[i]->type == BossBigOni) {
+				audio->SoundSEPlayWave(sound1);//‚±‚ñ–_
+			}
 		}
 		if (eData[i]->attakWFlag == true) {
-			audio->SoundSEPlayWave(sound3);//˜T
+			if (eData[i]->HP > 0 && eData[i]->type == WolfType) {
+				audio->SoundSEPlayWave(sound3);//˜T
+			}
+			if (eData[i]->HP > 0 && eData[i]->type == BossWolfFlock) {
+				audio->SoundSEPlayWave(sound3);//˜T
+			}
 		}
 		if (eData[i]->attakBFlag == true) {
-			audio->SoundSEPlayWave(sound4);//’–
+			if (eData[i]->HP > 0 && eData[i]->type == BoarType) {
+				audio->SoundSEPlayWave(sound4);//’–
+			}
+			if (eData[i]->HP > 0 && eData[i]->type == BossTwinBoar) {
+				audio->SoundSEPlayWave(sound4);//’–
+			}
 		}
 		if (eData[i]->bowAFlag == true) {
-			audio->SoundSEPlayWave(sound2);//‹|
+			if (eData[i]->HP > 0 && eData[i]->type == OniBow) {
+				audio->SoundSEPlayWave(sound2);//‹|
+			}
+
 		}
 	}
 	//íœ
