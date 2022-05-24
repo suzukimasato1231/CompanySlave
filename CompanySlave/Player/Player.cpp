@@ -312,6 +312,8 @@ void Player::StageInit(int stageNum)
 
 	swordSoundFlag = false;
 	swordSoundCount = 0;
+
+	invincivleTime = 0;
 }
 
 void Player::Update(Enemy* enemy)
@@ -382,9 +384,9 @@ void Player::Draw()
 	if (damageTime % 2 == 0)
 	{
 		if (invincivleTime >= 30) { Object::Instance()->Draw(playerDamageObject, position, scale, angle, color); }
-		else if (portionFlag == true) 
+		else if (portionFlag == true)
 		{
-			Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color); 
+			Object::Instance()->Draw(playerLifeObject[portionNo], position, scale, angle, color);
 			Object::Instance()->Draw(playerLifeEffectObject, { position.x ,position.y + lifeEffectPos ,position.z }, { 0.75f,0.75f ,0.75f }, { 0,0,0 }, color);
 			Object::Instance()->Draw(playerLifeEffectObject, { position.x ,position.y + lifeEffectPos - 3 ,position.z }, { 0.75f,0.75f ,0.75f }, { 0,90,0 }, color);
 		}
@@ -590,7 +592,7 @@ void Player::NormalAttack(Enemy* enemy)
 		{
 			attackMoveSpeed = 0.05f;
 		}
-		
+
 
 		//攻撃モーションNo更新
 		attackCount++;
@@ -659,7 +661,7 @@ void Player::NormalAttack(Enemy* enemy)
 				std::mt19937 mt(rnd());
 				std::uniform_int_distribution<>rand100(0, 99);//0~99の範囲
 				int num = rand100(mt);
-				if (num < 20)
+				if (num < 30)
 				{//２０未満ならクールタイム５秒現象
 					audio->SoundSEPlayWave(sound8);
 					fiveLifeFlag[0] = true;
@@ -944,21 +946,21 @@ void Player::SwordAttack(Enemy* enemy)
 		{
 			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
 			{
-			
-					swordSoundFlag = true;
+
+				swordSoundFlag = true;
 			}
 			else {
-					swordSoundFlag = false;
+				swordSoundFlag = false;
 			}
 			if (haveSword[i]) {
-					swordSoundFlag = false;
+				swordSoundFlag = false;
 			}
 		}
 
 		if (swordSoundFlag == true) {
 			haveSword[i] = true;
-				audio->SoundSEPlayWave(sound10);
-				swordSoundFlag = false;
+			audio->SoundSEPlayWave(sound10);
+			swordSoundFlag = false;
 		}
 		//刺さった敵に剣が追っかける
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
@@ -967,8 +969,8 @@ void Player::SwordAttack(Enemy* enemy)
 			{
 				swordPosition[i] = enemy->GetPosition(j);
 			}
-			else if (isEnemySting[i][j]==false){
-		
+			else if (isEnemySting[i][j] == false) {
+
 			}
 		}
 
@@ -1530,7 +1532,7 @@ void Player::FiveLife()
 	{
 		endFive.x = 70.0f;
 	}
-		else if (position.x > 890.0f)
+	else if (position.x > 890.0f)
 	{
 		endFive.x = 850.0f;
 	}
@@ -1598,7 +1600,7 @@ Vec3 Player::GetCameraPos()
 	}
 
 	//カメラシェイク
-	if (invincivleTime >= 30) {
+	if (invincivleTime >= 30 && HP > 0) {
 		std::random_device randX;
 		std::mt19937 rtX(randX());
 		std::uniform_int_distribution<>rand2X(0, 2);//0~2の範囲
@@ -1607,7 +1609,7 @@ Vec3 Player::GetCameraPos()
 		std::mt19937 rtY(randY());
 		std::uniform_int_distribution<>rand2Y(0, 2);//0~2の範囲
 		int randPosY = rand2Y(rtY) - 1;
-		cameraPos = { cameraPos.x - randPosX,cameraPos.y - randPosY,cameraPos.z };
+		cameraPos = { cameraPos.x - randPosX,cameraPos.y ,cameraPos.z - randPosY };
 	}
 
 	if (BlackFlag == true)
