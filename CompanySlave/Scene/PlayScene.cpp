@@ -320,12 +320,12 @@ void PlayScene::Update()
 			}
 		}
 		if (fade >= 1.0f) {
-			if (color < 0.6f) {
+			if (color < 1.0f) {
 				color += 0.01f;
 
 			}
 		}
-		if (color >= 0.6f) {
+		if (color >= 1.0f) {
 			if (swordTime > 0) {
 				swordTime--;
 			}
