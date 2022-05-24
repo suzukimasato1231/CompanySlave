@@ -41,6 +41,8 @@ void PlayScene::Initialize()
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
+	//GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
+	//GameOverTextGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver2.png");
 	SChangeGraph = Sprite::Instance()->SpriteCreate(L"Resources/SceneChange.png");
 
 	for (int i = 0; i < rainMax; i++) {
@@ -107,7 +109,11 @@ void PlayScene::Init()
 	endTime = 5;//ラープ
 	timeRate = 0;//ラープ
 
-	fade = 1.0f;
+	deathTime = 20;
+	swordTime = 10;
+	fade = 0.0f;
+	fade2 = 0.0f;
+	color = 0.0f;
 	stageFlag = true;
 
 	sceneFlag = false;
@@ -227,7 +233,7 @@ void PlayScene::Update()
 
 	if (UpdateFlag == false) {
 		if (sceneChangeFlag == false) {
-			if (player->GetHP() >= 0)
+			if (player->GetHP() > 0)
 			{
 				player->Update(enemy);
 				enemy->Update(player);
@@ -282,10 +288,14 @@ void PlayScene::Update()
 		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
 			audio->SoundStop(1);
 		}
+
 	}
 	//プレイシーンを抜ける
 	if (Input::Instance()->ControllerDown(ButtonA) && nowTime >= 2.0f)
 	{
+	 	if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
+		audio->SoundStop(1);
+		}
 		deadGraphPos.y = -800;
 		nowTime = 0;
 		endTime = 5;
@@ -293,35 +303,43 @@ void PlayScene::Update()
 		sceneFlag = true;
 	}
 
-	//if (player->GetHP() <= 0)
-	//{
-	//	audio->SoundStop(0);
-	//	if (deathTime > 0) {
-	//		deathTime--;
-	//	}
-	//	if (deathTime <= 0) {
-	//		if (fade < 1.0f) {
-	//			fade += 0.01f;
-	//		}
-	//	}
-	//	if (fade >= 1.0f) {
-	//		if (color < 0.6f) {
-	//			color += 0.01f;
+	/*if (player->GetHP() <= 0)
+	{
+		audio->SoundStop(0);
+		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
+			audio->SoundStop(1);
+		}
+		if (deathTime > 0) {
+			deathTime--;
+		}
+		if (deathTime <= 0) {
+			if (fade < 1.0f) {
+				fade += 0.01f;
+			}
+		}
+		if (fade >= 1.0f) {
+			if (color < 0.6f) {
+				color += 0.01f;
 
-	//		}
-	//	}
-	//	if (color >= 0.6f) {
-	//		if (swordTime > 0) {
-	//			swordTime--;
-	//		}
-	//		if (swordTime <= 0) {
+			}
+		}
+		if (color >= 0.6f) {
+			if (swordTime > 0) {
+				swordTime--;
+			}
+			if (swordTime <= 0) {
 
-	//			fade2 += 0.1f;
+				fade2 += 0.1f;
 
-	//		}
-	//	}
+			}
+		}
 
-	//}
+	}*/
+	if (Input::Instance()->ControllerDown(ButtonA) && fade2 >= 1.0f)
+	{
+
+		sceneFlag = true;
+	}
 
 	if (sceneChangeFlag == true)
 	{
