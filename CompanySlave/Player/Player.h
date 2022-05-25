@@ -205,6 +205,8 @@ private:
 
 	//剣攻撃
 	Object::ObjectData swordObject;//剣
+	Object::ObjectData swordObject2;//剣
+	Object::ObjectData swordObject3;//剣
 	Object::ObjectData tornadoObject;//剣
 	int cursorGraph;	//カーソル
 	Object::ObjectData cursorObject;//カーソル
@@ -240,7 +242,8 @@ private:
 	float slowValue = 1;
 	int slowCount = 0;
 	bool slowFlag = false;
-
+	int blinkingCount = 0;               //刺さってるときの点滅カウント
+	std::array<bool, 7> blinkingFlag = { false,false,false,false,false,false,false };
 	bool eslowFlag = false;
 	int eslowTime = 120;
 

@@ -63,6 +63,8 @@ void Player::Init()
 	playerLifeObject[1] = Object::Instance()->CreateOBJ("playerKari4-2", "playerOBJ/");
 
 	swordObject = Object::Instance()->CreateOBJ("sword");
+	swordObject2 = Object::Instance()->CreateOBJ("sworda");
+	swordObject3 = Object::Instance()->CreateOBJ("swordb");
 	tornadoObject = Object::Instance()->CreateOBJ("tornado");
 	swordEffectObject = Object::Instance()->CreateOBJ("Effect");
 	cursorGraph = Object::Instance()->LoadTexture(L"Resources/Effect/Line.png");
@@ -439,6 +441,21 @@ void Player::Draw()
 		{
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
 		}
+		else if (isSwordAttack[i] == false && blinkingFlag[i])
+		{
+			if (blinkingCount >= 0 && blinkingCount <= 15)
+			{
+				Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+			}
+			else if (blinkingCount >= 15 && blinkingCount <= 30 || blinkingCount >= 45 && blinkingCount <= 60)
+			{
+				Object::Instance()->Draw(swordObject2, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+			}
+			else if (blinkingCount >= 30 && blinkingCount <= 45)
+			{
+				Object::Instance()->Draw(swordObject3, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+			}
+		}
 		else if (haveSword[i] == true || isSwordAttack[i] == false)
 		{
 			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
@@ -729,7 +746,6 @@ void Player::NormalAttack(Enemy* enemy)
 //剣撃つ
 void Player::SwordAttack(Enemy* enemy)
 {
-
 	//撃つ
 	if (Input::Instance()->ControllerDown(ButtonRB) && haveSword[shotNo] && !returnFlag && portionFlag == false && invincivleTime <= 30)
 	{
@@ -816,7 +832,8 @@ void Player::SwordAttack(Enemy* enemy)
 		if (haveSword[i])
 		{
 			swordAngle[i].z = -85;
-			swordAngle[i].y = 90;	
+			swordAngle[i].y = 90;
+			blinkingFlag[i] = false;
 			if (haveSword[0]) { swordPosition[0] = havePosition + Vec3{ +2.25, 0 , -1.0 + 1.5 }; }
 			if (haveSword[1]) { swordPosition[1] = havePosition + Vec3{ -2.25, 0 , -1.0 + 1.5 }; }
 			if (haveSword[2]) { swordPosition[2] = havePosition + Vec3{ +1.5, 0 , +1.0 + 1.5 }; }
@@ -824,6 +841,7 @@ void Player::SwordAttack(Enemy* enemy)
 			if (haveSword[4]) { swordPosition[4] = havePosition + Vec3{ +0.75, 0 , -1.0 + 1.5 }; }
 			if (haveSword[5]) { swordPosition[5] = havePosition + Vec3{ -0.75, 0 , -1.0 + 1.5 }; }
 			if (haveSword[6]) { swordPosition[6] = havePosition + Vec3{ 0, 0 , +1.0 + 1.5 }; }
+
 		}
 	}
 	//剣戻ってくるやつ処理
@@ -990,6 +1008,7 @@ void Player::SwordAttack(Enemy* enemy)
 
 		if (swordStop[i] == true)
 		{
+
 			stingCnt[i]++;//刺さるカウント	
 			reverseAngle[i] = 180;
 		}
@@ -1001,6 +1020,7 @@ void Player::SwordAttack(Enemy* enemy)
 			isSwordAttack[i] = false;
 			swordStop[i] = false;
 			stingCnt[i] = 0;
+			blinkingFlag[i] = true;
 			holdingFlag[i] = true;
 		}
 
@@ -1060,6 +1080,7 @@ void Player::SwordAttack(Enemy* enemy)
 			}
 			if (explosionCount[i] >= 6)
 			{
+				blinkingFlag[i] = true;
 				swordAngle[i].z = -90;
 				explosionCount[i] = 0;
 				explosion[i] = false;
@@ -1110,6 +1131,15 @@ void Player::SwordAttack(Enemy* enemy)
 		}
 	}
 
+	//点滅
+	if (blinkingFlag[0] || blinkingFlag[1] || blinkingFlag[2] || blinkingFlag[3] || blinkingFlag[4] || blinkingFlag[5] || blinkingFlag[6])
+	{
+		blinkingCount++;
+		if (blinkingCount > 60)
+		{
+			blinkingCount = 0;
+		}
+	}
 }
 void Player::LifePortion()
 {
