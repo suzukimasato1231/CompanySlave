@@ -26,7 +26,8 @@ void Wolf::Init()
 	//ƒmƒbƒNƒoƒbƒN
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/", true);
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("wolf1-0", "WolfOBJ/", true);
-
+	//’Êíó‘Ô
+	enemyDeadObject = Object::Instance()->CreateOBJ("wolfDead", "WolfOBJ/", true);
 	//UŒ‚ƒGƒtƒFƒNƒg
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
@@ -114,7 +115,7 @@ void Wolf::Draw(EnemyData* oniData)
 }
 void Wolf::FallDownDraw(EnemyData* oniData)
 {//“|‚ê‚é“G‚Ì•`‰æ
-	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale,
+	Object::Instance()->Draw(enemyDeadObject, oniData->position, oniData->scale,
 		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
 }
 void Wolf::Move(EnemyData* oniData, Player* player)

@@ -40,7 +40,7 @@ private:
 	Object::ObjectData attackOBJ[2];				//エネミーアタック
 
 	Object::ObjectData nockBackOBJ[2];				//ノックバックオブジェクト
-
+	Object::ObjectData enemyDeadObject;
 	const Vec2 attackEnemies{ 100.0f,80.0f };		//索敵範囲:width,height
 
 	const Vec2 attackField{ 15.0f,15.0f };			//攻撃範囲

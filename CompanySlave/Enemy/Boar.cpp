@@ -29,7 +29,8 @@ void Boar::Init()
 	//ノックバック
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1", "", true);
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2", "", true);
-
+	//死んだとき用obj
+	enemyDeadObject = Object::Instance()->CreateOBJ("BoarDead", "BoarOBJ/", true);
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
@@ -106,7 +107,7 @@ void Boar::Draw(EnemyData* oniData)
 }
 void Boar::FallDownDraw(EnemyData* oniData)
 {//倒れる敵の描画
-	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale,
+	Object::Instance()->Draw(enemyDeadObject, oniData->position, oniData->scale,
 		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
 }
 void Boar::Move(EnemyData* oniData, Player* player)

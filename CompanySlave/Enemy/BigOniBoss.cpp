@@ -25,7 +25,8 @@ void BigOniBoss::Init()
 	//ノックバック
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1", "", true);
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2", "", true);
-
+	//死んだとき用
+	enemyDeadObject = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/", true);
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
@@ -161,7 +162,7 @@ void BigOniBoss::Draw(EnemyData* oniData)
 }
 void BigOniBoss::FallDownDraw(EnemyData* oniData)
 {//倒れる敵の描画
-	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale,
+	Object::Instance()->Draw(enemyDeadObject, oniData->position, oniData->scale,
 		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
 }
 void BigOniBoss::PreDraw(EnemyData* oniData)

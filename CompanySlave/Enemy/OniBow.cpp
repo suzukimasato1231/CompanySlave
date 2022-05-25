@@ -30,6 +30,9 @@ void OniBow::Init()
 	enemyWalk[0] = Object::Instance()->CreateOBJ("Oniyumi1-0", "OniyumiOBJ/", true);
 	enemyWalk[1] = Object::Instance()->CreateOBJ("Oniyumi1-1", "OniyumiOBJ/", true);
 	enemyWalk[2] = Object::Instance()->CreateOBJ("Oniyumi1-2", "OniyumiOBJ/", true);
+	
+	//Ž€‚ñ‚¾‚Æ‚«
+	enemyDeadObject = Object::Instance()->CreateOBJ("OniyumiDead", "OniyumiOBJ/", true);
 
 	//–î‚Ìobj“Çž
 	bowOBJ = Object::Instance()->CreateOBJ("enemyArrow", "OniyumiOBJ/");
@@ -111,7 +114,7 @@ void OniBow::Draw(EnemyData* oniData)
 
 void OniBow::FallDownDraw(EnemyData* oniData)
 {//“|‚ê‚é“G‚Ì•`‰æ
-	Object::Instance()->Draw(attackOBJ[0], oniData->position, oniData->scale,
+	Object::Instance()->Draw(enemyDeadObject, oniData->position, oniData->scale,
 		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
 }
 

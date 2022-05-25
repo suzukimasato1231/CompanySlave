@@ -27,7 +27,8 @@ void OniType::Init()
 	//ƒmƒbƒNƒoƒbƒN
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1", "", true);
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2", "", true);
-
+	//Ž€‚ñ‚¾‚â‚Â
+	enemyDeadObject = Object::Instance()->CreateOBJ("OniKariDead", "OniOBJ/", true);
 	//UŒ‚ƒGƒtƒFƒNƒg
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
@@ -135,7 +136,7 @@ void OniType::Draw(EnemyData* oniData)
 
 void OniType::FallDownDraw(EnemyData* oniData)
 {//“|‚ê‚é“G‚Ì•`‰æ
-	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, 
+	Object::Instance()->Draw(enemyDeadObject, oniData->position, oniData->scale, 
 		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
 }
 

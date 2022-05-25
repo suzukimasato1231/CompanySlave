@@ -41,6 +41,8 @@ private:
 
 	Object::ObjectData nockBackOBJ[2];				//ノックバックオブジェクト
 
+	Object::ObjectData enemyDeadObject;				//死んだとき用オブジェクト
+
 	const Vec2 attackEnemies{ 100.0f,80.0f };		//索敵範囲:width,height
 
 	const Vec2 attackField{ 15.0f,15.0f };			//攻撃範囲
