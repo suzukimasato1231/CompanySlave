@@ -86,7 +86,7 @@ private:
 	const int doubleAfterTimeMax = 50;				//攻撃後の硬直時間
 	int doubleAfterTime = 0;
 	int attackStats = PREOPERATION;
-	const float dAttackSpeed = 1.5f;				//攻撃スピード
+	const float dAttackSpeed = 4.5f;				//攻撃スピード
 	const int dAttackTimeMax = 100;					//攻撃時間
 	int dAttackTime = 0;
 	//交互突進

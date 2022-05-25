@@ -12,7 +12,7 @@ void TwinBoar::Init()
 #if _DEBUG
 	debugField = Shape::CreateRect(attackField.y * 2, attackField.x * 2);
 #endif
-	attackBigOBJ = Shape::CreateRect(20.0f, 110.0f);
+	attackBigOBJ = Shape::CreateRect(20.0f, 500.0f);
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 	//’Êíó‘Ô
 	enemyObject[0] = Object::Instance()->CreateOBJ("Boar1-0", "BoarOBJ/", true);
@@ -29,8 +29,8 @@ void TwinBoar::Init()
 
 
 	//ƒ{ƒX‚Ì”’l
-	bossData.HP = 168.0f;
-	bossData.HPMax = 168.0f;
+	bossData.HP = 70.5f;
+	bossData.HPMax = 67.5f;
 	bossData.scale = { 1.5f,1.5f,1.5f };
 	bossData.r = 10.0f;
 	bossData.bossFlag = true;
@@ -137,15 +137,15 @@ void TwinBoar::PreDraw(EnemyData* oniData, int i)
 	case BOSSATTACK2://“¯Žž“Ëi
 		if (attackStats == PREOPERATION)//UŒ‚€”õ
 		{
-			oniData->oldPosition = oniData->pDirection * 55.0f;
-			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 2.0f, oniData->bowPos.z + oniData->oldPosition.z),
-				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
+			oniData->oldPosition = oniData->pDirection * 330.0f;
+			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 0.0f, oniData->bowPos.z + oniData->oldPosition.z),
+				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f), oniData->color, redColor);
 		}
 		else if (attackStats == DOUBLEATTACK)//UŒ‚’†
 		{
-			oniData->oldPosition = oniData->pDirection * 55.0f;
-			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 2.0f, oniData->bowPos.z + oniData->oldPosition.z),
-				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
+			oniData->oldPosition = oniData->pDirection * 330.0f;
+			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 0.0f, oniData->bowPos.z + oniData->oldPosition.z),
+				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f), oniData->color, redColor);
 		}
 		else if (attackStats == DOUBLEAFTER)//UŒ‚Œã‚ÌŒ„
 		{
@@ -154,15 +154,15 @@ void TwinBoar::PreDraw(EnemyData* oniData, int i)
 	case BOSSATTACK3://ŒðŒÝ“Ëi
 		if (attackStats == PREOPERATION && bFlag[i] == true && bFinishFlag[i] == false)
 		{//•ŠíU‚èã‚°
-			oniData->oldPosition = oniData->pDirection * 55.0f;
-			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 2.0f, oniData->bowPos.z + oniData->oldPosition.z),
-				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
+			oniData->oldPosition = oniData->pDirection * 330.0f;
+			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 0.0f, oniData->bowPos.z + oniData->oldPosition.z),
+				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f), oniData->color, redColor);
 		}
 		else if (attackStats == DOUBLEATTACK && bFlag[i] == true && bFinishFlag[i] == false)
 		{
-			oniData->oldPosition = oniData->pDirection * 55.0f;
-			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 2.0f, oniData->bowPos.z + oniData->oldPosition.z),
-				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 86.0f, 0.0f), oniData->color, redColor);
+			oniData->oldPosition = oniData->pDirection * 330.0f;
+			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->bowPos.x + oniData->oldPosition.x, 0.0f, oniData->bowPos.z + oniData->oldPosition.z),
+				oniData->scale, Vec3(90.0f, -XMConvertToDegrees(oniData->bowAngle) + 90.0f, 0.0f), oniData->color, redColor);
 		}
 		else
 		{

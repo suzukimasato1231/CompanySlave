@@ -89,6 +89,10 @@ void PushCollision::Player2Mapchip(class Player* player, class Enemy* enemy, cla
 						enemy->SetPosition(n, PushBack(enemy->GetPosition(n), enemy->GetOldPosition(n), 5.0f,
 							mapStage->GetPosition(i, j), mapStage->GetSize() / 2,
 							mapStage->GetMap(i, (j + 1) % MAP_HEIGHT), mapStage->GetMap(i, (j - 1) % MAP_HEIGHT)));
+						if (enemy->GetType(n) == BossTwinBoar && enemy->GetStatus(n) != BOSSATTACK)
+						{
+							enemy->SetPosition(n, enemy->GetOldPosition(n));
+						}
 					}
 				}
 			}
