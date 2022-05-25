@@ -26,7 +26,7 @@ void BigOniBoss::Init()
 	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1", "", true);
 	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2", "", true);
 	//死んだとき用
-	enemyDeadObject = Object::Instance()->CreateOBJ("OniKari1-0", "OniOBJ/", true);
+	enemyDeadObject = Object::Instance()->CreateOBJ("OniKariDead", "OniOBJ/", true);
 	//攻撃エフェクト
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
 	AttackEffectGraph[0] = Object::Instance()->LoadTexture(L"Resources/Effect/Eeffect1.png");
