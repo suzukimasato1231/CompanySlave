@@ -104,7 +104,8 @@ private:
 	//ボスOBJ
 	Object::ObjectData enemyObject[5];					//プレイヤーオブジェクト
 	Object::ObjectData attackOBJ[5];					//エネミーアタック
-	//デバック用
+	Object::ObjectData enemyDeadObject;					//プレイヤーオブジェクト
+														//デバック用
 	Object::ObjectData debugField;	//索敵
 	Object::ObjectData debugField2;//攻撃範囲小
 	Object::ObjectData attackBigOBJ;//攻撃大の範囲表示

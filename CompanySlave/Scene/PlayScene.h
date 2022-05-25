@@ -102,7 +102,7 @@ private://’è‹`
 
 	bool sceneFlag = false;
 	bool sceneChangeFlag = false;
-	Vec2 ChangeGraphPosition = { -2000.0f, 0.0f };
+	Vec2 ChangeGraphPosition = { -1600.0f, 0.0f };
 	//int sceneChangeTime = 60;
 
 	float volume = 1.0f;

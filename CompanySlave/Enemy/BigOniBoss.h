@@ -105,6 +105,7 @@ private:
 	Object::ObjectData enemyObject[3];					//プレイヤーオブジェクト
 	Object::ObjectData attackOBJ[2];				//エネミーアタック
 	Object::ObjectData nockBackOBJ[2];				//ノックバックオブジェクト
+	Object::ObjectData enemyDeadObject;					//死んだときオブジェクト
 	//デバック用
 	Object::ObjectData debugField;	//索敵
 	Object::ObjectData debugField2;//攻撃範囲小

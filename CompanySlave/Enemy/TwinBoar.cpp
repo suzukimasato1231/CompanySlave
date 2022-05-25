@@ -26,7 +26,8 @@ void TwinBoar::Init()
 	attackOBJ[2] = Object::Instance()->CreateOBJ("Boar1-2", "BoarOBJ/", true);
 	attackOBJ[3] = Object::Instance()->CreateOBJ("Boar1-3", "BoarOBJ/", true);
 	attackOBJ[4] = Object::Instance()->CreateOBJ("Boar1-4", "BoarOBJ/", true);
-
+	//死んだとき用obj
+	enemyDeadObject = Object::Instance()->CreateOBJ("BoarDead", "BoarOBJ/", true);
 
 	//ボスの数値
 	bossData.HP = 70.5f;
