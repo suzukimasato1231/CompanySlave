@@ -41,7 +41,7 @@ void PlayScene::Initialize()
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
 	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	//GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
-	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/white1x1.png");
+	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
 	GameOverTextGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver2.png");
 	SChangeGraph = Sprite::Instance()->SpriteCreate(L"Resources/SceneChange.png");
 
@@ -119,7 +119,7 @@ void PlayScene::Init()
 
 	sceneFlag = false;
 	sceneChangeFlag = false;
-	ChangeGraphPosition = { -1600.0f, 0.0f };
+	ChangeGraphPosition = { -2000.0f, 0.0f };
 
 	UpdateFlag = false;
 
@@ -321,12 +321,12 @@ void PlayScene::Update()
 			}
 		}
 		if (fade >= 1.0f) {
-			if (color < 0.6f) {
+			if (color < 1.0f) {
 				color += 0.01f;
 
 			}
 		}
-		if (color >= 0.6f) {
+		if (color >= 1.0f) {
 			if (swordTime > 0) {
 				swordTime--;
 			}
@@ -347,18 +347,21 @@ void PlayScene::Update()
 	{
 		audio->SoundStop(0);
 		//audio->SoundStop(1);
-		if (ChangeGraphPosition.x < 0)
+		if (ChangeGraphPosition.x < -100)
 		{
 			ChangeGraphPosition.x += 32;
 		}
-		if (ChangeGraphPosition.x >= 0)
+		if (ChangeGraphPosition.x >= -100)
 		{
 			stageFlag = true;
 		}
 	}
 	else if (sceneChangeFlag == false)
 	{
-		ChangeGraphPosition = { -1600.0f, 0.0f };
+		ChangeGraphPosition.x -= 32;
+		if (ChangeGraphPosition.x <= -2000) {
+			ChangeGraphPosition = { -2000.0f, 0.0f };
+		}
 	}
 
 	rainSlow = player->GetSlow();
@@ -549,9 +552,9 @@ void PlayScene::Draw()
 		Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 
 	}*/
-	if (sceneChangeFlag == true) {
+	//if (sceneChangeFlag == true) {
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
-	}
+	//}
 	if (tutorialAFlag == true) {
 		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30 ,0, 0 }, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
 
@@ -572,7 +575,7 @@ void PlayScene::Draw()
 	//Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 	Sprite::Instance()->Draw(GameOverGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(color, color, color, fade));
 	if (swordTime <= 0) {
-		Object::Instance()->Draw(sword2, Vec3(player->GetPosition().x + 50, 5, player->GetPosition().z - 10), Vec3(10, 10, 10), Vec3(0, 90, -20), Vec4(1, 1, 1, 1));
+		Object::Instance()->Draw(sword2, Vec3(player->GetPosition().x + 38, 5, player->GetPosition().z - 10), Vec3(10, 10, 10), Vec3(0, 90, -20), Vec4(1, 1, 1, 1));
 	}
 	Sprite::Instance()->Draw(GameOverTextGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(1, 1, 1, fade2));
 
