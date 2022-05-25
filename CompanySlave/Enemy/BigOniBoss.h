@@ -23,6 +23,8 @@ public:
 	void Init();
 
 	void Draw(EnemyData* oniData);
+	//“|‚ê‚é•`‰æ
+	void FallDownDraw(EnemyData* oniData);
 	//ƒvƒŒƒCƒ„[‚æ‚èæ‚É•`‰æ
 	void PreDraw(EnemyData* oniData);
 	//õ“G

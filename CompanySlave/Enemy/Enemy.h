@@ -68,6 +68,8 @@ private:
 	void NockBack(int i);
 
 	void SetFirstPosition(Vec3 pos, float r, int eNum);
+	//‚â‚ç‚ê‚½Œã“|‚ê‚é‰‰o
+	void FallDown(int eNum);
 public://æ“¾Œn
 	// À•Wæ“¾
 	Vec3 GetPosition(int i) { return eData[i]->position; }
@@ -208,4 +210,7 @@ private:
 	SoundData sound4;//’–
 
 	float volume = 1.0f;
+	//“|‚ê‚éˆ—‚ÌŠÔŒv‘ª
+	const float fallDownTimeMax = 90.0f;
+
 };

@@ -67,6 +67,7 @@ struct EnemyData
 	Vec3 oldPosition{};					//1個前の座標
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
+	Vec3 angle{};						//描画角度
 	float HPMax = 7;					//最大HP
 	float HP = 7;						//HP
 	float subHP = 7;					//見た目変更保存用HP
@@ -109,5 +110,6 @@ struct EnemyData
 	int walkNum = 0;					//歩き
 	int walkTime = 0;
 
-
+	//FallDown
+	float fallDownTime = 0;
 };

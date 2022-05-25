@@ -22,6 +22,9 @@ public:
 	//‰Šú‰»
 	void Init();
 
+	//“|‚ê‚é•`‰æ
+	void FallDownDraw(EnemyData* oniData);
+
 	void Draw(EnemyData* oniData,int i);
 
 	void PreDraw(EnemyData* oniData, int i);

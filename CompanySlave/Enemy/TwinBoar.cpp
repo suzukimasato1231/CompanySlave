@@ -108,7 +108,11 @@ void TwinBoar::Draw(EnemyData* oniData, int i)
 		break;
 	}
 }
-
+void TwinBoar::FallDownDraw(EnemyData* oniData)
+{//“|‚ê‚é“G‚Ì•`‰æ
+	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale,
+		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
+}
 void TwinBoar::PreDraw(EnemyData* oniData, int i)
 {
 	if (oniData == nullptr)

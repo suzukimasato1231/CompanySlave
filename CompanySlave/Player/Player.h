@@ -28,6 +28,8 @@ public:
 	void StageInit(int stageNum);	//ステージごとの初期化
 
 	void Update(class Enemy* enemy);//更新
+	//先に描画するエフェクトなど
+	void PreDraw();
 
 	void Draw();					//描画
 	//プレイヤーの位置を設定

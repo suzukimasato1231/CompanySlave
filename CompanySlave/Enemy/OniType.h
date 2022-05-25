@@ -14,6 +14,8 @@ public:
 	void Init();
 
 	void Draw(EnemyData *oniData);
+	//“|‚ê‚é•`‰æ
+	void FallDownDraw(EnemyData* oniData);
 	//ˆÚ“®
 	void Move(EnemyData *oniData, class  Player *player);
 	//õ“G

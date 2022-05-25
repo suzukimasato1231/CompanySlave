@@ -291,6 +291,7 @@ void Enemy::Update(Player* player)
 			//矢の更新
 			oniBow.BowUpdate(eData[i], player);
 		}
+		FallDown(i);
 		//座標を合わせる
 		eData[i]->eBox.minPosition = XMVectorSet(eData[i]->position.x - eData[i]->r, eData[i]->position.y - eData[i]->r, eData[i]->position.z - eData[i]->r, 1);
 		eData[i]->eBox.maxPosition = XMVectorSet(eData[i]->position.x + eData[i]->r, eData[i]->position.y + eData[i]->r, eData[i]->position.z + eData[i]->r, 1);
@@ -329,7 +330,7 @@ void Enemy::Update(Player* player)
 		{
 			explosionGraphCnt[i]++;
 		}
-		if (eData[i]->explosionCount==0)
+		if (eData[i]->explosionCount == 0)
 		{
 			explosionFlag[i] = false;
 		}
@@ -382,11 +383,19 @@ void Enemy::Draw()
 			{
 				oniType.Draw(eData[i]);
 			}
+			else
+			{
+				oniType.FallDownDraw(eData[i]);
+			}
 			break;
 		case OniBow:
 			if (eData[i]->HP > 0)
 			{
 				oniBow.Draw(eData[i]);
+			}
+			else
+			{
+				oniBow.FallDownDraw(eData[i]);
 			}
 			break;
 		case WolfType:
@@ -394,17 +403,29 @@ void Enemy::Draw()
 			{
 				wolf.Draw(eData[i]);
 			}
+			else
+			{
+				wolf.FallDownDraw(eData[i]);
+			}
 			break;
 		case BoarType:
 			if (eData[i]->HP > 0)
 			{
 				boar.Draw(eData[i]);
 			}
+			else
+			{
+				boar.FallDownDraw(eData[i]);
+			}
 			break;
 		case BossBigOni:
 			if (eData[i]->HP > 0)
 			{
 				bigOniBoss.Draw(eData[i]);
+			}
+			else
+			{
+				bigOniBoss.FallDownDraw(eData[i]);
 			}
 			break;
 		case BossWolfFlock:
@@ -418,9 +439,13 @@ void Enemy::Draw()
 			{
 				twinBoar.Draw(eData[i], i);
 			}
+			else
+			{
+				twinBoar.FallDownDraw(eData[i]);
+			}
 			break;
 		}
-		if (eData[i]->HP > 0)
+		if (eData[i]->HP > 0 && eData[i]->bossFlag == false)
 		{
 			if (eData[i]->subHP > eData[i]->HP)
 			{
@@ -429,7 +454,7 @@ void Enemy::Draw()
 			//HPゲージ
 			float parsent = eData[i]->HP / eData[i]->HPMax;
 			float parsent2 = eData[i]->subHP / eData[i]->HPMax;
-			if (parsent != 1.0f && eData[i]->bossFlag == false)
+			if (parsent != 1.0f)
 			{
 				Object::Instance()->Draw(hpSubOBJ, Vec3(eData[i]->position.x + 0.01 - (1.0f - parsent2) * 6.0, eData[i]->position.y + 4.9f + eData[i]->r, eData[i]->position.z + 5.0f),
 					Vec3(parsent2, 0.9f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpSub);
@@ -475,6 +500,10 @@ void Enemy::DrawUI()
 			boarTotalHP += eData[i]->HP;
 			boarTotalHPMax += eData[i]->HPMax;
 			boarTotalSubHP += eData[i]->subHP;
+			if (boarTotalHP < boarTotalSubHP)
+			{
+				eData[0]->subHP -= 0.1f;
+			}
 			if (boarTotalHP > 0 && boarNum == 2)
 			{
 				float ratio = boarTotalHP / boarTotalHPMax;
@@ -501,7 +530,7 @@ void Enemy::FirstDraw()
 		{
 		case BoarType:
 			if (eData[i]->HP > 0)
-			{		
+			{
 			}
 			break;
 		case BossBigOni:
@@ -761,6 +790,74 @@ void Enemy::SetFirstPosition(Vec3 pos, float r, int eNum)
 	eData[eNum]->eBox.maxPosition = XMVectorSet(
 		eData[eNum]->position.x + eData[eNum]->r, eData[eNum]->position.y + eData[eNum]->r, eData[eNum]->position.z + eData[eNum]->r, 1);
 	eData[eNum]->eSphere.radius = 5.0f;
+}
+
+void Enemy::FallDown(int eNum)
+{
+	if (eData[eNum]->HP <= 0)
+	{
+		float time = eData[eNum]->fallDownTime / fallDownTimeMax;
+		if (time <= 1.0f)
+		{
+			eData[eNum]->fallDownTime += 1.0f;
+		}
+		//後ろに倒れる処理
+		switch (eData[eNum]->type)
+		{
+		case Oni:
+		case OniBow:
+		case BossBigOni:
+			if (eData[eNum]->angle.z > 90.0f)
+			{
+				eData[eNum]->angle.z = 90.0f;
+			}
+			else
+			{
+				eData[eNum]->angle = Easing::easeIn(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 90.0f), time);
+			}
+			break;
+		case WolfType:
+		case BoarType:
+			if (eData[eNum]->angle.x > 90.0f)
+			{
+				eData[eNum]->angle.x = 90.0f;
+			}
+			else
+			{
+				eData[eNum]->angle = Easing::easeIn(Vec3(0.0f, 0.0f, 0.0f), Vec3(90.0f, 0.0f, 0.0f), time);
+			}
+			break;
+		case BossWolfFlock:
+			break;
+		case BossTwinBoar:
+			twinTotalHP = 0;
+			for (size_t n = 0; n < eData.size(); n++)
+			{//2体のイノシシの合計HPを計算
+				twinTotalHP += eData[n]->HP;
+			}
+			if (twinTotalHP <= 0)
+			{
+				if (eData[eNum]->angle.x > 90.0f)
+				{
+					eData[eNum]->angle.x = 90.0f;
+				}
+				else
+				{
+					eData[eNum]->angle = Easing::easeIn(Vec3(0.0f, 0.0f, 0.0f), Vec3(90.0f, 0.0f, 0.0f), time);
+				}
+			}
+			else
+			{
+				eData[eNum]->position.y += 0.01f;
+			}
+			break;
+		}
+		//沈んでいく処理
+		if (eData[eNum]->position.y > -50.0f)
+		{
+			eData[eNum]->position.y -= 0.01f;
+		}
+	}
 }
 
 void Enemy::UpdateOni(int i, Player* player)

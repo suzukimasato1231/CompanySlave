@@ -109,6 +109,12 @@ void OniBow::Draw(EnemyData* oniData)
 	}
 }
 
+void OniBow::FallDownDraw(EnemyData* oniData)
+{//“|‚ê‚é“G‚Ì•`‰æ
+	Object::Instance()->Draw(attackOBJ[0], oniData->position, oniData->scale,
+		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
+}
+
 void OniBow::Move(EnemyData* oniData, Player* player)
 {
 	oniData->oldPosition = oniData->position;

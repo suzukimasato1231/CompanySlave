@@ -530,6 +530,8 @@ void PlayScene::Draw()
 	enemy->Draw();
 
 
+	player->PreDraw();
+
 	particleAdd->Draw();
 
 	enemy->DrawBlood();

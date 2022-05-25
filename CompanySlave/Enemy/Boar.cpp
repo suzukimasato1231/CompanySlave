@@ -104,7 +104,11 @@ void Boar::Draw(EnemyData* oniData)
 		break;
 	}
 }
-
+void Boar::FallDownDraw(EnemyData* oniData)
+{//“|‚ê‚é“G‚Ì•`‰æ
+	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale,
+		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
+}
 void Boar::Move(EnemyData* oniData, Player* player)
 {
 	oniData->oldPosition = oniData->position;

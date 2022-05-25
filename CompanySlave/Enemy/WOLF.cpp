@@ -112,7 +112,11 @@ void Wolf::Draw(EnemyData* oniData)
 		break;
 	}
 }
-
+void Wolf::FallDownDraw(EnemyData* oniData)
+{//“|‚ê‚é“G‚Ì•`‰æ
+	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale,
+		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
+}
 void Wolf::Move(EnemyData* oniData, Player* player)
 {
 	oniData->oldPosition = oniData->position;

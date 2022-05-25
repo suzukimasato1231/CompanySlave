@@ -25,8 +25,8 @@ void OniType::Init()
 	attackOBJ[0] = Object::Instance()->CreateOBJ("OniKari2-1", "OniOBJ/", true);
 	attackOBJ[1] = Object::Instance()->CreateOBJ("OniKari2-2", "OniOBJ/", true);
 	//ƒmƒbƒNƒoƒbƒN
-	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1","", true);
-	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2","", true);
+	nockBackOBJ[0] = Object::Instance()->CreateOBJ("OniNockback1", "", true);
+	nockBackOBJ[1] = Object::Instance()->CreateOBJ("OniNockback2", "", true);
 
 	//UŒ‚ƒGƒtƒFƒNƒg
 	AttackEffectOBJ = Shape::CreateRect(AttackEffectSize, AttackEffectSize);
@@ -131,6 +131,12 @@ void OniType::Draw(EnemyData* oniData)
 		}
 		break;
 	}
+}
+
+void OniType::FallDownDraw(EnemyData* oniData)
+{//“|‚ê‚é“G‚Ì•`‰æ
+	Object::Instance()->Draw(enemyObject[0], oniData->position, oniData->scale, 
+		oniData->angle + DirectionAngle(oniData->direction), oniData->color);
 }
 
 void OniType::Move(EnemyData* oniData, Player* player)

@@ -378,6 +378,11 @@ void Player::Update(Enemy* enemy)
 	audio->SetVolume(volume);
 }
 
+void Player::PreDraw()
+{
+	EffectDraw();
+}
+
 void Player::Draw()
 {
 	//ƒvƒŒƒCƒ„[
@@ -457,7 +462,7 @@ void Player::Draw()
 	{
 		Sprite::Instance()->Draw(BlackGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { 1, 1, 1 ,1 });
 	}
-	EffectDraw();
+	//EffectDraw();
 	//‚T•b‰ñ•œ‚Ì‹…
 	for (int i = 0; i < fiveLifeFlag2.size(); i++)
 	{
