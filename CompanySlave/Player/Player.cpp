@@ -764,7 +764,7 @@ void Player::SwordAttack(Enemy* enemy)
 			swordCoolTimeFlag = true;
 			start_time = time(NULL);//クールタイム計測開始
 			swordCoolTimePlas = 0;
-			slowValue = 0.15;
+			slowValue = 0.05;
 			slowFlag = true;
 			BlackFlag = true;
 			for (int i = 0; i < 7; i++)
@@ -815,10 +815,15 @@ void Player::SwordAttack(Enemy* enemy)
 
 		if (haveSword[i])
 		{
-			swordAngle[i].z = -90;
-			swordAngle[i].y = 51.4 * i;
-
-			swordPosition[i] = havePosition;
+			swordAngle[i].z = -85;
+			swordAngle[i].y = 90;	
+			if (haveSword[0]) { swordPosition[0] = havePosition + Vec3{ +2.25, 0 , -1.0 + 1.5 }; }
+			if (haveSword[1]) { swordPosition[1] = havePosition + Vec3{ -2.25, 0 , -1.0 + 1.5 }; }
+			if (haveSword[2]) { swordPosition[2] = havePosition + Vec3{ +1.5, 0 , +1.0 + 1.5 }; }
+			if (haveSword[3]) { swordPosition[3] = havePosition + Vec3{ -1.5, 0 , +1.0 + 1.5 }; }
+			if (haveSword[4]) { swordPosition[4] = havePosition + Vec3{ +0.75, 0 , -1.0 + 1.5 }; }
+			if (haveSword[5]) { swordPosition[5] = havePosition + Vec3{ -0.75, 0 , -1.0 + 1.5 }; }
+			if (haveSword[6]) { swordPosition[6] = havePosition + Vec3{ 0, 0 , +1.0 + 1.5 }; }
 		}
 	}
 	//剣戻ってくるやつ処理
@@ -831,11 +836,15 @@ void Player::SwordAttack(Enemy* enemy)
 		{
 			slowCount++;
 		}
-		if (slowCount > 10)
+		if (slowCount > 40)
 		{
 			slowValue = 1;
 			slowCount = 0;
 			slowFlag = false;
+		}
+		else if (slowCount > 20)
+		{
+			slowValue = 0.8;
 		}
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
@@ -1625,7 +1634,7 @@ Vec3 Player::GetCameraPos()
 
 	if (BlackFlag == true)
 	{
-		collectCount -= 0.25f;
+		collectCount -= 0.175f;
 		cameraPos.y += collectCount;
 		if (cameraPos.y < -3.0f)
 		{
