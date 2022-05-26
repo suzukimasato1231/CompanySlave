@@ -19,6 +19,7 @@ PlayScene::~PlayScene()
 	//音データ解放
 	Audio::SoundUnload(&sound1);
 	Audio::SoundUnload(&sound2);
+	Audio::SoundUnload(&sound3);
 	safe_delete(audio);
 }
 void PlayScene::Initialize()
@@ -35,6 +36,7 @@ void PlayScene::Initialize()
 	//音データ読み込み
 	sound1 = Audio::SoundLoadWave("Resources/Music/BGM/rain.wav");
 	sound2 = Audio::SoundLoadWave("Resources/Music/BGM/Rambu.wav");
+	sound3 = Audio::SoundLoadWave("Resources/Music/SE/button.wav");
 
 
 	//スプライト画像読み込み
@@ -278,6 +280,9 @@ void PlayScene::Update()
 
 	if (Input::Instance()->KeybordTrigger(DIK_R)) {
 		audio->SoundStop(0);
+		if (stageNum == 4 || stageNum == 7 || stageNum == 10) {
+			audio->SoundStop(1);
+		}
 	}
 #pragma endregion
 	//if (player->GetHP() <= 0 && deadGraphPos.y < 0)
@@ -339,7 +344,7 @@ void PlayScene::Update()
 	}
 	if (Input::Instance()->ControllerDown(ButtonA) && fade2 >= 1.0f)
 	{
-
+		audio->SoundSEPlayWave(sound3);
 		sceneFlag = true;
 	}
 

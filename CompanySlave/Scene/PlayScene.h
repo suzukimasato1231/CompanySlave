@@ -56,7 +56,7 @@ private://定義
 	//音データ
 	SoundData sound1;
 	SoundData sound2;
-
+	SoundData sound3;
 	//スプライトデータ
 	SpriteData spriteGraph;
 	SpriteData BGGraph;
