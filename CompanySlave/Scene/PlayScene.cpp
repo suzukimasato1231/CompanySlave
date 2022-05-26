@@ -39,7 +39,7 @@ void PlayScene::Initialize()
 
 	//スプライト画像読み込み
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/back.png");
-	controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
+	//controlGraph = Sprite::Instance()->SpriteCreate(L"Resources/ControlUI/ControlUI.png");
 	//GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver.png");
 	GameOverGraph = Sprite::Instance()->SpriteCreate(L"Resources/title.png");
 	GameOverTextGraph = Sprite::Instance()->SpriteCreate(L"Resources/GameOver2.png");

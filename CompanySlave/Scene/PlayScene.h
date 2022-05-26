@@ -61,7 +61,7 @@ private://’è‹`
 	SpriteData spriteGraph;
 	SpriteData BGGraph;
 	SpriteData Parent;
-	SpriteData controlGraph;
+	//SpriteData controlGraph;
 	SpriteData GameOverGraph;
 	SpriteData GameOverTextGraph;
 	SpriteData SChangeGraph;

@@ -30,8 +30,8 @@ void TwinBoar::Init()
 	enemyDeadObject = Object::Instance()->CreateOBJ("BoarDead", "BoarOBJ/", true);
 
 	//É{ÉXÇÃêîíl
-	bossData.HP = 70.5f;
-	bossData.HPMax = 67.5f;
+	bossData.HP = 90.5f;
+	bossData.HPMax = 90.5f;
 	bossData.scale = { 1.5f,1.5f,1.5f };
 	bossData.r = 10.0f;
 	bossData.bossFlag = true;

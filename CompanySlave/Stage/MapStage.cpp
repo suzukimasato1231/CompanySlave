@@ -52,7 +52,7 @@ void MapStage::Init()
 
 	cornerBlock = Object::Instance()->CreateOBJ("wall2", "mapOBJ/");
 
-	okeBlock = Object::Instance()->CreateOBJ("oke", "mapOBJ/");
+	//okeBlock = Object::Instance()->CreateOBJ("oke", "mapOBJ/");
 
 	sakuBlock = Object::Instance()->CreateOBJ("saku", "mapOBJ/");
 	//‰¼

@@ -810,6 +810,11 @@ void Enemy::FallDown(int eNum)
 			if (eData[eNum]->angle.z > 90.0f)
 			{
 				eData[eNum]->angle.z = 90.0f;
+				//’¾‚ñ‚Å‚¢‚­ˆ—
+				if (eData[eNum]->position.y > -50.0f)
+				{
+					eData[eNum]->position.y -= 0.08f;
+				}
 			}
 			else
 			{
@@ -821,6 +826,11 @@ void Enemy::FallDown(int eNum)
 			if (eData[eNum]->angle.x > 90.0f)
 			{
 				eData[eNum]->angle.x = 90.0f;
+				//’¾‚ñ‚Å‚¢‚­ˆ—
+				if (eData[eNum]->position.y > -50.0f)
+				{
+					eData[eNum]->position.y -= 0.08f;
+				}
 			}
 			else
 			{
@@ -840,22 +850,18 @@ void Enemy::FallDown(int eNum)
 				if (eData[eNum]->angle.x > 90.0f)
 				{
 					eData[eNum]->angle.x = 90.0f;
+					//’¾‚ñ‚Å‚¢‚­ˆ—
+					if (eData[eNum]->position.y > -50.0f)
+					{
+						eData[eNum]->position.y -= 0.08f;
+					}
 				}
 				else
 				{
 					eData[eNum]->angle = Easing::easeIn(Vec3(0.0f, 0.0f, 0.0f), Vec3(90.0f, 0.0f, 0.0f), time);
 				}
 			}
-			else
-			{
-				eData[eNum]->position.y += 0.01f;
-			}
 			break;
-		}
-		//’¾‚ñ‚Å‚¢‚­ˆ—
-		if (eData[eNum]->position.y > -50.0f)
-		{
-			eData[eNum]->position.y -= 0.01f;
 		}
 	}
 }
