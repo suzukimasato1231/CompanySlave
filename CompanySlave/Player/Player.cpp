@@ -792,6 +792,7 @@ void Player::SwordAttack(Enemy* enemy)
 		if (IsSwordALLHave() == true && swordCoolTimeFlag == false)
 		{//剣を全部持っていた場合
 			swordCoolTimeFlag = true;
+			fotonSaveFlag = false;
 			start_time = time(NULL);//クールタイム計測開始
 			swordCoolTimePlas = 0;
 			slowValue = 0.1;
@@ -946,7 +947,6 @@ void Player::SwordAttack(Enemy* enemy)
 			shotNo = 0;
 			timeRate = 0;
 			nowTime = 0;
-			fotonSaveFlag = false;
 			returnFlag = false;
 			BlackFlag = false;
 		}
