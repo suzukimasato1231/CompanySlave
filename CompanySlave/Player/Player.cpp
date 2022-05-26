@@ -602,6 +602,10 @@ void Player::NormalAttack(Enemy* enemy)
 			{
 				attackMoveHighSpeed = 0.05f;
 			}
+			if (normalAttackTime <= 5)
+			{
+				normalAttackTime = 0;
+			}
 		}
 		else
 		{//1,2攻撃目のスピード
@@ -1674,11 +1678,12 @@ Vec3 Player::GetCameraPos()
 	}
 	else
 	{
-		collectCount += 0.1f;
+		collectCount += 0.6f;
 		if (collectCount > 0.0f)
 		{
-			collectCount = 0.0f;
+ 			collectCount = 0.0f;
 		}
+		cameraPos.y += collectCount;
 	}
 	return cameraPos;
 }
