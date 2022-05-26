@@ -65,6 +65,8 @@ void Player::Init()
 	swordObject = Object::Instance()->CreateOBJ("sword");
 	swordObject2 = Object::Instance()->CreateOBJ("sworda");
 	swordObject3 = Object::Instance()->CreateOBJ("swordb");
+	fotonObject1 = Object::Instance()->CreateOBJ("foton");
+	fotonObject2 = Object::Instance()->CreateOBJ("foton2");
 	tornadoObject = Object::Instance()->CreateOBJ("tornado");
 	swordEffectObject = Object::Instance()->CreateOBJ("Effect");
 	cursorGraph = Object::Instance()->LoadTexture(L"Resources/Effect/Line.png");
@@ -456,6 +458,10 @@ void Player::Draw()
 				Object::Instance()->Draw(swordObject3, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
 			}
 		}
+		else if (returnFlag == true && haveSword[i])
+		{
+
+		}
 		else if (haveSword[i] == true || isSwordAttack[i] == false)
 		{
 			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
@@ -464,6 +470,11 @@ void Player::Draw()
 		{
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
 		}
+	}
+	if (fotonFlag)
+	{
+		Object::Instance()->Draw(fotonObject2, { havePosition.x,havePosition.y,havePosition.z + 2 }, { 0.5f - fotonLowerScale,5 ,0.5f - fotonLowerScale }, { 0,180 ,0 }, color);
+		Object::Instance()->Draw(fotonObject1, { havePosition.x,havePosition.y,havePosition.z + 2 }, { 1 - fotonLowerScale,2 ,1 - fotonLowerScale }, { 0,180 ,0 }, color);
 	}
 	if (returnFlag)
 	{
@@ -747,7 +758,6 @@ void Player::NormalAttack(Enemy* enemy)
 	}
 }
 
-//剣撃つ
 void Player::SwordAttack(Enemy* enemy)
 {
 	//撃つ
@@ -784,7 +794,7 @@ void Player::SwordAttack(Enemy* enemy)
 			swordCoolTimeFlag = true;
 			start_time = time(NULL);//クールタイム計測開始
 			swordCoolTimePlas = 0;
-			slowValue = 0.05;
+			slowValue = 0.1;
 			slowFlag = true;
 			BlackFlag = true;
 			for (int i = 0; i < 7; i++)
@@ -848,26 +858,45 @@ void Player::SwordAttack(Enemy* enemy)
 
 		}
 	}
+	//スロウ
+	if (slowFlag)
+	{
+		slowCount++;
+		slowValue += 0.01;
+	}
+	if (slowCount >= 60)
+	{
+		slowValue = 1;
+		slowCount = 0;
+		slowFlag = false;
+	}
+	else if (slowCount > 40)
+	{
+		slowValue = 0.8;
+	}
+
+	//回収後の光
+	if (fotonFlag)
+	{
+		fotonSaveFlag = true;
+		fotonLowerScale += 0.025;
+		fotonCount++;
+	}
+	else
+	{
+		fotonLowerScale = 0;
+		fotonCount = 0;
+	}
+	if (fotonCount >= 20)
+	{
+		fotonFlag = false;
+	}
 	//剣戻ってくるやつ処理
 	if (returnFlag)
 	{
 		timeUpEfectFlag = true;
 		tornadoScale -= 0.01 * slowValue;
 		tornadoAngle += 24 * slowValue;
-		if (slowFlag)
-		{
-			slowCount++;
-		}
-		if (slowCount > 40)
-		{
-			slowValue = 1;
-			slowCount = 0;
-			slowFlag = false;
-		}
-		else if (slowCount > 20)
-		{
-			slowValue = 0.8;
-		}
 		nowTime += 0.1;
 		timeRate = min(nowTime / endTime, 1);
 		for (int i = 0; i < 7; i++)
@@ -902,6 +931,10 @@ void Player::SwordAttack(Enemy* enemy)
 				//剣がプレイヤーに戻ってくる当たり判定
 				if (Collision::CheckBox2Box(haveBox, swordAttackBox[i]) && holdingFlag[i])
 				{
+					if (fotonSaveFlag == false)
+					{
+						fotonFlag = true;
+					}
 					haveSword[i] = true;
 				}
 			}
@@ -913,7 +946,7 @@ void Player::SwordAttack(Enemy* enemy)
 			shotNo = 0;
 			timeRate = 0;
 			nowTime = 0;
-			slowValue = 1;
+			fotonSaveFlag = false;
 			returnFlag = false;
 			BlackFlag = false;
 		}
