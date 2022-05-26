@@ -121,6 +121,7 @@ private://定義
 	float g = 9.8f;//重力
 	float rainSlow = 1.0f;//雨のスロー
 	Object::ObjectData tutorial;
+	Object::ObjectData tutorial3;
 	Object::ObjectData tutorial2;
 	bool tutorialAFlag = false;
 	int AButtonTimer = 30;

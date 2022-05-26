@@ -52,7 +52,8 @@ void PlayScene::Initialize()
 	}
 	rainGraph = Object::Instance()->LoadTexture(L"Resources/white1x1.png");
 
-	tutorial = Shape::CreateRect(10, 10);
+	tutorial = Shape::CreateRect(11.8f, 10);
+	tutorial3 = Shape::CreateRect(10, 13.6f);
 	tutorial2 = Shape::CreateRect(12, 6);
 	AButton[0] = Object::Instance()->LoadTexture(L"Resources/Button/A1.png");
 	AButton[1] = Object::Instance()->LoadTexture(L"Resources/Button/A2.png");
@@ -558,10 +559,10 @@ void PlayScene::Draw()
 
 	}*/
 	//if (sceneChangeFlag == true) {
-		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
+	Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
 	//}
 	if (tutorialAFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30 ,0, 0 }, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
+		Object::Instance()->Draw(tutorial3, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30 ,0, 0 }, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
 
 	}
 	if (tutorialXFlag == true) {
@@ -588,7 +589,7 @@ void PlayScene::Draw()
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
 #endif
-}
+	}
 void PlayScene::LoadDraw()
 {
 	if (LoadFlag == true) {
