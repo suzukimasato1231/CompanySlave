@@ -231,19 +231,8 @@ void Title::Update()
 			{
 				volumeFade += 0.1;
 			}
-			if (direction == Right || direction == UpRight || direction == DownRight)
-			{
-				ControllerRFlag = true;
-			}
-			else { ControllerRFlag = false; }
-
-			if (direction == Left || direction == UpLeft || direction == DownLeft)
-			{
-				ControllerLFlag = true;
-			}
-			else { ControllerLFlag = false; }
-
-			if (Input::Instance()->ControllerDown(LButtonRight) && ControllerRFlag == true)
+		
+			if (Input::Instance()->ControllerDown(LButtonRight))
 			{
 				if (volume < 1)
 				{
@@ -252,7 +241,7 @@ void Title::Update()
 					volumeB += 50;
 				}
 			}
-			else if (Input::Instance()->ControllerDown(LButtonLeft) && ControllerLFlag == true)
+			else if (Input::Instance()->ControllerDown(LButtonLeft))
 			{
 				if (volume > 0)
 				{
