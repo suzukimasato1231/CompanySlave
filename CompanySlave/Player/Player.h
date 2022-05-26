@@ -202,12 +202,13 @@ private:
 
 	const float attackMoveSpeed2 = 2.0f;
 	const float attackMoveHighSpeed2 = 3.0f;
-
 	//剣攻撃
 	Object::ObjectData swordObject;//剣
 	Object::ObjectData swordObject2;//剣
 	Object::ObjectData swordObject3;//剣
 	Object::ObjectData tornadoObject;//剣
+	Object::ObjectData fotonObject1;//剣
+	Object::ObjectData fotonObject2;//剣
 	int cursorGraph;	//カーソル
 	Object::ObjectData cursorObject;//カーソル
 	SpriteData BlackGraph;//剣回収の白いやつ
@@ -242,6 +243,10 @@ private:
 	float slowValue = 1;
 	int slowCount = 0;
 	bool slowFlag = false;
+	bool fotonFlag = false;
+	bool fotonSaveFlag = false;
+	int fotonCount = 0;
+	float fotonLowerScale = 0;
 	int blinkingCount = 0;               //刺さってるときの点滅カウント
 	std::array<bool, 7> blinkingFlag = { false,false,false,false,false,false,false };
 	bool eslowFlag = false;
