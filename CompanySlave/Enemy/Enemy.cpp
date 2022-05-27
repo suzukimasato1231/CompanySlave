@@ -466,8 +466,8 @@ void Enemy::Draw()
 			}
 			//“G@”j@
 			if (explosionFlag[i] == true) {
-				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 6.0f + eData[i]->r, eData[i]->position.z),
-					Vec3(0.5f, 0.5f, 0.5f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
+				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 2.0f + eData[i]->r, eData[i]->position.z),
+					Vec3(1.0f, 1.0f, 1.0f), Vec3(70.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
 			}
 		}
 	}
