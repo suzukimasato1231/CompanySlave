@@ -623,16 +623,16 @@ Vec3 BigOniBoss::DirectionAngle(int direction)
 	switch (direction)
 	{
 	case Up:
-		angle = { 0.0f,270.0f,0.0f };
+		angle = { 1.0f,270.0f,0.0f };
 		break;
 	case Left:
-		angle = { 0.0f,180.0f,0.0f };
+		angle = { 1.0f,180.0f,0.0f };
 		break;
 	case Right:
-		angle = { 0.0f,0.0f,0.0f };
+		angle = { 1.0f,0.0f,0.0f };
 		break;
 	case Down:
-		angle = { 0.0f,90.0f,0.0f };
+		angle = { 1.0f,90.0f,0.0f };
 		break;
 	default:
 		angle = { 0.0f,0.0f,0.0f };
