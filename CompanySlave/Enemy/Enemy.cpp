@@ -34,7 +34,7 @@ void Enemy::Init()
 	sound3 = Audio::SoundLoadWave("Resources/Music/SE/wolf.wav");
 	sound4 = Audio::SoundLoadWave("Resources/Music/SE/boar.wav");
 	sound5 = Audio::SoundLoadWave("Resources/Music/SE/boss.wav");
-	sound5 = Audio::SoundLoadWave("Resources/Music/SE/katana.wav");
+	
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
