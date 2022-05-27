@@ -34,7 +34,7 @@ void Enemy::Init()
 	sound3 = Audio::SoundLoadWave("Resources/Music/SE/wolf.wav");
 	sound4 = Audio::SoundLoadWave("Resources/Music/SE/boar.wav");
 	sound5 = Audio::SoundLoadWave("Resources/Music/SE/boss.wav");
-	
+
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
@@ -374,13 +374,26 @@ void Enemy::Update(Player* player)
 			}
 
 		}
+		//ボスが死んだとき
 		if (eData[i]->type == BossBigOni ||
-			eData[i]->type == BossTwinBoar || 
 			eData[i]->type == BossWolfFlock) {
 			if (eData[i]->HP <= 0) {
-					audioBoss--;
+				audioBoss--;
 			}
-			if (audioBoss==0) {
+			if (audioBoss == 0) {
+				audio->SoundSEPlayWave(sound5);
+			}
+		}
+		twinTotalHP = 0;
+		for (size_t n = 0; n < eData.size(); n++)
+		{//2体のイノシシの合計HPを計算
+			twinTotalHP += eData[n]->HP;
+		}
+		//イノシシボスだけ２体なので
+		if (eData[0]->type == BossTwinBoar && twinTotalHP <= 0)
+		{
+			audioBoss--;
+			if (audioBoss == 0) {
 				audio->SoundSEPlayWave(sound5);
 			}
 		}
@@ -487,6 +500,19 @@ void Enemy::Draw()
 			if (explosionFlag[i] == true) {
 				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 2.0f + eData[i]->r, eData[i]->position.z),
 					Vec3(1.0f, 1.0f, 1.0f), Vec3(70.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
+			}
+		}
+		if (eData[i]->bossFlag == true && eData[i]->HP > 0)
+		{
+			//敵　破　
+			if (explosionFlag[i] == true && eData[i]->type == BossBigOni) {
+				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 20.0f + eData[i]->r, eData[i]->position.z),
+					Vec3(2.0f, 2.0f, 2.0f), Vec3(70.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
+			}
+			else if (explosionFlag[i] == true && eData[i]->type == BossTwinBoar)
+			{
+				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 9.0f + eData[i]->r, eData[i]->position.z),
+					Vec3(2.0f, 2.0f, 2.0f), Vec3(70.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
 			}
 		}
 	}
