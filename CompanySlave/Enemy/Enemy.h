@@ -208,9 +208,10 @@ private:
 	SoundData sound2;//‹|
 	SoundData sound3;//˜T
 	SoundData sound4;//’–
-
+	SoundData sound5;//ƒ{ƒX
 	float volume = 1.0f;
 	//“|‚ê‚éˆ—‚ÌŠÔŒv‘ª
 	const float fallDownTimeMax = 90.0f;
-
+	
+	int audioBoss=10;
 };

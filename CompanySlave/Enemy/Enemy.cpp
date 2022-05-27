@@ -21,6 +21,8 @@ Enemy::~Enemy()
 	Audio::SoundUnload(&sound2);
 	Audio::SoundUnload(&sound3);
 	Audio::SoundUnload(&sound4);
+	Audio::SoundUnload(&sound5);
+
 	safe_delete(audio);
 }
 
@@ -31,7 +33,8 @@ void Enemy::Init()
 	sound2 = Audio::SoundLoadWave("Resources/Music/SE/Arrow.wav");
 	sound3 = Audio::SoundLoadWave("Resources/Music/SE/wolf.wav");
 	sound4 = Audio::SoundLoadWave("Resources/Music/SE/boar.wav");
-
+	sound5 = Audio::SoundLoadWave("Resources/Music/SE/boss.wav");
+	sound5 = Audio::SoundLoadWave("Resources/Music/SE/katana.wav");
 
 	redColor = Object::Instance()->LoadTexture(L"Resources/color/red.png");
 
@@ -60,6 +63,7 @@ void Enemy::Init()
 
 	explosionOBJ = Shape::CreateRect(10, 10);
 	explosionGraph = Object::Instance()->LoadTexture(L"Resources/Point.png");
+	audioBoss = 10;
 	//‹S‚P
 	oniType.Init();
 	//‹|
@@ -79,6 +83,7 @@ void Enemy::Init()
 void Enemy::StageInit(int stageNum)
 {
 	//ƒƒ‚ƒŠ‰ğ•ú
+	audioBoss = 10;
 	for (int i = (int)eData.size() - 1; i >= 0; i--)
 	{
 		delete eData[i];
@@ -364,6 +369,16 @@ void Enemy::Update(Player* player)
 				audio->SoundSEPlayWave(sound2);//‹|
 			}
 
+		}
+		if (eData[i]->type == BossBigOni ||
+			eData[i]->type == BossTwinBoar || 
+			eData[i]->type == BossWolfFlock) {
+			if (eData[i]->HP <= 0) {
+					audioBoss--;
+			}
+			if (audioBoss==0) {
+				audio->SoundSEPlayWave(sound5);
+			}
 		}
 	}
 	//íœ

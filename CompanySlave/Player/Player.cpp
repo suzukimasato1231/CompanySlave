@@ -24,6 +24,8 @@ Player::~Player()
 	Audio::SoundUnload(&sound8);
 	Audio::SoundUnload(&sound9);
 	Audio::SoundUnload(&sound10);
+	Audio::SoundUnload(&sound11);
+	Audio::SoundUnload(&sound12);
 	safe_delete(audio);
 }
 
@@ -41,6 +43,8 @@ void Player::Init()
 	sound8 = Audio::SoundLoadWave("Resources/Music/SE/hk.wav");
 	sound9 = Audio::SoundLoadWave("Resources/Music/SE/Damege.wav");
 	sound10 = Audio::SoundLoadWave("Resources/Music/SE/collect.wav");
+	sound11 = Audio::SoundLoadWave("Resources/Music/SE/drop.wav");
+	//sound12 = Audio::SoundLoadWave("Resources/Music/SE/collect.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
@@ -945,6 +949,7 @@ void Player::SwordAttack(Enemy* enemy)
 							enemy->DamegeSword(j);
 							if (enemyDamegeTime[j] > 0) {
 								enemy->SetDamegeFlag(j, true);
+								audio->SoundSEPlayWave(sound1);
 							}
 						}
 					}
@@ -1117,7 +1122,7 @@ void Player::SwordAttack(Enemy* enemy)
 				if (explosionCount[i] >= 3 && isEnemySting[i][j] == false)
 				{
 					//敵との当たり判定
-
+		
 					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && ((enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(j) == BossTwinBoar)))
 					{
 						isSwordAttack[i] = false;
@@ -1144,7 +1149,10 @@ void Player::SwordAttack(Enemy* enemy)
 				swordAngle[i].z = -90;
 				explosionCount[i] = 0;
 				explosion[i] = false;
+				audio->SoundSEPlayWave(sound11);
+
 			}
+			
 		}
 	}
 	//剣の回収クールタイム

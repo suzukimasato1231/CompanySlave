@@ -312,7 +312,8 @@ private:
 	SoundData sound8;
 	SoundData sound9;
 	SoundData sound10;
-
+	SoundData sound11;
+	SoundData sound12;
 	bool swordSoundFlag = false;
 	bool swordSoundCount = 0;
 	float volume = 1.0f;
