@@ -355,7 +355,7 @@ void PlayScene::Update()
 		//audio->SoundStop(1);
 		if (ChangeGraphPosition.x < -100)
 		{
-			ChangeGraphPosition.x += 32;
+			ChangeGraphPosition.x += 64;
 		}
 		if (ChangeGraphPosition.x >= -100)
 		{
@@ -364,7 +364,7 @@ void PlayScene::Update()
 	}
 	else if (sceneChangeFlag == false)
 	{
-		ChangeGraphPosition.x -= 32;
+		ChangeGraphPosition.x -= 64;
 		if (ChangeGraphPosition.x <= -2000) {
 			ChangeGraphPosition = { -2000.0f, 0.0f };
 		}

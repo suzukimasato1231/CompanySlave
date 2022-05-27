@@ -201,7 +201,6 @@ void Title::Update()
 		{
 			volumeFlag = 0;
 		}
-
 		if (volumeFlag == 0)
 		{
 			position = { 5.0f,0.0f,0.0f };
@@ -231,7 +230,6 @@ void Title::Update()
 			{
 				volumeFade += 0.1;
 			}
-		
 			if (Input::Instance()->ControllerDown(LButtonRight))
 			{
 				if (volume < 1)

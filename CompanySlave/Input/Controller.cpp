@@ -414,20 +414,20 @@ void UpdateGamePad()
 		float x = sinf(rad);
 		float y = cosf(rad);
 
-		if (x < -0.01f)
+		if (x > -0.01f)
 		{
 			is_push[ButtonKind::LButtonLeft] = true;
 		}
-		else if (x > 0.01f)
+		else if (x < 0.01f)
 		{
 			is_push[ButtonKind::LButtonRight] = true;
 		}
 
-		if (y > 0.01f)
+		if (y < 0.01f)
 		{
 			is_push[ButtonKind::LButtonUp] = true;
 		}
-		else if (y < -0.01f)
+		else if (y > -0.01f)
 		{
 			is_push[ButtonKind::LButtonDown] = true;
 		}
