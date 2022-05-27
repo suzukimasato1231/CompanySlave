@@ -14,6 +14,8 @@ public:
 	void Init();
 
 	void Draw(EnemyData *oniData);
+
+	void PreDraw(EnemyData* oniData, float num);
 	//倒れる描画
 	void FallDownDraw(EnemyData* oniData);
 	//移動
@@ -24,7 +26,7 @@ public:
 	void Attack(EnemyData *oniData, class Player *player);
 private:
 	//敵の攻撃エフェクト
-	void EffectDraw(EnemyData *oniData);
+	void EffectDraw(EnemyData *oniData,float num);
 
 	//向きによって索敵範囲の決定
 	Box SearchField(EnemyData *oniData);
@@ -48,7 +50,7 @@ private:
 	const int moveTime = 40;						//移動時間
 
 	const int attackMotionTime = 100;				//攻撃モーションの時間
-	const int attackMotionDamege = 10;				//攻撃モーション中のどの時間でダメージを与えるか
+	const int attackMotionDamege = 30;				//攻撃モーション中のどの時間でダメージを与えるか
 
 	const float player2EnemyLength = 15.0f;			//プレイヤーと敵の距離
 
@@ -64,8 +66,9 @@ private:
 	Object::ObjectData AttackEffectOBJ;//通常攻撃エフェクト
 	int AttackEffectGraph[9];
 	//エフェクト関係
-	bool AttackEffect = false;
+	//bool AttackEffect = false;
 	float AttackEffectSize = 5.0f;
+	float AttackEffectOfset = 3.0f;
 	Vec3 AttackScale{ 3.0f,3.0f,3.0f };
 	Vec3 AttackAngle{ 90.0f,0.0f,0.0f };
 	int effectTime = 10;

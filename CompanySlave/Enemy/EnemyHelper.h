@@ -95,6 +95,9 @@ struct EnemyData
 	bool bowMove = false;
 	int bowTime = 0;					//矢が飛んでいく時間
 	bool bowAFlag = false;				//弓の音用フラグ
+	//鬼こん棒サウンド
+	int effectCount = 0;
+	bool AttackEffect = false;
 	//狼
 	bool attakWFlag = false;			//アタック時の音用フラグ
 	bool RushWFlag = false;				//突進時のエフェクト用フラグ

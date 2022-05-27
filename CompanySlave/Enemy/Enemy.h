@@ -33,6 +33,7 @@ public:
 
 	void Draw();//•`‰æ
 
+	void PreDraw();
 
 	void DrawUI();//UI•`‰æ
 	//ŒŒ­•`‰æ

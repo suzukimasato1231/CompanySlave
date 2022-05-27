@@ -240,6 +240,10 @@ void Enemy::Update(Player* player)
 			{
 				UpdateOni(i, player);
 			}
+			else
+			{
+				eData[i]->attakFlag = false;
+			}
 			break;
 		case OniBow:
 			if (eData[i]->HP > 0)
@@ -341,10 +345,10 @@ void Enemy::Update(Player* player)
 		}
 		//‰¹
 		if (eData[i]->attakFlag == true) {
-			if (eData[i]->HP > 0 && eData[i]->type == Oni) {
+			if (eData[i]->HP > 0 && eData[i]->type == Oni && eData[i]->effectCount == 0) {
 				audio->SoundSEPlayWave(sound1);//‚±‚ñ–_
 			}
-			if (eData[i]->HP > 0 && eData[i]->type == BossBigOni) {
+			if (eData[i]->HP > 0 && eData[i]->type == BossBigOni && eData[i]->effectCount == 0) {
 				audio->SoundSEPlayWave(sound1);//‚±‚ñ–_
 			}
 		}
@@ -543,9 +547,13 @@ void Enemy::FirstDraw()
 		}
 		switch (eData[i]->type)
 		{
-		case BoarType:
+		case Oni:
 			if (eData[i]->HP > 0)
 			{
+				if (eData[i]->AttackEffect == true)
+				{
+					oniType.PreDraw(eData[i], size);
+				}
 			}
 			break;
 		case BossBigOni:

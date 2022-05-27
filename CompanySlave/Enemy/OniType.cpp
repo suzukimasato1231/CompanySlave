@@ -86,7 +86,7 @@ void OniType::Draw(EnemyData* oniData)
 		{//武器振り下ろし
 			Object::Instance()->Draw(attackOBJ[1], oniData->position, oniData->scale, DirectionAngle(oniData->attackDirection), oniData->color);
 		}
-		EffectDraw(oniData);
+		//EffectDraw(oniData);
 #if _DEBUG
 		switch (oniData->attackDirection)
 		{
@@ -133,7 +133,10 @@ void OniType::Draw(EnemyData* oniData)
 		break;
 	}
 }
-
+void OniType::PreDraw(EnemyData* oniData, float time)
+{
+	EffectDraw(oniData, time);
+}
 void OniType::FallDownDraw(EnemyData* oniData)
 {//倒れる敵の描画
 	Object::Instance()->Draw(enemyDeadObject, oniData->position, oniData->scale, 
@@ -212,20 +215,24 @@ void OniType::Attack(EnemyData* oniData, Player* player)
 		//攻撃範囲内にいたらプレイヤーにダメージ
 		if (Collision::CheckBox2Box(attackBox, player->GetBox()))
 		{
-			//エフェクトのフラグTRUE
-			AttackEffect = true;
 			player->Damage(1);
 		}
+		//エフェクトのフラグTRUE
+		oniData->AttackEffect = true;
+		oniData->effectCount = 0;
 	}
 	//エフェクト関係
-	if (AttackEffect == true) {
-		effectCount++;
-		if (effectCount < 9) {
+	if (oniData->AttackEffect == true) {
+		if (oniData->StatusTime % 3 == 0 && oniData->StatusTime <= attackMotionDamege)
+		{
+			oniData->effectCount++;
+		}
+		if (oniData->effectCount < 8) {
 			oniData->attakFlag = false;
 		}
-		else if (effectCount == 9) {
-			effectCount = 0;
-			AttackEffect = false;
+		if (oniData->effectCount == 8) {
+			oniData->effectCount = 0;
+			oniData->AttackEffect = false;
 			oniData->attakFlag = true;
 		}
 	}
@@ -240,49 +247,52 @@ void OniType::Attack(EnemyData* oniData, Player* player)
 	}
 }
 
-void OniType::EffectDraw(EnemyData* oniData)
+void OniType::EffectDraw(EnemyData* oniData,float num)
 {
-	if (AttackEffect == true)
+	if (oniData->AttackEffect == true)
 	{
+		float efectPositionY = 1.0f + num;
 		switch (oniData->attackDirection)
 		{
 		case Up:
 			AttackAngle.y = 90.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z + oniData->r + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, efectPositionY, oniData->position.z + oniData->r + AttackEffectSize - AttackEffectOfset),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case Down:
 			AttackAngle.y = 270.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z - oniData->r - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
-
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, efectPositionY, oniData->position.z - oniData->r - AttackEffectSize + AttackEffectOfset),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case Left:
 			AttackAngle.y = 0.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - oniData->r - AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
-
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - oniData->r - AttackEffectSize + AttackEffectOfset, efectPositionY, oniData->position.z),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case Right:
 			AttackAngle.y = 180.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + oniData->r + AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + oniData->r + AttackEffectSize - AttackEffectOfset, efectPositionY, oniData->position.z),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case UpRight:
 			AttackAngle.y = 120.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
-
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize - AttackEffectOfset, efectPositionY, oniData->position.z + AttackEffectSize - AttackEffectOfset),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case UpLeft:
 			AttackAngle.y = 60.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
-
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize + AttackEffectOfset, efectPositionY, oniData->position.z + AttackEffectSize - AttackEffectOfset),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case DownRight:
 			AttackAngle.y = 240.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
-
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize - AttackEffectOfset, efectPositionY, oniData->position.z - AttackEffectSize + AttackEffectOfset),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case DownLeft:
 			AttackAngle.y = 300.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[effectCount]);
-
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize + AttackEffectOfset, efectPositionY, oniData->position.z - AttackEffectSize + AttackEffectOfset),
+				AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		}
 	}
