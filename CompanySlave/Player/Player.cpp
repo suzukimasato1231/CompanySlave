@@ -65,6 +65,8 @@ void Player::Init()
 	swordObject = Object::Instance()->CreateOBJ("sword");
 	swordObject2 = Object::Instance()->CreateOBJ("sworda");
 	swordObject3 = Object::Instance()->CreateOBJ("swordb");
+	swordObjectEx2 = Object::Instance()->CreateOBJ("swordExplosion");
+	swordObjectEx3 = Object::Instance()->CreateOBJ("swordExplosion2");
 	fotonObject1 = Object::Instance()->CreateOBJ("foton");
 	fotonObject2 = Object::Instance()->CreateOBJ("foton2");
 	tornadoObject = Object::Instance()->CreateOBJ("tornado");
@@ -387,7 +389,7 @@ void Player::PreDraw()
 	EffectDraw();
 }
 
-void Player::Draw()
+void Player::Draw(Enemy* enemy)
 {
 	//プレイヤー
 	if (damageTime % 2 == 0)
@@ -442,6 +444,22 @@ void Player::Draw()
 		if (returnFlag == true && haveSword[i] == false)
 		{
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
+		}
+		else if (ExplosionblinkingFlag[i])
+		{
+			
+			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+			{
+				if (blinkingCount >= 15 && blinkingCount <= 30 && enemy->GetExplosionCount(j) == 1 || blinkingCount >= 45 && blinkingCount <= 60 && enemy->GetExplosionCount(j) == 1)
+				{
+					Object::Instance()->Draw(swordObjectEx2, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.7f,1.7f ,3.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+				}
+				else if (blinkingCount >= 30 && blinkingCount <= 45 && enemy->GetExplosionCount(j) == 1)
+				{
+					Object::Instance()->Draw(swordObjectEx3, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.7f,1.7f ,3.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+				}
+			}
 		}
 		else if (isSwordAttack[i] == false && blinkingFlag[i])
 		{
@@ -807,6 +825,7 @@ void Player::SwordAttack(Enemy* enemy)
 				stingCnt[i] = 0;
 				holdingFlag[i] = true;
 				swordAngle[i].z = 0;
+				ExplosionblinkingFlag[i] = false;
 			}
 			returnFlag = true;
 			tornadoScale = 0.5f;
@@ -1015,7 +1034,6 @@ void Player::SwordAttack(Enemy* enemy)
 		{
 			if (Collision::CheckBox2Box(pBox, swordAttackBox[i]) && holdingFlag[i])
 			{
-
 				swordSoundFlag = true;
 			}
 			else {
@@ -1036,10 +1054,12 @@ void Player::SwordAttack(Enemy* enemy)
 		{
 			if (isEnemySting[i][j])
 			{
+				swordAngle[i].z = 0;
+				ExplosionblinkingFlag[i] = true;
 				swordPosition[i] = enemy->GetPosition(j);
 			}
 			else if (isEnemySting[i][j] == false) {
-
+				
 			}
 		}
 
@@ -1066,6 +1086,7 @@ void Player::SwordAttack(Enemy* enemy)
 			if (enemy->GetHP(j) <= 0 && isEnemySting[i][j] == true)
 			{
 				explosion[i] = true;
+				ExplosionblinkingFlag[i] = false;
 				isEnemySting[i][j] = false;
 				enemy->SetExplosionFlag(j);
 			}
@@ -1073,6 +1094,7 @@ void Player::SwordAttack(Enemy* enemy)
 			if (enemy->GetExplosionFlag(j) == true && isEnemySting[i][j] == true)
 			{
 				explosion[i] = true;
+				ExplosionblinkingFlag[i] = false;
 				isEnemySting[i][j] = false;
 				explosionAngle[i] = rand() % 360;
 				enemy->SetExplosionFlag(j);
@@ -1169,7 +1191,9 @@ void Player::SwordAttack(Enemy* enemy)
 	}
 
 	//点滅
-	if (blinkingFlag[0] || blinkingFlag[1] || blinkingFlag[2] || blinkingFlag[3] || blinkingFlag[4] || blinkingFlag[5] || blinkingFlag[6])
+	if (blinkingFlag[0] || blinkingFlag[1] || blinkingFlag[2] || blinkingFlag[3] || blinkingFlag[4] || blinkingFlag[5] || blinkingFlag[6] ||
+		ExplosionblinkingFlag[0] || ExplosionblinkingFlag[1] || ExplosionblinkingFlag[2] || ExplosionblinkingFlag[3] || ExplosionblinkingFlag[4] || 
+		ExplosionblinkingFlag[5] || ExplosionblinkingFlag[6])
 	{
 		blinkingCount++;
 		if (blinkingCount > 60)
