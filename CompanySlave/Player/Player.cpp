@@ -865,6 +865,7 @@ void Player::SwordAttack(Enemy* enemy)
 
 		if (haveSword[i])
 		{
+			ExplosionblinkingFlag[i] = false;
 			swordAngle[i].z = -85;
 			swordAngle[i].y = 90;
 			blinkingFlag[i] = false;
