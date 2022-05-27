@@ -319,7 +319,7 @@ void Enemy::Update(Player* player)
 			delayCount[i]++;
 			if (delayCount[i] >= 20)
 			{
-				eData[i]->explosionCount = 2;
+				eData[i]->explosionCount = 3;
 				eData[i]->explosionFlag = false;
 				delayCount[i] = 0;
 				eData[i]->explosionDelay = false;
