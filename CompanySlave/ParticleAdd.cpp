@@ -45,42 +45,46 @@ void ParticleAdd::Update(class Player* player, class Enemy* enemy, class MapStag
 	for (size_t i = 0; i < enemy->GetEnemySize(); i++)
 	{
 		float speed = 1.0f;
+		int addNum = 15;
+		float startScale = 4.0f, endScale = 0.3f;
 		if (enemy->GetBossFlag(i) == true) {
-			speed = 2.0f;
+			speed = 3.0f;
+			addNum = 20;
+			startScale = 6.0f, endScale = 1.0f;
 		}
 		//ƒ_ƒ[ƒW‚ðŽó‚¯‚½‚ç•`‰æ
 		if (enemy->GetDamegeFlag(i) == true) {
 			if (player->GetDirection() == Right) {
 				particleMan->SetParticleDirection(0);
-				particleMan->ParticleAdd(enemy->GetPosition(i), speed, speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), speed, speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 			else if (player->GetDirection() == Left) {
 				particleMan->SetParticleDirection(1);
-				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 			else if (player->GetDirection() == Up) {
 				particleMan->SetParticleDirection(2);
-				particleMan->ParticleAdd(enemy->GetPosition(i), speed, -speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), speed, -speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 			else if (player->GetDirection() == Down) {
 				particleMan->SetParticleDirection(3);
-				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, -speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, -speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 			else if (player->GetDirection() == UpRight) {
 				particleMan->SetParticleDirection(4);
-				particleMan->ParticleAdd(enemy->GetPosition(i), speed, speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), speed, speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 			else if (player->GetDirection() == UpLeft) {
 				particleMan->SetParticleDirection(5);
-				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 			else if (player->GetDirection() == DownRight) {
 				particleMan->SetParticleDirection(6);
-				particleMan->ParticleAdd(enemy->GetPosition(i), speed, -speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), speed, -speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 			else if (player->GetDirection() == DownLeft) {
 				particleMan->SetParticleDirection(7);
-				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, -speed, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				particleMan->ParticleAdd(enemy->GetPosition(i), -speed, -speed, startScale, endScale, Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), addNum);
 			}
 		}
 	}

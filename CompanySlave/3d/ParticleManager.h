@@ -117,10 +117,10 @@ public: // 静的メンバ関数
 	void Add2(int life, Vec3 position, Vec3 velocity, Vec3 accel,
 		float start_scale, float end_scale, Vec4 start_color, Vec4 end_color);
 
-	void ParticleManager::ParticleAdd(Vec3 Pos, float md_vel, float md_vel2, Vec4 start_color, Vec4 end_color);
-	
+	void ParticleManager::ParticleAdd(Vec3 Pos, float md_vel, float md_vel2, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color, int addNum);
+
 	void ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color);
-	void ParticleAdd3(Vec3 Pos, float md_vel,float size, Vec4 start_color, Vec4 end_color);
+	void ParticleAdd3(Vec3 Pos, float md_vel, float size, Vec4 start_color, Vec4 end_color);
 
 	//血が飛び出るパーティクル
 	void AddBlood(Vec3 Pos);
