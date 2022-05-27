@@ -31,7 +31,7 @@ public:
 	//先に描画するエフェクトなど
 	void PreDraw();
 
-	void Draw();					//描画
+	void Draw(class Enemy* enemy);					//描画
 	//プレイヤーの位置を設定
 	void SetPosition(Vec3 position) { this->position = position; }
 	//剣の位置を設定
@@ -206,6 +206,8 @@ private:
 	Object::ObjectData swordObject;//剣
 	Object::ObjectData swordObject2;//剣
 	Object::ObjectData swordObject3;//剣
+	Object::ObjectData swordObjectEx2;//剣
+	Object::ObjectData swordObjectEx3;//剣
 	Object::ObjectData tornadoObject;//剣
 	Object::ObjectData fotonObject1;//剣
 	Object::ObjectData fotonObject2;//剣
@@ -249,6 +251,7 @@ private:
 	float fotonLowerScale = 0;
 	int blinkingCount = 0;               //刺さってるときの点滅カウント
 	std::array<bool, 7> blinkingFlag = { false,false,false,false,false,false,false };
+	std::array<bool, 7> ExplosionblinkingFlag = { false,false,false,false,false,false,false };
 	bool eslowFlag = false;
 	int eslowTime = 120;
 

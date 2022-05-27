@@ -103,7 +103,7 @@ struct EnemyData
 	bool RushFlag = false;				//突進時のエフェクト用フラグ
 	//破のやつ
 	bool explosionFlag = false;
-	int explosionCount = 2;
+	int explosionCount = 3;
 	bool explosionDelay = 0;
 
 	//描画関係

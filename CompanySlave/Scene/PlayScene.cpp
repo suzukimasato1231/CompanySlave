@@ -534,7 +534,7 @@ void PlayScene::Draw()
 	mapStage->DrawParticle(camera->GetEye());
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
-	player->Draw();
+	player->Draw(enemy);
 
 	enemy->Draw();
 
