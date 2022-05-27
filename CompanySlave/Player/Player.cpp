@@ -451,17 +451,32 @@ void Player::Draw(Enemy* enemy)
 		}
 		else if (ExplosionblinkingFlag[i])
 		{
-			
-			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-				if (blinkingCount >= 15 && blinkingCount <= 30 && enemy->GetExplosionCount(j) == 1 || blinkingCount >= 45 && blinkingCount <= 60 && enemy->GetExplosionCount(j) == 1)
+
+				if (BossFlag[i] == true && isEnemySting[i][j])
 				{
-					Object::Instance()->Draw(swordObjectEx2, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.7f,1.7f ,3.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y + 13,swordPosition[i].z }, { 2.25f,2.25f ,4.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					if (blinkingCount >= 15 && blinkingCount <= 30 && enemy->GetExplosionCount(j) == 1 || blinkingCount >= 45 && blinkingCount <= 60 && enemy->GetExplosionCount(j) == 1)
+					{
+						Object::Instance()->Draw(swordObjectEx2, { swordPosition[i].x,swordPosition[i].y + 13,swordPosition[i].z }, { 2.55f,2.55f ,5.25 }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					}
+					else if (blinkingCount >= 30 && blinkingCount <= 45 && enemy->GetExplosionCount(j) == 1)
+					{
+						Object::Instance()->Draw(swordObjectEx3, { swordPosition[i].x,swordPosition[i].y + 13,swordPosition[i].z }, { 2.55f,2.55f ,5.25 }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					}
 				}
-				else if (blinkingCount >= 30 && blinkingCount <= 45 && enemy->GetExplosionCount(j) == 1)
+				else if (BossFlag[i] != true && isEnemySting[i][j])
 				{
-					Object::Instance()->Draw(swordObjectEx3, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.7f,1.7f ,3.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					if (blinkingCount >= 15 && blinkingCount <= 30 && enemy->GetExplosionCount(j) == 1 || blinkingCount >= 45 && blinkingCount <= 60 && enemy->GetExplosionCount(j) == 1)
+					{
+						Object::Instance()->Draw(swordObjectEx2, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.7f,1.7f ,3.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					}
+					else if (blinkingCount >= 30 && blinkingCount <= 45 && enemy->GetExplosionCount(j) == 1)
+					{
+						Object::Instance()->Draw(swordObjectEx3, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.7f,1.7f ,3.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+					}
 				}
 			}
 		}
@@ -484,9 +499,24 @@ void Player::Draw(Enemy* enemy)
 		{
 
 		}
-		else if (haveSword[i] == true || isSwordAttack[i] == false)
+		else if (haveSword[i] == true)
 		{
 			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+		}
+		else if (isSwordAttack[i] == false)
+		{
+			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+			{
+
+				if (BossFlag[i] == true && enemy->GetExplosionCount(j) == 2)
+				{
+					Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y + 13,swordPosition[i].z }, { 2.25f,2.25f ,4.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+				}
+				else if (BossFlag[i] != true && enemy->GetExplosionCount(j) == 2)
+				{
+					Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+				}
+			}
 		}
 		else
 		{
@@ -1055,17 +1085,30 @@ void Player::SwordAttack(Enemy* enemy)
 			audio->SoundSEPlayWave(sound10);
 			swordSoundFlag = false;
 		}
+
 		//Žh‚³‚Á‚½“G‚ÉŒ•‚ª’Ç‚Á‚©‚¯‚é
 		for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 		{
+
 			if (isEnemySting[i][j])
 			{
+				if (enemy->GetExplosionCount(j) == 1)
+				{
+					ExplosionblinkingFlag[i] = true;
+				}
+				if (enemy->GetType(j) == BossBigOni)
+				{
+					BossFlag[i] = true;
+				}
+				if (enemy->GetType(j) != BossBigOni)
+				{
+					BossFlag[i] = false;
+				}
 				swordAngle[i].z = 0;
-				ExplosionblinkingFlag[i] = true;
 				swordPosition[i] = enemy->GetPosition(j);
 			}
 			else if (isEnemySting[i][j] == false) {
-				
+
 			}
 		}
 
@@ -1092,6 +1135,7 @@ void Player::SwordAttack(Enemy* enemy)
 			if (enemy->GetHP(j) <= 0 && isEnemySting[i][j] == true)
 			{
 				explosion[i] = true;
+				BossFlag[i] = false;
 				ExplosionblinkingFlag[i] = false;
 				isEnemySting[i][j] = false;
 				enemy->SetExplosionFlag(j);
@@ -1100,6 +1144,7 @@ void Player::SwordAttack(Enemy* enemy)
 			if (enemy->GetExplosionFlag(j) == true && isEnemySting[i][j] == true)
 			{
 				explosion[i] = true;
+				BossFlag[i] = false;
 				ExplosionblinkingFlag[i] = false;
 				isEnemySting[i][j] = false;
 				explosionAngle[i] = rand() % 360;

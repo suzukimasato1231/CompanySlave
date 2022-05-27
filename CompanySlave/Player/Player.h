@@ -254,6 +254,7 @@ private:
 	std::array<bool, 7> ExplosionblinkingFlag = { false,false,false,false,false,false,false };
 	bool eslowFlag = false;
 	int eslowTime = 120;
+	std::array<bool, 7> BossFlag = { false,false,false,false,false,false,false };
 
 	bool homingFlag = true;
 	//剣回収クールタイム

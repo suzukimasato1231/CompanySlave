@@ -111,7 +111,7 @@ public://Žæ“¾Œn
 	bool GetExplosionFlag(int i) { return eData[i]->explosionFlag; }
 	bool SetExplosionFlag(int i);
 
-	bool GetExplosionCount(int i) { return eData[i]->explosionCount; }
+	int GetExplosionCount(int i) { return eData[i]->explosionCount; }
 	bool SetExplosionCount(int i);
 	
 	bool GetRushFlag(int i) { return eData[i]->RushFlag; }
