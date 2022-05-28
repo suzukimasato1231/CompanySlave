@@ -635,7 +635,6 @@ void Enemy::DamegeThrowSword(int i)
 void Enemy::DamegeSword(int i)
 {
 	eData[i]->HP -= 2;
-	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
 	if (eData[i]->Status == NORMAL)
 	{

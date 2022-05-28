@@ -499,6 +499,10 @@ void Player::Draw(Enemy* enemy)
 		{
 
 		}
+		else if (explosionCount[i] != 0)
+		{
+			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
+		}
 		else if (haveSword[i] == true)
 		{
 			Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
@@ -896,7 +900,15 @@ void Player::SwordAttack(Enemy* enemy)
 				havePosition.z += 0.1f;
 			}
 		}
-
+		float RespornX = havePosition.x - position.x;      //xの差を求める
+		float RespornZ = havePosition.z - position.z;     //zの差を求める
+		float RespornXZ = RespornX * RespornX + RespornZ * RespornZ;  //ルートの中を計算
+		float Distance = sqrt(RespornXZ);            //ルート計算
+		if (Distance > (40.0f))
+		{
+			havePosition.z = position.z;
+			havePosition.x = position.x;
+		}
 		if (haveSword[i])
 		{
 			ExplosionblinkingFlag[i] = false;
@@ -967,8 +979,8 @@ void Player::SwordAttack(Enemy* enemy)
 					enemy->SetDamegeFlag(j, false);
 				}
 
-				swordPosition[i].x += cos((swordAngle[i].y * 3.14) / -180) * swordSpeed * slowValue;      // x座標を更新
-				swordPosition[i].z += sin((swordAngle[i].y * 3.14) / -180) * swordSpeed * slowValue;      // z座標を更新
+				swordPosition[i].x += cos((swordAngle[i].y * 3.14) / -180) * 6 * slowValue;      // x座標を更新
+				swordPosition[i].z += sin((swordAngle[i].y * 3.14) / -180) * 6 * slowValue;      // z座標を更新
 
 				//戻ってるときの当たり判定
 				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
@@ -1158,8 +1170,8 @@ void Player::SwordAttack(Enemy* enemy)
 			explosionCount[i]++;
 			swordAngle[i].z = 0;
 			swordAngle[i].y = -explosionAngle[i] - 180;
-			swordPosition[i].x += cos(XMConvertToRadians(explosionAngle[i])) * 5 * slowValue;      // x座標を更新
-			swordPosition[i].z += sin(XMConvertToRadians(explosionAngle[i])) * 5 * slowValue;      // z座標を更新
+			swordPosition[i].x += cos(XMConvertToRadians(explosionAngle[i])) * 4 * slowValue;      // x座標を更新
+			swordPosition[i].z += sin(XMConvertToRadians(explosionAngle[i])) * 4 * slowValue;      // z座標を更新
 			holdingFlag[i] = true;
 
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
