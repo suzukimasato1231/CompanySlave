@@ -214,5 +214,5 @@ private:
 	//“|‚ê‚éˆ—‚ÌŠÔŒv‘ª
 	const float fallDownTimeMax = 90.0f;
 	
-	int audioBoss=10;
+	int audioBoss=30;
 };

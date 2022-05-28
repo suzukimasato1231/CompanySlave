@@ -63,7 +63,6 @@ void Enemy::Init()
 
 	explosionOBJ = Shape::CreateRect(10, 10);
 	explosionGraph = Object::Instance()->LoadTexture(L"Resources/Point.png");
-	audioBoss = 10;
 	//‹S‚P
 	oniType.Init();
 	//‹|
@@ -83,7 +82,7 @@ void Enemy::Init()
 void Enemy::StageInit(int stageNum)
 {
 	//ƒƒ‚ƒŠ‰ð•ú
-	audioBoss = 10;
+	audioBoss = 30;
 	for (int i = (int)eData.size() - 1; i >= 0; i--)
 	{
 		delete eData[i];
