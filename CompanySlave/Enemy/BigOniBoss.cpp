@@ -176,7 +176,7 @@ void BigOniBoss::PreDraw(EnemyData* oniData)
 	case BOSSATTACK2:
 		if (attackBigStatus == PREOPERATION)
 		{
-			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->position.x, oniData->position.y - 2.0f, oniData->position.z), Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
+			Object::Instance()->Draw(attackBigOBJ, Vec3(oniData->position.x, oniData->position.y - 4.0f, oniData->position.z), Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 		}
 		else
 		{
@@ -189,12 +189,12 @@ void BigOniBoss::PreDraw(EnemyData* oniData)
 	}
 	if (SummonEffect == true)
 	{
-		Object::Instance()->Draw(SummonEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z), SummonScale, AttackAngle, oniData->color, SummonEffectGraph);
+		Object::Instance()->Draw(SummonEffectOBJ, Vec3(oniData->position.x, oniData->position.y - 4.0f, oniData->position.z), SummonScale, AttackAngle, oniData->color, SummonEffectGraph);
 	}
 
 	if (BigEffect == true)
 	{
-		Object::Instance()->Draw(BigEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z), BigScale, AttackAngle, oniData->color, BigEffectGraph);
+		Object::Instance()->Draw(BigEffectOBJ, Vec3(oniData->position.x, oniData->position.y - 4.0f, oniData->position.z), BigScale, AttackAngle, oniData->color, BigEffectGraph);
 	}
 
 	if (oniData->AttackEffect == true)
@@ -203,40 +203,40 @@ void BigOniBoss::PreDraw(EnemyData* oniData)
 		{
 		case Up:
 			AttackAngle.y = 90.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y - 4.0f, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case Down:
 			AttackAngle.y = 270.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x, oniData->position.y - 4.0f, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 
 			break;
 		case Left:
 			AttackAngle.y = 0.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y - 4.0f, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 
 			break;
 		case Right:
 			AttackAngle.y = 180.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y - 4.0f, oniData->position.z), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		case UpRight:
 			AttackAngle.y = 120.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y - 4.0f, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 
 			break;
 		case UpLeft:
 			AttackAngle.y = 60.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y - 4.0f, oniData->position.z + AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 
 			break;
 		case DownRight:
 			AttackAngle.y = 240.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x + AttackEffectSize, oniData->position.y - 4.0f, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 
 			break;
 		case DownLeft:
 			AttackAngle.y = 300.0f;
-			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
+			Object::Instance()->Draw(AttackEffectOBJ, Vec3(oniData->position.x - AttackEffectSize, oniData->position.y - 4.0f, oniData->position.z - AttackEffectSize), AttackScale, AttackAngle, oniData->color, AttackEffectGraph[oniData->effectCount]);
 			break;
 		}
 	}
