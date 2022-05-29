@@ -1813,22 +1813,36 @@ Vec3 Player::GetCameraPos()
 
 	if (BlackFlag == true)
 	{
-		collectCount -= 0.175f;
-		cameraPos.y += collectCount;
-		if (cameraPos.y < -3.0f)
+		cameraPos += collectPos;
+		//yé≤
+		if (cameraPos.y > +40.0f)
 		{
-			cameraPos.y = -3.0f;
-			collectCount = -8.0f;
+			cameraPos.y = +40.0f;
+		}
+		else
+		{
+			collectCount++;
+			if (collectCount % 3 == 0)
+			{
+				collectPos.z += 0.20f;
+			}
+			collectPos.y += 1.80f;
 		}
 	}
 	else
 	{
-		collectCount += 0.6f;
-		if (collectCount > 0.0f)
+		collectPos.y -= 1.0f;
+		collectPos.z -= 0.15f;
+		//yí≤êÆ
+		if (collectPos.y < 0.0f)
 		{
- 			collectCount = 0.0f;
+			collectPos.y = 0.0f;
 		}
-		cameraPos.y += collectCount;
+		if (collectPos.z < 0.0f)
+		{
+			collectPos.z = 0.0f;
+		}
+		cameraPos += collectPos;
 	}
 	return cameraPos;
 }

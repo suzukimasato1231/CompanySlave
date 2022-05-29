@@ -14,7 +14,7 @@ MapStage::~MapStage()
 
 void MapStage::Init()
 {
-	block = Object::Instance()->CreateOBJ("Ground","mapOBJ/");
+	block = Object::Instance()->CreateOBJ("Ground", "mapOBJ/");
 
 	floor_Tile[0] = Object::Instance()->LoadTexture(L"Resources/map/MapGraph/Floor_Tile1.png");
 	floor_Tile[1] = Object::Instance()->LoadTexture(L"Resources/map/MapGraph/Floor_Tile2.png");
@@ -160,214 +160,426 @@ void MapStage::Draw(Vec3 pPos)
 {
 	int X = pPos.x / mapSize;
 	int Z = pPos.z / (-mapSize);
-	for (int j = (Z - 10); j < (Z + 6); j++)
+	for (int j = (Z - 15); j < (Z + 11); j++)
 	{
-		for (int i = (X - 13); i < (X + 13); i++)
+		for (int i = (X - 18); i < (X + 18); i++)
 		{
 			if (j < 0 || i < 0 || j >= MAP_HEIGHT || i >= MAP_WIDTH)
 			{
-				continue;
+				//マップチップ外の描画
+				int memoI = i, memoJ = j;
+				if (i < 0)
+				{
+					memoI = 0;
+				}
+				if (j < 0)
+				{
+					memoJ = 0;
+				}
+				if (j >= MAP_HEIGHT)
+				{
+					memoJ = MAP_HEIGHT - 1;
+				}
+				if (i >= MAP_WIDTH)
+				{
+					memoI = MAP_WIDTH - 1;
+				}
+				switch (map[memoJ][memoI])
+				{
+				case FLOOR_TILE1:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[0]);
+					break;
+				case FLOOR_TILE2:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[1]);
+					break;
+				case FLOOR_TILE3:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[2]);
+					break;
+				case FLOOR_TILE4:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[3]);
+					break;
+				case FLOOR_TILE5:
+					if (j < 0 || j >= MAP_HEIGHT)
+					{
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[8]);
+					}
+					else {
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[4]);
+					}
+					break;
+				case FLOOR_TILE6:
+					if (j < 0 || j >= MAP_HEIGHT)
+					{
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[8]);
+					}
+					else {
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[5]);
+					}
+					break;
+				case FLOOR_TILE7:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[6]);
+					break;
+				case FLOOR_TILE8:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[7]);
+					break;
+				case FLOOR_TILE9:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[8]);
+					break;
+				case FLOOR_TILE10:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[9]);
+					break;
+				case FLOOR_TILE11:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[10]);
+					break;
+				case FLOOR_TILE12:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[11]);
+					break;
+				case FLOOR_TILE13:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[12]);
+					break;
+				case FLOOR_TILE14:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[13]);
+					break;
+				case FLOOR_TILE15:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[14]);
+					break;
+				case FLOOR_TILE16:
+					if (j < 0 || j >= MAP_HEIGHT)
+					{
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[8]);
+					}
+					else {
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[15]);
+					}
+					break;
+				case FLOOR_TILE17:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[16]);
+					break;
+				case FLOOR_TILE18:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[17]);
+					break;
+				case FLOOR_TILE19:
+					if (j < 0 || j >= MAP_HEIGHT)
+					{
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[8]);
+					}
+					else {
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[18]);
+					}
+					break;
+				case FLOOR_TILE20:
+					if (j < 0 || j >= MAP_HEIGHT)
+					{
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[8]);
+					}
+					else {
+						Object::Instance()->Draw(block,
+							Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+							scale, Vec3{}, color, floor_Tile[19]);
+					}
+					break;
+				case FLOOR_TILE21:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[20]);
+					break;
+				case FLOOR_TILE22:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[21]);
+				case FLOOR_TILE23:
+				case FLOOR_TILE24:
+				case FLOOR_TILE25:
+				case FLOOR_TILE26:
+				case FLOOR_TILE27:
+				case FLOOR_TILE28:
+				case FLOOR_TILE29:
+				case FLOOR_TILE30:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[8]);
+					break;
+				}
+				switch (mapOBJ[memoJ][memoI])
+				{
+				case NONE:
+				case WALL_LU:
+				case WALL_RU:
+				case WALL_RD:
+				case WALL_LD:
+				case SMOKEWALL:
+				case NextStageBlock:
+					break;
+				case WALLWIDTH:
+					if (j < 0 || j >= MAP_HEIGHT)
+					{}
+					else {
+						Object::Instance()->Draw(wallBlock,
+							Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+							{ 1.25f, 1.25f, 1.25f }, Vec3{ 0,90,0 }, color);
+					}
+					break;
+				case WALLHIGHT:
+					if (i < 0 || i >= MAP_HEIGHT)
+					{}
+					else {
+						Object::Instance()->Draw(wallBlock,
+							Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+							{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
+					}
+					break;
+				default:
+					break;
+				}
 			}
-			switch (map[j][i])
+			else
 			{
-			case FLOOR_TILE1:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[0]);
-				break;
-			case FLOOR_TILE2:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[1]);
-				break;
-			case FLOOR_TILE3:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[2]);
-				break;
-			case FLOOR_TILE4:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[3]);
-				break;
-			case FLOOR_TILE5:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[4]);
-				break;
-			case FLOOR_TILE6:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[5]);
-				break;
-			case FLOOR_TILE7:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[6]);
-				break;
-			case FLOOR_TILE8:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[7]);
-				break;
-			case FLOOR_TILE9:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[8]);
-				break;
-			case FLOOR_TILE10:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[9]);
-				break;
-			case FLOOR_TILE11:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[10]);
-				break;
-			case FLOOR_TILE12:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[11]);
-				break;
-			case FLOOR_TILE13:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[12]);
-				break;
-			case FLOOR_TILE14:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[13]);
-				break;
-			case FLOOR_TILE15:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[14]);
-				break;
-			case FLOOR_TILE16:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[15]);
-				break;
-			case FLOOR_TILE17:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[16]);
-				break;
-			case FLOOR_TILE18:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[17]);
-				break;
-			case FLOOR_TILE19:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[18]);
-				break;
-			case FLOOR_TILE20:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[19]);
-				break;
-			case FLOOR_TILE21:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[20]);
-				break;
-			case FLOOR_TILE22:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[21]);
-			case FLOOR_TILE23:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[22]);
-				break;
-			case FLOOR_TILE24:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[23]);
-				break;
-			case FLOOR_TILE25:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[24]);
-				break;
-			case FLOOR_TILE26:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[25]);
-				break;
-			case FLOOR_TILE27:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[26]);
-				break;
-			case FLOOR_TILE28:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[27]);
-				break;
-			case FLOOR_TILE29:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[28]);
-				break;
-			case FLOOR_TILE30:
-				Object::Instance()->Draw(block,
-					Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
-					scale, Vec3{}, color, floor_Tile[29]);
-				break;
-			}
-			switch (mapOBJ[j][i])
-			{
-			case NONE:
-				break;
-			case WALLWIDTH:
-				Object::Instance()->Draw(wallBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0,90,0 }, color);
-				break;
-			case WALLHIGHT:
-				Object::Instance()->Draw(wallBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
-				break;
-			case WALL_LU:
-				Object::Instance()->Draw(cornerBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,0.0f,0.0f }, color);
-				break;
-			case WALL_RU:
-				Object::Instance()->Draw(cornerBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,90.0f,0.0f }, color);
-				break;
-			case WALL_RD:
-				Object::Instance()->Draw(cornerBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,180.0f,0.0f }, color);
-				break;
-			case WALL_LD:
-				Object::Instance()->Draw(cornerBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,270.0f,0.0f }, color);
-				break;
-			case OKE:
-				/*Object::Instance()->Draw(okeBlock,
-					Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
-					{ 3.0f, 3.0f, 3.0f }, Vec3{ 0.0f,45.0f,0.0f }, color);*/
-				Object::Instance()->Draw(sakuBlock,
-					Vec3{ basePosition.x + i * mapSize - 3.0f,0,basePosition.y + j * (-mapSize) },
-					{ 1.1f, 1.0f, 1.0f }, Vec3{ 0.0f,0.0f,0.0f }, color);
-				break;
-			case SMOKEWALL:
-				break;
-			case NextStageBlock:
-				break;
-			default:
-				break;
+				switch (map[j][i])
+				{
+				case FLOOR_TILE1:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[0]);
+					break;
+				case FLOOR_TILE2:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[1]);
+					break;
+				case FLOOR_TILE3:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[2]);
+					break;
+				case FLOOR_TILE4:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[3]);
+					break;
+				case FLOOR_TILE5:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[4]);
+					break;
+				case FLOOR_TILE6:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[5]);
+					break;
+				case FLOOR_TILE7:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[6]);
+					break;
+				case FLOOR_TILE8:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[7]);
+					break;
+				case FLOOR_TILE9:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[8]);
+					break;
+				case FLOOR_TILE10:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[9]);
+					break;
+				case FLOOR_TILE11:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[10]);
+					break;
+				case FLOOR_TILE12:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[11]);
+					break;
+				case FLOOR_TILE13:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[12]);
+					break;
+				case FLOOR_TILE14:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[13]);
+					break;
+				case FLOOR_TILE15:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[14]);
+					break;
+				case FLOOR_TILE16:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[15]);
+					break;
+				case FLOOR_TILE17:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[16]);
+					break;
+				case FLOOR_TILE18:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[17]);
+					break;
+				case FLOOR_TILE19:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[18]);
+					break;
+				case FLOOR_TILE20:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[19]);
+					break;
+				case FLOOR_TILE21:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[20]);
+					break;
+				case FLOOR_TILE22:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[21]);
+				case FLOOR_TILE23:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[22]);
+					break;
+				case FLOOR_TILE24:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[23]);
+					break;
+				case FLOOR_TILE25:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[24]);
+					break;
+				case FLOOR_TILE26:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[25]);
+					break;
+				case FLOOR_TILE27:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[26]);
+					break;
+				case FLOOR_TILE28:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[27]);
+					break;
+				case FLOOR_TILE29:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[28]);
+					break;
+				case FLOOR_TILE30:
+					Object::Instance()->Draw(block,
+						Vec3{ basePosition.x + i * mapSize,-1,basePosition.y + j * (-mapSize) },
+						scale, Vec3{}, color, floor_Tile[29]);
+					break;
+				}
+				switch (mapOBJ[j][i])
+				{
+				case NONE:
+					break;
+				case WALLWIDTH:
+					Object::Instance()->Draw(wallBlock,
+						Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+						{ 1.25f, 1.25f, 1.25f }, Vec3{ 0,90,0 }, color);
+					break;
+				case WALLHIGHT:
+					Object::Instance()->Draw(wallBlock,
+						Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+						{ 1.25f, 1.25f, 1.25f }, Vec3{}, color);
+					break;
+				case WALL_LU:
+					Object::Instance()->Draw(cornerBlock,
+						Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+						{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,0.0f,0.0f }, color);
+					break;
+				case WALL_RU:
+					Object::Instance()->Draw(cornerBlock,
+						Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+						{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,90.0f,0.0f }, color);
+					break;
+				case WALL_RD:
+					Object::Instance()->Draw(cornerBlock,
+						Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+						{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,180.0f,0.0f }, color);
+					break;
+				case WALL_LD:
+					Object::Instance()->Draw(cornerBlock,
+						Vec3{ basePosition.x + i * mapSize,0,basePosition.y + j * (-mapSize) },
+						{ 1.25f, 1.25f, 1.25f }, Vec3{ 0.0f,270.0f,0.0f }, color);
+					break;
+				case OKE:
+					Object::Instance()->Draw(sakuBlock,
+						Vec3{ basePosition.x + i * mapSize - 3.0f,0,basePosition.y + j * (-mapSize) },
+						{ 1.1f, 1.0f, 1.0f }, Vec3{ 0.0f,0.0f,0.0f }, color);
+					break;
+				case SMOKEWALL:
+					break;
+				case NextStageBlock:
+					break;
+				default:
+					break;
+				}
 			}
 		}
 	}

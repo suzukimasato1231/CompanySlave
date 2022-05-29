@@ -326,7 +326,8 @@ private:
 	bool swordSoundCount = 0;
 	float volume = 1.0f;
 
-	float collectCount = 0.1f;
+	Vec3 collectPos = {};
+	int collectCount = 0;
 #if _DEBUG
 	Object::ObjectData attackField;//UŒ‚”ÍˆÍ‰Â‹‰»
 	int redColor;
