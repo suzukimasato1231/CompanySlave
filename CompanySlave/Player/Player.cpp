@@ -75,6 +75,7 @@ void Player::Init()
 	fotonObject2 = Object::Instance()->CreateOBJ("foton2");
 	tornadoObject = Object::Instance()->CreateOBJ("tornado");
 	swordEffectObject = Object::Instance()->CreateOBJ("Effect");
+	returnLineObject = Object::Instance()->CreateOBJ("Box");
 	cursorGraph = Object::Instance()->LoadTexture(L"Resources/Effect/Line.png");
 	cursorObject = Shape::CreateRect(5, 0.5);
 
@@ -394,7 +395,7 @@ void Player::PreDraw()
 }
 
 void Player::Draw(Enemy* enemy)
-{
+{	
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
@@ -511,12 +512,11 @@ void Player::Draw(Enemy* enemy)
 		{
 			for (size_t j = 0; j < enemy->GetEnemySize(); j++)
 			{
-
-				if (BossFlag[i] == true && enemy->GetExplosionCount(j) == 2)
+				if (BossFlag[i] == true && enemy->GetExplosionCount(j) != 1)
 				{
 					Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y + 13,swordPosition[i].z }, { 2.25f,2.25f ,4.5f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
 				}
-				else if (BossFlag[i] != true && enemy->GetExplosionCount(j) == 2)
+				else if (BossFlag[i] != true && enemy->GetExplosionCount(j) != 1)
 				{
 					Object::Instance()->Draw(swordObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 1.5f,1.5f ,3.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i], swordAngle[i].z }, color);
 				}
@@ -525,6 +525,15 @@ void Player::Draw(Enemy* enemy)
 		else
 		{
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
+		}
+		//予測線
+		if(haveSword[i] || swordCoolTimeFlag == true)
+		{
+
+		}
+		else if (Input::Instance()->ControllerPush(ButtonLB) && !haveSword[i])
+		{
+			Object::Instance()->Draw(returnLineObject, { position.x ,position.y ,position.z }, { playerSwordDistance[i] / 2 ,0.1f ,0.1f }, { 0,lineAngle[i] ,0 }, color);
 		}
 	}
 	if (fotonFlag)
@@ -843,7 +852,7 @@ void Player::SwordAttack(Enemy* enemy)
 	}
 
 	//剣戻ってくるやつ発動
-	if (Input::Instance()->ControllerDown(ButtonLB) && portionFlag == false && invincivleTime <= 30)
+	if (Input::Instance()->ControllerUp(ButtonLB) && portionFlag == false && invincivleTime <= 30)
 	{
 		if (IsSwordALLHave() == true && swordCoolTimeFlag == false)
 		{//剣を全部持っていた場合
@@ -900,6 +909,8 @@ void Player::SwordAttack(Enemy* enemy)
 				havePosition.z += 0.1f;
 			}
 		}
+
+		//リス時の剣の位置変更
 		float RespornX = havePosition.x - position.x;      //xの差を求める
 		float RespornZ = havePosition.z - position.z;     //zの差を求める
 		float RespornXZ = RespornX * RespornX + RespornZ * RespornZ;  //ルートの中を計算
@@ -909,7 +920,18 @@ void Player::SwordAttack(Enemy* enemy)
 			havePosition.z = position.z;
 			havePosition.x = position.x;
 		}
-		if (haveSword[i])
+
+		
+		if (!haveSword[i])
+		{
+			//予測線の距離
+			DistanceX[i] = swordPosition[i].x - position.x;      //xの差を求める
+			DistanceZ[i] = swordPosition[i].z - position.z;     //zの差を求める
+			DistanceXZ[i] = DistanceX[i] * DistanceX[i] + DistanceZ[i] * DistanceZ[i];  //ルートの中を計算
+			playerSwordDistance[i] = sqrt(DistanceXZ[i]);            //ルート計算
+			lineAngle[i] = XMConvertToDegrees(atan2(position.x - swordPosition[i].x, position.z - swordPosition[i].z)) + 90;
+		}
+		else if (haveSword[i])
 		{
 			ExplosionblinkingFlag[i] = false;
 			swordAngle[i].z = -85;

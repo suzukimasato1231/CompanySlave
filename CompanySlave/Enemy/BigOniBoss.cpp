@@ -53,6 +53,7 @@ void BigOniBoss::Init()
 	bossData.scale = { 4.0f,4.0f,4.0f };
 	bossData.r = 15;
 	bossData.bossFlag = true;
+	bossData.explosionCount = 8;
 
 }
 
