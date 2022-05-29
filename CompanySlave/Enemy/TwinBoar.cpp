@@ -39,6 +39,7 @@ void TwinBoar::Init()
 
 	AttackSound = false;
 	SoundCount = 0;
+	bossData.explosionCount = 5;
 }
 
 void TwinBoar::Draw(EnemyData* oniData, int i)

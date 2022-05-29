@@ -327,7 +327,19 @@ void Enemy::Update(Player* player)
 			delayCount[i]++;
 			if (delayCount[i] >= 20)
 			{
-				eData[i]->explosionCount = 3;
+				
+				if (eData[i]->type == BossBigOni)
+				{
+					eData[i]->explosionCount = 6;
+				}
+				else if (eData[i]->type == BossTwinBoar)
+				{
+					eData[i]->explosionCount = 5;
+				}
+				else
+				{
+					eData[i]->explosionCount = 3;
+				}
 				eData[i]->explosionFlag = false;
 				delayCount[i] = 0;
 				eData[i]->explosionDelay = false;
@@ -634,7 +646,7 @@ void Enemy::DamegeThrowSword(int i)
 
 void Enemy::DamegeSword(int i)
 {
-	eData[i]->HP -= 2;
+	eData[i]->HP -= 0.75;
 	eData[i]->damegeTime = 10;
 	if (eData[i]->Status == NORMAL)
 	{

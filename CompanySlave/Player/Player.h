@@ -211,6 +211,7 @@ private:
 	Object::ObjectData tornadoObject;//剣
 	Object::ObjectData fotonObject1;//剣
 	Object::ObjectData fotonObject2;//剣
+	Object::ObjectData returnLineObject;//剣
 	int cursorGraph;	//カーソル
 	Object::ObjectData cursorObject;//カーソル
 	SpriteData BlackGraph;//剣回収の白いやつ
@@ -231,6 +232,12 @@ private:
 	float nowTime = 0;						//剣が戻る時のラープ
 	float endTime = 3;						//剣が戻る時のラープ
 	float timeRate = 0;						//剣が戻る時のラープ
+	std::array<float, 7> DistanceX = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
+	std::array<float, 7> DistanceZ = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
+	std::array<float, 7> DistanceXZ = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
+	std::array<float, 7> playerSwordDistance = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
+	std::array<float, 7> lineAngle = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
+
 	std::array<float, 7> reverseValue = { 0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f };
 	std::array<int, 7>  reverseAngle = { 0,0,0,0,0,0,0 };
 	std::array<bool, 7>  swordStop = { false,false,false,false,false,false,false };
