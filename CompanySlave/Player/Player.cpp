@@ -1077,6 +1077,7 @@ void Player::SwordAttack(Enemy* enemy)
 					enemy->DamegeThrowSword(j);
 					if (enemyDamegeTime[j] > 0) {
 						enemy->SetDamegeFlag(j, true);
+						audio->SoundSEPlayWave(sound1);
 					}
 				}
 			}
@@ -1209,6 +1210,7 @@ void Player::SwordAttack(Enemy* enemy)
 						enemy->DamegeThrowSword(j);
 						if (enemyDamegeTime[j] > 0) {
 							enemy->SetDamegeFlag(j, true);
+							audio->SoundSEPlayWave(sound1);
 						}
 					}
 					if (enemy->GetDamegeFlag(j) == true) {
