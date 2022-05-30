@@ -619,7 +619,7 @@ void Enemy::SetPosition(int i, Vec3 position)
 void Enemy::DamegeNormal(int i, int pAttackDirection)
 {
 	eData[i]->HP -= 2.0f;//2
-	if (eData[i]->explosionCount == 1) { eData[i]->explosionCount--; }
+	//if (eData[i]->explosionCount == 1) { eData[i]->explosionCount--; }
 	eData[i]->damegeTime = 10;
 	if (eData[i]->nockPossibleFlag == true)
 	{//ノックバックが可能なら
@@ -636,7 +636,7 @@ void Enemy::DamegeNormal(int i, int pAttackDirection)
 void Enemy::DamegeThrowSword(int i)
 {
 	eData[i]->HP -= 1.5f;//2
-	eData[i]->explosionCount--;
+//	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
 	if (eData[i]->Status == NORMAL)
 	{
