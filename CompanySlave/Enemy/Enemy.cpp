@@ -618,7 +618,7 @@ void Enemy::SetPosition(int i, Vec3 position)
 
 void Enemy::DamegeNormal(int i, int pAttackDirection)
 {
-	eData[i]->HP -= 2;
+	eData[i]->HP -= 2.0f;//2
 	if (eData[i]->explosionCount == 1) { eData[i]->explosionCount--; }
 	eData[i]->damegeTime = 10;
 	if (eData[i]->nockPossibleFlag == true)
@@ -635,7 +635,7 @@ void Enemy::DamegeNormal(int i, int pAttackDirection)
 
 void Enemy::DamegeThrowSword(int i)
 {
-	eData[i]->HP -= 2;
+	eData[i]->HP -= 1.5f;//2
 	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
 	if (eData[i]->Status == NORMAL)
@@ -646,7 +646,7 @@ void Enemy::DamegeThrowSword(int i)
 
 void Enemy::DamegeSword(int i)
 {
-	eData[i]->HP -= 0.75;
+	eData[i]->HP -= 0.50;
 	eData[i]->damegeTime = 10;
 	if (eData[i]->Status == NORMAL)
 	{

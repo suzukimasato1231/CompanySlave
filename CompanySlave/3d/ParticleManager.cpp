@@ -192,7 +192,7 @@ void ParticleManager::ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color)
 		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
 		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
 			//追加
-		Add2(90, pos, vel, acc, 4.0f, 8.0f, start_color, end_color);
+		Add2(80, pos, vel, acc, 4.0f, 8.0f, start_color, end_color);
 	}
 
 }

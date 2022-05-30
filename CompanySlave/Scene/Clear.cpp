@@ -119,7 +119,7 @@ void Clear::Draw()
 
 	if (colorFlag == true) 
 	{
-		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,270,20 }, Vec4{ 1,1,1,1 });
+		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,80,0 }, Vec4{ 1,1,1,1 });
 	}
 	if (TextFlag == true)
 	{
