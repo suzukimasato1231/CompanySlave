@@ -518,61 +518,62 @@ void PlayScene::Update()
 }
 void PlayScene::Draw()
 {
-	//背景描画
-	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
-	Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
+	if (fade <= 1.0f) {
 
-	//オブジェクト
+		//背景描画
+		//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
+		Sprite::Instance()->Draw(BGGraph, pos, window_width, window_height);
 
-	//マップチップの描画
-	mapStage->Draw(camera->GetEye());
+		//オブジェクト
 
-	//敵の血痕
-	enemy->FirstDraw();
+		//マップチップの描画
+		mapStage->Draw(camera->GetEye());
 
-	//パーティクル描画
-	mapStage->DrawParticle(camera->GetEye());
+		//敵の血痕
+		enemy->FirstDraw();
 
-	//プレイヤーの描画
-	player->Draw(enemy);
+		//パーティクル描画
+		mapStage->DrawParticle(camera->GetEye());
 
-	enemy->Draw();
+		//プレイヤーの描画
+		player->Draw(enemy);
 
+		enemy->Draw();
 
-	player->PreDraw();
+		player->PreDraw();
 
-	particleAdd->Draw();
+		particleAdd->Draw();
 
-	enemy->DrawBlood();
+		enemy->DrawBlood();
 
+		for (int i = 0; i < rainMax; i++) {
+			Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 }, rainGraph);
+		}
 
-	for (int i = 0; i < rainMax; i++) {
-		Object::Instance()->Draw(RainOBJ[i], position[i], { 0.1,s[i] ,0.1 }, Vec3{ 1,1,1 }, Vec4{ 1,1,1,1 }, rainGraph);
-	}
+		//前景描画
+		player->UIDraw();
+		enemy->DrawUI();
+		/*if (stageNum == 2 || stageNum == 3)
+		{
+			Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 
-	//前景描画
-	player->UIDraw();
-	enemy->DrawUI();
-	/*if (stageNum == 2 || stageNum == 3)
-	{
-		Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
+		}*/
+		//if (sceneChangeFlag == true) {
+		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
+		//}
+		if (tutorialAFlag == true) {
+			Object::Instance()->Draw(tutorial3, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30 ,0, 0 }, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
 
-	}*/
-	//if (sceneChangeFlag == true) {
-	Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
-	//}
-	if (tutorialAFlag == true) {
-		Object::Instance()->Draw(tutorial3, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30 ,0, 0 }, Vec4{ 1,1,1,1 }, AButton[AButtonCount]);
-
-	}
-	if (tutorialXFlag == true) {
-		Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, XButton[XButtonCount]);
-	}
-	if (tutorialRBFlag == true) {
-		Object::Instance()->Draw(tutorial2, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, RBButton[RBButtonCount]);
-	}
-	if (tutorialLBFlag == true) {
-		Object::Instance()->Draw(tutorial2, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, LBButton[LBButtonCount]);
+		}
+		if (tutorialXFlag == true) {
+			Object::Instance()->Draw(tutorial, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, XButton[XButtonCount]);
+		}
+		if (tutorialRBFlag == true) {
+			Object::Instance()->Draw(tutorial2, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, RBButton[RBButtonCount]);
+		}
+		if (tutorialLBFlag == true) {
+			Object::Instance()->Draw(tutorial2, { player->GetPosition().x,player->GetPosition().y + 20, player->GetPosition().z }, Vec3{ 1,1,1 }, Vec3{ 30,0,0 }, Vec4{ 1,1,1,1 }, LBButton[LBButtonCount]);
+		}
 	}
 #if _DEBUG
 	debugText.Print(10, 180, 2, "%d", stageNum);
@@ -581,7 +582,7 @@ void PlayScene::Draw()
 	//Sprite::Instance()->Draw(GameOverGraph, deadGraphPos, window_width, window_height);
 	Sprite::Instance()->Draw(GameOverGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(color, color, color, fade));
 	if (swordTime <= 0) {
-		Object::Instance()->Draw(sword2, Vec3(player->GetPosition().x + 38, 5, player->GetPosition().z - 10), Vec3(10, 10, 10), Vec3(0, 90, -20), Vec4(1, 1, 1, 1));
+		Object::Instance()->Draw(sword2, Vec3(player->GetPosition().x + 41, 7, player->GetPosition().z - 10), Vec3(10, 10, 10), Vec3(0, 90, -20), Vec4(1, 1, 1, 1));
 	}
 	Sprite::Instance()->Draw(GameOverTextGraph, Vec2(0, 0), window_width, window_height, Vec2(0, 0), Vec4(1, 1, 1, fade2));
 
