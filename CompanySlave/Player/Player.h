@@ -246,6 +246,9 @@ private:
 	std::array<int, 7> explosionCount = { 0,0,0,0,0,0,0 };
 	std::array<float, 7> explosionAngle = { 0,0,0,0,0,0,0 };
 	Vec3 havePosition = { 10.0f, 0.0f, 0.0f };
+	std::array<Vec3, 7> gravity = { Vec3{ 0.0f,0.3f,0.0f }, { 0.0f,0.1f,0.0f }, { 0.0f,0.4f,0.0f }, { 0.0f,0.2f,0.0f }, { 0.0f,0.1f,0.0f }, { 0.0f,0.2f,0.0f }, { 0.0f,0.3f,0.0f } };		//Šp“x
+	std::array<int, 7> gravityCount = { 34,68,102,136,170,206,235 };
+	std::array<float, 7> gravityAngle = { 17,29,24.75,24.5,28.75,17,2.5 };
 	Box haveBox;
 	float tornadoAngle = 0;
 	float tornadoScale = 0.5;
