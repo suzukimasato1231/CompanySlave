@@ -55,7 +55,7 @@ public:
 	/// 剣のダメージ戻し
 	/// </summary>
 	/// <param name="i"></param>
-	void DamegeSword(int i);
+	void DamegeSword(int j, int i);
 
 	void DrawBlood();
 private:
@@ -125,6 +125,8 @@ public://取得系
 	Vec3 basePosition = { 0,0,0 };//マップチップの初期位置
 
 	float TwinBoarHP() { return twinTotalHP; }
+
+	bool SetReturnDamageFlag(int j, int i);
 private:
 	//エネミー１
 	class OniType oniType;
@@ -201,6 +203,9 @@ private:
 	int explosionGraphCnt[eNumMax];
 	bool explosionFlag[eNumMax] = { false };
 	Vec3 explosionPosition[eNumMax] = { Vec3(0,0,0) };
+
+	//帰ってくるときの判定一回だけ取るようにする
+	bool returnDamageFlag[7][eNumMax];
 
 	//音
 	Audio* audio = nullptr;

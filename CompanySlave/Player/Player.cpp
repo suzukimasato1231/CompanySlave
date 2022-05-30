@@ -1021,7 +1021,7 @@ void Player::SwordAttack(Enemy* enemy)
 								explosionCount[i] = 0;
 								explosion[i] = false;
 							}
-							enemy->DamegeSword(j);
+							enemy->DamegeSword(i,j);
 							if (enemyDamegeTime[j] > 0) {
 								enemy->SetDamegeFlag(j, true);
 								audio->SoundSEPlayWave(sound12);
@@ -1043,6 +1043,13 @@ void Player::SwordAttack(Enemy* enemy)
 		shotNo = 0;
 		if (haveSword[0] && haveSword[1] && haveSword[2] && haveSword[3] && haveSword[4] && haveSword[5] && haveSword[6])
 		{
+			for (int i = 0; i < 7; i++)
+			{
+				for (size_t j = 0; j < enemy->GetEnemySize(); j++)
+				{
+					enemy->SetReturnDamageFlag(i, j);
+				}
+			}
 			tornadoAngle = 0;
 			shotNo = 0;
 			timeRate = 0;

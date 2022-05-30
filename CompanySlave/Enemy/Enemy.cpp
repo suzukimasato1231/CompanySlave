@@ -223,6 +223,10 @@ void Enemy::StageInit(int stageNum)
 
 		BloodTime[i] = bloodTimeMax;
 		delayCount[i] = 0;
+		for (int j = 0; j < 7; j++)
+		{
+			returnDamageFlag[j][i] = false;
+		}
 	}
 
 }
@@ -644,14 +648,18 @@ void Enemy::DamegeThrowSword(int i)
 	}
 }
 
-void Enemy::DamegeSword(int i)
+void Enemy::DamegeSword(int j, int i)
 {
-	eData[i]->HP -= 0.50;
-	eData[i]->damegeTime = 10;
-	if (eData[i]->Status == NORMAL)
+	if (returnDamageFlag[j][i] == false)
 	{
-		eData[i]->Status = MOVE;
+		eData[i]->HP -= 1.5;
+		eData[i]->damegeTime = 10;
+		if (eData[i]->Status == NORMAL)
+		{
+			eData[i]->Status = MOVE;
+		}
 	}
+	returnDamageFlag[j][i] = true;
 }
 
 void Enemy::DrawBlood()
@@ -924,6 +932,11 @@ void Enemy::FallDown(int eNum)
 			break;
 		}
 	}
+}
+
+bool Enemy::SetReturnDamageFlag(int j, int i)
+{
+	return returnDamageFlag[j][i] = false;
 }
 
 void Enemy::UpdateOni(int i, Player* player)
