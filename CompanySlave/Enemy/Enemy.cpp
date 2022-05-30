@@ -330,7 +330,7 @@ void Enemy::Update(Player* player)
 				
 				if (eData[i]->type == BossBigOni)
 				{
-					eData[i]->explosionCount = 6;
+					eData[i]->explosionCount = 8;
 				}
 				else if (eData[i]->type == BossTwinBoar)
 				{
@@ -508,7 +508,7 @@ void Enemy::Draw()
 					Vec3(1.0f, 1.0f, 1.0f), Vec3(90.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), hpGraph);
 			}
 			//“G@”j@
-			if (explosionFlag[i] == true) {
+			if (eData[i]->explosionCount == 1) {
 				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 2.0f + eData[i]->r, eData[i]->position.z),
 					Vec3(1.0f, 1.0f, 1.0f), Vec3(70.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
 			}
@@ -516,11 +516,11 @@ void Enemy::Draw()
 		if (eData[i]->bossFlag == true && eData[i]->HP > 0)
 		{
 			//“G@”j@
-			if (explosionFlag[i] == true && eData[i]->type == BossBigOni) {
+			if (eData[i]->explosionCount == 1 && eData[i]->type == BossBigOni) {
 				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 20.0f + eData[i]->r, eData[i]->position.z),
 					Vec3(2.0f, 2.0f, 2.0f), Vec3(70.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
 			}
-			else if (explosionFlag[i] == true && eData[i]->type == BossTwinBoar)
+			else if (eData[i]->explosionCount == 1 && eData[i]->type == BossTwinBoar)
 			{
 				Object::Instance()->Draw(explosionOBJ, Vec3(eData[i]->position.x, eData[i]->position.y + 9.0f + eData[i]->r, eData[i]->position.z),
 					Vec3(2.0f, 2.0f, 2.0f), Vec3(70.0f, 0.0f, 0.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f), explosionGraph);
