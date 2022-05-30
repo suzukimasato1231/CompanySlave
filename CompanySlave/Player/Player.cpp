@@ -939,14 +939,38 @@ void Player::SwordAttack(Enemy* enemy)
 			swordAngle[i].z = -85;
 			swordAngle[i].y = 90;
 			blinkingFlag[i] = false;
-			if (haveSword[0]) { swordPosition[0] = havePosition + Vec3{ +2.25, 0 , -1.0 + 1.5 }; }
-			if (haveSword[1]) { swordPosition[1] = havePosition + Vec3{ -2.25, 0 , -1.0 + 1.5 }; }
-			if (haveSword[2]) { swordPosition[2] = havePosition + Vec3{ +1.5, 0 , +1.0 + 1.5 }; }
-			if (haveSword[3]) { swordPosition[3] = havePosition + Vec3{ -1.5, 0 , +1.0 + 1.5 }; }
-			if (haveSword[4]) { swordPosition[4] = havePosition + Vec3{ +0.75, 0 , -1.0 + 1.5 }; }
-			if (haveSword[5]) { swordPosition[5] = havePosition + Vec3{ -0.75, 0 , -1.0 + 1.5 }; }
-			if (haveSword[6]) { swordPosition[6] = havePosition + Vec3{ 0, 0 , +1.0 + 1.5 }; }
-
+			if (haveSword[0]) { swordPosition[0] = havePosition + Vec3{ +2.25, 10 , -1.0 + 3 } + gravity[0]; swordAngle[0].x = gravityAngle[0] - 20; }
+			if (haveSword[1]) { swordPosition[1] = havePosition + Vec3{ -2.25, 10 , -1.0 + 3 } + gravity[1]; swordAngle[1].x = gravityAngle[1] - 20; }
+			if (haveSword[2]) { swordPosition[2] = havePosition + Vec3{ +1.5,  10 , +1.0 + 3 } + gravity[2]; swordAngle[2].x = gravityAngle[2] - 20; }
+			if (haveSword[3]) { swordPosition[3] = havePosition + Vec3{ -1.5,  10 , +1.0 + 3 } + gravity[3]; swordAngle[3].x = gravityAngle[3] - 20; }
+			if (haveSword[4]) { swordPosition[4] = havePosition + Vec3{ +0.75, 10 , -1.0 + 3 } + gravity[4]; swordAngle[4].x = gravityAngle[4] - 20; }
+			if (haveSword[5]) { swordPosition[5] = havePosition + Vec3{ -0.75, 10 , -1.0 + 3 } + gravity[5]; swordAngle[5].x = gravityAngle[5] - 20; }
+			if (haveSword[6]) { swordPosition[6] = havePosition + Vec3{ 0,     10 , +1.0 + 3 } + gravity[6]; swordAngle[6].x = gravityAngle[6] - 20; }
+			gravityCount[i]++;
+			if (gravityCount[i] >= 0 && gravityCount[i] <= 60)
+			{
+				gravity[i].y += 0.1;
+				gravityAngle[i] += 0.25;
+			}
+			else if (gravityCount[i] >= 60 && gravityCount[i] <= 120)
+			{
+				gravity[i].y += 0.05;
+				gravityAngle[i] -= 0.125;
+			}
+			else if (gravityCount[i] >= 120 && gravityCount[i] <= 180)
+			{
+				gravity[i].y -= 0.05;
+				gravityAngle[i] += 0.125;
+			}
+			else if (gravityCount[i] >= 180 && gravityCount[i] <= 240)
+			{
+				gravity[i].y -= 0.1;
+				gravityAngle[i] -= 0.25;
+			}
+			else if (gravityCount[i] >= 240)
+			{
+				gravityCount[i] = 0;
+			}
 		}
 	}
 	//ÉXÉçÉE
