@@ -325,6 +325,8 @@ void Player::StageInit(int stageNum)
 	swordSoundCount = 0;
 
 	invincivleTime = 0;
+	BlackFlag = false;
+	collectPos = {};
 }
 
 void Player::Update(Enemy* enemy)
@@ -395,7 +397,7 @@ void Player::PreDraw()
 }
 
 void Player::Draw(Enemy* enemy)
-{	
+{
 	//プレイヤー
 	if (damageTime % 2 == 0)
 	{
@@ -527,7 +529,7 @@ void Player::Draw(Enemy* enemy)
 			Object::Instance()->Draw(swordEffectObject, { swordPosition[i].x,swordPosition[i].y,swordPosition[i].z }, { 0.5f,0.5f ,2.0f }, { swordAngle[i].x,swordAngle[i].y + reverseAngle[i] + 90, swordAngle[i].z }, color);
 		}
 		//予測線
-		if(haveSword[i] || swordCoolTimeFlag == true)
+		if (haveSword[i] || swordCoolTimeFlag == true)
 		{
 
 		}
@@ -921,7 +923,7 @@ void Player::SwordAttack(Enemy* enemy)
 			havePosition.x = position.x;
 		}
 
-		
+
 		if (!haveSword[i])
 		{
 			//予測線の距離
@@ -1021,7 +1023,7 @@ void Player::SwordAttack(Enemy* enemy)
 								explosionCount[i] = 0;
 								explosion[i] = false;
 							}
-							enemy->DamegeSword(i,j);
+							enemy->DamegeSword(i, j);
 							if (enemyDamegeTime[j] > 0) {
 								enemy->SetDamegeFlag(j, true);
 								audio->SoundSEPlayWave(sound12);
@@ -1095,7 +1097,7 @@ void Player::SwordAttack(Enemy* enemy)
 					enemy->DamegeThrowSword(j);
 					if (enemyDamegeTime[j] > 0) {
 						enemy->SetDamegeFlag(j, true);
-							audio->SoundSEPlayWave(sound1);
+						audio->SoundSEPlayWave(sound1);
 
 					}
 				}
@@ -1221,7 +1223,7 @@ void Player::SwordAttack(Enemy* enemy)
 				if (explosionCount[i] >= 3 && isEnemySting[i][j] == false)
 				{
 					//敵との当たり判定
-		
+
 					if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]) && ((enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(j) == BossTwinBoar)))
 					{
 						isSwordAttack[i] = false;
@@ -1252,7 +1254,7 @@ void Player::SwordAttack(Enemy* enemy)
 				audio->SoundSEPlayWave(sound11);
 
 			}
-			
+
 		}
 	}
 	//剣の回収クールタイム
@@ -1301,7 +1303,7 @@ void Player::SwordAttack(Enemy* enemy)
 
 	//点滅
 	if (blinkingFlag[0] || blinkingFlag[1] || blinkingFlag[2] || blinkingFlag[3] || blinkingFlag[4] || blinkingFlag[5] || blinkingFlag[6] ||
-		ExplosionblinkingFlag[0] || ExplosionblinkingFlag[1] || ExplosionblinkingFlag[2] || ExplosionblinkingFlag[3] || ExplosionblinkingFlag[4] || 
+		ExplosionblinkingFlag[0] || ExplosionblinkingFlag[1] || ExplosionblinkingFlag[2] || ExplosionblinkingFlag[3] || ExplosionblinkingFlag[4] ||
 		ExplosionblinkingFlag[5] || ExplosionblinkingFlag[6])
 	{
 		blinkingCount++;
@@ -1426,7 +1428,7 @@ void Player::Avoidance()
 	//回避クールタイム減少
 
 	avoiCoolTime--;
-	if (avoiCoolTime <= 0&& avoidanceTime <= 0)
+	if (avoiCoolTime <= 0 && avoidanceTime <= 0)
 	{
 		avoiCoolTime = 0;
 		avoidanceFlag = false;
