@@ -82,7 +82,7 @@ void Enemy::Init()
 void Enemy::StageInit(int stageNum)
 {
 	//ƒƒ‚ƒŠ‰ð•ú
-	audioBoss = 10;
+	audioBoss = 5;
 	for (int i = (int)eData.size() - 1; i >= 0; i--)
 	{
 		delete eData[i];
@@ -382,6 +382,7 @@ void Enemy::Update(Player* player)
 			if (eData[i]->HP > 0 && eData[i]->type == BossTwinBoar) {
 				audio->SoundSEPlayWave(sound4);//’–
 			}
+
 		}
 		if (eData[i]->bowAFlag == true) {
 			if (eData[i]->HP > 0 && eData[i]->type == OniBow) {
