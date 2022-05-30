@@ -44,7 +44,7 @@ void Player::Init()
 	sound9 = Audio::SoundLoadWave("Resources/Music/SE/Damege.wav");
 	sound10 = Audio::SoundLoadWave("Resources/Music/SE/collect.wav");
 	sound11 = Audio::SoundLoadWave("Resources/Music/SE/drop.wav");
-	//sound12 = Audio::SoundLoadWave("Resources/Music/SE/collect.wav");
+	sound12 = Audio::SoundLoadWave("Resources/Music/SE/Hikenkatana.wav");
 
 	playerSwordWalkObject[0] = Object::Instance()->CreateOBJ("playerKari2-1", "playerOBJ/");
 	playerSwordWalkObject[1] = Object::Instance()->CreateOBJ("playerKari2-2", "playerOBJ/");
@@ -1024,7 +1024,7 @@ void Player::SwordAttack(Enemy* enemy)
 							enemy->DamegeSword(j);
 							if (enemyDamegeTime[j] > 0) {
 								enemy->SetDamegeFlag(j, true);
-								audio->SoundSEPlayWave(sound1);
+								audio->SoundSEPlayWave(sound12);
 							}
 						}
 					}
@@ -1088,7 +1088,8 @@ void Player::SwordAttack(Enemy* enemy)
 					enemy->DamegeThrowSword(j);
 					if (enemyDamegeTime[j] > 0) {
 						enemy->SetDamegeFlag(j, true);
-						audio->SoundSEPlayWave(sound1);
+							audio->SoundSEPlayWave(sound1);
+
 					}
 				}
 			}
@@ -1221,7 +1222,7 @@ void Player::SwordAttack(Enemy* enemy)
 						enemy->DamegeThrowSword(j);
 						if (enemyDamegeTime[j] > 0) {
 							enemy->SetDamegeFlag(j, true);
-							audio->SoundSEPlayWave(sound1);
+							audio->SoundSEPlayWave(sound12);
 						}
 					}
 					if (enemy->GetDamegeFlag(j) == true) {
