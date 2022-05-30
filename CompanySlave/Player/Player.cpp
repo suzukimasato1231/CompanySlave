@@ -1010,6 +1010,17 @@ void Player::SwordAttack(Enemy* enemy)
 					if ((enemy->GetHP(j) > 0 && enemy->GetType(j) != BossWolfFlock) || (enemy->TwinBoarHP() > 0 && enemy->GetType(j) == BossTwinBoar)) {
 						if (Collision::CheckSphere2Box(enemy->GetSphere(j), swordAttackBox[i]))
 						{
+							if (enemy->GetExplosionCount(j) == 1)
+							{
+								explosion[i] = true;
+								BossFlag[i] = false;
+								ExplosionblinkingFlag[i] = false;
+								enemy->SetExplosionFlag(j);
+								enemy->SetExplosionCount(j);
+								isEnemySting[i][j] = false;
+								explosionCount[i] = 0;
+								explosion[i] = false;
+							}
 							enemy->DamegeSword(j);
 							if (enemyDamegeTime[j] > 0) {
 								enemy->SetDamegeFlag(j, true);
