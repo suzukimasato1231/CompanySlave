@@ -631,6 +631,7 @@ void Enemy::DamegeNormal(int i, int pAttackDirection)
 		eData[i]->memoryStatus = eData[i]->Status;
 		eData[i]->nockbackTime = EnemySupport::nockBackTimeMax;
 		eData[i]->nockDirection = pAttackDirection;
+		eData[i]->AttackEffect = false;
 	}
 	if (eData[i]->Status == NORMAL)
 	{
