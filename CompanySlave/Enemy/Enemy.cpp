@@ -82,7 +82,7 @@ void Enemy::Init()
 void Enemy::StageInit(int stageNum)
 {
 	//ƒƒ‚ƒŠ‰ð•ú
-	audioBoss = 30;
+	audioBoss = 10;
 	for (int i = (int)eData.size() - 1; i >= 0; i--)
 	{
 		delete eData[i];
