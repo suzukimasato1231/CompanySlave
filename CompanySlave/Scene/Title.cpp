@@ -77,9 +77,9 @@ void Title::Init()
 	//fade = 1;
 	volumeFlag = 0;
 	volumeArrowFlag = false;
-	volume = 1;
-	volume2 = 1;
-	volumeB = 500;
+	volume = 0.5f;
+	volume2 = 0.5f;
+	volumeB = 500*volume;
 
 	volumeFadeFlag = false;
 	volumeFade = 0;
@@ -180,7 +180,8 @@ void Title::Update()
 			if (Input::Instance()->KeybordTrigger(DIK_SPACE) || Input::Instance()->ControllerDown(ButtonA))
 			{
 				audio->SoundSEPlayWave(sound2);
-				volume2 = 1;
+				volume2 = 0.5;
+				volume = 0.5;
 				scene = 1;
 				sceneChangeFlag = true;
 			}
@@ -241,7 +242,7 @@ void Title::Update()
 			}
 			else if (Input::Instance()->ControllerDown(LButtonLeft))
 			{
-				if (volume > 0)
+				if (volume > 0.1)
 				{
 					volume -= 0.1;
 					volume2 -= 0.1;
@@ -336,7 +337,7 @@ void Title::Draw()
 #if _DEBUG
 	//デバックテキスト%dと%f対応
 	debugText.Print(10, 40, 2, "%d", volumeArrowFlag);
-	debugText.Print(10, 80, 2, "%d", volumeFlag);
+	//debugText.Print(10, 80, 2, "%f", volume);
 
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();

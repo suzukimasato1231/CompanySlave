@@ -103,8 +103,8 @@ private://定義
 	int direction = 0;
 
 
-	float volume = 1.0f;
-	float volume2 = 1.0f;//他のシーン用ボリューム
+	float volume = 0.5f;
+	float volume2 = 0.5f;//他のシーン用ボリューム
 	int volumeFlag = 0;
 
 	bool volumeArrowFlag = false;

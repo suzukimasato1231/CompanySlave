@@ -250,7 +250,7 @@ void GameSceneManager::Draw()
 	}
 	play->LoadDraw();
 #if _DEBUG
-	debugText.Print(10, 380, 2, "%d", LoadTime);
+	//debugText.Print(10, 380, 2, "%d", LoadTime);
 	debugText.Print(10, 260, 2, "R:reset");
 	debugText.Print(10, 300, 2, "DebugStageNum %d", stageDebug);
 	debugText.Print(10, 360, 2, "%f", volume);
