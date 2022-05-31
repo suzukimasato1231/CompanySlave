@@ -1,7 +1,7 @@
 #include "_Window.h"
 #include"../resource.h"
 
-#define IDI_ICON1 130
+//#define IDI_ICON1 130
 //ウィンドウプロシージャ
 LRESULT WindowProce(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
