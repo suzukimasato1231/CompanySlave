@@ -1025,16 +1025,31 @@ void Enemy::UpdateBigOniBoss(int i, Player* player)
 			eData[num]->Status = MOVE;
 			//À•W‚ð‡‚í‚¹‚é
 			SetFirstPosition(Vec3(20 * mapSize, eData[num]->position.y, 22 * (-mapSize)), eData[num]->r, num);
+
 			eData.push_back(new EnemyData);
 			num = eData.size() - 1;
 			eData[num]->type = Oni;
 			eData[num]->Status = MOVE;
 			SetFirstPosition(Vec3(20 * mapSize, eData[num]->position.y, 35 * (-mapSize)), eData[num]->r, num);
+
+			eData.push_back(new EnemyData);
+			num = eData.size() - 1;
+			eData[num]->type = Oni;
+			eData[num]->Status = MOVE;
+			SetFirstPosition(Vec3(40 * mapSize, eData[num]->position.y, 22 * (-mapSize)), eData[num]->r, num);
+
+			eData.push_back(new EnemyData);
+			num = eData.size() - 1;
+			eData[num]->type = Oni;
+			eData[num]->Status = MOVE;
+			SetFirstPosition(Vec3(40 * mapSize, eData[num]->position.y, 35 * (-mapSize)), eData[num]->r, num);
+
 			eData.push_back(new EnemyData);
 			num = eData.size() - 1;
 			eData[num]->type = OniBow;
 			eData[num]->Status = MOVE;
 			SetFirstPosition(Vec3(60 * mapSize, eData[num]->position.y, 22 * (-mapSize)), eData[num]->r, num);
+
 			eData.push_back(new EnemyData);
 			num = eData.size() - 1;
 			eData[num]->type = OniBow;
