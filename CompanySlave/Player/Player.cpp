@@ -563,7 +563,7 @@ void Player::Draw(Enemy* enemy)
 	{
 		if (fiveLifeFlag2[i] && startFiveTime[i] <= 0)
 		{
-			Object::Instance()->Draw(fiveLife, fiveLifePos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(0.0f, 0.0f, 0.0f),
+			Object::Instance()->Draw(fiveLife, fiveLifePos[i], Vec3(0.5f, 0.5f, 0.5f), Vec3(0.0f, 45.0f, 180.0f),
 				Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
