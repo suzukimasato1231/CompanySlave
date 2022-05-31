@@ -50,6 +50,8 @@ public:
 	void Damage(int damegeNum);
 	//プレイヤーUI描画
 	void UIDraw();
+	//回復チュートリアル
+	void TutorialDraw(bool Abutton, bool XButton, bool LBButton, bool RBButton);
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -169,17 +171,25 @@ private:
 	const int portionTimeMax = 50;		//回復時間
 	int portionTime = 0;
 
+	//瀕死になったら回復催促
+	bool portionRemFlag = false;		//１回だけ行う
+	bool portionRemOneFlag = false;		//１回だけ行う
+	const float pHPReminder = 5.0f;		//このHPまで減ったら回復催促
+	int portionRemTime = 0;
+	int portionRemCount = 0;
+	Object::ObjectData portionRemOBJ;
+	int portionRemGraph[2];
 	//動いているかどうか
 	bool moveFlag = false;
 
 	//回避
-	bool avoidanceFlag = false;		//回避中か
-	const int avoidanceTimeMax = 10;//回避時間
-	int avoiDirection = 0;			//回避向き
-	int avoidanceTime = 0;			//今回避時間
-	float avoiSpeed = 4.0f;			//回避スピード
-	const int avoiCoolTimeMax = 20;	//回避クールタイム
-	int avoiCoolTime = 0;			//今回避クールタイム
+	bool avoidanceFlag = false;			//回避中か
+	const int avoidanceTimeMax = 10;	//回避時間
+	int avoiDirection = 0;				//回避向き
+	int avoidanceTime = 0;				//今回避時間
+	float avoiSpeed = 4.0f;				//回避スピード
+	const int avoiCoolTimeMax = 20;		//回避クールタイム
+	int avoiCoolTime = 0;				//今回避クールタイム
 	float radDir = 0.0f;
 
 	//ダメージ後の無敵

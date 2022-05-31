@@ -78,7 +78,7 @@ void Boar::Draw(EnemyData* oniData)
 			Object::Instance()->Draw(debugField, Vec3(oniData->position.x + attackEnemies.y / 2, oniData->position.y, oniData->position.z),
 				oniData->scale, Vec3(90.0f, 0.0f, 0.0f), oniData->color, redColor);
 			break;
-		
+		}
 #endif
 		break;
 	case MOVE:

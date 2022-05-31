@@ -553,12 +553,10 @@ void PlayScene::Draw()
 		//前景描画
 		player->UIDraw();
 		enemy->DrawUI();
-		/*if (stageNum == 2 || stageNum == 3)
-		{
-			Sprite::Instance()->Draw(controlGraph, Vec2(0, 0), window_width, window_height);
 
-		}*/
-		//if (sceneChangeFlag == true) {
+		//回復のチュートリアル
+		player->TutorialDraw(tutorialAFlag, tutorialXFlag, tutorialRBFlag, tutorialLBFlag);
+
 		Sprite::Instance()->Draw(SChangeGraph, ChangeGraphPosition, 1980, window_height);
 		//}
 		if (tutorialAFlag == true) {
@@ -590,7 +588,7 @@ void PlayScene::Draw()
 	//デバックテキスト描画ここは変わらない
 	debugText.DrawAll();
 #endif
-	}
+}
 void PlayScene::LoadDraw()
 {
 	if (LoadFlag == true) {

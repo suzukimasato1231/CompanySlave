@@ -186,6 +186,10 @@ void Player::Init()
 
 	fiveLife = Object::Instance()->CreateOBJ("sphere", "", true);
 	gaugeRight = Sprite::Instance()->SpriteCreate(L"Resources/playerUI/SwordGaugeRight.png");
+
+	portionRemOBJ = Shape::CreateRect(10.0f, 13.6f);
+	portionRemGraph[0] = Object::Instance()->LoadTexture(L"Resources/Button/Y1.png");
+	portionRemGraph[1] = Object::Instance()->LoadTexture(L"Resources/Button/Y2.png");
 }
 
 void Player::LoopInit()
@@ -194,6 +198,8 @@ void Player::LoopInit()
 	HPSub = HPMAX;
 	//É|Å[ÉVÉáÉì
 	portion = portionMax;
+	portionRemFlag = false;
+	portionRemOneFlag = false;
 }
 
 void Player::StageInit(int stageNum)
@@ -1363,6 +1369,11 @@ void Player::LifePortion()
 			portionTime = portionTimeMax;
 			portionFlag = true;
 			portionNo = 0;
+			if (portionRemFlag == true)
+			{
+				portionRemOneFlag = true;
+				portionRemFlag = false;
+			}
 		}
 	}
 	//‰PíÖéûä‘å∏è≠
@@ -1388,6 +1399,21 @@ void Player::LifePortion()
 		lifeNotTime--;
 	}
 
+	//àÍíËÇÃhpÇ‹Ç≈å∏Ç¡ÇΩÇÁâÒïúÇç√ë£
+	if (HP <= pHPReminder && portion > 0 && portionRemOneFlag == false)
+	{
+		portionRemFlag = true;
+	}
+	portionRemTime++;
+	if (portionRemTime % 20 == 0)
+	{
+		portionRemCount++;
+		if (portionRemCount == 2)
+		{
+			portionRemCount = 0;
+			portionRemTime = 0;
+		}
+	}
 }
 void   Player::Angle()
 {
@@ -1648,6 +1674,19 @@ void Player::UIDraw()
 		if (portion >= 1)
 		{
 			Sprite::Instance()->Draw(lifeNot, Vec2(130.0f + shake.x, 75.0f + shake.y), 40.0f, 40.0f);
+		}
+	}
+}
+
+void Player::TutorialDraw(bool Abutton, bool XButton, bool LBButton, bool RBButton)
+{
+	//âÒïúç√ë£
+	if (Abutton == false && XButton == false && LBButton == false && RBButton == false)
+	{
+		if (portionRemFlag == true && portionRemOneFlag == false)
+		{
+			Object::Instance()->Draw(portionRemOBJ, Vec3(position.x, position.y + 20.0f, position.z),
+				Vec3{ 1,1,1 }, Vec3{ 30 ,0, 0 }, Vec4{ 1,1,1,1 }, portionRemGraph[portionRemCount]);
 		}
 	}
 }
