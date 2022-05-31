@@ -1,5 +1,7 @@
 #include "_Window.h"
+#include"../resource.h"
 
+#define IDI_ICON1 130
 //ウィンドウプロシージャ
 LRESULT WindowProce(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -23,6 +25,8 @@ void _Window::CreateGameWindow()
 	w.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
 	w.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
 
+	w.hIcon = LoadIcon(w.hInstance, MAKEINTRESOURCE(IDI_ICON1));
+	w.hIconSm = LoadIcon(w.hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	// ウィンドウクラスをOSに登録
 	RegisterClassEx(&w);
 
@@ -40,6 +44,8 @@ void _Window::CreateGameWindow()
 		nullptr,                // メニューハンドル
 		w.hInstance,            // 呼び出しアプリケーションハンドル
 		nullptr);               // オプション
+
+
 
 	// ウィンドウ表示
 	ShowWindow(hwnd, SW_SHOW);

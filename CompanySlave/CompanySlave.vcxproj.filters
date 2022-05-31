@@ -252,6 +252,7 @@
     <ClInclude Include="ParticleAdd.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -365,5 +366,18 @@
     <ClCompile Include="ParticleAdd.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="アイコン.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="icon.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="翔剣.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

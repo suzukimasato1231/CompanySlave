@@ -263,6 +263,7 @@
     <ClInclude Include="Pipeline\Pipeline.h" />
     <ClInclude Include="Player\Direction.h" />
     <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\Clear.h" />
     <ClInclude Include="Scene\GameSceneManager.h" />
     <ClInclude Include="Scene\PlayScene.h" />
@@ -308,6 +309,13 @@
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Stage\MapStage.cpp" />
     <ClCompile Include="Stage\PushCollision.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+    <Image Include="アイコン.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="翔剣.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
