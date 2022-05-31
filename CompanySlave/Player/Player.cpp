@@ -1218,6 +1218,7 @@ void Player::SwordAttack(Enemy* enemy)
 				BossFlag[i] = false;
 				ExplosionblinkingFlag[i] = false;
 				isEnemySting[i][j] = false;
+				explosionAngle[i] = rand() % 360;
 				enemy->SetExplosionFlag(j);
 			}
 
