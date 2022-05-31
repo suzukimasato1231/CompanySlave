@@ -45,7 +45,7 @@ void Clear::Initialize()
 	title = Sprite::Instance()->SpriteCreate(L"Resources/clearTitle.png");
 
 
-	PlayerObject = Object::Instance()->CreateOBJ("playerAttack2-1","playerOBJ/");
+	PlayerObject = Object::Instance()->CreateOBJ("playerAttack2-1", "playerOBJ/", true);
 
 }
 
@@ -69,7 +69,7 @@ void Clear::Init()
 	TextFlag = false;
 	buttonFlag = false;
 
-	audio->SoundBGMPlayLoopWave(sound1,0);
+	audio->SoundBGMPlayLoopWave(sound1, 0);
 }
 
 void Clear::Update()
@@ -117,7 +117,7 @@ void Clear::Draw()
 	Sprite::Instance()->Draw(spriteGraph, { 0,0 }, window_width, window_height, { 0.0f, 0.0f }, { color, color,color ,1 });
 
 
-	if (colorFlag == true) 
+	if (colorFlag == true)
 	{
 		Object::Instance()->Draw(PlayerObject, position, Vec3{ 1,1,1 }, Vec3{ 0,80,0 }, Vec4{ 1,1,1,1 });
 	}
