@@ -641,7 +641,7 @@ void Enemy::DamegeNormal(int i, int pAttackDirection)
 
 void Enemy::DamegeThrowSword(int i)
 {
-	eData[i]->HP -= 1.5f;//2
+	eData[i]->HP -= 1.75f;//2
 //	eData[i]->explosionCount--;
 	eData[i]->damegeTime = 10;
 	if (eData[i]->Status == NORMAL)
@@ -654,7 +654,7 @@ void Enemy::DamegeSword(int j, int i)
 {
 	if (returnDamageFlag[j][i] == false)
 	{
-		eData[i]->HP -= 1.5;
+		eData[i]->HP -= 2;
 		eData[i]->damegeTime = 10;
 		if (eData[i]->Status == NORMAL)
 		{
